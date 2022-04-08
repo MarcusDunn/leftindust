@@ -1,0 +1,7 @@
+{
+  "i18n-ally.localesPaths": [
+    "ultra/packages/leftindust/src/language",
+    "ultra/packages/leftindust/src/language/locales",
+    "ultra/packages/legacy/delta/web/src/languages"
+  ]
+}
