@@ -1,0 +1,5 @@
+{
+    "watch": ["build"],
+    "exec": "tscpaths -p ./tsconfig.json -s ../../ -o ./build && electron .",
+    "ext": "js, json, ts, proto, css, png, jpeg, jpg, ico"
+}

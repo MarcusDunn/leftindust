@@ -1,0 +1,668 @@
+/*
+  Aqua Theme (Desktop)
+  Enabled by default on desktop devices using the Aqua theme
+*/
+
+@use "../../helpers/Clamps";
+
+@use './Aqua/controller/AquaSideBarUI' as SideBar;
+@use './Aqua/controller/AquaAppBarUI' as AppBar;
+@use './Aqua/controller/AquaMenuUI' as Menu;
+@use './Aqua/button/AquaMenuButtonUI' as MenuButton;
+@use './Aqua/button/AquaPinButtonUI' as PinButton;
+@use './Aqua/button/AquaSelectButtonUI' as SelectButton;
+@use './Aqua/button/AquaClampsButtonUI' as ClampsButton;
+@use './Aqua/button/AquaDeleteButtonUI.scss' as DeleteButton;
+@use './Aqua/layout/AquaNoticeUI' as Notice;
+@use './Aqua/layout/AquaProfileUI' as Profile;
+@use './Aqua/layout/AquaCalendarUI' as Calendar;
+@use './Aqua/layout/AquaFooterUI' as Footer;
+@use './Aqua/layout/AquaContainerUI' as Container;
+@use './Aqua/layout/AquaSurveyUI.scss' as Survey;
+@use './Aqua/layout/AquaWizardUI.scss' as Wizard;
+@use './Aqua/layout/AquaWizardSplitUI.scss' as WizardSplit;
+@use './Aqua/list/AquaInsetListUI' as InsetList;
+@use './Aqua/list/AquaSelectableListUI' as SelectableList;
+@use './Aqua/item/AquaSelectableItemUI' as SelectableItem;
+@use './Aqua/item/AquaPinnableItemUI' as PinnableItem;
+@use './Aqua/item/AquaCheckboxItemUI' as CheckboxItem;
+@use './Aqua/plugin/AquaPluginBundleUI' as PluginBundle;
+@use './Aqua/plugin/AquaPluginStackUI' as PluginStack;
+@use './Aqua/plugin/AquaPluginWidgetUI' as PluginWidget;
+@use './Aqua/input/AquaScaleUI.scss' as Scale;
+@use './Aqua/input/AquaScaleLabeledUI.scss' as ScaleLabeled;
+@use './Aqua/input/AquaInputUI.scss' as Input;
+@use './Aqua/input/AquaAddUI.scss' as Add;
+@use './Aqua/input/AquaDateUI.scss' as Date;
+@use './Aqua/input/AquaTimeUI.scss' as Time;
+@use './Aqua/input/AquaSelectUI.scss' as Select;
+@use './Aqua/view/AquaIFrameUI.scss' as IFrame;
+@use './Aqua/view/AquaQuicklookUI.scss' as Quicklook;
+
+.ios.device-desktop {
+  /* -=-=-=-=-=-=-=- OVERWRITES -=-=-=-=-=-=-=- */
+  --f7-progressbar-height: 4px;
+
+  /* Page */
+  .views, .popup {
+    .page, .page-content {
+      &:not(.login-screen-content) {
+        background: white;
+      }
+    }
+  }
+
+  &.theme-dark {
+    .views, .popup {
+      .page, .page-content {
+        &:not(.login-screen-content) {
+          background: rgb(30, 30, 30);
+        }
+      }
+    }
+  }
+
+  /* Master Detail */
+  &:not(.with-panel-left-reveal):not(.wizard-open) {
+    .views {
+      .view {
+        &.view-master-detail {
+          & > .navbars {
+            .navbar:not(.navbar-master-detail) {
+              .navbar-inner {
+                & > :nth-child(1) {
+                  padding-left: 50px;
+                }
+              }
+            }
+          }
+        }
+        &:not(.view-master-detail) {
+          & > .navbars {
+            .navbar {
+              .navbar-inner {
+                & > :nth-child(1) {
+                  padding-left: 50px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  &.theme-dark {
+    .view-master-detail .page-master, .view-master-detail .navbar-master {
+      border-right: 1px solid black;
+    }
+  }
+
+  /* Panels */
+  .panel-left {
+    border-right: 1px solid var(--f7-page-master-border-color);
+  }
+
+  .panel-right {
+    border-left: 1px solid var(--f7-page-master-border-color);
+  }
+
+  &.theme-dark {
+    .panel-left {
+      border-right: 1px solid black;
+    }
+
+    .panel-right {
+      border-left: 1px solid black;
+    }
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 50px;
+    font-weight: 700;
+    color: rgb(58, 58, 60);
+  }
+
+  h2 {
+    font-size: 40px;
+    margin: 0;
+    padding: 0;
+    color: rgb(58, 58, 60);
+  }
+
+  h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+  }
+
+  h5 {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+  }
+
+  h6 {
+    font-weight: 700;
+    font-size: 13px;
+    margin: 5px 0px;
+  }
+
+  &.theme-dark {
+    h1, h2 {
+      color: white;
+    }
+  }
+
+  /* Buttons */
+  .button {
+    &.button-small {
+      height: 22px;
+      font-size: 12px;
+    }
+
+    &.button-large {
+      text-transform: capitalize;
+    }
+
+    &.button-round {
+      text-transform: capitalize;
+
+      &.gradient {
+        border-radius: 100rem;
+        font-size: 1rem;
+        text-transform: capitalize;
+        padding: .5rem;
+        color: var(--f7-block-strong-text-color);
+        border: solid 3px transparent;
+        background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #6dc7f9, #ad48dd);
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+        box-shadow: 2px 1000px 1px var(--f7-block-strong-bg-color) inset;
+      }
+
+      .f7-icons {
+        margin-right: 5px;
+      }
+
+      &:not(.button-large) {
+        margin-right: 10px;
+        padding: 0 15px;
+      }
+    }
+  }
+
+  /* Chips */
+  .chip {
+    margin-right: 5px;
+    margin-left: 2px;
+    height: 26px;
+    border-radius: 26px;
+    font-size: 13px;
+    padding: 8px;
+
+    &:not(.chip-outline) {
+      background-color: rgb(242, 242, 247);
+    }
+
+    &:not(.chip-small) {
+      &.chip-outline {
+        .chip-label {
+          margin-left: 6px;
+        }
+      }
+    }
+
+    .chip-media {
+      height: 26px;
+      width: 26px;
+      font-size: 14px;
+
+      .f7-icons {
+        font-size: 16px;
+        height: 100%;
+      }
+    }
+  }
+
+  .chip-small {
+    height: 21px;
+    line-height: 21px;
+    border-radius: 21px;
+    font-size: 12px;
+    padding: 8px;
+    margin-right: 0;
+
+    .chip-media {
+      height: 21px;
+      width: 21px;
+      font-size: 12px;
+
+      .f7-icons {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+  }
+
+  &.theme-dark {
+    .chip {
+      &:not(.chip-outline) {
+        background-color: rgb(40, 40, 40)
+      }
+    }
+  }
+
+  /* Popups */
+  .popup {
+    .navbar {
+      .left {
+        margin-left: 10px;
+      }
+
+      .right {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  /* Tables */
+  .data-table {
+    tbody {
+      th, td {
+        height: 30px;
+        user-select: all;
+      }
+
+      .label-cell {
+        font-weight: 400;
+        max-width: 250px;
+        color: #7e7e7e;
+        width: auto;
+        user-select: none;
+        cursor: default;
+      }
+
+      .numeric-cell {
+        i {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
+  /* Lists */
+  --f7-list-bg-color: rgb(242, 242, 247);
+
+  .item-header {
+    @include Clamps.set(1);
+  }
+
+  &.theme-dark {
+    --f7-list-bg-color: rgb(51, 51, 51);
+  }
+
+  /* Date Picker */
+  .calendar-modal {
+    padding: 15px;
+    border-radius: 12px;
+    background: white;
+
+    user-select: none;
+
+    .calendar-header {
+      background: transparent;
+    }
+
+    .toolbar-top {
+      background: transparent;
+    }
+
+    .calendar-week-header {
+      background: transparent;
+    }
+
+    .calendar-months {
+      .calendar-day-disabled {
+        cursor: default;
+        opacity: 0.8;
+      }
+    }
+
+    .calendar-footer {
+      background: transparent;
+    }
+  }
+
+  &.theme-dark {
+    .calendar-modal {
+      background: rgb(30, 30, 30);
+
+      .calendar-months {
+        .calendar-day-disabled {
+          opacity: 0.4;
+        }
+      }
+    }
+  }
+
+  .popover {
+    .view {
+      .page-content {
+        background: white;
+      }
+    }
+  }
+
+  &.theme-dark {
+    .popover {
+      .view {
+        .page-content {
+          background: rgb(30, 30, 30);
+        }
+      }
+    }
+  }
+ 
+
+  /* -=-=-=-=-=-=-=- CUSTOM INTERFACE ELEMENTS -=-=-=-=-=-=-=- */
+  /* SideBar */
+  .ultra-sidebar {
+    @include SideBar.desktop;
+  }
+
+  &.theme-dark {
+    .ultra-sidebar {
+      @include SideBar.desktop-dark;
+    }
+  }
+
+
+  /* AppBar */
+  .ultra-appbar {
+    @include AppBar.desktop;
+  }
+
+  &.theme-dark {
+    .ultra-appbar {
+      @include AppBar.desktop-dark;
+    }
+  }
+
+  /* Menu */
+  .ultra-menu {
+    @include Menu.universal;
+  }
+
+  /* MenuButton */
+  .ultra-menubutton {
+    @include MenuButton.desktop;
+  }
+
+  &.theme-dark {
+    .ultra-menubutton {
+      @include MenuButton.desktop-dark;
+    }
+  }
+
+  /* Pin Button */
+  .ultra-pin-button {
+    @include PinButton.universal;
+  }
+
+  /* Select Button */
+  .ultra-select-button {
+    @include SelectButton.universal;
+  }
+
+  &.theme-dark {
+    .ultra-select-button {
+      @include SelectButton.universal-dark;
+    }
+  }
+
+  /* Clamps Button */
+  .ultra-clamps-button {
+    @include ClampsButton.universal;
+  }
+
+  &.theme-dark {
+    .ultra-clamps-button {
+      @include ClampsButton.universal-dark;
+    }
+  }
+
+  /* Delete Button */
+  .ultra-delete-button {
+    @include DeleteButton.universal;
+  }
+
+  /* Notice */
+  .ultra-notice {
+    @include Notice.desktop;
+  }
+
+  &.theme-dark {
+    .ultra-notice {
+      @include Notice.desktop-dark;
+    }
+  }
+
+  /* Profile */
+  .ultra-profile {
+    @include Profile.universal;
+  }
+
+  /* Calendar */
+  .ultra-calendar {
+    @include Calendar.universal;
+  }
+
+  &.theme-dark {
+    .ultra-calendar {
+      @include Calendar.universal-dark;
+    }
+  }
+
+  /* Footer */
+  .ultra-footer {
+    @include Footer.universal;
+  }
+
+  &.theme-dark {
+    .ultra-footer {
+      @include Footer.universal-dark;
+    }
+  }
+
+  /* Container */
+  .ultra-container {
+    @include Container.universal;
+  }
+
+  /* Survey */
+  .ultra-survey {
+    @include Survey.universal;
+  }
+
+  /* Wizard */
+  .ultra-wizard {
+    @include Wizard.universal;
+  }
+
+  .ultra-wizard-split {
+    @include WizardSplit.universal;
+  }
+
+  /* Inset List */
+  .ultra-inset-list {
+    @include InsetList.universal;
+  }
+
+  /* Selectable list */
+  .ultra-selectable-list {
+    @include SelectableList.universal;
+  }
+
+  .view-master-detail .page-master, .view-master-detail .navbar-master.page-previous {
+    .ultra-selectable-list {
+      @include SelectableList.master;
+    }
+  }
+
+  /* Selectable List Item */
+  .view-master-detail .page-master, .view-master-detail .navbar-master.page-previous {
+    .ultra-selectable-item {
+      @include SelectableItem.master;
+    }
+  }
+
+  &.theme-dark {
+    .view-master-detail .page-master, .view-master-detail .navbar-master.page-previous {
+      .ultra-selectable-item {
+        @include SelectableItem.master-dark;
+      }
+    }
+  }
+
+  /* Pinnable List Item */
+  .ultra-pinnable-item {
+    @include PinnableItem.universal;
+  }
+
+  /* Checkbox */
+  .ultra-checkbox-item {
+    @include CheckboxItem.universal;
+  }
+
+  /* Plugin Bundle */
+  .ultra-plugin-bundle {
+    @include PluginBundle.universal;
+  }
+
+  &.theme-dark {
+    .ultra-plugin-bundle {
+      @include PluginBundle.universal-dark;
+    }
+  }
+
+  /* Plugin Stack */
+  .ultra-plugin-stack {
+    @include PluginStack.universal;
+  }
+
+  /* Plugin Widget */
+  .ultra-plugin-widget {
+    @include PluginWidget.universal;
+  }
+
+  &.theme-dark {
+    .ultra-plugin-widget {
+      @include PluginWidget.universal-dark;
+    }
+  }
+
+  /* Scale */
+  .ultra-scale {
+    @include Scale.universal;
+  }
+
+  &.theme-dark {
+    .ultra-scale {
+      @include Scale.universal-dark;
+    }
+  }
+
+  .ultra-scale-labeled {
+    @include ScaleLabeled.universal;
+  }
+
+  &.theme-dark {
+    .ultra-scale-labeled {
+      @include ScaleLabeled.universal-dark;
+    }
+  }
+
+  /* Input */
+  .ultra-input {
+    @include Input.universal;
+  }
+
+  &.theme-dark {
+    .ultra-input {
+      @include Input.universal-dark;
+    }
+  }
+
+  /* Add */
+  .ultra-add {
+    @include Add.universal;
+  }
+
+  /* Date */
+  .ultra-date {
+    @include Date.universal;
+  }
+
+  /* Time */
+  .ultra-time {
+    @include Time.universal;
+  }
+
+  /* Select */
+  .ultra-select {
+    @include Select.universal;
+  }
+
+  &.theme-dark {
+    .ultra-select {
+      @include Select.universal-dark;
+    }
+  }
+  
+  /* IFrame */
+  .ultra-iframe {
+    @include IFrame.universal;
+  }
+
+  &.theme-dark {
+    .ultra-iframe {
+      @include IFrame.universal-dark;
+    }
+  }
+
+  /* Quicklook */
+  .ultra-quicklook {
+    @include Quicklook.universal;
+  }
+
+  /* -=-=-=-=-=-=-=- HELPER CLASSES -=-=-=-=-=-=-=- */
+  /* Vibrancy */
+  .ultra-no-vibrancy {
+    background-color: var(--f7-page-bg-color);
+  }
+
+  &.theme-dark {
+    .ultra-no-vibrancy {
+      background-color: rgb(44, 44, 46) !important;
+    }
+  }
+
+  /* Segmented Buttons */
+  .ultra-segmented-icon-only {
+    .button {
+      margin: 0 !important;
+      padding-left: 14px;
+      padding-right: 14px;
+
+      .f7-icons {
+        margin: 0 !important;
+        font-size: 22px !important;
+      }
+    }
+  }
+}

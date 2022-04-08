@@ -1,0 +1,10 @@
+fragment basicUserFragment on User {
+    uid
+    isRegistered
+    group {
+        name
+    }
+    firebaseUserInfo {
+        email
+    }
+}

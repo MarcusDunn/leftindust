@@ -1,0 +1,7 @@
+#import "../fragments/groupFragment.graphql"
+
+query groupQuery($gids: [GroupIdInput!], $range: RangeInput) {
+  groups(gids: $gids, range: $range) {
+    ...groupFragment
+  }
+}

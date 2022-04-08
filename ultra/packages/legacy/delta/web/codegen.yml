@@ -1,0 +1,16 @@
+schema: http://192.168.0.11:8080/graphql
+
+generates:
+  ./src/schemas/leftindust.schema.ts:
+    hooks:
+      afterOneFileWrite:
+        - eslint --fix
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      maybeValue: T | undefined  
+
+  ./src/schemas/leftindust.schema.graphql:
+    plugins:
+      - schema-ast

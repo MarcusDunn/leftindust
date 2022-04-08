@@ -1,0 +1,13 @@
+fragment basicSurveyTemplateFragment on GraphQLFormTemplate {
+  name
+  id {
+    id
+  }
+  sections {
+    name
+    number
+    fields {
+      number
+    }
+  }
+}

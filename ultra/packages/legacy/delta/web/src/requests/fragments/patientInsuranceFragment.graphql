@@ -1,0 +1,3 @@
+fragment patientInsuranceFragment on Patient {
+    insuranceNumber
+}

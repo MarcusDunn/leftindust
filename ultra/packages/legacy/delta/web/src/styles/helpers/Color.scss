@@ -1,0 +1,187 @@
+@mixin f7($attr, $color) {
+  #{$attr}: var(--f7-color-#{$color});
+}
+
+@mixin all($attr) {
+  &[class~="color-red"] {
+    @include f7($attr, red);
+  }
+
+  &[class~="color-green"] {
+    @include f7($attr, green);
+  }
+
+  &[class~="color-blue"] {
+    @include f7($attr, blue);
+  }
+
+  &[class~="color-pink"] {
+    @include f7($attr, pink);
+  }
+
+  &[class~="color-yellow"] {
+    @include f7($attr, yellow);
+  }
+
+  &[class~="color-orange"] {
+    @include f7($attr, orange);
+  }
+
+  &[class~="color-purple"] {
+    @include f7($attr, purple);
+  }
+
+  &[class~="color-deeppurple"] {
+    @include f7($attr, deeppurple);
+  }
+
+  &[class~="color-lightblue"] {
+    @include f7($attr, lightblue);
+  }
+
+  &[class~="color-teal"] {
+    @include f7($attr, teal);
+  }
+
+  &[class~="color-lime"] {
+    @include f7($attr, lime);
+  }
+
+  &[class~="color-deeporange"] {
+    @include f7($attr, deeporange);
+  }
+
+  &[class~="color-gray"] {
+    @include f7($attr, gray);
+  }
+
+  &[class~="color-white"] {
+    @include f7($attr, white);
+  }
+
+  &[class~="color-black"] {
+    @include f7($attr, black);
+  }
+}
+
+@mixin searchbar($attr) {
+  &[class~="color-red"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, red);
+      }
+    }
+  }
+
+  &[class~="color-green"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, green);
+      }
+    }
+  }
+
+  &[class~="color-blue"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, blue);
+      }
+    }
+  }
+
+  &[class~="color-pink"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, pink);
+      }
+    }
+  }
+
+  &[class~="color-yellow"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, yellow);
+      }
+    }
+  }
+
+  &[class~="color-orange"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, orange);
+      }
+    }
+  }
+
+  &[class~="color-purple"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        border-color: rgba(156, 39, 176, 0.7);
+      }
+    }
+  }
+
+  &[class~="color-deeppurple"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        border-color: rgba(105, 48, 182, 0.7);
+      }
+    }
+  }
+
+  &[class~="color-lightblue"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, lightblue);
+      }
+    }
+  }
+
+  &[class~="color-teal"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, teal);
+      }
+    }
+  }
+
+  &[class~="color-lime"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, lime);
+      }
+    }
+  }
+
+  &[class~="color-deeporange"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, deeporange);
+      }
+    }
+  }
+
+  &[class~="color-gray"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, gray);
+      }
+    }
+  }
+
+  &[class~="color-white"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, white);
+      }
+    }
+  }
+
+  &[class~="color-black"] {
+    .searchbar-input-wrap {
+      &:focus-within {
+        @include f7($attr, black);
+      }
+    }
+  }
+}

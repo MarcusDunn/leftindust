@@ -1,0 +1,7 @@
+#import "../fragments/basicFirebaseUserFragment.graphql"
+
+query basicFirebaseUsersQuery($filterRegistered: Boolean, $range: RangeInput) {
+    firebaseUsers(filterRegistered: $filterRegistered, range: $range) {
+        ...basicFirebaseUserFragment
+    }
+}

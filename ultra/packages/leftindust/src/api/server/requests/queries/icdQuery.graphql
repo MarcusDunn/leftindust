@@ -1,0 +1,7 @@
+#import "../fragments/basicIcdFragment.graphql"
+
+query icdQuery($icdCode: String!) {
+  icd(icdCode: $icdCode) {
+    ...basicIcdFragment
+  }
+}

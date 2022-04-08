@@ -1,0 +1,4 @@
+fragment emailFragment on Email {
+  type
+  email
+}

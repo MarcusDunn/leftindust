@@ -1,0 +1,23 @@
+.widget-stack {
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  
+  .widget-stack-inner {
+    .widget-stack-title {
+      h4 {
+        cursor: grab;
+      }
+      
+      & > * {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .widget-stack-content {
+      margin-left: -7px;
+      margin-right: -7px;
+    }
+  }
+}

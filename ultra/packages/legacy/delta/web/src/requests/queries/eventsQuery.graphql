@@ -1,0 +1,10 @@
+#import "../fragments/basicEventFragment.graphql"
+
+query eventsQuery(
+    $events: [EventIdInput!],
+    $range: TimeRangeInput,
+) {
+    events(events: $events, range: $range) {
+      ...basicEventFragment
+    }
+}

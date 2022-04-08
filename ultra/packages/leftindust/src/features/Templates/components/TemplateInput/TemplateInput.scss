@@ -1,0 +1,27 @@
+.templates-template_input {
+  display: flex;
+
+  .templates-template_input-controller {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 40px;
+    margin-left: 4px;
+    flex-shrink: 0;
+    
+    .f7-icons {
+      font-size: 25px;
+      cursor: grab;
+    }
+  }
+
+  .templates-template_input-inputs {
+    width: 100%;
+    
+    .row {
+      & > * {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

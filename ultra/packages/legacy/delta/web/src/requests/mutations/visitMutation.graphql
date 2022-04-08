@@ -1,0 +1,7 @@
+mutation visitMutation($visit: VisitInput!) {
+    addVisit(visit: $visit) {
+        vid {
+            id
+        }
+    }
+}

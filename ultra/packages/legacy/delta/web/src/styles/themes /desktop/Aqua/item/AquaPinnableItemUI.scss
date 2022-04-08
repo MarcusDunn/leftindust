@@ -1,0 +1,15 @@
+@mixin universal {
+  padding-left: 0;
+
+  &.media-item {
+    display: flex;
+
+    .item-link {
+      width: 100%;
+
+      .item-inner {
+        margin-left: var(--f7-list-item-media-margin);
+      }
+    }
+  }
+}

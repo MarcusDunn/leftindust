@@ -1,0 +1,7 @@
+#import "../fragments/basicRecordFragment.graphql"
+
+query recordsQuery($pid: PatientIdInput!) {
+    getRecords(pid: $pid) {
+        ...basicRecordFragment
+    }
+}

@@ -1,0 +1,87 @@
+@use "../../../../helpers/Clamps";
+
+@mixin desktop {
+  .ultra-notice-content {
+    padding: 20px;
+    border-radius: var(--f7-actions-border-radius);
+    background: var(--f7-page-bg-color);
+
+    .ultra-notice-description {
+      display: flex;
+
+      .ultra-notice-title {
+        font-size: 16px;
+        font-weight: 600;
+        @include Clamps.set(1);
+      }
+
+      .ultra-notice-text {
+        @include Clamps.set(4);
+      }
+
+      .ultra-notice-icon {
+        font-size: 30px;
+        margin-right: 10px;
+        margin-top: 5px;
+      }
+    }
+
+    .ultra-notice-controls {
+      margin-top: 20px;
+      margin-left: 35px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      .f7-icons {
+        margin-top: 2px;
+      }
+    }
+  }
+
+  &.ultra-middle-of-page {
+    .ultra-notice-content {
+      width: 80%;
+    }
+  }
+
+  &.ultra-notice-large {
+    .ultra-notice-content {
+      padding: 40px;
+
+      .ultra-notice-description {
+        display: flex;
+
+        .ultra-notice-title {
+          font-size: 30px;
+          font-weight: 700;
+        }
+
+        .ultra-notice-icon {
+          font-size: 40px;
+          margin-right: 20px;
+          margin-top: 5px;
+        }
+      }
+
+      .ultra-notice-controls {
+        margin-top: 40px;
+        margin-left: 60px;
+        display: flex;
+        flex-wrap: wrap;
+
+        & > * {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}
+
+@mixin desktop-dark {
+  .ultra-notice-content {
+    background: #2c2c2e;
+    border: 1px solid black;
+  }
+}

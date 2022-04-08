@@ -1,0 +1,16 @@
+#import "../fragments/phoneFragment.graphql"
+#import "../fragments/emailFragment.graphql"
+
+fragment contactsFragment on EmergencyContact {
+  firstName
+  middleName
+  lastName
+  relationship
+  phones {
+    ...phoneFragment
+  }
+  emails {
+    ...emailFragment
+  }
+  thumbnail
+}

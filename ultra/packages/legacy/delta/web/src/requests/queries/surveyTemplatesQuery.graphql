@@ -1,0 +1,10 @@
+#import "../fragments/basicSurveyTemplateFragment.graphql"
+
+query surveyTemplatesQuery(
+  $range: RangeInput,
+  $surveys: [FormTemplateIdInput!],
+) {
+  surveys(range: $range, surveys: $surveys) {
+    ...basicSurveyTemplateFragment,
+  }
+}

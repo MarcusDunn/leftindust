@@ -1,0 +1,89 @@
+  @use '../../../../style/helpers/Clamps.scss';
+
+  .ui-notice {
+    .ui-notice-content {
+      padding: 20px;
+      border-radius: var(--f7-actions-border-radius);
+      background: var(--f7-page-bg-color);
+  
+      .ui-notice-description {
+        display: flex;
+  
+        .ui-notice-title {
+          font-size: 16px;
+          font-weight: 600;
+          @include Clamps.set(1);
+        }
+  
+        .ui-notice-text {
+          @include Clamps.set(4);
+        }
+  
+        .ui-notice-icon {
+          font-size: 30px;
+          margin-right: 10px;
+          margin-top: 5px;
+        }
+      }
+  
+      .ui-notice-controls {
+        margin-top: 20px;
+        margin-left: 35px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+  
+      .button {
+        .f7-icons {
+          margin-top: 2px;
+        }
+      }
+    }
+  
+    &.ui-notice-middle-of-page {
+      .ui-notice-content {
+        width: 80%;
+      }
+    }
+  
+    &.ui-notice-large {
+      .ui-notice-content {
+        padding: 40px;
+  
+        .ui-notice-description {
+          display: flex;
+  
+          .ui-notice-title {
+            font-size: 30px;
+            font-weight: 700;
+          }
+  
+          .ui-notice-icon {
+            font-size: 40px;
+            margin-right: 20px;
+            margin-top: 5px;
+          }
+        }
+  
+        .ui-notice-controls {
+          margin-top: 40px;
+          margin-left: 60px;
+          display: flex;
+          flex-wrap: wrap;
+  
+          & > * {
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  .theme-dark {
+    .ui-notice {
+      .ui-notice-content {
+        background: #2c2c2e;
+        border: 1px solid black;
+      }
+    }
+  }

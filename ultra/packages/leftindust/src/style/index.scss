@@ -1,0 +1,710 @@
+/*
+  App Theme
+  Universal styles and rules
+
+  OVERWRITES: Overwrites are styles that overwrite an external library's default classes
+  CUSTOM INTERFACE ELEMENTS: These are corresponding styles to UI elements in the UI folder
+  HELPER CLASSES: Helper classes do not correspond to any component and are meant to be used readily across multiple UIs
+*/
+
+@use "./helpers/Clamps";
+
+$master: 400px;
+
+/* -=-=-=-=-=-=-=- OVERWRITES -=-=-=-=-=-=-=- */
+
+
+:root {
+ &.theme-dark {
+    --f7-list-bg-color: rgb(44, 44, 46) !important;
+ }
+}
+
+.actions-modal.modal-in {
+  transition-duration: .5s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.device-cordova.device-ios {
+  height: 100vh;
+}
+
+* {
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Scrollbars */
+html {
+
+  &:not(.device-macos) {
+    --f7-font-family: Yantramanav, sans-serif !important;
+  }
+  scrollbar-width: thin;
+  
+  ::-webkit-scrollbar {
+    width: 14px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(209, 209, 214);
+    border-radius: 20px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:horizontal:hover,
+  ::-webkit-scrollbar-thumb:vertical:hover {
+    background-color: rgb(174, 174, 178);
+  }
+
+  &.theme-dark {
+    ::-webkit-scrollbar-thumb {
+      background-color: rgb(58, 58, 60);
+    }
+
+    ::-webkit-scrollbar-thumb:horizontal:hover,
+    ::-webkit-scrollbar-thumb:vertical:hover {
+      background-color: rgb(99, 99, 102);
+    }
+  }
+}
+
+.page {
+  overflow-y: hidden;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+}
+
+body {
+  background: transparent;
+}
+
+a, button {
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
+  cursor: default;
+}
+
+/* Left Panel right border when it is visible by breakpoint */
+.panel-left.panel-in-breakpoint:before {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  content: '';
+  z-index: 6000;
+}
+
+/* Hide navbar link which opens left panel when it is visible by breakpoint */
+.panel-left.panel-in-breakpoint ~ .view .navbar .panel-open[data-panel="left"] {
+  display: none;
+}
+
+/*
+  Extra borders for main view and left panel for iOS theme when it behaves as panel (before breakpoint size)
+*/
+.ios .panel-left:not(.panel-in-breakpoint).panel-in ~ .view-main:before,
+.ios .panel-left:not(.panel-in-breakpoint).panel-closing ~ .view-main:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  content: '';
+  z-index: 6000;
+}
+
+.ios .item-label + .item-input-wrap, .ios .item-floating-label + .item-input-wrap {
+  margin-top: -7px !important;
+}
+
+.panel {
+  padding-top: 0;
+}
+
+.navbar ~ * .subnavbar, .navbars ~ * .subnavbar, .page-with-subnavbar .navbar ~ .subnavbar, .page-with-subnavbar .navbar ~ * .subnavbar, .navbar ~ .page-with-subnavbar:not(.no-navbar) .subnavbar, .navbar ~ .subnavbar, .navbars ~ .page-with-subnavbar:not(.no-navbar) .subnavbar, .navbars ~ .subnavbar {
+  top: 60px !important;
+}
+
+/* Master detail searchbar fix */
+.ios .view-master-detail .navbar-previous:not(.navbar-master), .ios .view:not(.view-master-detail) .navbar-previous, .ios .navbar-next, .ios .view-master-detail .navbar-previous:not(.navbar-master) .searchbar {
+  opacity: 0;
+}
+
+/* Prevent page scroll lock when panel is open */
+/*
+html.with-panel .framework7-root > .views .page-content, html.with-panel .framework7-root > .view .page-content {
+  overflow: scroll !important;
+}
+*/
+
+@media (min-height: 630px) and (min-width: 630px) {
+  .ios .popup:not(.popup-tablet-fullscreen) {
+    border-radius: 15px !important;
+  }
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+/* All icons is buttons will inherit their parent font size */
+.button {
+  .f7-icons {
+    font-size: inherit !important;
+  }
+}
+
+/* Dragging Fixes */
+.with-panel-left-reveal {
+  .fc-event-dragging:not(.fc-event-mirror) {
+    margin-left: calc(-1 * var(--f7-panel-width)) !important;
+    z-index: 999999 !important;
+  }
+
+  .svlt-grid-item {
+    &:not(.svlt-grid-active) {
+      margin-right: var(--f7-panel-width) !important;
+    }
+
+    &.svlt-grid-active {
+      margin-left: calc(-1 * var(--f7-panel-width)) !important;
+    }
+
+    &.svlt-grid-shadow {
+      &.shadow-active {
+        margin-left: calc(-1 * var(--f7-panel-width)) !important;
+      }
+    }
+  }
+}
+
+/* Wizard influence bug fix */
+.wizard-open {
+  .views.tabs {
+    display: none;
+  }
+}
+
+/* Panel and Master Detail Fixes */
+.panel-left.panel-in-breakpoint:before {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  content: '';
+  z-index: 6000;
+}
+
+html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root > .view {
+  transform: translate3d(var(--f7-panel-width), 0, 0) !important;
+  margin-right: 260px !important;
+  transition: transform 400ms ease-in-out, margin-right 0ms ease-in-out;
+}
+
+.tabs {
+  // height: 100%;
+  .tab {
+    height: 100%;
+  }
+}
+
+.view-master-detail {
+  .page-master, .navbar-master {
+    width: $master !important;
+    max-width: $master;
+  }
+
+ .page-master-detail, .navbar-master-detail {
+   width: calc(100% - 400px) !important;
+   left: $master !important;
+ }
+
+  &.view-master-detail-expanded {
+    .page-master, .navbar-master {
+      width: $master + 200px;
+      max-width: $master + 200px;
+    }
+
+    .page-master-detail, .navbar-master-detail {
+      left: $master + 200px !important;
+
+      width: calc(100% - 600px) !important;
+      max-width: calc(100% - 600px) !important;
+    }
+  }
+}
+
+.popover {
+  .view {
+    /* Defaults for view in popover as the height needs to be static */
+    height: 300px;
+
+    border-radius: var(--f7-popover-border-radius);
+
+    .navbars {
+      border-top-left-radius: var(--f7-popover-border-radius);
+      border-top-right-radius: var(--f7-popover-border-radius);
+
+      .navbar-previous {
+        opacity: 0;
+      }
+    }
+
+    .page {
+      border-radius: var(--f7-popover-border-radius);
+    }
+  }
+}
+
+.row {
+  &.no-gutter {
+    &::after {
+      flex: auto;
+      content: '';
+    }
+
+    margin-left: -6px !important;
+    margin-right: -6px !important;
+
+    & > div {
+      padding-right: 6px;
+      padding-left: 6px;
+
+      --f7-grid-gap: 0px;
+      --f7-grid-row-gap: 0px;
+
+      & > * {
+        --f7-grid-gap: 12px;
+        --f7-grid-row-gap: 12px;
+      }
+    }
+  }
+}
+
+.modal-out {
+  display: none;
+}
+
+.page-content {
+  margin-top: 20px;
+}
+
+.f7-icons {
+  user-select: none;
+}
+
+/* Prevention of weird overflow bug in Chrome. (May be problematic) */
+.input > ul .item-input .item-input-wrap input, .input > ul .item-input .item-input-wrap textarea {
+  margin: 0 !important;
+  padding-left: 15px;
+}
+
+.list {
+  margin-left: 0 !important;
+  ul {
+    margin-left: 20px;
+
+    .item-inner {
+      padding-right: 0 !important;
+    }
+  }
+
+  .toggle {
+    margin-right: 10px;
+  }
+}
+
+/* -=-=-=-=-=-=-=- HELPER CLASSES -=-=-=-=-=-=-=- */
+.one-line-word-clamp {
+  @include Clamps.set(1);
+}
+
+.two-line-word-clamp {
+  @include Clamps.set(2);
+}
+
+.three-line-word-clamp {
+  @include Clamps.set(3);
+}
+
+.middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Specifically to center in an f7 page */
+.middle-of-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > * {
+    margin-bottom: 180px;
+  }
+}
+
+.ios {
+  /* -=-=-=-=-=-=-=- OVERWRITES -=-=-=-=-=-=-=- */
+  --f7-progressbar-height: 4px;
+
+  /* Page */
+  .views, .popup {
+    .page, .page-content {
+      &:not(.login-screen-content) {
+        background: white;
+      }
+    }
+  }
+
+  &.theme-dark {
+    .views, .popup {
+      .page, .page-content {
+        &:not(.login-screen-content) {
+          background: rgb(30, 30, 30);
+        }
+      }
+    }
+  }
+
+  /* Master Detail */
+  &:not(.with-panel-left-reveal):not(.wizard-open) {
+    .views {
+      .view {
+        &.view-master-detail {
+          & > .navbars {
+            .navbar:not(.navbar-master-detail) {
+              .navbar-inner {
+                & > :nth-child(1) {
+                  padding-left: 50px;
+                }
+              }
+            }
+          }
+        }
+        &:not(.view-master-detail) {
+          & > .navbars {
+            .navbar {
+              .navbar-inner {
+                & > :nth-child(1) {
+                  padding-left: 50px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  &.theme-dark {
+    .view-master-detail .page-master, .view-master-detail .navbar-master {
+      border-right: 1px solid black;
+    }
+  }
+
+  /* Panels */
+  .panel-left {
+    border-right: 1px solid var(--f7-page-master-border-color);
+  }
+
+  .panel-right {
+    border-left: 1px solid var(--f7-page-master-border-color);
+  }
+
+  &.theme-dark {
+    .panel-left {
+      border-right: 1px solid black;
+    }
+
+    .panel-right {
+      border-left: 1px solid black;
+    }
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 50px;
+    font-weight: 700;
+    color: rgb(58, 58, 60);
+  }
+
+  h2 {
+    font-size: 40px;
+    margin: 0;
+    padding: 0;
+    color: rgb(58, 58, 60);
+  }
+
+  h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+  }
+
+  h5 {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+  }
+
+  h6 {
+    font-weight: 700;
+    font-size: 13px;
+    margin: 5px 0px;
+  }
+
+  &.theme-dark {
+    h1, h2 {
+      color: white;
+    }
+  }
+
+  /* Buttons */
+  .button {
+    &.button-small {
+      height: 22px;
+      font-size: 12px;
+    }
+
+    &.button-large {
+      text-transform: capitalize;
+    }
+
+    &.button-round {
+      text-transform: capitalize;
+
+      &.gradient {
+        border-radius: 100rem;
+        font-size: 1rem;
+        text-transform: capitalize;
+        padding: .5rem;
+        color: var(--f7-block-strong-text-color);
+        border: solid 3px transparent;
+        background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #6dc7f9, #ad48dd);
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+        box-shadow: 2px 1000px 1px var(--f7-block-strong-bg-color) inset;
+      }
+
+      .f7-icons {
+        margin-right: 5px;
+        margin-top: 2px;
+      }
+
+      &:not(.button-large) {
+        margin-right: 10px;
+        padding: 0 15px;
+      }
+    }
+  }
+
+  /* Chips */
+  .chip {
+    margin-right: 5px;
+    margin-left: 2px;
+    height: 26px;
+    border-radius: 26px;
+    font-size: 13px;
+    padding: 8px;
+
+    &:not(.chip-outline) {
+      background-color: rgb(242, 242, 247);
+    }
+
+    &:not(.chip-small) {
+      &.chip-outline {
+        .chip-label {
+          margin-left: 6px;
+        }
+      }
+    }
+
+    .chip-media {
+      height: 26px;
+      width: 26px;
+      font-size: 14px;
+
+      .f7-icons {
+        font-size: 16px;
+        height: 100%;
+      }
+    }
+  }
+
+  .chip-small {
+    height: 21px;
+    line-height: 21px;
+    border-radius: 21px;
+    font-size: 12px;
+    padding: 8px;
+    margin-right: 0;
+
+    .chip-media {
+      height: 21px;
+      width: 21px;
+      font-size: 12px;
+
+      .f7-icons {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+  }
+
+  &.theme-dark {
+    .chip {
+      &:not(.chip-outline) {
+        background-color: rgb(40, 40, 40)
+      }
+    }
+  }
+
+  /* Popups */
+  .popup {
+    .navbar {
+      .left {
+        margin-left: 10px;
+      }
+
+      .right {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  /* Tables */
+  .data-table {
+    tbody {
+      th, td {
+        height: 30px;
+        user-select: all;
+      }
+
+      .label-cell {
+        font-weight: 400;
+        max-width: 250px;
+        color: #7e7e7e;
+        width: auto;
+        user-select: none;
+        cursor: default;
+      }
+
+      .numeric-cell {
+        i {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
+  /* Lists */
+  --f7-list-bg-color: rgb(242, 242, 247);
+
+  .item-header {
+    @include Clamps.set(1);
+  }
+
+  &.theme-dark {
+    --f7-list-bg-color: rgb(51, 51, 51);
+  }
+
+  /* Date Picker */
+  .calendar-modal {
+    padding: 15px;
+    border-radius: 12px;
+    background: white;
+
+    user-select: none;
+
+    .calendar-header {
+      background: transparent;
+    }
+
+    .toolbar-top {
+      background: transparent;
+    }
+
+    .calendar-week-header {
+      background: transparent;
+    }
+
+    .calendar-months {
+      .calendar-day-disabled {
+        cursor: default;
+        opacity: 0.8;
+      }
+    }
+
+    .calendar-footer {
+      background: transparent;
+    }
+  }
+
+  &.theme-dark {
+    .calendar-modal {
+      background: rgb(30, 30, 30);
+
+      .calendar-months {
+        .calendar-day-disabled {
+          opacity: 0.4;
+        }
+      }
+    }
+  }
+
+  .popover {
+    .view {
+      .page-content {
+        background: white;
+      }
+    }
+  }
+
+  &.theme-dark {
+    .popover {
+      .view {
+        .page-content {
+          background: rgb(30, 30, 30);
+        }
+      }
+    }
+  }
+
+  .popup-backdrop {
+    z-index: 9997;
+  }
+
+  .popup {
+    z-index: 9998;
+  }
+
+  // For svelte-dnd-action
+  section {
+    outline: transparent !important;
+  }
+}
+
+.no-vibrancy {
+  background-color: var(--f7-page-bg-color) !important;
+}
+
+.theme-dark {
+  .no-vibrancy {
+    background-color: rgb(44, 44, 46) !important;
+  }
+}

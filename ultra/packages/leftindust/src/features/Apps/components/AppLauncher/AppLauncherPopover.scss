@@ -1,0 +1,17 @@
+$popoverWidth: 520px;
+$popoverHeight: 270px;
+
+@media (max-width: 520px) {
+  .apps-app_launcher_popover {
+    width: 100vw !important;
+  }
+}
+
+.apps-app_launcher_popover {
+  width: $popoverWidth;
+  height: $popoverHeight;
+
+  .view {
+    height: $popoverHeight;
+  }
+}

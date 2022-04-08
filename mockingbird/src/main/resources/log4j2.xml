@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <RollingFile name="RollingFile" filePattern="mockingbird/logs/%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} | %t | %-5level | %logger{36} | %msg%n"/>
+            <Policies>
+                <!--OnStartupTriggeringPolicy is currently broken-->
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+        </RollingFile>
+        <Console name="Console">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} | %t | %-5level | %logger{36} | %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="Warn">
+            <AppenderRef ref="RollingFile"/>
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

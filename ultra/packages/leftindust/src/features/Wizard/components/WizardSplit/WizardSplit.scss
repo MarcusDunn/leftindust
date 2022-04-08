@@ -1,0 +1,42 @@
+@media (max-width: 1000px) {
+  .wizard-wizard_split {
+    .wizard-wizard_split-container {
+      .wizard-wizard_split-detail {
+        display: none !important;
+      }
+
+      .wizard-wizard_split-master {
+        width: 100% !important;
+        margin: 35px 20px !important;
+        padding-left: 0 !important;
+      }
+    }
+  }
+}
+
+.wizard-wizard_split {
+  .wizard-wizard_split-container {
+    display: flex;
+    height: 100%;
+    
+    .wizard-wizard_split-master {
+      width: 600px;
+      margin-top: 55px;
+      padding-left: 40px;
+      overflow-y: scroll;
+    }
+
+    .wizard-wizard_split-detail {
+      width: 100%;
+      flex: 1;
+      margin-top: 20px;
+
+      display: flex;
+      align-items: center;
+
+      & > * {
+        width: 100%;
+      }
+    }
+  }
+}

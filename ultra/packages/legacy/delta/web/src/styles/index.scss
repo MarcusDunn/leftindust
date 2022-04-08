@@ -1,0 +1,310 @@
+/*
+  App Theme
+  Universal styles and rules
+
+  OVERWRITES: Overwrites are styles that overwrite an external library's default classes
+  CUSTOM INTERFACE ELEMENTS: These are corresponding styles to UI elements in the UI folder
+  HELPER CLASSES: Helper classes do not correspond to any component and are meant to be used readily across multiple UIs
+*/
+
+@use "./helpers/Clamps";
+
+@import "./themes\ /desktop/Global";
+@import "./themes\ /desktop/Aqua";
+@import "./themes\ /desktop/Material";
+
+$master: 400px;
+
+/* -=-=-=-=-=-=-=- OVERWRITES -=-=-=-=-=-=-=- */
+.actions-modal.modal-in {
+  transition-duration: .5s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.device-cordova.device-ios {
+  height: 100vh;
+}
+
+* {
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Scrollbars */
+html {
+
+  &:not(.device-macos) {
+    --f7-font-family: Yantramanav, sans-serif !important;
+  }
+  scrollbar-width: thin;
+  
+  ::-webkit-scrollbar {
+    width: 14px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(209, 209, 214);
+    border-radius: 20px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:horizontal:hover,
+  ::-webkit-scrollbar-thumb:vertical:hover {
+    background-color: rgb(174, 174, 178);
+  }
+
+  &.theme-dark {
+    ::-webkit-scrollbar-thumb {
+      background-color: rgb(58, 58, 60);
+    }
+
+    ::-webkit-scrollbar-thumb:horizontal:hover,
+    ::-webkit-scrollbar-thumb:vertical:hover {
+      background-color: rgb(99, 99, 102);
+    }
+  }
+}
+
+.page {
+  overflow-y: hidden;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+}
+
+body {
+  background: transparent;
+}
+
+a, button {
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
+  cursor: default;
+}
+
+/* Left Panel right border when it is visible by breakpoint */
+.panel-left.panel-in-breakpoint:before {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  content: '';
+  z-index: 6000;
+}
+
+/* Hide navbar link which opens left panel when it is visible by breakpoint */
+.panel-left.panel-in-breakpoint ~ .view .navbar .panel-open[data-panel="left"] {
+  display: none;
+}
+
+/*
+  Extra borders for main view and left panel for iOS theme when it behaves as panel (before breakpoint size)
+*/
+.ios .panel-left:not(.panel-in-breakpoint).panel-in ~ .view-main:before,
+.ios .panel-left:not(.panel-in-breakpoint).panel-closing ~ .view-main:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  content: '';
+  z-index: 6000;
+}
+
+.ios .item-label + .item-input-wrap, .ios .item-floating-label + .item-input-wrap {
+  margin-top: -7px !important;
+}
+
+.panel {
+  padding-top: 0;
+}
+
+.navbar ~ * .subnavbar, .navbars ~ * .subnavbar, .page-with-subnavbar .navbar ~ .subnavbar, .page-with-subnavbar .navbar ~ * .subnavbar, .navbar ~ .page-with-subnavbar:not(.no-navbar) .subnavbar, .navbar ~ .subnavbar, .navbars ~ .page-with-subnavbar:not(.no-navbar) .subnavbar, .navbars ~ .subnavbar {
+  top: 60px !important;
+}
+
+/* Master detail searchbar fix */
+.ios .view-master-detail .navbar-previous:not(.navbar-master), .ios .view:not(.view-master-detail) .navbar-previous, .ios .navbar-next, .ios .view-master-detail .navbar-previous:not(.navbar-master) .searchbar {
+  opacity: 0;
+}
+
+/* Prevent page scroll lock when panel is open */
+/*
+html.with-panel .framework7-root > .views .page-content, html.with-panel .framework7-root > .view .page-content {
+  overflow: scroll !important;
+}
+*/
+
+@media (min-height: 630px) and (min-width: 630px) {
+  .ios .popup:not(.popup-tablet-fullscreen) {
+    border-radius: 15px !important;
+  }
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+/* Preferred page padding */
+  .page {
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+  }
+/* All icons is buttons will inherit their parent font size */
+.button {
+  .f7-icons {
+    font-size: inherit !important;
+  }
+}
+
+/* Dragging Fixes */
+.with-panel-left-reveal {
+  .fc-event-dragging:not(.fc-event-mirror) {
+    margin-left: calc(-1 * var(--f7-panel-width)) !important;
+    z-index: 999999 !important;
+  }
+
+  .svlt-grid-item {
+    &:not(.svlt-grid-active) {
+      margin-right: var(--f7-panel-width) !important;
+    }
+
+    &.svlt-grid-active {
+      margin-left: calc(-1 * var(--f7-panel-width)) !important;
+    }
+
+    &.svlt-grid-shadow {
+      &.shadow-active {
+        margin-left: calc(-1 * var(--f7-panel-width)) !important;
+      }
+    }
+  }
+}
+
+/* Wizard influence bug fix */
+.wizard-open {
+  .views.tabs {
+    display: none;
+  }
+}
+
+/* Panel and Master Detail Fixes */
+.panel-left.panel-in-breakpoint:before {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  content: '';
+  z-index: 6000;
+}
+
+html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root > .view {
+  transform: translate3d(var(--f7-panel-width), 0, 0) !important;
+  margin-right: 260px !important;
+  transition: transform 400ms ease-in-out, margin-right 0ms ease-in-out;
+}
+
+.tabs {
+  // height: 100%;
+  .tab {
+    height: 100%;
+  }
+}
+
+.view-master-detail {
+  .page-master, .navbar-master {
+    width: $master !important;
+    max-width: $master;
+  }
+
+ .page-master-detail, .navbar-master-detail {
+   width: calc(100% - 400px) !important;
+   left: $master !important;
+ }
+
+  &.view-master-detail-expanded {
+    .page-master, .navbar-master {
+      width: $master + 200px;
+      max-width: $master + 200px;
+    }
+
+    .page-master-detail, .navbar-master-detail {
+      left: $master + 200px !important;
+
+      width: calc(100% - 600px) !important;
+      max-width: calc(100% - 600px) !important;
+    }
+  }
+}
+
+.popover {
+  .view {
+    /* Defaults for view in popover as the height needs to be static */
+    height: 300px;
+
+    border-radius: var(--f7-popover-border-radius);
+
+    .navbars {
+      border-top-left-radius: var(--f7-popover-border-radius);
+      border-top-right-radius: var(--f7-popover-border-radius);
+
+      .navbar-previous {
+        opacity: 0;
+      }
+    }
+
+    .page {
+      border-radius: var(--f7-popover-border-radius);
+    }
+  }
+}
+
+.row {
+  &.no-gutter {
+    &::after {
+      flex: auto;
+      content: '';
+    }
+
+    margin-left: -6px !important;
+    margin-right: -6px !important;
+
+    & > div {
+      padding-right: 6px;
+      padding-left: 6px;
+
+      --f7-grid-gap: 0px;
+      --f7-grid-row-gap: 0px;
+
+      & > * {
+        --f7-grid-gap: 12px;
+        --f7-grid-row-gap: 12px;
+      }
+    }
+  }
+}
+
+.modal-out {
+  display: none;
+}
+
+/* -=-=-=-=-=-=-=- HELPER CLASSES -=-=-=-=-=-=-=- */
+.one-line-word-clamp {
+  @include Clamps.set(1);
+}
+
+.two-line-word-clamp {
+  @include Clamps.set(2);
+}
+
+.three-line-word-clamp {
+  @include Clamps.set(3);
+}
+

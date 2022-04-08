@@ -1,0 +1,14 @@
+#import "../fragments/basicPatientFragment.graphql"
+
+query doctorPatientsQuery(
+    $dids: [DoctorIdInput!],
+) {
+    doctors(dids: $dids) {
+        patients {
+            ...basicPatientFragment
+            firstName
+            middleName
+            lastName
+        }
+    }
+}

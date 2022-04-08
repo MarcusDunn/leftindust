@@ -1,0 +1,14 @@
+#import "../fragments/basicDoctorFragment.graphql"
+
+query doctorsQuery(
+    $range: RangeInput,
+    $dids: [DoctorIdInput!],
+    $example: DoctorExampleInput,
+) {
+    doctors(range: $range, dids: $dids, example: $example) {
+        ...basicDoctorFragment
+        firstName
+        middleName
+        lastName
+    }
+}

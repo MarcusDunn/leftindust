@@ -1,0 +1,19 @@
+.ui-clamp {
+  .ui-clamp-ellipsis {
+    font-size: 26px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 6px;
+    background: rgb(229, 229, 234);
+    vertical-align: middle;
+    cursor: pointer;
+  }
+}
+
+.theme-dark {
+  .ui-clamp {
+    .ui-clamp-ellipsis {
+      background: rgb(44, 44, 46);
+    }
+  }
+}

@@ -1,0 +1,6 @@
+fragment groupFragment on Group {
+  gid {
+    id
+  }
+  name
+}

@@ -1,0 +1,77 @@
+@use "../../../../style/helpers/Clamps.scss";
+$transform: .35s;
+
+.widget-bundle {
+  margin: 0;
+  height: 100%;
+
+  transition: transform $transform ease-in-out;
+
+  &:not(.elevation-4) {
+    background: rgb(240, 240, 246) !important;
+  }
+
+  .widget-bundle-dragger {
+    width: 100%;
+    user-select: none;
+    margin-bottom: 5px;
+
+    &.widget-bundle-dragger-enabled {
+      cursor: grab;
+    }
+
+    h4 {
+      text-transform: uppercase;
+      display: flex;
+      font-weight: 600;
+      
+      @include Clamps.set(1);
+      
+      .f7-icons {
+        font-size: inherit;
+        margin-top: -2px;
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .widget-bundle-footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 15px;
+    display: flex;
+
+    width: 100%;
+
+    & > .row {
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+
+    .button {
+      margin: 0;
+    }
+
+    .ultra-icon-button {
+      margin-right: 15px;
+    }
+
+    .link {
+      .f7-icons {
+        font-size: 22px;
+      }
+    }
+  }
+}
+
+.theme-dark {
+  .widget-bundle {
+    background: rgb(33, 33, 33);
+    
+    &:not(.elevation-4) {
+      background: rgb(36, 36, 36) !important;
+    }
+  }
+}

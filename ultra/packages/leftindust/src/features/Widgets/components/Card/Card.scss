@@ -1,0 +1,109 @@
+@use "../../../../style/helpers/Clamps";
+
+.widget-card {
+  margin: 0 !important;
+  height: 100%;
+
+  &:not(.elevation-4) {
+    background: rgb(240, 240, 246) !important;
+  }
+
+  .widget-card-loading {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .widget-card-content {
+    visibility: visible;
+    opacity: 1;
+    transition: all 0.4s;
+  }
+
+  .widget-card-dragger {
+    width: 100%;
+    user-select: none;
+    margin-bottom: 5px;
+    min-height: 3px;
+
+    &.widget-card-dragger-enabled {
+      cursor: grab;
+    }
+  }
+
+  .widget-card-inner {
+    height: 100%;
+    width: 100%;
+  }
+
+  .widget-card-header {
+    @include Clamps.set(1);
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .widget-card-title {
+    display: flex;
+    vertical-align: middle;
+
+    .widget-card-title-before {
+      display: flex;
+      & > * {
+        margin-right: 15px;
+      }
+    }
+
+    h4 {
+      font-size: 20px;
+    }
+
+    .widget-card-description {
+      @include Clamps.set(3);
+      font-weight: 400;
+      margin-top: 5px;
+    }
+  }
+
+  .widget-card-footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 20px;
+    display: flex;
+
+    width: 100%;
+
+    & > .row {
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 10px;
+    }
+
+    .row:first-child {
+      padding-left: 15px;
+    }
+
+    .button {
+      margin: 0 !important;
+    }
+
+    .pin-pin_button {
+      margin-left: 20px;
+    }
+
+    .ui-icon_button {
+      margin-right: 15px;
+    }
+  }
+}
+
+.theme-dark {
+  .widget-card {
+    background: rgb(33, 33, 33);
+  
+    &:not(.elevation-4) {
+      background: rgb(36, 36, 36) !important;
+    }
+  }
+}

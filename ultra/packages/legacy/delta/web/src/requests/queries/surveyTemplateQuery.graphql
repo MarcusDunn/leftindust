@@ -1,0 +1,27 @@
+query surveyTemplateQuery (
+  $surveys: [FormTemplateIdInput!],
+) {
+  surveys (surveys: $surveys) {
+    id {
+      id
+    }
+    name
+    sections {
+      name
+      description
+      number
+      fields {
+        dataType
+        floatLowerBound
+        floatUpperBound
+        intLowerBound
+        intUpperBound
+        jsonMetaData
+        multiSelectPossibilities
+        number
+        textRegex
+        title
+      }
+    }
+  }
+}

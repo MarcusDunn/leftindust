@@ -1,0 +1,18 @@
+.templates-input_select {
+  display: flex;
+
+  .templates-input_select-input {
+    width: 100%;
+
+    .input {
+      width: 100%;
+    }
+  }
+
+  .templates-input_select-input-delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15px;
+  }
+}

@@ -1,0 +1,11 @@
+#import "../fragments/contactsFragment.graphql"
+
+query patientContactsQuery(
+    $pids: [PatientIdInput!],
+) {
+    patients(pids: $pids) {
+        contacts {
+          ...contactsFragment
+        }
+    }
+}

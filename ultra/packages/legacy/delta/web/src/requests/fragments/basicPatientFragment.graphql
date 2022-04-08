@@ -1,0 +1,16 @@
+fragment basicPatientFragment on Patient {
+    pid {
+        id
+    }
+    dateOfBirth {
+        day
+        month
+        year
+    }
+    sex
+    gender
+    emails {
+        type
+        email
+    }
+}

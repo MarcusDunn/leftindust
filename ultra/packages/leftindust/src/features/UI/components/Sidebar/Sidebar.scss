@@ -1,0 +1,117 @@
+/* Aqua SideBar */
+
+@use '../../../../style/helpers/Color.scss' as Color;
+
+.ui-sidebar {
+  background-color: transparent;
+
+  .page {
+    background: transparent;
+    
+    .page-content {
+      padding-top: 15px;
+
+      .ui-sidebar-content {
+        overflow: hidden;
+        padding: 0 15px;
+
+        h6 {
+          color: rgb(142, 142, 147);
+          margin-top: 50px;
+        }
+
+        .list {
+          margin: 0;
+          padding: 0;
+
+          ul {
+            background-color: transparent;
+
+            li {
+              .item-link {
+                border-radius: var(--f7-list-inset-border-radius);
+
+                .item-content {
+                  font-size: 15px;
+
+                  .f7-icons {
+                    font-size: 22px;
+                  }
+                }
+                
+                &.tab-link-active {
+                  & .item-content {
+                    color: white;
+
+                    @include Color.all(background);
+                  }
+                }
+
+                &:not(.tab-link-active) {
+                  & .item-content {
+                    @include Color.all(color);
+                  }
+                }
+
+                transition: none;
+                transition-duration: 0ms;
+                transition-property: none;
+              }
+
+              .item-link:not(.tab-link-active) {
+                background: none;
+              }
+            }
+          }
+        }
+      }
+
+      .ui-sidebar-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: var(--f7-panel-width);
+        max-width: 100%;
+
+        .list {
+          margin: 0;
+          padding: 0;
+
+          ul {
+            background: transparent;
+            .item-title {
+              font-size: 17px;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.theme-dark {
+  .ui-sidebar {
+    .page {
+      .page-content {
+        .ui-sidebar-content {
+          .list {
+            ul {
+              li {
+                .item-link {
+                  &:not(.tab-link-active) {
+                    & .item-content {
+                      .item-title {
+                        color: white;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

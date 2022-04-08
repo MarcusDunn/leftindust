@@ -1,0 +1,7 @@
+mutation eventMutation($event: EventInput!) {
+    addEvent(event: $event) {
+        eid {
+          id
+        }
+    }
+}

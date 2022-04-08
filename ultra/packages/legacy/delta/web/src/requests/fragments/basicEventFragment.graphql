@@ -1,0 +1,19 @@
+fragment basicEventFragment on Event {
+    title
+    startTime {
+        unixMilliseconds
+    }
+    endTime {
+        unixMilliseconds
+    }
+    allDay
+    description
+    eid {
+        id
+    }
+    visit {
+        vid {
+            id
+        }
+    }
+}

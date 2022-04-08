@@ -1,0 +1,26 @@
+.ui-icon_button {
+	width: 30px;
+	height: 30px;
+
+	display: flex;
+
+	justify-content: center;
+	vertical-align: middle;
+
+	background-color: transparent;
+
+	.f7-icons {
+		margin: 0 auto !important;
+	}
+
+	transition: background-color 0.2s linear;
+
+  &.ui-icon_button-active {
+    padding: 2.5px;
+		border-radius: 5px;
+		
+		.f7-icons {
+				color: white !important;
+		}
+  }
+}

@@ -1,0 +1,10 @@
+#import "../fragments/emailFragment.graphql"
+fragment basicDoctorFragment on Doctor {
+    title
+    did {
+        id
+    }
+    emails {
+        ...emailFragment
+    }
+}

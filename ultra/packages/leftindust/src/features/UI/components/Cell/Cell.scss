@@ -1,0 +1,37 @@
+.ui-cell {
+  .item-link, .item-checkbox {
+    border-radius: var(--f7-list-inset-border-radius) !important;
+  }
+
+  .ui-cell-toggle {    
+    margin-right: 0;
+    transition-property: margin-right;
+    transition-duration: 260ms;
+
+    &.ui-cell-toggle-active {
+      margin-right: 10px;
+    }
+  }
+}
+
+.view-master-detail {
+  .ui-cell {
+    &.ui-cell-selected {
+      .item-link, .item-checkbox {
+        background-color: rgb(220, 220, 220);
+      }
+    }
+  }
+}
+
+.theme-dark {
+  .view-master-detail {
+    .ui-cell {
+      &.ui-cell-selected {
+        .item-link, .item-checkbox {
+          background-color: rgba(44, 44, 46);
+        }
+      }
+    }
+  }
+}

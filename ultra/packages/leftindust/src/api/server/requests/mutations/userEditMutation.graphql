@@ -1,0 +1,5 @@
+mutation userMutation($user: UserEditInput!) {
+    editUser(user: $user) {
+        uid
+    }
+}

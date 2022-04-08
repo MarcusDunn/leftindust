@@ -1,0 +1,11 @@
+.input-checkbox {
+  label {
+    border-radius: var(--f7-list-inset-border-radius);
+  }
+
+  .item-inner {
+    .item-header {
+      display: none;
+    }
+  }
+}

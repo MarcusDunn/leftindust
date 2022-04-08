@@ -1,0 +1,12 @@
+{
+    "npmClient": "yarn",
+    "packages": [
+      "packages/legacy/delta/**",
+      "packages/legacy/bluebird/**",
+      "packages/legacy/bluebird/**",
+      "packages/legacy/montauk/**",
+      "packages/leftindust/**"
+    ],
+    "useWorkspaces": true,
+    "version": "independent"
+  }

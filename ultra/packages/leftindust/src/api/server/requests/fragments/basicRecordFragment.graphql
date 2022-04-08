@@ -1,0 +1,15 @@
+fragment basicRecordFragment on Record {
+    creationDate {
+        unixMilliseconds
+    }
+    jsonBlob
+    rid {
+        id
+    }
+    type
+    patient {
+        pid {
+            id
+        }
+    }
+}

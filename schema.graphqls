@@ -1,0 +1,1142 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"Directs the executor to include this field or fragment only when the `if` argument is true"
+directive @include(
+  "Included when true."
+  if: Boolean!
+) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"Directs the executor to skip this field or fragment when the `if`'argument is true."
+directive @skip(
+  "Skipped when true."
+  if: Boolean!
+) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"Marks the field or enum value as deprecated"
+directive @deprecated(
+  "The reason for the deprecation"
+  reason: String = "No longer supported"
+) on FIELD_DEFINITION | ENUM_VALUE
+
+"Exposes a URL that specifies the behaviour of this scalar."
+directive @specifiedBy(
+  "The URL that specifies the behaviour of this scalar."
+  url: String!
+) on SCALAR
+
+"Marks target field as external meaning it will be resolved by federated schema"
+directive @external on FIELD_DEFINITION
+
+"Specifies required input field set from the base type for a resolver"
+directive @requires(fields: _FieldSet) on FIELD_DEFINITION
+
+"Specifies the base type field set that will be selectable by the gateway"
+directive @provides(fields: _FieldSet) on FIELD_DEFINITION
+
+"Space separated list of primary keys needed to access federated object"
+directive @key(fields: _FieldSet) on OBJECT | INTERFACE
+
+"Marks target object as extending part of the federated schema"
+directive @extends on OBJECT | INTERFACE
+
+interface GraphQLProvince {
+  asShortStrings: [String!]!
+  asStrings: [String!]!
+}
+
+interface IcdReallySimpleEntity {
+  code: String
+  description: String
+  id: String
+  title: String
+}
+
+interface Person {
+  emails: [Email!]!
+  firstName: String!
+  lastName: String!
+  middleName: String
+  phones: [Phone!]!
+  "a base64 icon. Cannot be over 10 000 characters when base64 encoded"
+  thumbnail: String
+}
+
+type Address {
+  address: String!
+  addressType: AddressType
+  city: String!
+  country: Country!
+  postalCode: String!
+  province: String!
+}
+
+type AssignedSurvey {
+  id: AssignedSurveyId!
+  patient: Patient!
+  surveyTemplate: GraphQLFormTemplate!
+}
+
+type AssignedSurveyId {
+  id: UUID!
+}
+
+type CanadianProvince implements GraphQLProvince {
+  asShortStrings: [String!]!
+  asStrings: [String!]!
+  longToShort(province: String!): String!
+  shortToLong(province: String!): String!
+}
+
+type Clinic {
+  address: Address!
+  cid: ClinicId!
+  doctors: [Doctor!]!
+}
+
+type ClinicId {
+  id: UUID!
+}
+
+type Date {
+  day: Int!
+  month: Month!
+  toUtcTime: UtcTime! @deprecated(reason : "will be removed before 1.0, replace with using the information I send you")
+  year: Int!
+}
+
+type Doctor implements Person {
+  addresses: [Address!]!
+  clinic: Clinic!
+  dateOfBirth: Date
+  did: DoctorId!
+  emails: [Email!]!
+  events: [Event!]!
+  firstName: String!
+  lastName: String!
+  middleName: String
+  patients: [Patient!]!
+  phones: [Phone!]!
+  schedule(from: UtcTimeInput!, to: UtcTimeInput!): [Event!]!
+  thumbnail: String
+  title: String
+  user: User
+}
+
+type DoctorId {
+  id: UUID!
+}
+
+type Email {
+  email: String!
+  type: EmailType!
+}
+
+type EmergencyContact implements Person {
+  emails: [Email!]!
+  firstName: String!
+  lastName: String!
+  middleName: String
+  phones: [Phone!]!
+  relationship: Relationship!
+  "a base64 icon. Cannot be over 10 000 characters when base64 encoded"
+  thumbnail: String
+}
+
+type Event {
+  allDay: Boolean!
+  description: String
+  doctors: [Doctor!]!
+  eid: EventId!
+  endTime: UtcTime
+  patients: [Patient!]!
+  reoccurrence: Recurrence
+  startTime: UtcTime
+  title: String!
+  visit: Visit
+}
+
+type EventId {
+  id: UUID!
+}
+
+type FirebaseInfo {
+  displayName: String
+  email: String
+  phoneNumber: String
+  photoUrl: String
+  tenantId: String
+  tokensValidAfterTimestamp: Long
+  uid: String
+}
+
+type FormTemplateId {
+  id: UUID!
+}
+
+type GraphQLFormData {
+  data: String!
+  patient: Patient!
+}
+
+type GraphQLFormSection {
+  "Max 50 000 chars"
+  description: String
+  "Note that I do not provide a stable order to these fields"
+  fields: [GraphQlFormField!]!
+  name: String!
+  number: Int!
+}
+
+type GraphQLFormTemplate {
+  id: FormTemplateId!
+  name: String!
+  sections: [GraphQLFormSection!]!
+}
+
+type GraphQlFormField {
+  dataType: DataType!
+  dateLowerBound: Date
+  dateUpperBound: Date
+  floatLowerBound: Float
+  floatUpperBound: Float
+  intLowerBound: Int
+  intUpperBound: Int
+  jsonMetaData: String
+  multiSelectPossibilities: [String!]
+  number: Int!
+  textRegex: String
+  title: String!
+}
+
+type Group {
+  gid: GroupId!
+  name: String!
+}
+
+type GroupId {
+  id: UUID!
+}
+
+type IcdFoundationEntity {
+  browserUrl: String
+  child: [String!]
+  context: String
+  definition: IcdLanguageSpecificText
+  exclusion: [IcdTerm!]
+  fullySpecifiedName: IcdLanguageSpecificText
+  id: String
+  inclusion: [IcdTerm!]
+  longDefinition: IcdLanguageSpecificText
+  narrowerTerm: [IcdTerm!]
+  parent: [String!]
+  synonym: [IcdTerm!]
+  title: IcdLanguageSpecificText
+}
+
+type IcdGuessWord {
+  dontChangeResult: String!
+  label: String
+}
+
+type IcdLanguageSpecificText {
+  language: String
+  value: String
+}
+
+type IcdLinearizationEntity implements IcdReallySimpleEntity {
+  blockId: String
+  browserUrl: String
+  child: [String!]
+  classKind: String
+  code: String
+  codeRange: String
+  codingNote: IcdLanguageSpecificText
+  context: String
+  definition: IcdLanguageSpecificText
+  description: String
+  exclusion: [IcdTerm!]
+  foundationChildElsewhere: [IcdTerm!]
+  fullySpecifiedName: IcdLanguageSpecificText
+  id: String
+  inclusion: [IcdTerm!]
+  indexTerm: [IcdTerm!]
+  languageTitle: IcdLanguageSpecificText
+  longDefinition: IcdLanguageSpecificText
+  parent: [String!]
+  postcoordinationScale: [IcdPostCoordinationScaleInfo]
+  source: String
+  title: String
+}
+
+type IcdPostCoordinationScaleInfo {
+  allowMultipleValues: String!
+  axisName: String
+  id: String
+  requiredPostcoordination: Boolean!
+  scaleEntity: [String!]!
+}
+
+type IcdSearchResult {
+  destinationEntities: [IcdSimpleEntity!]
+  error: Boolean!
+  errorMessage: String
+  guessType: IcdGuessType
+  resultChopped: Boolean!
+  uniqueSearchId: Boolean!
+  wordSuggestionsChopped: Boolean!
+  words: [IcdGuessWord!]
+}
+
+type IcdSimpleEntity implements IcdReallySimpleEntity {
+  chapter: String
+  code: String
+  descendants: [IcdSimpleEntity!]!
+  description: String
+  entity: IcdFoundationEntity
+  entityType: IcdEntityType!
+  hasCodingNote: Boolean!
+  hasMaternalChapterLink: Boolean!
+  id: String!
+  important: Boolean!
+  isLeaf: Boolean!
+  isResidualOther: Boolean!
+  isResidualUnspecified: Boolean!
+  matchingPVs: [IcdSimplePropertyValue!]!
+  postcoordinationAvailability: IcdPostcoordinationAvailability!
+  propertiesTruncated: Boolean!
+  score: Float!
+  stemId: String
+  tagTitle(withTags: Boolean): String
+  theCode: String
+  title: String
+  titleIsASearchResult: Boolean!
+  titleIsTopScore: Boolean!
+  urlId(asUrl: Boolean): String
+}
+
+type IcdSimplePropertyValue {
+  important: Boolean
+  label: String
+  propertyId: String
+  score: Float
+}
+
+type IcdTerm {
+  foundationReference: String
+  label: IcdLanguageSpecificText!
+  linearizationReference: String
+}
+
+type Mutation {
+  addClinic(clinic: ClinicInput!): Clinic!
+  addDoctor(doctor: DoctorInput!): Doctor!
+  addEvent(event: EventInput!): Event!
+  addGroup(group: GroupInput!): Group!
+  """
+  adds a new patient and connects them to already existing doctors and contacts
+  contacts and doctors default to empty lists
+  """
+  addPatient(patient: PatientInput!): Patient!
+  addPermission(groupId: GroupIdInput, permission: GraphQLPermissionInput!, userUid: String): Permission!
+  addRecord(record: GraphQLRecordInput!): Record!
+  addSurveyTemplate(surveyTemplate: FormTemplateInput!): GraphQLFormTemplate!
+  addUser(user: UserInput!): User!
+  addVisit(visit: VisitInput!): Visit!
+  assignSurvey(patients: [PatientIdInput!]!, survey: FormTemplateIdInput!): [Patient!]!
+  editClinic(clinic: ClinicEditInput!): Clinic!
+  editDoctor(doctor: DoctorEditInput!): Doctor!
+  "edits the event referenced by eid"
+  editEvent(event: EventEditInput!): Event!
+  "edits the event referenced by eid"
+  editRecurringEvent(event: EventEditInput!, recurrenceSettings: RecurrenceEditSettingsInput!): Event!
+  editUser(user: UserEditInput!): User!
+  editVisit(visit: GraphQLVisitEditInput!): Visit!
+  submitSurvey(patient: PatientIdInput!, surveyJson: String!): GraphQLFormData!
+  "updates a patient by their pid, only the not null fields are updated, pid MUST be defined"
+  updatePatient(patient: PatientEditInput!): Patient!
+}
+
+type NameInfo {
+  firstName: String!
+  lastName: String!
+  middleName: String
+}
+
+type Patient implements Person {
+  addresses: [Address!]!
+  assignedForms: [AssignedSurvey!]!
+  contacts: [Person!]!
+  dateOfBirth: Date!
+  doctors: [Doctor!]!
+  emails: [Email!]!
+  ethnicity: Ethnicity
+  events: [Event!]!
+  firstName: String!
+  gender: String!
+  insuranceNumber: String
+  lastName: String!
+  middleName: String
+  phones: [Phone!]!
+  pid: PatientId!
+  sex: Sex!
+  "a base64 icon. Cannot be over 10 000 characters when base64 encoded"
+  thumbnail: String
+  user: User
+  visits: [Visit!]!
+}
+
+type PatientId {
+  id: UUID!
+}
+
+type Permission {
+  columnName: String
+  endTime: UtcTime
+  permissionType: Crud!
+  pid: PermissionId!
+  referencedTableName: Tables!
+  rowId: UUID
+  startTime: UtcTime
+}
+
+type PermissionId {
+  id: UUID!
+}
+
+type Permissions {
+  groupPerms: [Permission!]!
+  userPerms: [Permission!]!
+}
+
+type Phone {
+  number: String!
+  type: PhoneType!
+}
+
+type Query @extends {
+  _service: _Service
+  clinic(cid: ClinicIdInput!): Clinic!
+  convert(json: String!, target: ConvertTarget!): String!
+  country(country: Country!): GraphQLProvince!
+  "only pass one variable"
+  doctors(dids: [DoctorIdInput!], example: DoctorExampleInput, pid: PatientIdInput, range: RangeInput): [Doctor!]!
+  eventsByDoctor(doctors: [DoctorIdInput!]!): [Event!]!
+  """
+
+  Gets a list of events shared by the doctors and patients. ie. all events where both the doctor and the patient attend.
+
+  """
+  eventsByDoctorsAndPatients(doctors: [DoctorIdInput!]!, patients: [PatientIdInput!]!): [Event!]!
+  """
+
+  Gets a list of events by a list of thier ID's. Will error if any of the ID's us not found.
+
+  """
+  eventsByIds(events: [EventIdInput!]!): [Event!]!
+  eventsByPatient(patients: [PatientIdInput!]!): [Event!]!
+  """
+
+  Gets a list of events by a range of time that returned the events will occur within.
+
+  """
+  eventsByTimeRange(range: TimeRangeInput!): [Event!]!
+  """
+  gets all users from firebase, you can
+  filter out already registered
+  users by setting filterRegistered
+  to true (defaults to false)
+  """
+  firebaseUsers(filterRegistered: Boolean, range: RangeInput): [FirebaseInfo!]!
+  getContactsByPatient(pid: PatientIdInput!): [Person!]!
+  groups(gids: [GroupIdInput!], range: RangeInput): [Group!]!
+  icd(icdCode: String!): IcdLinearizationEntity!
+  icds(icdCodes: [String!]!): [IcdLinearizationEntity!]!
+  mockingbirdIsAlive: Boolean!
+  patientsByExample(example: PatientExampleInput!): [Patient!]!
+  patientsByPid(pids: [PatientIdInput!]!, sortedBy: SortableField): [Patient!]!
+  patientsByRange(range: RangeInput!, sortedBy: SortableField): [Patient!]!
+  permissions(uid: String!): Permissions!
+  records(pid: PatientIdInput, rids: [RecordIdInput!]): [Record!]!
+  searchIcd(
+    flatResults: Boolean,
+    flexiSearch: Boolean,
+    linearization: Linearization,
+    "Cannot be empty string"
+    query: String!
+  ): IcdSearchResult!
+  "fetch survey templates by one getting a range or the survey id"
+  surveys(range: RangeInput, surveys: [FormTemplateIdInput!]): [GraphQLFormTemplate!]!
+  "attempts to find the mediq-registered user by uid, if the user does not exist in the DB"
+  user(uid: ID!): User!
+  "returns a list of users, only one argument should be specified"
+  users(range: RangeInput, uniqueIds: [ID!]): [User!]!
+  visits(did: DoctorIdInput, pid: PatientIdInput, strict: Boolean!, vids: [VisitIdInput!]): [Visit!]!
+}
+
+type Record {
+  creationDate: UtcTime!
+  jsonBlob: String!
+  patient: Patient!
+  rid: RecordId!
+  type: RecordType!
+}
+
+type RecordId {
+  id: UUID!
+}
+
+type Recurrence {
+  daysOfWeek: [DayOfWeek!]!
+  endDate: Date!
+  startDate: Date!
+}
+
+type TimeZonedTime {
+  timeZone: String!
+  unixMilliseconds: Long!
+}
+
+type User {
+  """
+
+  The corresponding doctor for this user if it exists.
+
+  """
+  doctor: Doctor
+  """
+
+  The firebase-specific info for this user.
+
+  """
+  firebaseUserInfo: FirebaseInfo!
+  group: Group
+  """
+
+  Weather the user has permission do to a given action.
+
+  """
+  hasPermission(perm: GraphQLPermissionInput!): Boolean!
+  """
+
+  Weather the user is regestered in mockingbird.
+
+  """
+  isRegistered: Boolean!
+  """
+
+  The name of the user.
+
+  """
+  name: NameInfo
+  """
+
+  The corresponding patient for this user if it exists.
+
+  """
+  patient: Patient
+  """
+
+  The permissions this user possesses
+
+  """
+  permissions: Permissions!
+  uid: String!
+}
+
+type UtcTime {
+  before(end: UtcTimeInput!): Boolean!
+  unixMilliseconds: Long!
+  """
+
+  the timezone string should follow the format from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  eg. America/Los_Angeles for British Columbia's time zone (generally referred to as PST)
+
+  """
+  withRespectTo(timeZone: String!): TimeZonedTime!
+}
+
+type Visit {
+  description: String
+  event: Event!
+  icds: [IcdLinearizationEntity!]!
+  patients: [Patient!]!
+  title: String
+  vid: VisitId!
+}
+
+type VisitId {
+  id: UUID!
+}
+
+type _Service {
+  sdl: String!
+}
+
+enum AddressType {
+  Apartment
+  Home
+  Other
+  School
+  Work
+}
+
+enum ConvertTarget {
+  Csv
+  Json
+}
+
+enum Country {
+  Canada
+}
+
+enum Crud {
+  CREATE
+  DELETE
+  READ
+  UPDATE
+}
+
+enum DataType {
+  Date
+  Float
+  Integer
+  MultiMuliSelect
+  SingleMuliSelect
+  Text
+}
+
+enum DayOfWeek {
+  Fri
+  Mon
+  Sat
+  Sun
+  Thu
+  Tue
+  Wed
+}
+
+enum EmailType {
+  Other
+  Personal
+  School
+  Work
+}
+
+enum Ethnicity {
+  AmericanAboriginal
+  Asian
+  Black
+  Hispanic
+  PacificIslander
+  White
+}
+
+enum IcdEntityType {
+  One
+  Two
+  Zero
+}
+
+enum IcdGuessType {
+  One
+  Two
+  Zero
+}
+
+enum IcdPostcoordinationAvailability {
+  One
+  Three
+  Two
+}
+
+enum Linearization {
+  MMS
+}
+
+enum Month {
+  Apr
+  Aug
+  Dec
+  Feb
+  Jan
+  Jul
+  Jun
+  Mar
+  May
+  Nov
+  Oct
+  Sep
+}
+
+enum PhoneType {
+  Cell
+  Home
+  Other
+  Pager
+  Work
+}
+
+enum RecordType {
+  Blood
+  Form
+}
+
+enum Relationship {
+  Aunt
+  Child
+  Cousin
+  Grandchild
+  Grandparent
+  Guardian
+  Other
+  Parent
+  Partner
+  Sibling
+  Uncle
+}
+
+enum Sex {
+  Female
+  Intersex
+  Male
+}
+
+enum SortableField {
+  FIRST_NAME
+  LAST_NAME
+  PID
+}
+
+enum Tables {
+  AccessControlList
+  Action
+  Clinic
+  Doctor
+  EmergencyContact
+  Event
+  Form
+  Group
+  IcdCode
+  Patient
+  Record
+  User
+  Visit
+}
+
+"Long type"
+scalar Long
+
+"A type representing a formatted java.util.UUID"
+scalar UUID
+
+"Federation type representing set of fields"
+scalar _FieldSet
+
+input AddressEditInput {
+  address: String
+  addressType: AddressType
+  city: String
+  country: Country
+  postalCode: String
+  province: String
+}
+
+input AddressInput {
+  address: String!
+  addressType: AddressType!
+  city: String!
+  country: Country!
+  postalCode: String!
+  province: String!
+}
+
+input CaseAgnosticStringFilterInput {
+  contains: String
+  endsWith: String
+  eq: String
+  ne: String
+  notContain: String
+  notEndWith: String
+  notStartWith: String
+  startsWith: String
+  strict: Boolean!
+}
+
+input ClinicEditInput {
+  address: AddressEditInput
+  cid: ClinicIdInput!
+  "passing null will not update, to clear: pass an empty list"
+  doctors: [DoctorIdInput!]
+  name: String
+}
+
+input ClinicIdInput {
+  id: UUID!
+}
+
+input ClinicInput {
+  address: AddressInput!
+  "defaults to empty list"
+  doctors: [DoctorIdInput!]
+  name: String!
+}
+
+input DateFilterInput {
+  after: DateInput
+  before: DateInput
+  strict: Boolean!
+}
+
+input DateInput {
+  day: Int!
+  month: Month!
+  year: Int!
+}
+
+input DoctorEditInput {
+  addresses: [AddressInput!]
+  "setting to null will remove the doctor from the clinic"
+  clinics: [ClinicIdInput!]
+  dateOfBirth: DateInput
+  did: DoctorIdInput!
+  emails: [EmailInput!]
+  nameInfo: NameEditInput
+  patients: [PatientIdInput!]
+  phones: [PhoneInput!]
+  title: String
+  userUid: String
+}
+
+input DoctorExampleInput {
+  firstName: CaseAgnosticStringFilterInput
+  lastName: CaseAgnosticStringFilterInput
+  strict: Boolean!
+}
+
+input DoctorIdInput {
+  id: UUID!
+}
+
+input DoctorInput {
+  addresses: [AddressInput!]
+  clinic: ClinicIdInput
+  dateOfBirth: DateInput
+  emails: [EmailInput!]
+  nameInfo: NameInput!
+  patients: [PatientIdInput!]
+  phones: [PhoneInput!]
+  title: String
+  user: UserInput
+}
+
+input EmailInput {
+  email: String!
+  type: EmailType!
+}
+
+"either phones or emails MUST contain at least one element"
+input EmergencyContactInput {
+  "defaults to empty list"
+  emails: [EmailInput!]
+  firstName: String!
+  lastName: String!
+  middleName: String
+  "defaults to empty list"
+  phones: [PhoneInput!]
+  relationship: Relationship!
+}
+
+"""
+
+passing explicit nulls will unset the value (provided that leaves the event in a valid state) and not setting a value
+will leave it unchanged. The same consistency rules around start/end/allDay still apply and it is the callers
+responsibility to pass a valid series of arguments
+"""
+input EventEditInput {
+  " weather the event is all day or not. Cannot be null and must be false if and only if end is not null"
+  allDay: Boolean
+  "The new description. Can be set to null to remove the old description"
+  description: String
+  "the doctors attached to this event. if set to null, no changes will be made, to clear the list you must pass an empty list"
+  doctors: [DoctorIdInput!]
+  "the id of the event you are looking to edit"
+  eid: EventIdInput!
+  "The new end of the event. Can only be null if the event is allDay"
+  end: UtcTimeInput
+  "the patients attached to this event. see doctors for nullability rules"
+  patients: [PatientIdInput!]
+  "the rules surrounding recurrence of the event, Can be set to null. Setting this value will overwrite the whole recurrence object, leaving fields blank will __not__ retain prior values"
+  recurrence: RecurrenceInput
+  "The new start of the event. Cannot be null"
+  start: UtcTimeInput
+  "The new title of the event. Cannot be set to null"
+  title: String
+}
+
+input EventIdInput {
+  id: UUID!
+}
+
+input EventInput {
+  allDay: Boolean!
+  description: String
+  doctors: [DoctorIdInput!]
+  "UTC"
+  end: UtcTimeInput!
+  patients: [PatientIdInput!]
+  recurrence: RecurrenceInput
+  "UTC"
+  start: UtcTimeInput!
+  title: String!
+}
+
+input FormFieldInput {
+  dataType: DataType!
+  dateLowerBound: DateInput
+  dateUpperBound: DateInput
+  floatLowerBound: Float
+  floatUpperBound: Float
+  intLowerBound: Int
+  intUpperBound: Int
+  jsonMetaData: String
+  multiSelectPossibilities: [String!]
+  number: Int!
+  textRegex: String
+  title: String!
+}
+
+input FormSectionInput {
+  "Max 50 000 chars"
+  description: String
+  "Note that I do not provide a stable order to these fields"
+  fields: [FormFieldInput!]!
+  name: String!
+  number: Int!
+}
+
+input FormTemplateIdInput {
+  id: UUID!
+}
+
+input FormTemplateInput {
+  name: String!
+  sections: [FormSectionInput!]!
+}
+
+input FoundationIcdCodeInput {
+  "full A ICD-11 Foundation Code URL"
+  url: String!
+}
+
+input GraphQLPermissionInput {
+  columnName: String
+  endTime: UtcTimeInput
+  permissionType: Crud!
+  referencedTableName: Tables!
+  rowId: UUID
+  startTime: UtcTimeInput
+}
+
+input GraphQLRecordInput {
+  jsonBlob: String!
+  patient: PatientIdInput!
+  recordType: RecordType!
+}
+
+input GraphQLVisitEditInput {
+  "the new description, explicitly set to null to clear"
+  description: String
+  "the new event to attach this to"
+  eid: EventIdInput
+  "the icd codes for this visit, set to empty array to clear"
+  foundationIcdCodes: [FoundationIcdCodeInput!]
+  "the new title, explicitly set to null to clear"
+  title: String
+  "the id of the visit you wish to edit"
+  vid: VisitIdInput!
+}
+
+input GroupIdInput {
+  id: UUID!
+}
+
+input GroupInput {
+  name: String!
+}
+
+input IcdListFilterInput {
+  includes: [FoundationIcdCodeInput!]
+  notIncludes: [FoundationIcdCodeInput!]
+  strict: Boolean!
+}
+
+input NameEditInput {
+  "setting firstName to null will have no effect on updates"
+  firstName: String
+  "setting lastName to null will have no effect on updates"
+  lastName: String
+  "setting middleName to null will remove a prior middleName"
+  middleName: String
+}
+
+input NameInput {
+  firstName: String!
+  lastName: String!
+  middleName: String
+}
+
+input PatientEditInput {
+  "setting addresses to null will have no effect on update. to remove, pass an emptyList"
+  addresses: [AddressInput!]
+  "setting dateOfBirth to null will have no effect on update"
+  dateOfBirth: DateInput
+  "setting doctors to null will have no effect on update. to remove, pass an emptyList"
+  doctors: [DoctorIdInput!]
+  "setting emails to null will have no effect on update. to remove, pass an emptyList"
+  emails: [EmailInput!]
+  "setting emergencyContact to null will have no effect on update. to remove, pass an emptyList"
+  emergencyContacts: [EmergencyContactInput!]
+  "setting to null will delete prior ethnicity, leaving blank will keep old ethnicity"
+  ethnicity: Ethnicity
+  "setting gender to null will have no effect on update"
+  gender: String
+  "setting to null will delete prior insuranceNumber, leaving blank will keep old insuranceNumber"
+  insuranceNumber: ID
+  "setting nameInfoEditInput to null will have no effect on update"
+  nameInfo: NameEditInput
+  "setting phoneNumbers to null will have no effect on update. to remove, pass an emptyList"
+  phones: [PhoneInput!]
+  "required. Determines what patient is being updated"
+  pid: PatientIdInput!
+  "setting sex to null will have no effect on update"
+  sex: Sex
+  "setting to null will delete prior thumbnail, leaving blank will keep old thumbail. Cannot be over 10 000 characters"
+  thumbnail: String
+}
+
+input PatientExampleInput {
+  dateOfBirth: DateFilterInput
+  firstName: CaseAgnosticStringFilterInput
+  icdCodes: IcdListFilterInput
+  insuranceNumber: WhiteSpaceAgnosticStringFilterInput
+  lastName: CaseAgnosticStringFilterInput
+  strict: Boolean!
+}
+
+input PatientIdInput {
+  id: UUID!
+}
+
+"""
+
+The input side of Patient. Note that relations to other types are passed as ID's
+if you want to clear a list, pass an empty list, explicitly setting a list to null or leaving blank will have no effect on
+update operations and will result in empty list for create operations.
+
+"""
+input PatientInput {
+  "defaults to emptyList"
+  addresses: [AddressInput!]
+  "required"
+  dateOfBirth: DateInput!
+  "defaults to emptyList"
+  doctors: [DoctorIdInput!]
+  "defaults to emptyList"
+  emails: [EmailInput!]
+  "defaults to emptyList"
+  emergencyContacts: [EmergencyContactInput!]
+  "defaults to null"
+  ethnicity: Ethnicity
+  "defaults to sex"
+  gender: String
+  "defaults to null"
+  insuranceNumber: ID
+  "required"
+  nameInfo: NameInput!
+  "defaults to emptyList"
+  phones: [PhoneInput!]
+  "required"
+  sex: Sex!
+  "base64 representation of an image. cannot be over 10 000 characters"
+  thumbnail: String
+}
+
+input PhoneInput {
+  number: String!
+  type: PhoneType!
+}
+
+input RangeInput {
+  from: Int!
+  to: Int!
+}
+
+input RecordIdInput {
+  id: UUID!
+}
+
+"""
+the date range that the edits will effect the reoccurring event. This allows things such as editing a
+single event of a reoccurring event or leaving the past events untouched but editing future ones
+"""
+input RecurrenceEditSettingsInput {
+  "the end of the events that the edit should take place on"
+  editEnd: DateInput!
+  "the start of events that the edit should take place on"
+  editStart: DateInput!
+}
+
+input RecurrenceInput {
+  daysOfWeek: [DayOfWeek!]!
+  endDate: DateInput!
+  startDate: DateInput!
+}
+
+input TimeRangeInput {
+  end: UtcTimeInput!
+  start: UtcTimeInput!
+}
+
+"edits the user with the given uid, fields left unset will not be edited "
+input UserEditInput {
+  doctor: DoctorIdInput
+  group: GroupIdInput
+  uid: String!
+}
+
+input UserInput {
+  doctor: DoctorIdInput
+  group: GroupIdInput
+  nameInfo: NameInput!
+  uid: String!
+}
+
+input UtcTimeInput {
+  unixMilliseconds: Long!
+}
+
+input VisitIdInput {
+  id: UUID!
+}
+
+input VisitInput {
+  description: String
+  eid: EventIdInput!
+  foundationIcdCodes: [FoundationIcdCodeInput!]!
+  title: String
+}
+
+input WhiteSpaceAgnosticStringFilterInput {
+  contains: String
+  endsWith: String
+  eq: String
+  ne: String
+  notContain: String
+  notEndWith: String
+  notStartWith: String
+  startsWith: String
+  strict: Boolean!
+}

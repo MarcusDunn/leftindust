@@ -1,0 +1,69 @@
+{
+  "name": "@bluebird/electron",
+  "version": "0.1.0",
+  "main": "build/platforms/electron/src/index.js",
+  "scripts": {
+    "start": "npm run serve",
+    "serve": "cross-env NODE_ENV=development tsc-watch -p tsconfig.json --onSuccess \\\\\\\"nodemon\\\\\\\""
+  },
+  "dependencies": {
+    "@delta/library": "^0.1.0",
+    "electron-log": "^4.3.5",
+    "electron-reload": "^1.5.0",
+    "electron-store": "^8.0.0",
+    "electron-updater": "^4.3.9",
+    "macos-release": "^2.5.0"
+  },
+  "devDependencies": {
+    "electron": "^13.1.7",
+    "electron-builder": "^22.11.7",
+    "eslint": "^7.31.0",
+    "eslint-plugin-autofix": "^1.0.5",
+    "eslint-plugin-import-newlines": "^1.1.4",
+    "nodemon": "^2.0.9",
+    "tsc-watch": "^4.4.0",
+    "tscpaths": "^0.0.9",
+    "typescript": "^4.3.5"
+  },
+  "build": {
+    "productName": "MedIQ",
+    "appId": "com.leftindust.mediq",
+    "copyright": "Copyright © 2022 ${author}",
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "Medical",
+      "type": "distribution",
+      "hardenedRuntime": "true"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "snap"
+      ],
+      "category": "medical"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      "assets/**"
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "repo": "mediq-ultra-releases",
+        "owner": "leftindust",
+        "token": "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"
+      }
+    ]
+  }
+}

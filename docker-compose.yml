@@ -1,0 +1,25 @@
+services:
+  mockingbird-icd-api:
+    image: whoicd/icd-api
+    environment:
+      - acceptLicense=true
+      - saveAnalytics=true
+      - include=2021-05_en
+  mockingbird-postgres:
+    environment:
+      POSTGRES_DB: mediq
+      POSTGRES_USER: mediq
+      POSTGRES_PASSWORD: mediq
+    image: postgres
+  mockingbird:
+    ports:
+      - 8080:8080
+    environment:
+      - WHO_ICD_API=http://mockingbird-icd-api:80/icd
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://mockingbird-postgres:5432/mediq
+      - SPRING_DATASOURCE_USERNAME=mediq
+      - SPRING_DATASOURCE_PASSWORD=mediq
+    build:
+      context: .
+      dockerfile: mockingbird.Dockerfile

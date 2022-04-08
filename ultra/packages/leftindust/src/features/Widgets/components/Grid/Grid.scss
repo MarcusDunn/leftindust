@@ -1,0 +1,14 @@
+.widgets-grid {
+  width: 100%;
+  max-width: 100%;
+
+  & .svlt-grid-shadow  {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 8px !important;
+  }
+
+  .widgets-grid-item {
+    height: 100%;
+    width: 100%;
+  }
+}

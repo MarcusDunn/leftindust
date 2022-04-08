@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "icd.client.url",
+      "type": "java.lang.String",
+      "description": "The base url used for the icd api client."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+.app-mediq_banner {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  margin-top: 19vh;
+  padding-left: 3px !important;
+  padding-right: 3px !important;
+
+  .app-mediq_banner-container {
+    margin-top: 100px;
+
+    .item-content {
+      padding-left: 0px !important;
+    }
+  }
+
+  video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150%;
+    height: 85px;
+    object-fit: cover;
+    filter: saturate(2);
+
+    &::-webkit-media-controls {
+      display: none !important;
+    }
+
+    &::-webkit-media-controls-start-playback-button {
+      display: none !important;
+      -webkit-appearance: none;
+    }
+  }
+
+  h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 90px;
+    margin: 0;
+    font-weight: 800 !important;
+    font-size: 90px !important;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #ffffff;
+    mix-blend-mode: screen;
+  }
+}
+
+.theme-dark {
+  .app-mediq_banner {
+    video {
+      filter: saturate(0) !important;
+    }
+
+    h1 {
+      background-color: #000000 !important;
+    }
+  }
+}

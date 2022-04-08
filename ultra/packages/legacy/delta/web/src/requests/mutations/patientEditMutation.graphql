@@ -1,0 +1,7 @@
+mutation patientEditMutation($patient: PatientEditInput!) {
+    updatePatient(patient: $patient) {
+        pid {
+          id
+        }
+    }
+}

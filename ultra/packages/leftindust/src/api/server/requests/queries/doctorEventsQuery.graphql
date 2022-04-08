@@ -1,0 +1,11 @@
+#import "../fragments/basicEventFragment.graphql"
+
+query doctorEventsQuery(
+    $dids: [DoctorIdInput!],
+) {
+    doctors(dids: $dids) {
+        events {
+            ...basicEventFragment
+        }
+    }
+}

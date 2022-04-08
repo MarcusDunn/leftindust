@@ -1,0 +1,72 @@
+  .ui-menu_button {
+    .ui-menu_button-link {
+      display: flex;
+      align-items: center;
+      justify-content: center !important;
+      max-width: 45px;
+      margin-right: 5px;
+      width: 33px;
+      height: 33px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: rgb(132, 132, 137);
+
+      transition-property: background-color;
+      transition-duration: 150ms;
+
+      .f7-icons {
+        font-size: 24px;
+      }
+
+      &.ui-menu_button-tall {
+        padding: 10px;
+        height: 48px;
+        width: 100%;
+        margin-top: 0;
+        line-height: normal;
+        margin-left: 2px;
+        margin-right: 2px;
+
+        .f7-icons {
+          margin-top: -12px;
+        }
+      }
+
+      .ui-menu_button-title {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        bottom: 2px;
+
+        span {
+          position: absolute;
+          bottom: 0px;
+          font-size: 12px;
+          color: black;
+        }
+      }
+
+      &:hover {
+        background-color: rgb(236, 236, 236);
+      }
+    }
+  }
+
+  .theme-dark {
+    .ui-menu_button {
+      .ui-menu_button-link {
+        color: #8e8e93;
+  
+        &:hover {
+          background-color: rgba(44, 44, 46);
+        }
+  
+        .ui-menu_button-title {
+          span {
+            color: white;
+          }
+        }
+      }
+    }
+  }

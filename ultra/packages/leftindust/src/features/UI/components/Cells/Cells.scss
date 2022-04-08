@@ -1,0 +1,24 @@
+.ui-cells {
+  &.ui-cells-select {
+    margin: 0 !important;
+  
+    ul {
+      background: transparent;
+  
+      & > * {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+
+.view-master-details {
+  .ui-cells {
+    &.ui-cells-select {
+      .active-state {
+        transition-duration: 150ms !important;
+        background-color: transparent !important;
+      }
+    }
+  }
+}
