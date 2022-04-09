@@ -1,0 +1,55 @@
+@mixin universal {
+  .ultra-time-input {
+    .ultra-time-input-container {
+      display: flex;
+      justify-content: center;  
+
+      .ultra-time-input-wrapper-separator {
+        padding-top: 9px;
+        color: var(--f7-color-gray);
+        margin-left: 0px;
+      }
+
+      .ultra-time-input-wrapper {
+        width: 30px;
+        padding: 0px 4px;
+        height: var(--f7-input-height);
+
+        display: flex;
+        align-items: center;
+
+        input {
+          background: transparent;
+          border: none;
+          text-align: center;
+          height: 30px;
+          border-radius: 5px;
+
+          &::-webkit-outer-spin-button,
+          &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+
+          &[type=number] {
+            -moz-appearance: textfield;
+          }
+
+          &:focus {
+            background: var(--f7-color-purple);
+            color: white;
+            caret-color: transparent;
+          }
+        }
+      }
+
+      .ultra-time-input-wrapper-ampm {
+        .segmented-strong {
+          margin: 0;
+          margin-top: 6px;
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+}

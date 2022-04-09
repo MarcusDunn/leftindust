@@ -1,0 +1,33 @@
+@mixin universal {
+  display: flex;
+  background: rgb(242, 242, 247);
+  padding: 12px 0;
+  overflow-y: scroll;
+
+  margin: 0;
+
+  display: flex;
+  justify-content: center;
+
+  .ultra-menubutton {
+    padding: 32px 34px;
+
+    &:hover {
+      background: rgb(229, 229, 234);
+    }
+
+    .ultra-menubutton-title {
+      bottom: 4px;
+    }
+  }
+}
+
+@mixin universal-dark {
+  background: rgb(40, 40, 40);
+
+  .ultra-menubutton {
+    &:hover {
+      background: rgb(58, 58, 60);
+    }
+  }
+}
