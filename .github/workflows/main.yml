@@ -8,6 +8,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
+    - run: |
+          echo $DEV_ENV_FILE >> mockingbird/src/main/resources/serviceAccountKey.json
+      shell: bash
+      env:
+          DEV_ENV_FILE : ${{secrets.SERVICE_ACCOUNT_KEY}}
     - uses: actions/setup-java@v2
       with:
         distribution: temurin
@@ -18,6 +23,12 @@ jobs:
     
     - name: Execute Gradle build
       run: ./gradlew mockingbird:build
+      
+    - uses: codecov/codecov-action@v2
+      with:
+        files: ./mockingbird/build/coverage.xml
+        fail_ci_if_error: true # optional (default = false)
+        verbose: true # optional (default = false)
   ultra-build:
     strategy:
       matrix:
