@@ -1,0 +1,12 @@
+@mixin universal {
+  .popover-inner {
+    .block {
+      margin: 0;
+      padding: 0;
+
+      .item-link {
+        padding: 10px;
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+@mixin universal {
+  .item-title {
+    color: var(--f7-list-item-after-text-color);
+  }
+  
+  .item-after {
+    color: black;
+  }
+
+  &.ultra-select-no-title {
+    .item-title {
+      display: none;
+    }
+
+    .item-after {
+      margin-left: initial !important;
+    }
+  } 
+}
+
+@mixin universal-dark {
+  .item-after {
+    color: white;
+  }
+}
