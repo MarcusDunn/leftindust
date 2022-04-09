@@ -1,6 +1,6 @@
 # leftindust
 
-![tests](https://github.com/leftindust/leftindust-backend/actions/workflows/tests.yml/badge.svg) [![codecov](https://codecov.io/gh/MarcusDunn/leftindust-backend/branch/master/graph/badge.svg?token=9MLL11QYS9)](https://codecov.io/gh/MarcusDunn/leftindust-backend)
+![tests](https://github.com/Marcusdunn/leftindust/actions/workflows/main.yml/badge.svg) [![codecov](https://codecov.io/gh/MarcusDunn/leftindust/branch/main/graph/badge.svg?token=9MLL11QYS9)](https://codecov.io/gh/MarcusDunn/leftindust)
 
 This is [leftindust's](https://leftindust.com) EMR.
 
