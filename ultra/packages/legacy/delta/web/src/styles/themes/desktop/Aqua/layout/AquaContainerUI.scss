@@ -1,0 +1,10 @@
+@mixin universal {
+  display: flex;
+  justify-content: center;
+
+  .ultra-container-container {
+    width: 850px;
+    min-width: 0px;
+    padding: 0 20px;
+  }
+}

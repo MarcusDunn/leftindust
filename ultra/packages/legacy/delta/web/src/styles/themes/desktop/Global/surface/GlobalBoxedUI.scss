@@ -1,0 +1,19 @@
+@mixin universal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  user-select: none;
+
+  .f7-icons {
+    font-size: inherit;
+  }
+
+  &:not(.ultra-boxed-outline) {
+    color: white;
+  }
+
+  &.ultra-boxed-round {
+    border-radius: 100%;
+  }
+}

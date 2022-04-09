@@ -1,0 +1,17 @@
+@mixin universal {
+  .ultra-clamps-button-ellipsis {
+    font-size: 26px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 6px;
+    background: rgb(229, 229, 234);
+    vertical-align: middle;
+    cursor: pointer;
+  }
+}
+
+@mixin universal-dark {
+  .ultra-clamps-button-ellipsis {
+    background: rgb(44, 44, 46);
+  }
+}
