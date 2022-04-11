@@ -1,3 +1,3 @@
-rootProject.name = "leftindust-backend"
+rootProject.name = "leftindust"
 include("mockingbird")
 include("ultra")
