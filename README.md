@@ -4,10 +4,10 @@
 
 This is [leftindust's](https://leftindust.com) EMR.
 
-## Setup
+## Ultra
 
-This project should be a postgres DB and a correctly configured `application.properties` away from running
-with `./gradlew run`.
+This is the frontend
 
-For the sake of faster testing I would recommend putting `testcontainers.reuse.enable=true` in
-your `~/.testcontainers.properties`.
+## Mockingbird 
+
+This is the backend
