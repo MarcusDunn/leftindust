@@ -1,10 +1,14 @@
-name: CI
+name: Mockingbird
 on:
   push:
     paths: 
       - 'mockingbird/**'
     paths-ignore:
       - '**.md'
+      
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   mockingbird-build:
