@@ -3,6 +3,7 @@ on:
   push:
     paths: 
       - 'mockingbird/**'
+  workflow_dispatch:
       
 concurrency: 
   group: ${{ github.ref }}
