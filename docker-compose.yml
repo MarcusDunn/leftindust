@@ -21,5 +21,9 @@ services:
       - SPRING_DATASOURCE_USERNAME=mediq
       - SPRING_DATASOURCE_PASSWORD=mediq
     build:
-      context: .
-      dockerfile: mockingbird.Dockerfile
+      context: mockingbird
+      dockerfile: mockingbird/Dockerfile
+  ultra:
+    ports:
+      - 80:80
+      -

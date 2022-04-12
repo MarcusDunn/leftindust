@@ -5,19 +5,19 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm")
-    kotlin("kapt")
-    kotlin("plugin.spring")
-    kotlin("plugin.jpa")
-    kotlin("plugin.allopen")
+    kotlin("jvm") version "1.6.0"
+    kotlin("kapt") version "1.6.0"
+    kotlin("plugin.spring") version "1.6.0"
+    kotlin("plugin.allopen") version "1.6.0"
+    kotlin("plugin.jpa") version "1.6.0"
     id("org.jetbrains.kotlinx.kover") version "0.5.0"
 
     // spring
-    id("org.springframework.boot")
-    id("io.spring.dependency-management")
+    id("org.springframework.boot") version "2.6.3"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
     // liquibase
-    id("org.liquibase.gradle")
+    id("org.liquibase.gradle") version "2.1.1"
 }
 
 repositories {
