@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
- ultra-build:
+ build:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
