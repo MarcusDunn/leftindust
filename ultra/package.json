@@ -20,12 +20,9 @@
     "start:platform:electron": "lerna run start --parallel --scope '{@bluebird/web,@bluebird/electron}'",
     "schema": "lerna exec graphql-codegen --stream --scope @delta/library",
     "start:ultra": "lerna run start --stream --scope @ultra/leftindust",
-    "build:ultra": "lerna run build --stream --scope @ultra/leftindust",
-    "cypress:open": "node_modules/cypress/bin/cypress open",
-    "cypress:run": "node_modules/cypress/bin/cypress run"
+    "build:ultra": "lerna run build --stream --scope @ultra/leftindust"
   },
   "devDependencies": {
-    "lerna": "^4.0.0",
-    "cypress": "9.5.4"
+    "lerna": "^4.0.0"
   }
 }

@@ -1,0 +1,14 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "The Integration tests for leftindust",
+  "scripts": {
+    "cypress:open": "node_modules/cypress/bin/cypress open",
+    "cypress:run": "node_modules/cypress/bin/cypress run"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^9.5.4"
+  }
+}
