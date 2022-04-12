@@ -3,8 +3,6 @@ on:
   push:
     paths:
       - 'ultra/**'
-    paths-ignore:
-      - '**.md'
       
 concurrency: 
   group: ${{ github.ref }}
