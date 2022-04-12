@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'ultra/**'
+  workflow_dispatch:
       
 concurrency: 
   group: ${{ github.ref }}
