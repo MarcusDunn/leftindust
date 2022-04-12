@@ -1,3 +1,4 @@
+name: Ultra
 on: 
   push:
     paths:
