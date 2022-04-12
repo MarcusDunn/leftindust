@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import sveltePreprocess from 'svelte-preprocess';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 const graphql = require('@rollup/plugin-graphql');
 
@@ -20,9 +19,9 @@ export default defineConfig({
     outDir,
     rollupOptions: {
       input: {
-        main: fileURLToPath(new URL('./index.html', import.meta.url)),
-        mediq: fileURLToPath(new URL('./apps/mediq/index.html', import.meta.url)),
-        queue: fileURLToPath(new URL('./apps/queue/index.html', import.meta.url)),
+        main: path.resolve(__dirname, 'src/index.html'),
+        mediq: path.resolve(__dirname,'src/apps/mediq/index.html'),
+        queue: path.resolve(__dirname, 'src//apps/queue/index.html'),
       },
     },
   },

@@ -19,7 +19,8 @@
     "start:montauk:web": "lerna run start --stream --scope @montauk/web",
     "start:platform:electron": "lerna run start --parallel --scope '{@bluebird/web,@bluebird/electron}'",
     "schema": "lerna exec graphql-codegen --stream --scope @delta/library",
-    "start:leftindust": "lerna run start --stream --scope @ultra/leftindust"
+    "start:ultra": "lerna run start --stream --scope @ultra/leftindust",
+    "build:ultra": "lerna run build --stream --scope @ultra/leftindust"
   },
   "devDependencies": {
     "lerna": "^4.0.0"
