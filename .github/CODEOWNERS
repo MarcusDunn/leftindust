@@ -1,15 +1,6 @@
-/.github @MarcusDunn
+# Marcus Handles most of the infastructure stuff which is stored in root and in .github
+* @MarcusDunn
+# Marcus also is the cheif backend man - which is stored in `mockingbird`
 /mockingbird @MarcusDunn
+# Aydan is the frontend guy - this is currently only stored in `ultra`
 /ultra @ka1to1
-LICENCE.md @MarcusDunn
-README.md @MarcusDunn
-build.gradle.kts @MarcusDunn
-codecov.yml @MarcusDunn
-docker-compose.yml @MarcusDunn
-gradle.properties @MarcusDunn
-gradlew @MarcusDunn
-gradlew.bat @MarcusDunn
-mockingbird.Dockerfile @MarcusDunn
-mockingbird.test.docker-compose.yml @MarcusDunn
-schema.graphqls @MarcusDunn
-settings.gradle.kts @MarcusDunn
