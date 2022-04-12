@@ -4,8 +4,12 @@ on:
       - 'ultra/**'
     paths-ignore:
       - '**.md'
+      
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
- 
+jobs:
  ultra-build:
     strategy:
       matrix:
