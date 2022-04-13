@@ -22,6 +22,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=mediq
     build:
       context: mockingbird
+    depends_on:
+      - mockingbird-postgres
   ultra:
     ports:
       - 80:80
