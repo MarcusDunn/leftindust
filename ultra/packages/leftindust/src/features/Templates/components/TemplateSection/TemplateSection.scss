@@ -1,0 +1,20 @@
+.templates-template_section {
+  display: flex;
+
+  .templates-template_section-controller {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 25px;
+    flex-shrink: 0;
+    
+    .f7-icons {
+      font-size: 25px;
+      cursor: grab;
+    }
+  }
+
+  .templates-template_section-section {
+    width: 100%;
+  }
+}

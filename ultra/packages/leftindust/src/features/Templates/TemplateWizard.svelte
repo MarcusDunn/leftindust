@@ -1,26 +1,18 @@
 <script lang="ts">
-  import type { Swiper as SwiperType } from 'swiper';
   import {
     Segmented,
     Button,
     Tabs,
     Tab,
-    Swiper,
-    SwiperSlide,
   } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
   import { TemplateInputItems, TemplateSelectedTab } from './store';
-  import Input from '../Input/Input.svelte';
   
   import IFrame from '../View/components/IFrame/IFrame.svelte';
   import WizardSplit from '../Wizard/components/WizardSplit/WizardSplit.svelte';
-  import TemplateInputs from './components/TemplateInputs/TemplateInputs.svelte';
   import TemplateCategoryInputs from './components/TemplateInputs/TemplateCategoryInputs.svelte';
-  import Add from '../Input/components/Add/Add.svelte';
-
-  let swiper: SwiperType | undefined;
-  const setSwiper = (event: CustomEvent<[SwiperType]>) => [swiper] = event.detail;
-
+  import TemplateSections from './components/TemplateSections/TemplateSections.svelte';
+  import TemplateSectionInputs from './components/TemplateSection/TemplateSectionInputs.svelte';
 </script>
 
 <WizardSplit
@@ -44,47 +36,24 @@
       </Button>
     </Segmented>
   </svelte:fragment>
-  <Input
-    title={$_('generics.title')}
-    clear
-    style="width: 100%"
-  >
-    <input type="text" placeholder="Eg. Blood Sample" bind:value={$TemplateInputItems.title} />
-  </Input>
-  <br />
-  <Input
-    title={$_('generics.description')}
-    clear
-  >
-    <input type="text" placeholder="Additional" bind:value={$TemplateInputItems.subtitle} />
-  </Input>
+
+  {#if $TemplateInputItems.sections.length > 1}
+    <TemplateSectionInputs
+      bind:title={$TemplateInputItems.title}
+      bind:subtitle={$TemplateInputItems.subtitle}
+    />
+    <br />
+    <br />
+  {/if}
   <Tabs>
     <Tab tabActive={$TemplateSelectedTab === 'input'}>
-      <br />
-      <br />
-      <Swiper
-        allowTouchMove={false}
-        observer
-        observeParents
-        autoHeight
-        on:swiper={setSwiper}
-      >
-        <SwiperSlide>
-          <TemplateInputs bind:items={$TemplateInputItems.items} />
-        </SwiperSlide>
-      </Swiper>
-      <br />
-      <br />
-      <br />
-      <Add placeholder="Add Section" />
+      <TemplateSections bind:sections={$TemplateInputItems.sections} />
     </Tab>
     <Tab tabActive={$TemplateSelectedTab === 'output'}>
-      <br />
-      <br />
-      <TemplateCategoryInputs bind:inputs={$TemplateInputItems.items} />
+      <TemplateCategoryInputs bind:sections={$TemplateInputItems.sections} />
     </Tab>
   </Tabs>
-  
+  <br />  
   <svelte:fragment slot="detail">
     <IFrame
       views={[{

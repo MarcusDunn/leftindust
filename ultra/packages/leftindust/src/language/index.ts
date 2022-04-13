@@ -138,11 +138,14 @@ export type Dictionary = {
     description: string;
     instructions: string;
     subtitle: string;
+    addSection: string;
+    section: string;
   };
   examples: {
     totalPlateletCount: string;
     mcl: string;
     text: string;
+    section: string;
   };
 }
 

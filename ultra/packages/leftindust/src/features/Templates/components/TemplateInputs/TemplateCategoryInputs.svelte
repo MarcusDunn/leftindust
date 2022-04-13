@@ -1,24 +1,42 @@
 <script lang="ts">
-  import type { TemplateInput } from '../../';
+  import type { TemplateSection, TemplateInput } from '../../';
   import { TemplateInputType, TemplateCategory } from '../../';
   import { _ } from '@/language';
   import { Col, Row } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
   
-  export let inputs: TemplateInput[];
+  export let sections: TemplateSection[];
+
+  let inputs: (TemplateInput & {
+    originalSectionIndex: number;
+  })[] = [];
 
   const getValue = (selectedCategory: TemplateCategory) => inputs.filter(({ category }) => category === selectedCategory)[0]?.id ?? 'default';
-
+  
   const onChange = (value: string | number, selectedCategory: TemplateCategory, keepOld?: boolean) => {
-    const resetIndex = inputs.findIndex(({ category }) => category === selectedCategory);
-    if (resetIndex >= 0 && !keepOld) inputs[resetIndex].category = undefined;
+    const resetInputIndex = inputs.findIndex(({ category }) => category === selectedCategory);
 
-    const index = inputs.findIndex(({ id }) => id === value);
-    if (index >= 0) inputs[inputs.findIndex(({ id }) => id === value)].category = selectedCategory;
+    if (resetInputIndex >= 0) {
+      const resetSectionIndex = inputs[resetInputIndex].originalSectionIndex;
+      const resetIndex = sections[resetSectionIndex].inputs.findIndex(({ category }) => category === selectedCategory);
+  
+      if (resetIndex >= 0 && !keepOld) sections[resetSectionIndex].inputs[resetIndex].category = undefined;
+    }
+    
+    const inputIndex = inputs.findIndex(({ id }) => id === value);
+    const sectionIndex = inputs[inputIndex]?.originalSectionIndex ?? -1;
+    const index = sections[sectionIndex]?.inputs?.findIndex(({ id }) => id === value);
+
+    if (index >= 0) sections[sectionIndex].inputs[index].category = selectedCategory;
   };
+
+  $: inputs = sections.flatMap((section, index) => section.inputs.map((input) => ({
+    ...input,
+    originalSectionIndex: index,
+    label: `${input.label}${sections.length > 1 ? ` (${$_('generics.section', { values: { number: index + 1 } })})` : ''}`,
+  })));
 </script>
 
-<br />
 <Row>
   <Col width="100" small="50">
     <Select

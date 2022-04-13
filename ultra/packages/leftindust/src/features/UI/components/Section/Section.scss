@@ -1,0 +1,39 @@
+.ui-section {
+  .ui-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #8e8e93;
+    transition: color 0.2s linear;
+  }
+
+  .ui-section-container {
+    border: 4px solid rgb(209, 209, 214);
+    border-radius: 8px;
+    padding: 40px 25px;
+    transition: border-color 0.2s linear;
+  }
+  
+  &.ui-section-active {
+    .ui-section-title {
+      color: #673ab7;
+    }
+    .ui-section-container {
+      border-color: #673ab7;
+    }
+  }
+}
+
+.theme-dark {
+  .ui-section {
+    .ui-section-container {
+      border-color: rgb(58, 58, 60);
+    }
+
+    &.ui-section-active {
+      .ui-section-container {
+        border-color: #673ab7;
+      }
+    }
+  }
+}

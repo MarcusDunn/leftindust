@@ -17,7 +17,7 @@
   import TemplateInputSelect from './TemplateInputSelect.svelte';
   import Add from '@/features/Input/components/Add/Add.svelte';
 
-  export let items: TemplateInput[];
+  export let inputs: TemplateInput[];
   export let index: number;
   export let globalIndex: number;
   
@@ -54,45 +54,47 @@
   <div class="templates-template_input-inputs">
     <Row>
       <Col width="100">
-        <Select
-          title={$_('generics.type')}
-          placeholder={$_('examples.text')}
-          options={[
-            {
-              text: $_('generics.text'),
-              value: TemplateInputType.Text,
-            },
-            {
-              text: $_('generics.number'),
-              value: TemplateInputType.Number,
-            },
-            {
-              text: $_('generics.date'),
-              value: TemplateInputType.Date,
-            },
-            {
-              text: $_('generics.paragraph'),
-              value: TemplateInputType.Paragraph,
-            },
-            {
-              text: $_('generics.singleSelect'),
-              value: TemplateInputType.SingleSelect,
-            },
-            {
-              text: $_('generics.multiSelect'),
-              value: TemplateInputType.MultiSelect,
-            },
-            {
-              text: $_('generics.upload'),
-              value: TemplateInputType.Upload,
-            },
-            {
-              text: $_('generics.title'),
-              value: TemplateInputType.Title,
-            },
-          ]}
-          bind:value={type}
-        />
+        {#key index}
+          <Select
+            title={$_('generics.type')}
+            placeholder={$_('examples.text')}
+            options={[
+              {
+                text: $_('generics.text'),
+                value: TemplateInputType.Text,
+              },
+              {
+                text: $_('generics.number'),
+                value: TemplateInputType.Number,
+              },
+              {
+                text: $_('generics.date'),
+                value: TemplateInputType.Date,
+              },
+              {
+                text: $_('generics.paragraph'),
+                value: TemplateInputType.Paragraph,
+              },
+              {
+                text: $_('generics.singleSelect'),
+                value: TemplateInputType.SingleSelect,
+              },
+              {
+                text: $_('generics.multiSelect'),
+                value: TemplateInputType.MultiSelect,
+              },
+              {
+                text: $_('generics.upload'),
+                value: TemplateInputType.Upload,
+              },
+              {
+                text: $_('generics.title'),
+                value: TemplateInputType.Title,
+              },
+            ]}
+            bind:value={type}
+          />
+        {/key}
       </Col>
       <Col width="100" small={(multiselect || title ) ? 100 : 50}>
         <Input style="width: 100%">
@@ -188,8 +190,8 @@
                 color: 'gray',
               }}
               on:click={() => {
-                items = [
-                  ...items.slice(0, index),
+                inputs = [
+                  ...inputs.slice(0, index),
                   {
                     id: globalIndex,
                     type,
@@ -198,7 +200,7 @@
                     required,
                     options,
                   },
-                  ...items.slice(index),
+                  ...inputs.slice(index),
                 ];
                 globalIndex += 1;
               }}
@@ -209,7 +211,7 @@
                 f7: 'minus_circle_fill',
                 color: 'red',
               }}
-              on:click={() => (items = items.filter((_, i) => i !== index))}
+              on:click={() => (inputs = inputs.filter((_, i) => i !== index))}
             />
           </div>
         </div>

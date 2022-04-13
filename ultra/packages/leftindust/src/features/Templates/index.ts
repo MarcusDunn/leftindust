@@ -32,3 +32,16 @@ export type TemplateInput = {
   uploadMultiple?: boolean;
   uploadAccept?: TemplateInputUploadType;
 }
+
+export type TemplateSection = {
+  id: number;
+  title: string;
+  subtitle?: string;
+  inputs: TemplateInput[];
+}
+
+export type Template = {
+  title: string;
+  subtitle?: string;
+  sections: TemplateSection[];
+};
