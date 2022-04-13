@@ -134,11 +134,14 @@ const language: Dictionary = {
     description: 'Description',
     instructions: 'Instructions',
     subtitle: 'Subtitle',
+    addSection: 'Add Section',
+    section: 'Section {number}',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',
     mcl: 'Eg. mcL',
     text: 'Eg. Text',
+    section: 'Eg. Section {number}',
   },
 };
 

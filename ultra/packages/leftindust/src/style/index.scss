@@ -357,7 +357,7 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
 
 .ios {
   /* -=-=-=-=-=-=-=- OVERWRITES -=-=-=-=-=-=-=- */
-  --f7-progressbar-height: 4px;
+  --f7-progressbar-height: 4px !important;
 
   /* Page */
   .views, .popup {

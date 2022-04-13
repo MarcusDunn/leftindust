@@ -6,21 +6,19 @@
   "workspaces": [
     "packages/legacy/delta/**",
     "packages/legacy/bluebird/**",
-    "packages/legacy/montauk/**",
     "packages/leftindust/**"
   ],
   "engines": {
     "yarn": "^1.22.10"
   },
   "scripts": {
-    "start": "yarn run electron:start",
-    "start:bluebird:web": "lerna run start --stream --scope @bluebird/web",
-    "build:bluebird:web": "lerna run build --stream --scope @bluebird/web",
-    "start:montauk:web": "lerna run start --stream --scope @montauk/web",
-    "start:platform:electron": "lerna run start --parallel --scope '{@bluebird/web,@bluebird/electron}'",
-    "schema": "lerna exec graphql-codegen --stream --scope @delta/library",
+    "start:legacy": "lerna run start --stream --scope @bluebird/web",
+    "build:legacy": "lerna run build --stream --scope @bluebird/web",
+
     "start:ultra": "lerna run start --stream --scope @ultra/leftindust",
-    "build:ultra": "lerna run build --stream --scope @ultra/leftindust"
+    "build:ultra": "lerna run build --stream --scope @ultra/leftindust",
+    "check:ultra": "lerna run check --stream --scope @ultra/leftindust",
+    "schema": "lerna exec graphql-codegen --stream --scope @ultra/leftindust"
   },
   "devDependencies": {
     "lerna": "^4.0.0"

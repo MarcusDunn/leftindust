@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "svelte.svelte-vscode",
+    "graphql.vscode-graphql",
+    "dbaeumer.vscode-eslint",
+    "sibiraj-s.vscode-scss-formatter",
+    "lokalise.i18n-ally",
+    "fwcd.kotlin"
+  ]
+}

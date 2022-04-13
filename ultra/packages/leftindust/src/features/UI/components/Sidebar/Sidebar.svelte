@@ -14,9 +14,10 @@
   import './Sidebar.scss';
   
   import { wizardOpen } from '../../../Wizard/store';
+  import AppLauncherButton from '@/features/Apps/components/AppLauncher/AppLauncherButton.svelte';
 
   import { getNativeAPI } from '@/api/bridge';
-  import SidebarToggle from '@/features/UI/components/Sidebar/SidebarToggle.svelte';
+  import SidebarToggle from './SideBarToggle.svelte';
 
   export let items: (SidebarItem | SidebarTitle)[] = [];
 

@@ -4,21 +4,18 @@
 	import { TemplateInputType, TemplateInputUploadType } from '../../';
 	import { dndzone, SOURCES, TRIGGERS	} from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
-	import { Icon } from 'framework7-svelte';
+	import { Button } from 'framework7-svelte';
 	import TemplateInput from '../TemplateInput/TemplateInput.svelte';
-	import Add from '@/features/Input/components/Add/Add.svelte';
-	import DescriptivePlaceholder
-	  from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
 	
-	export let items: TemplateInputT[] = [];
+	export let inputs: TemplateInputT[] = [];
+	export let globalIndex = 0;
 			
 	const flipDurationMs = 200;
 	let dragDisabled = true;
-	let globalIndex = 0;
 			
 	const handleConsider = (e: CustomEvent<DndEvent>) => {
 	  const { items: newItems, info: { source, trigger } } = e.detail;
-	  items = newItems as TemplateInputT[];
+	  inputs = newItems as TemplateInputT[];
 	  // Ensure dragging is stopped on drag finish via keyboard
 	  if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
 	    dragDisabled = true;
@@ -27,7 +24,7 @@
 
 	const handleFinalize = (e: CustomEvent<DndEvent>) => {
 	  const { items: newItems, info: { source } } = e.detail;
-	  items = newItems as TemplateInputT[];
+	  inputs = newItems as TemplateInputT[];
 	  // Ensure dragging is stopped on drag finish via pointer (mouse, touch)
 	  if (source === SOURCES.POINTER) {
 	    dragDisabled = true;
@@ -41,13 +38,13 @@
 	};
 </script>
 
-{#if items.length > 0}
+{#if inputs.length > 0}
 	<section
-		use:dndzone="{{ items, dragDisabled, flipDurationMs }}"
+		use:dndzone="{{ items: inputs, dragDisabled, flipDurationMs, type: 'inputs' }}"
 		on:consider="{handleConsider}"
 		on:finalize="{handleFinalize}"
 	>
-		{#each items as item, index (item.id)}
+		{#each inputs as input, index (input.id)}
 			<div
 				animate:flip="{{ duration: flipDurationMs }}"
 				style="margin-bottom: 30px"
@@ -56,49 +53,44 @@
 					{index}
 					dragger={startDrag}
 					bind:globalIndex
-					bind:items
-					bind:type={item.type}
-					bind:label={item.label}
-					bind:options={item.options}
-					bind:placeholder={item.placeholder}
-					bind:uploadAccept={item.uploadAccept}
-					bind:uploadMultiple={item.uploadMultiple}
-					bind:required={item.required}
+					bind:inputs
+					bind:type={input.type}
+					bind:label={input.label}
+					bind:options={input.options}
+					bind:placeholder={input.placeholder}
+					bind:uploadAccept={input.uploadAccept}
+					bind:uploadMultiple={input.uploadMultiple}
+					bind:required={input.required}
 				/>
 			</div>
 		{/each}
 	</section>
-{:else}
-	<div class="text-align-center" style="margin-top: 20px">
-		<DescriptivePlaceholder
-			title="Add an input"
-			description="Begin designing your template by adding an interactable input"
-			link={{
-				label: 'Learn more about templates...',
+{/if}
+<div style={`${inputs.length > 0 ? 'margin-left: 70px;margin-top: 40px;' : ''}`}>
+	<div class="display-flex">
+		<Button
+			fill
+			round
+			color="deeppurple"
+			style="width: 100%;margin-right: 0"
+			on:click={() => {
+				inputs = [
+					...inputs,
+					{
+						id: globalIndex,
+						type: TemplateInputType.Text,
+						label: '',
+						placeholder: '',
+						required: false,
+						options: [''],
+						uploadAccept: TemplateInputUploadType.All,
+						uploadMultiple: true,
+					},
+				];
+				globalIndex += 1;
 			}}
 		>
-			<Icon f7="textbox" color="blue" style="font-size: 45px; margin-bottom: 20px" />
-		</DescriptivePlaceholder>
+			Add Input
+		</Button>
 	</div>
-{/if}
-<div style={`${items.length > 0 ? 'margin-left: 70px;margin-top: 40px;' : ''}`}>
-	<Add
-		style="margin-top: 30px"
-		on:click={() => {
-			items = [
-				...items,
-				{
-					id: globalIndex,
-					type: TemplateInputType.Text,
-					label: '',
-					placeholder: '',
-					required: false,
-					options: [''],
-					uploadAccept: TemplateInputUploadType.All,
-					uploadMultiple: true,
-				},
-			];
-			globalIndex += 1;
-		}}
-	/>
 </div>

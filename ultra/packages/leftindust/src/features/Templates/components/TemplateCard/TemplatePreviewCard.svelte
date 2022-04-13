@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { TemplateInput } from '../..';
   import { TemplateInputItems } from '../../store';
   import { TemplateCategory } from '../..';
   import { _ } from 'svelte-i18n';
@@ -18,9 +19,17 @@
   let title: string;
   let body: string;
 
-  $: date = $TemplateInputItems.items.filter(({ category }) => category === TemplateCategory.Date)[0]?.label;
-  $: title = $TemplateInputItems.items.filter(({ category }) => category === TemplateCategory.Title)[0]?.label;
-  $: body = $TemplateInputItems.items.filter(({ category }) => category === TemplateCategory.Body)[0]?.label;
+  let inputs: TemplateInput[] = [];
+
+  $: date = inputs.filter(({ category }) => category === TemplateCategory.Date)[0]?.label;
+  $: title = inputs.filter(({ category }) => category === TemplateCategory.Title)[0]?.label;
+  $: body = inputs.filter(({ category }) => category === TemplateCategory.Body)[0]?.label;
+
+  $: inputs = $TemplateInputItems.sections.flatMap((section, index) => section.inputs.map((input) => ({
+    ...input,
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    label: `${input.label}${$TemplateInputItems.sections.length > 1 ? ` (${$_('generics.section', { values: { number: index + 1 } })})` : ''}`,
+  })));
 
 </script>
 
@@ -54,7 +63,6 @@
 
   <div style="margin-top: 6px" slot="subtitle">
     {#if !body}
-    
       <Chip
         text="? Responses"
         mediaBgColor="blue"

@@ -3,12 +3,14 @@
     .wizard-wizard_split-container {
       .wizard-wizard_split-detail {
         display: none !important;
+        
       }
 
       .wizard-wizard_split-master {
         width: 100% !important;
         margin: 35px 20px !important;
         padding-left: 0 !important;
+        margin-right: 0 !important;
       }
     }
   }
@@ -22,8 +24,9 @@
     .wizard-wizard_split-master {
       width: 600px;
       margin-top: 55px;
-      padding-left: 40px;
+      padding-left: 25px;
       overflow-y: scroll;
+      padding-right: 15px;
     }
 
     .wizard-wizard_split-detail {
