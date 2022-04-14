@@ -1,18 +1,18 @@
 package com.leftindust.mockingbird.graphql.mutations
 
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.dao.clinic.CreateClinicDao
 import com.leftindust.mockingbird.dao.clinic.UpdateClinicDao
 import com.leftindust.mockingbird.dao.entity.Clinic
 import com.leftindust.mockingbird.graphql.types.GraphQLClinic
 import com.leftindust.mockingbird.graphql.types.input.GraphQLClinicEditInput
 import com.leftindust.mockingbird.graphql.types.input.GraphQLClinicInput
+import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
-import java.util.UUID
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.util.*
 
 internal class ClinicMutationTest {
     private val createClinicDao = mockk<CreateClinicDao>()
@@ -22,32 +22,24 @@ internal class ClinicMutationTest {
     fun addClinic() {
         val clinicID = UUID.randomUUID()
 
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
-
         val clinic = mockk<GraphQLClinicInput>()
 
         val mockkClinic = mockk<Clinic>(relaxed = true) {
             every { id } returns clinicID
         }
 
-        every { createClinicDao.addClinic(clinic, authContext.mediqAuthToken) } returns mockkClinic
+        every { createClinicDao.addClinic(clinic, any()) } returns mockkClinic
 
         val clinicMutation = ClinicMutation(createClinicDao, updateClinicDao)
 
-        val result = runBlocking { clinicMutation.addClinic(clinic, authContext) }
+        val result = runBlocking { clinicMutation.addClinic(clinic, MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        assertEquals(GraphQLClinic(mockkClinic,  authContext), result)
+        assertEquals(GraphQLClinic(mockkClinic), result)
     }
 
     @Test
     fun editClinic() {
         val clinicID = UUID.randomUUID()
-
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val clinic = mockk<GraphQLClinicEditInput>()
 
@@ -55,12 +47,12 @@ internal class ClinicMutationTest {
             every { id } returns clinicID
         }
 
-        every { updateClinicDao.editClinic(clinic, authContext.mediqAuthToken) } returns mockkClinic
+        every { updateClinicDao.editClinic(clinic, any()) } returns mockkClinic
 
         val clinicMutation = ClinicMutation(createClinicDao, updateClinicDao)
 
-        val result = runBlocking { clinicMutation.editClinic(clinic, authContext) }
+        val result = runBlocking { clinicMutation.editClinic(clinic, MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        assertEquals(GraphQLClinic(mockkClinic, authContext), result)
+        assertEquals(GraphQLClinic(mockkClinic), result)
     }
 }

@@ -2,12 +2,12 @@ package com.leftindust.mockingbird.graphql.queries
 
 import com.expediagroup.graphql.generator.scalars.ID
 import com.google.firebase.auth.ExportedUserRecord
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.dao.UserDao
 import com.leftindust.mockingbird.dao.entity.MediqUser
 import com.leftindust.mockingbird.external.firebase.UserFetcher
 import com.leftindust.mockingbird.graphql.types.GraphQLUser
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
+import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test
 internal class UserQueryTest {
     private val userDao = mockk<UserDao>()
     private val firebaseFetcher = mockk<UserFetcher>()
-    private val graphQLAuthContext = mockk<GraphQLAuthContext>()
 
     @Test
     fun user() {
@@ -27,10 +26,9 @@ internal class UserQueryTest {
         }
         every { userDao.findUserByUid("uid", any()) } returns user
         val userQuery = UserQuery(userDao, firebaseFetcher)
-        every { graphQLAuthContext.mediqAuthToken } returns mockk()
 
-        val result = runBlocking { userQuery.user(ID("uid"), graphQLAuthContext) }
-        assertEquals(GraphQLUser(user, graphQLAuthContext), result)
+        val result = runBlocking { userQuery.user(ID("uid"), MockDataFetchingEnvironment.withDummyMediqToken) }
+        assertEquals(GraphQLUser(user), result)
     }
 
     @Test
@@ -41,9 +39,8 @@ internal class UserQueryTest {
         }
         every { userDao.getUsers(any(), any()) } returns listOf(user)
         val userQuery = UserQuery(userDao, firebaseFetcher)
-        every { graphQLAuthContext.mediqAuthToken } returns mockk()
-        val result = runBlocking { userQuery.users(GraphQLRangeInput(0, 3), graphQLAuthContext = graphQLAuthContext) }
-        assertEquals(listOf(GraphQLUser(user, graphQLAuthContext)), result)
+        val result = runBlocking { userQuery.users(GraphQLRangeInput(0, 3), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken) }
+        assertEquals(listOf(GraphQLUser(user)), result)
     }
 
     @Test
@@ -69,9 +66,7 @@ internal class UserQueryTest {
 
         val userQuery = UserQuery(userDao, firebaseFetcher)
 
-        every { graphQLAuthContext.mediqAuthToken } returns mockk()
-
-        val result = runBlocking { userQuery.firebaseUsers(GraphQLRangeInput(0, 4), true, graphQLAuthContext) }
+        val result = runBlocking { userQuery.firebaseUsers(GraphQLRangeInput(0, 4), true, MockDataFetchingEnvironment.withDummyMediqToken) }
 
         assertEquals(4, result.size)
     }

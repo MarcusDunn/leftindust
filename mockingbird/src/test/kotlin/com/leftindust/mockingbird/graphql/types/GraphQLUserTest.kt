@@ -2,7 +2,6 @@ package com.leftindust.mockingbird.graphql.types
 
 import com.google.firebase.auth.UserRecord
 import com.leftindust.mockingbird.auth.Crud
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.auth.NotAuthorizedException
 import com.leftindust.mockingbird.dao.AuthorizationDao
 import com.leftindust.mockingbird.dao.NameInfoDao
@@ -14,6 +13,7 @@ import com.leftindust.mockingbird.dao.patient.ReadPatientDao
 import com.leftindust.mockingbird.external.firebase.UserFetcher
 import com.leftindust.mockingbird.graphql.types.input.GraphQLPermissionInput
 import com.leftindust.mockingbird.util.EntityStore
+import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -26,83 +26,68 @@ internal class GraphQLUserTest {
 
     @Test
     fun `isRegistered general success`() {
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
+
         val userDao = mockk<UserDao> {
             every { findUserByUid("uid", any()) } returns mockk()
         }
 
-        val graphQLUser = runBlocking { GraphQLUser("uid", null, authContext).isRegistered(userDao) }
+        val graphQLUser = runBlocking { GraphQLUser("uid", null).isRegistered(userDao, MockDataFetchingEnvironment.withDummyMediqToken) }
         assertEquals(true, graphQLUser)
     }
 
     @Test
     fun `isRegistered special success`() {
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
+
         val userDao = mockk<UserDao> {
             every { findUserByUid("uid", any()) } returns null
         }
 
-        val graphQLUser = runBlocking { GraphQLUser("uid", null, authContext).isRegistered(userDao) }
+        val graphQLUser =
+            runBlocking { GraphQLUser("uid", null).isRegistered(userDao, MockDataFetchingEnvironment.withDummyMediqToken) }
         assertEquals(false, graphQLUser)
     }
 
     @Test
     fun `isRegistered general failure`() {
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
         val userDao = mockk<UserDao> {
             every { findUserByUid("uid", any()) } throws NotAuthorizedException(
-                authContext.mediqAuthToken,
+                mockk(),
                 Crud.READ to Tables.User
             )
         }
 
         assertThrows<NotAuthorizedException> {
-            runBlocking { GraphQLUser("uid", null, authContext).isRegistered(userDao) }
+            runBlocking { GraphQLUser("uid", null).isRegistered(userDao, MockDataFetchingEnvironment.withDummyMediqToken) }
         }
     }
 
     @Test
     fun firebaseUserInfo() {
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val expected = mockk<UserRecord>(relaxed = true)
 
         val userFetcher = mockk<UserFetcher> {
-            every { getUserInfo("uid", authContext.mediqAuthToken) } returns expected
+            every { getUserInfo("uid", any()) } returns expected
         }
-        val result = runBlocking { GraphQLUser("uid", null, authContext).firebaseUserInfo(userFetcher) }
+        val result = runBlocking { GraphQLUser("uid", null).firebaseUserInfo(userFetcher, MockDataFetchingEnvironment.withDummyMediqToken) }
 
         assertEquals(GraphQLFirebaseInfo(expected), result)
     }
 
     @Test
     fun permissions() {
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val authorizationDao = mockk<AuthorizationDao> {
             every { getRolesForUserByUid("uid") } returns emptyList()
         }
 
-        val result = runBlocking { GraphQLUser("uid", null, authContext).permissions(authorizationDao) }
+        val result = runBlocking { GraphQLUser("uid", null).permissions(authorizationDao) }
 
         assertEquals(GraphQLPermissions(emptyList()), result)
     }
 
     @Test
     fun hasPermission() {
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val authorizationDao = mockk<AuthorizationDao> {
             every { getRolesForUserByUid("uid") } returns listOf(mockk {
@@ -111,7 +96,7 @@ internal class GraphQLUserTest {
         }
 
         val result = runBlocking {
-            GraphQLUser("uid", null, authContext).hasPermission(
+            GraphQLUser("uid", null).hasPermission(
                 authorizationDao,
                 GraphQLPermissionInput(referencedTableName = Tables.Patient, permissionType = Crud.UPDATE)
             )
@@ -122,9 +107,6 @@ internal class GraphQLUserTest {
 
     @Test
     fun patient() {
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val expectedPatient = EntityStore.patient("GraphqlUserTest.patient")
             .apply { id = UUID.nameUUIDFromBytes("GraphqlUserTest.patient".toByteArray()) }
@@ -133,16 +115,13 @@ internal class GraphQLUserTest {
             every { getByUser("uid", any()) } returns expectedPatient
         }
 
-        val result = runBlocking { GraphQLUser("uid", null, authContext).patient(mockkPatientDao) }
+        val result = runBlocking { GraphQLUser("uid", null).patient(mockkPatientDao, MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        assertEquals(GraphQLPatient(expectedPatient, authContext), result)
+        assertEquals(GraphQLPatient(expectedPatient), result)
     }
 
     @Test
     internal fun names() {
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val nameInfo = mockk<NameInfo>(relaxed = true)
 
@@ -150,7 +129,8 @@ internal class GraphQLUserTest {
             every { findByUniqueId("uid", any()) } returns nameInfo
         }
 
-        val result = runBlocking { GraphQLUser("uid", null, authContext).name(nameInfoDao) }
+        val result =
+            runBlocking { GraphQLUser("uid", null).name(nameInfoDao, MockDataFetchingEnvironment.withDummyMediqToken) }
 
         assertEquals(GraphQLNameInfo(nameInfo), result)
     }

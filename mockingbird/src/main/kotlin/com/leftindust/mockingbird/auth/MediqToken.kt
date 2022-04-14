@@ -7,4 +7,5 @@ package com.leftindust.mockingbird.auth
 interface MediqToken {
     val uid: String?
     fun isVerified(): Boolean
+    companion object
 }

@@ -3,21 +3,14 @@ package com.leftindust.mockingbird.auth.impl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseToken
 import com.leftindust.mockingbird.auth.MediqToken
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
 class VerifiedFirebaseToken constructor(
     private val token: String?,
 ) : MediqToken {
-    private val logger: Logger = LogManager.getLogger()
 
     private fun verify(token: String?) = FirebaseAuth.getInstance().verifyIdToken(token)
 
-    private val firebaseToken: FirebaseToken? = try {
-        verify(token)
-    } catch (e: Exception) {
-        null
-    }
+    private val firebaseToken: FirebaseToken? = kotlin.runCatching { verify(token) }.getOrNull()
 
     override val uid = firebaseToken?.uid
 

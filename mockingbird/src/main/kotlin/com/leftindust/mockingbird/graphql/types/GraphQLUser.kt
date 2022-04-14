@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.graphql.types
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.annotations.GraphQLIgnore
 import com.expediagroup.graphql.generator.annotations.GraphQLName
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
+import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.AuthorizationDao
 import com.leftindust.mockingbird.dao.DoctorDao
 import com.leftindust.mockingbird.dao.NameInfoDao
@@ -13,6 +13,7 @@ import com.leftindust.mockingbird.dao.entity.MediqUser
 import com.leftindust.mockingbird.dao.patient.ReadPatientDao
 import com.leftindust.mockingbird.external.firebase.UserFetcher
 import com.leftindust.mockingbird.graphql.types.input.GraphQLPermissionInput
+import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,13 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired
 @GraphQLName("User")
 data class GraphQLUser(
     val uid: String,
-    val group: GraphQLUserGroup? = null, // TODO: 2022-03-02 make sure this does not cause a lazy initialization exception when accessed as a feild
-    private val authContext: GraphQLAuthContext
+    val group: GraphQLUserGroup? = null
 ) {
-    constructor(mediqUser: MediqUser, graphQLAuthContext: GraphQLAuthContext) : this(
+    constructor(mediqUser: MediqUser) : this(
         uid = mediqUser.uniqueId,
         group = mediqUser.group?.let { GraphQLUserGroup(it) },
-        authContext = graphQLAuthContext,
     )
 
     @GraphQLDescription(
@@ -35,10 +34,11 @@ data class GraphQLUser(
     """
     )
     suspend fun name(
-        @GraphQLIgnore @Autowired nameInfoDao: NameInfoDao
+        @GraphQLIgnore @Autowired nameInfoDao: NameInfoDao,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): GraphQLNameInfo? = withContext(Dispatchers.IO) {
-        nameInfoDao.findByUniqueId(uid, authContext.mediqAuthToken)
-    }?.let { GraphQLNameInfo(it) }
+        nameInfoDao.findByUniqueId(uid, dataFetchingEnvironment.authToken)
+    }?.let(::GraphQLNameInfo)
 
 
     @GraphQLDescription(
@@ -47,9 +47,10 @@ data class GraphQLUser(
     """
     )
     suspend fun isRegistered(
-        @GraphQLIgnore @Autowired userDao: UserDao
+        @GraphQLIgnore @Autowired userDao: UserDao,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): Boolean = withContext(Dispatchers.IO) {
-        userDao.findUserByUid(uid, authContext.mediqAuthToken)
+        userDao.findUserByUid(uid, dataFetchingEnvironment.authToken)
     }.let { it != null }
 
 
@@ -59,10 +60,11 @@ data class GraphQLUser(
     """
     )
     suspend fun firebaseUserInfo(
-        @GraphQLIgnore @Autowired userFetcher: UserFetcher
+        @GraphQLIgnore @Autowired userFetcher: UserFetcher,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): GraphQLFirebaseInfo = withContext(Dispatchers.IO) {
-        userFetcher.getUserInfo(uid, authContext.mediqAuthToken)
-    }.let { GraphQLFirebaseInfo(it) }
+        userFetcher.getUserInfo(uid, dataFetchingEnvironment.authToken)
+    }.let(::GraphQLFirebaseInfo)
 
     @GraphQLDescription(
         """
@@ -73,7 +75,7 @@ data class GraphQLUser(
         @GraphQLIgnore @Autowired authorizationDao: AuthorizationDao
     ): GraphQLPermissions = withContext(Dispatchers.IO) {
         authorizationDao.getRolesForUserByUid(uid)
-    }.let { GraphQLPermissions(it) }
+    }.let(::GraphQLPermissions)
 
 
     @GraphQLDescription(
@@ -82,10 +84,11 @@ data class GraphQLUser(
     """
     )
     suspend fun doctor(
-        @GraphQLIgnore @Autowired doctorDao: DoctorDao
+        @GraphQLIgnore @Autowired doctorDao: DoctorDao,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): GraphQLDoctor? = withContext(Dispatchers.IO) {
-        doctorDao.getByUser(uid, authContext.mediqAuthToken)
-    }?.let { GraphQLDoctor(it, authContext) }
+        doctorDao.getByUser(uid, dataFetchingEnvironment.authToken)
+    }?.let(::GraphQLDoctor)
 
 
     @GraphQLDescription(
@@ -94,10 +97,11 @@ data class GraphQLUser(
     """
     )
     suspend fun patient(
-        @GraphQLIgnore @Autowired patientDao: ReadPatientDao
+        @GraphQLIgnore @Autowired patientDao: ReadPatientDao,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): GraphQLPatient? = withContext(Dispatchers.IO) {
-        patientDao.getByUser(uid, authContext.mediqAuthToken)
-    }?.let { GraphQLPatient(it, authContext) }
+        patientDao.getByUser(uid, dataFetchingEnvironment.authToken)
+    }?.let(::GraphQLPatient)
 
 
     @GraphQLDescription(

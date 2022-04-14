@@ -1,9 +1,9 @@
 FROM gradle as build
 WORKDIR mockingbird
 COPY --chown=gradle:gradle . .
-RUN ["gradle", "mockingbird:bootJar"]
+RUN ["gradle", "bootJar"]
 
 FROM openjdk
-COPY mockingbird/build/libs .
+COPY --from=build home/gradle/mockingbird/build/libs .
 EXPOSE 8080
-CMD ["java", "--jar", "mockingbird.jar"]
+CMD ["java", "-jar", "mockingbird.jar"]

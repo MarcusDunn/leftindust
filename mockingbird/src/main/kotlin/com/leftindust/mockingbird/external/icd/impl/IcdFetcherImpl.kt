@@ -5,9 +5,11 @@ import com.leftindust.mockingbird.external.icd.IcdFetcher
 import com.leftindust.mockingbird.graphql.types.icd.*
 import com.leftindust.mockingbird.graphql.types.input.GraphQLReleaseIdInput
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
-import io.ktor.client.features.json.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.serialization.gson.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -18,10 +20,8 @@ class IcdFetcherImpl(
 ) : IcdFetcher {
 
     private val client = HttpClient(CIO) {
-        install(JsonFeature) {
-            serializer = GsonSerializer {
-                setPrettyPrinting()
-            }
+        install(ContentNegotiation) {
+            gson()
         }
         expectSuccess = true
     }
@@ -67,13 +67,10 @@ class IcdFetcherImpl(
         return GraphQLIcdLinearizationEntity(getUrlWithIcdHeaders(url))
     }
 
-    private suspend inline fun <reified T> getUrlWithIcdHeaders(url: String): T {
-        println(url)
-        return client.get {
-            url(url)
-            header("Accept", "application/json")
-            header("Accept-Language", "en")
-            header("API-Version", "v2")
-        }
-    }
+    private suspend inline fun <reified T> getUrlWithIcdHeaders(url: String): T = client.get {
+        url(url)
+        header("Accept", "application/json")
+        header("Accept-Language", "en")
+        header("API-Version", "v2")
+    }.body()
 }

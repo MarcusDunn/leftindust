@@ -1,9 +1,9 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.external.icd.IcdFetcher
 import com.leftindust.mockingbird.graphql.types.icd.GraphQLIcdLinearizationEntity
 import com.leftindust.mockingbird.graphql.types.icd.GraphQLIcdSearchResult
+import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test
 
 internal class IcdQueryTest {
     private val client = mockk<IcdFetcher>()
-    private val authContext = mockk<GraphQLAuthContext>()
 
     @Test
     fun searchIcd() {
@@ -25,13 +24,9 @@ internal class IcdQueryTest {
 
         coEvery { client.linearizationSearch(any(), any(), any(), any()) } returns mockkIcdSearchResult
 
-        every { authContext.mediqAuthToken } returns mockk {
-            every { isVerified() } returns true
-        }
-
         val icdQuery = IcdQuery(client)
 
-        val result = runBlocking { icdQuery.searchIcd("hello!", authContext = authContext) }
+        val result = runBlocking { icdQuery.searchIcd("hello!", dataFetchingEnvironment = MockDataFetchingEnvironment.withVerifiedMediqToken) }
 
         assertEquals(mockkIcdSearchResult, result)
     }
@@ -43,11 +38,7 @@ internal class IcdQueryTest {
 
         coEvery { client.linearizationEntity(any()) } returns mockkIcdFoundationEntity
 
-        every { authContext.mediqAuthToken } returns mockk {
-            every { isVerified() } returns true
-        }
-
-        val result = runBlocking { icdQuery.icd("1277781", authContext = authContext) }
+        val result = runBlocking { icdQuery.icd("1277781", dataFetchingEnvironment = MockDataFetchingEnvironment.withVerifiedMediqToken) }
 
         assertEquals(mockkIcdFoundationEntity, result)
     }

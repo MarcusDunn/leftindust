@@ -6,14 +6,15 @@ import com.expediagroup.graphql.generator.scalars.ID
 import com.expediagroup.graphql.server.operations.Query
 import com.google.firebase.auth.ExportedUserRecord
 import com.leftindust.mockingbird.auth.Crud
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.auth.NotAuthorizedException
+import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.Tables
 import com.leftindust.mockingbird.dao.UserDao
 import com.leftindust.mockingbird.external.firebase.UserFetcher
 import com.leftindust.mockingbird.graphql.types.GraphQLFirebaseInfo
 import com.leftindust.mockingbird.graphql.types.GraphQLUser
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
+import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Component
@@ -24,23 +25,23 @@ class UserQuery(
     private val firebaseFetcher: UserFetcher
 ) : Query {
     @GraphQLDescription("attempts to find the mediq-registered user by uid, if the user does not exist in the DB")
-    suspend fun user(uid: ID, graphQLAuthContext: GraphQLAuthContext): GraphQLUser {
+    suspend fun user(uid: ID, dataFetchingEnvironment: DataFetchingEnvironment): GraphQLUser {
         val strUid = uid.value
+        val authToken = dataFetchingEnvironment.authToken
         if (strUid == "admin") throw GraphQLKotlinException("you trying to break something?")
-        val user = withContext(Dispatchers.IO) { userDao.findUserByUid(strUid, graphQLAuthContext.mediqAuthToken) }
+        val user = withContext(Dispatchers.IO) { userDao.findUserByUid(strUid, authToken) }
         return if (user == null) {
-            if (graphQLAuthContext.mediqAuthToken.isVerified()) {
-                val fireBaseUser = firebaseFetcher.getUserInfo(strUid, graphQLAuthContext.mediqAuthToken)
+            if (authToken.isVerified()) {
+                val fireBaseUser = firebaseFetcher.getUserInfo(strUid, authToken)
                 GraphQLUser(
                     uid = fireBaseUser.uid,
                     group = null,
-                    authContext = graphQLAuthContext
                 )
             } else {
-                throw NotAuthorizedException(graphQLAuthContext.mediqAuthToken, Crud.READ to Tables.User)
+                throw NotAuthorizedException(authToken, Crud.READ to Tables.User)
             }
         } else {
-            GraphQLUser(user, graphQLAuthContext)
+            GraphQLUser(user)
         }
     }
 
@@ -48,14 +49,14 @@ class UserQuery(
     suspend fun users(
         range: GraphQLRangeInput? = null,
         uniqueIds: List<ID>? = null,
-        graphQLAuthContext: GraphQLAuthContext
-    ): List<GraphQLUser> {
-        return when {
-            uniqueIds != null -> uniqueIds.map { userDao.findUserByUid(it.value, graphQLAuthContext.mediqAuthToken)!! }
-            range != null -> withContext(Dispatchers.IO) { userDao.getUsers(range, graphQLAuthContext.mediqAuthToken) }
-            else -> throw IllegalArgumentException("invalid argument combination to users")
-        }.filter { it.uniqueId != "admin" }.map { GraphQLUser(it, graphQLAuthContext) }
+        dataFetchingEnvironment: DataFetchingEnvironment
+    ): List<GraphQLUser> = when {
+        uniqueIds != null -> uniqueIds.map { userDao.findUserByUid(it.value, dataFetchingEnvironment.authToken)!! }
+        range != null -> withContext(Dispatchers.IO) { userDao.getUsers(range, dataFetchingEnvironment.authToken) }
+        else -> throw IllegalArgumentException("invalid argument combination to users")
     }
+        .filter { it.uniqueId != "admin" }
+        .map(::GraphQLUser)
 
     @GraphQLDescription(
         """gets all users from firebase, you can
@@ -66,15 +67,15 @@ to true (defaults to false)"""
     suspend fun firebaseUsers(
         range: GraphQLRangeInput? = null,
         filterRegistered: Boolean? = false,
-        graphQLAuthContext: GraphQLAuthContext
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLFirebaseInfo> {
-        val users = firebaseFetcher.getUsers(graphQLAuthContext.mediqAuthToken)
+        val users = firebaseFetcher.getUsers(dataFetchingEnvironment.authToken)
         val nnRange = range ?: GraphQLRangeInput(0, 20)
         val validatedRange = nnRange.toIntRange()
 
         val returnedUsers = emptyList<ExportedUserRecord>().toMutableList()
         users.takeWhile { returnedUsers.size < validatedRange.last }
-            .filter { (userDao.findUserByUid(it.uid, graphQLAuthContext.mediqAuthToken) != null) == filterRegistered }
+            .filter { (userDao.findUserByUid(it.uid, dataFetchingEnvironment.authToken) != null) == filterRegistered }
             .forEach { returnedUsers.add(it) }
 
         return returnedUsers

@@ -1,9 +1,9 @@
 package com.leftindust.mockingbird.graphql.mutations
 
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.dao.UserDao
 import com.leftindust.mockingbird.dao.entity.MediqUser
 import com.leftindust.mockingbird.graphql.types.GraphQLUser
+import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
 import java.util.UUID
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test
 
 internal class UserMutationTest {
     private val userDao = mockk<UserDao>()
-    private val authContext = mockk<GraphQLAuthContext>()
 
 
     @Test
@@ -26,15 +25,13 @@ internal class UserMutationTest {
             }
         }
 
-        every { authContext.mediqAuthToken } returns mockk()
-
-        val mockkGraphQLUser = GraphQLUser(mockkUser, authContext)
+        val mockkGraphQLUser = GraphQLUser(mockkUser)
 
         every { userDao.addUser(any(), any()) } returns mockkUser
 
         val userMutation = UserMutation(userDao)
 
-        val result = runBlocking { userMutation.addUser(mockk(), authContext) }
+        val result = runBlocking { userMutation.addUser(mockk(), MockDataFetchingEnvironment.withDummyMediqToken) }
 
         assertEquals(mockkGraphQLUser, result)
     }

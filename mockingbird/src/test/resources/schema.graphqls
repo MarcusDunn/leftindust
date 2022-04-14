@@ -15,11 +15,11 @@ directive @skip(
   if: Boolean!
 ) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
 
-"Marks the field or enum value as deprecated"
+"Marks the field, argument, input field or enum value as deprecated"
 directive @deprecated(
   "The reason for the deprecation"
   reason: String = "No longer supported"
-) on FIELD_DEFINITION | ENUM_VALUE
+) on FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM_VALUE | INPUT_FIELD_DEFINITION
 
 "Exposes a URL that specifies the behaviour of this scalar."
 directive @specifiedBy(
@@ -31,13 +31,13 @@ directive @specifiedBy(
 directive @external on FIELD_DEFINITION
 
 "Specifies required input field set from the base type for a resolver"
-directive @requires(fields: _FieldSet) on FIELD_DEFINITION
+directive @requires(fields: _FieldSet!) on FIELD_DEFINITION
 
 "Specifies the base type field set that will be selectable by the gateway"
-directive @provides(fields: _FieldSet) on FIELD_DEFINITION
+directive @provides(fields: _FieldSet!) on FIELD_DEFINITION
 
 "Space separated list of primary keys needed to access federated object"
-directive @key(fields: _FieldSet) on OBJECT | INTERFACE
+directive @key(fields: _FieldSet!) repeatable on OBJECT | INTERFACE
 
 "Marks target object as extending part of the federated schema"
 directive @extends on OBJECT | INTERFACE
@@ -109,19 +109,24 @@ type Date {
 
 type Doctor implements Person {
   addresses: [Address!]!
-  clinic: Clinic!
+  "The clinics this doctor is a member of."
+  clinic: [Clinic!]!
   dateOfBirth: Date
   did: DoctorId!
   emails: [Email!]!
+  "The events this doctor is a part of"
   events: [Event!]!
   firstName: String!
   lastName: String!
   middleName: String
+  "The patients this doctor takes care of."
   patients: [Patient!]!
   phones: [Phone!]!
+  "The events this doctor is a part of between two times"
   schedule(from: UtcTimeInput!, to: UtcTimeInput!): [Event!]!
   thumbnail: String
   title: String
+  "The user associated with this doctor, if it exists."
   user: User
 }
 
@@ -135,6 +140,7 @@ type Email {
 }
 
 type EmergencyContact implements Person {
+  ecid: EmergencyContactId!
   emails: [Email!]!
   firstName: String!
   lastName: String!
@@ -143,6 +149,10 @@ type EmergencyContact implements Person {
   relationship: Relationship!
   "a base64 icon. Cannot be over 10 000 characters when base64 encoded"
   thumbnail: String
+}
+
+type EmergencyContactId {
+  id: UUID!
 }
 
 type Event {
@@ -172,6 +182,41 @@ type FirebaseInfo {
   uid: String
 }
 
+type FormField {
+  dataType: DataType!
+  dateLowerBound: Date
+  dateUpperBound: Date
+  ffid: FormFieldId!
+  floatLowerBound: Float
+  floatUpperBound: Float
+  intLowerBound: Int
+  intUpperBound: Int
+  jsonMetaData: String
+  "The multiselect possibilities, is null unless the form dataType is SingleMuliSelect or MultiMuliSelect"
+  multiSelectPossibilities: [String!]
+  number: Int!
+  textRegex: String
+  title: String!
+}
+
+type FormFieldId {
+  id: UUID!
+}
+
+type FormSection {
+  "Max 50 000 chars"
+  description: String
+  "Note that I do not provide a stable order to these fields"
+  fields: [FormField!]!
+  fsid: FormSectionId!
+  name: String!
+  number: Int!
+}
+
+type FormSectionId {
+  id: UUID!
+}
+
 type FormTemplateId {
   id: UUID!
 }
@@ -181,34 +226,11 @@ type GraphQLFormData {
   patient: Patient!
 }
 
-type GraphQLFormSection {
-  "Max 50 000 chars"
-  description: String
-  "Note that I do not provide a stable order to these fields"
-  fields: [GraphQlFormField!]!
-  name: String!
-  number: Int!
-}
-
 type GraphQLFormTemplate {
-  id: FormTemplateId!
   name: String!
-  sections: [GraphQLFormSection!]!
-}
-
-type GraphQlFormField {
-  dataType: DataType!
-  dateLowerBound: Date
-  dateUpperBound: Date
-  floatLowerBound: Float
-  floatUpperBound: Float
-  intLowerBound: Int
-  intUpperBound: Int
-  jsonMetaData: String
-  multiSelectPossibilities: [String!]
-  number: Int!
-  textRegex: String
-  title: String!
+  "The sections of the form sorted by number"
+  sections: [FormSection!]!
+  tid: FormTemplateId!
 }
 
 type Group {
@@ -473,7 +495,7 @@ type Query @extends {
   user(uid: ID!): User!
   "returns a list of users, only one argument should be specified"
   users(range: RangeInput, uniqueIds: [ID!]): [User!]!
-  visits(did: DoctorIdInput, pid: PatientIdInput, strict: Boolean!, vids: [VisitIdInput!]): [Visit!]!
+  visits(did: DoctorIdInput, pid: PatientIdInput, vids: [VisitIdInput!]): [Visit!]!
 }
 
 type Record {
@@ -521,7 +543,7 @@ type User {
   hasPermission(perm: GraphQLPermissionInput!): Boolean!
   """
 
-  Weather the user is regestered in mockingbird.
+  Weather the user is registered in mockingbird.
 
   """
   isRegistered: Boolean!
@@ -561,7 +583,6 @@ type UtcTime {
 type Visit {
   description: String
   event: Event!
-  icds: [IcdLinearizationEntity!]!
   patients: [Patient!]!
   title: String
   vid: VisitId!
@@ -603,8 +624,8 @@ enum DataType {
   Date
   Float
   Integer
-  MultiMuliSelect
-  SingleMuliSelect
+  MultiMultiSelect
+  SingleMultiSelect
   Text
 }
 
@@ -726,7 +747,7 @@ enum Tables {
   Visit
 }
 
-"Long type"
+"A 64 bit integer serialized as a string"
 scalar Long
 
 "A type representing a formatted java.util.UUID"
@@ -909,9 +930,7 @@ input FormFieldInput {
 }
 
 input FormSectionInput {
-  "Max 50 000 chars"
   description: String
-  "Note that I do not provide a stable order to these fields"
   fields: [FormFieldInput!]!
   name: String!
   number: Int!

@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.util
 
 import com.google.gson.JsonObject
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.dao.entity.*
 import com.leftindust.mockingbird.dao.entity.enums.Ethnicity
 import com.leftindust.mockingbird.dao.entity.enums.RecordType
@@ -177,7 +176,7 @@ object EntityStore {
         )
     }
 
-    fun graphQLPatient(testName: String, authContext: GraphQLAuthContext): GraphQLPatient {
+    fun graphQLPatient(testName: String): GraphQLPatient {
         return GraphQLPatient(
             pid = GraphQLPatient.ID(UUID.nameUUIDFromBytes("bytes!".encodeToByteArray())),
             firstName = testName,
@@ -188,7 +187,6 @@ object EntityStore {
             sex = Sex.Male,
             gender = "yeet",
             ethnicity = Ethnicity.Asian,
-            authContext = authContext,
             thumbnail = null,
         )
     }

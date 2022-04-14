@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.graphql.mutations
 
 import com.expediagroup.graphql.server.operations.Mutation
 import com.google.gson.JsonParser.parseString
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
+import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.CreateFormDao
 import com.leftindust.mockingbird.dao.FormDataDao
 import com.leftindust.mockingbird.dao.patient.UpdatePatientDao
@@ -10,6 +10,7 @@ import com.leftindust.mockingbird.graphql.types.GraphQLFormData
 import com.leftindust.mockingbird.graphql.types.GraphQLFormTemplate
 import com.leftindust.mockingbird.graphql.types.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLFormTemplateInput
+import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Component
@@ -22,25 +23,25 @@ class FormMutation(
 ) : Mutation {
     suspend fun addSurveyTemplate(
         surveyTemplate: GraphQLFormTemplateInput,
-        authContext: GraphQLAuthContext
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): GraphQLFormTemplate = withContext(Dispatchers.IO) {
-        createFormDao.addForm(surveyTemplate, authContext.mediqAuthToken)
-    }.let { GraphQLFormTemplate(it, authContext) }
+        createFormDao.addForm(surveyTemplate, dataFetchingEnvironment.authToken)
+    }.let(::GraphQLFormTemplate)
 
     suspend fun submitSurvey(
         patient: GraphQLPatient.ID,
         surveyJson: String,
-        authContext: GraphQLAuthContext
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): GraphQLFormData = withContext(Dispatchers.IO) {
-        formDataDao.attachForm(patient, form = parseString(surveyJson), authContext.mediqAuthToken)
-    }.let { GraphQLFormData(it.data.toString(), patient, authContext) }
+        formDataDao.attachForm(patient, form = parseString(surveyJson), dataFetchingEnvironment.authToken)
+    }.let { GraphQLFormData(it.data.toString(), patient) }
 
     suspend fun assignSurvey(
         patients: List<GraphQLPatient.ID>,
         survey: GraphQLFormTemplate.ID,
-        authContext: GraphQLAuthContext,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLPatient> = withContext(Dispatchers.IO) {
-        patientDao.assignForms(patients, survey, authContext.mediqAuthToken)
-    }.map { GraphQLPatient(it, authContext) }
+        patientDao.assignForms(patients, survey, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLPatient)
 }
 

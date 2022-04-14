@@ -4,7 +4,6 @@ import com.expediagroup.graphql.server.operations.Query
 import com.github.wnameless.json.flattener.JsonFlattener
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import org.springframework.stereotype.Component
 
 @Component
@@ -32,7 +31,7 @@ class ConverterQuery : Query {
         Csv,
     }
 
-    fun convert(json: String, target: ConvertTarget, authContext: GraphQLAuthContext): String {
+    fun convert(json: String, target: ConvertTarget): String {
         val asJsonArray = JsonParser.parseString(json).asJsonArray
         return when (target) {
             ConvertTarget.Json -> asJsonArray.toString()
