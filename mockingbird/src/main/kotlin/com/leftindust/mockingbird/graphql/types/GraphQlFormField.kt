@@ -3,13 +3,14 @@ package com.leftindust.mockingbird.graphql.types
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.annotations.GraphQLIgnore
 import com.expediagroup.graphql.generator.annotations.GraphQLName
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
+import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.entity.FormField
 import com.leftindust.mockingbird.dao.form.feild.ReadFormFieldDao
-import java.util.UUID
+import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
 
 @GraphQLName("FormField")
 data class GraphQlFormField(
@@ -25,12 +26,11 @@ data class GraphQlFormField(
     val dateLowerBound: GraphQLDate?,
     val textRegex: String?,
     val jsonMetaData: String?,
-    private val authContext: GraphQLAuthContext,
 ) {
     @GraphQLName("FormFieldId")
     data class ID(val id: UUID)
 
-    constructor(formField: FormField, graphQLAuthContext: GraphQLAuthContext) : this(
+    constructor(formField: FormField) : this(
         ffid = ID(formField.id!!),
         title = formField.title,
         number = formField.number,
@@ -43,16 +43,17 @@ data class GraphQlFormField(
         dateLowerBound = formField.dateLowerBound?.toLocalDate()?.let { GraphQLDate(it) },
         textRegex = formField.textRegex,
         jsonMetaData = formField.jsonMetaData,
-        authContext = graphQLAuthContext,
     )
 
     @GraphQLDescription("The multiselect possibilities, is null unless the form dataType is SingleMuliSelect or MultiMuliSelect")
-    suspend fun multiSelectPossibilities(@GraphQLIgnore @Autowired readFormFieldDao: ReadFormFieldDao): List<String>? =
-        if (dataType == DataType.SingleMultiSelect || dataType == DataType.MultiMultiSelect)
-            withContext(Dispatchers.IO) {
-                readFormFieldDao.getFormFieldMultiSelectPossibilities(ffid, authContext.mediqAuthToken)
-            }
-        else {
-            null
+    suspend fun multiSelectPossibilities(
+        @GraphQLIgnore @Autowired readFormFieldDao: ReadFormFieldDao,
+        dataFetchingEnvironment: DataFetchingEnvironment,
+    ): List<String>? = if (dataType == DataType.SingleMultiSelect || dataType == DataType.MultiMultiSelect)
+        withContext(Dispatchers.IO) {
+            readFormFieldDao.getFormFieldMultiSelectPossibilities(ffid, dataFetchingEnvironment.authToken)
         }
+    else {
+        null
+    }
 }

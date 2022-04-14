@@ -1,8 +1,9 @@
 package com.leftindust.mockingbird.util.integration
 
 import com.leftindust.mockingbird.auth.Authorizer
+import com.leftindust.mockingbird.auth.CONTEXT_MAP_KEY
 import com.leftindust.mockingbird.auth.ContextFactory
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
+import com.leftindust.mockingbird.auth.MediqToken
 import com.leftindust.mockingbird.extensions.Authorization
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -19,9 +20,16 @@ abstract class NoAuthIntegrationTest : IntegrationTest() {
 
     @BeforeEach
     fun disableAuth() {
-        coEvery { contextFactory.generateContext(any()) } returns GraphQLAuthContext(mockk {
-            every { isVerified() } returns true
-        }, mockk(relaxed = true))
+        coEvery { contextFactory.generateContextMap(any()) } returns mapOf(
+            MediqToken.CONTEXT_MAP_KEY to mockk<MediqToken> {
+                every { isVerified() } returns true
+            }
+        )
+
+        coEvery {
+            @Suppress("DEPRECATION", "")
+            contextFactory.generateContext(any())
+        } returns null
 
         coEvery { authorizer.getAuthorization(any(), any()) } returns Authorization.Allowed
     }

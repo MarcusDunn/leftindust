@@ -3,23 +3,19 @@ package com.leftindust.mockingbird.graphql.types
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.annotations.GraphQLIgnore
 import com.expediagroup.graphql.generator.annotations.GraphQLName
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
-import com.leftindust.mockingbird.dao.ContactDao
-import com.leftindust.mockingbird.dao.DoctorDao
-import com.leftindust.mockingbird.dao.EventDao
-import com.leftindust.mockingbird.dao.ReadFormDao
-import com.leftindust.mockingbird.dao.UserDao
-import com.leftindust.mockingbird.dao.VisitDao
+import com.leftindust.mockingbird.auth.authToken
+import com.leftindust.mockingbird.dao.*
 import com.leftindust.mockingbird.dao.address.ReadAddressDao
 import com.leftindust.mockingbird.dao.email.ReadEmailDao
 import com.leftindust.mockingbird.dao.entity.Patient
 import com.leftindust.mockingbird.dao.entity.enums.Ethnicity
 import com.leftindust.mockingbird.dao.entity.enums.Sex
 import com.leftindust.mockingbird.dao.phone.ReadPhoneDao
-import java.util.UUID
+import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
 
 @GraphQLName("Patient")
 data class GraphQLPatient(
@@ -34,13 +30,12 @@ data class GraphQLPatient(
     val sex: Sex,
     val gender: String = sex.toString(),
     val ethnicity: Ethnicity? = null,
-    private val authContext: GraphQLAuthContext
 ) : GraphQLPerson {
 
     @GraphQLName("PatientId")
     data class ID(val id: UUID)
 
-    constructor(patient: Patient, authContext: GraphQLAuthContext) : this(
+    constructor(patient: Patient) : this(
         pid = ID(patient.id!!),
         firstName = patient.nameInfo.firstName,
         middleName = patient.nameInfo.middleName,
@@ -50,63 +45,69 @@ data class GraphQLPatient(
         sex = patient.sex,
         gender = patient.gender,
         ethnicity = patient.ethnicity,
-        authContext = authContext,
         thumbnail = patient.thumbnail,
     )
 
     suspend fun contacts(
-        @GraphQLIgnore @Autowired contactDao: ContactDao
+        @GraphQLIgnore @Autowired contactDao: ContactDao,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLPerson> = withContext(Dispatchers.IO) {
-        contactDao.getPatientContacts(pid, authContext.mediqAuthToken)
-    }.map { GraphQLEmergencyContact(it, authContext) }
+        contactDao.getPatientContacts(pid, dataFetchingEnvironment.authToken)
+    }.map { GraphQLEmergencyContact(it) }
 
     suspend fun doctors(
-        @GraphQLIgnore @Autowired doctorDao: DoctorDao
+        @GraphQLIgnore @Autowired doctorDao: DoctorDao,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLDoctor> = withContext(Dispatchers.IO) {
-        doctorDao.getPatientDoctors(pid, authContext.mediqAuthToken)
-    }.map { GraphQLDoctor(it, authContext) }
+        doctorDao.getPatientDoctors(pid, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLDoctor)
 
     suspend fun visits(
-        @GraphQLIgnore @Autowired visitDao: VisitDao
+        @GraphQLIgnore @Autowired visitDao: VisitDao,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLVisit> = withContext(Dispatchers.IO) {
-        visitDao.getPatientVisits(pid, authContext.mediqAuthToken)
-    }.map { visit -> GraphQLVisit(visit, authContext) }
+        visitDao.getPatientVisits(pid, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLVisit)
 
     suspend fun user(
-        @GraphQLIgnore @Autowired userDao: UserDao
+        @GraphQLIgnore @Autowired userDao: UserDao,
+        dataFetchingEnvironment: DataFetchingEnvironment,
     ): GraphQLUser? = withContext(Dispatchers.IO) {
-        userDao.findPatientUser(pid, authContext.mediqAuthToken)
-    }?.let { GraphQLUser(it, authContext) }
+        userDao.findPatientUser(pid, dataFetchingEnvironment.authToken)
+    }?.let(::GraphQLUser)
 
     suspend fun events(
-        @GraphQLIgnore @Autowired eventDao: EventDao
+        @GraphQLIgnore @Autowired eventDao: EventDao,
+        dataFetchingEnvironment: DataFetchingEnvironment,
     ): List<GraphQLEvent> = withContext(Dispatchers.IO) {
-        eventDao
-            .getPatientEvents(pid, authContext.mediqAuthToken)
-    }.map { event -> GraphQLEvent(event, authContext) }
+        eventDao.getPatientEvents(pid, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLEvent)
 
     suspend fun assignedForms(
-        @GraphQLIgnore @Autowired formDao: ReadFormDao
+        @GraphQLIgnore @Autowired formDao: ReadFormDao,
+        dataFetchingEnvironment: DataFetchingEnvironment,
     ): List<GraphQLAssignedForm> = withContext(Dispatchers.IO) {
-        formDao.getByPatientAssigned(pid, authContext.mediqAuthToken)
-    }.map { GraphQLAssignedForm(it, authContext) }
+        formDao.getByPatientAssigned(pid, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLAssignedForm)
 
     override suspend fun phones(
-        @GraphQLIgnore @Autowired phoneDao: ReadPhoneDao
+        @GraphQLIgnore @Autowired phoneDao: ReadPhoneDao,
+        dataFetchingEnvironment: DataFetchingEnvironment,
     ): List<GraphQLPhone> = withContext(Dispatchers.IO) {
-        phoneDao.getPatientPhones(pid, authContext)
-    }.map { GraphQLPhone(it) }
+        phoneDao.getPatientPhones(pid, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLPhone)
 
     override suspend fun emails(
-        @GraphQLIgnore @Autowired emailDao: ReadEmailDao
+        @GraphQLIgnore @Autowired emailDao: ReadEmailDao,
+        dataFetchingEnvironment: DataFetchingEnvironment,
     ): List<GraphQLEmail> = withContext(Dispatchers.IO) {
-        emailDao
-            .getPatientEmails(pid, authContext.mediqAuthToken)
-    }.map { GraphQLEmail(it) }
+        emailDao.getPatientEmails(pid, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLEmail)
 
     suspend fun addresses(
-        @GraphQLIgnore @Autowired addressDao: ReadAddressDao
+        @GraphQLIgnore @Autowired addressDao: ReadAddressDao,
+        dataFetchingEnvironment: DataFetchingEnvironment,
     ): List<GraphQLAddress> = withContext(Dispatchers.IO) {
-        addressDao.getPatientAddresses(pid, authContext)
-    }.map { GraphQLAddress(it) }
+        addressDao.getPatientAddresses(pid, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLAddress)
 }

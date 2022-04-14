@@ -2,8 +2,7 @@ graphql:
   packages:
     - "com.leftindust.mockingbird.graphql"
     - "java.util.UUID"
-  federation:
-    enabled: true
+    - "java.util.UUID"
 spring:
   main:
     web-application-type: reactive

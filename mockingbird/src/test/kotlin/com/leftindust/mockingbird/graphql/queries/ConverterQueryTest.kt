@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -19,7 +18,7 @@ internal class ConverterQueryTest {
             |1,"marcus",123422,"Cell"
             |2,"dan",12121,"Home"
             |""".trimMargin()
-        val result = ConverterQuery().convert(inputJson, ConverterQuery.ConvertTarget.Csv, mockk())
+        val result = ConverterQuery().convert(inputJson, ConverterQuery.ConvertTarget.Csv)
         assertEquals(expectedCsv, result)
     }
 
@@ -36,7 +35,7 @@ internal class ConverterQueryTest {
             |2,"dan","the man",12121,"Home"
             |1,"marcus",null,123422,"Cell"
             |""".trimMargin()
-        val result = ConverterQuery().convert(inputJson, ConverterQuery.ConvertTarget.Csv, mockk())
+        val result = ConverterQuery().convert(inputJson, ConverterQuery.ConvertTarget.Csv)
         assertEquals(expectedCsv, result)
     }
 
@@ -54,7 +53,7 @@ internal class ConverterQueryTest {
             |2,"dan","covid","cancer","ebola"
             |1,"marcus","e-coli",null,null
             |""".trimMargin()
-        val result = ConverterQuery().convert(inputJson, ConverterQuery.ConvertTarget.Csv, mockk())
+        val result = ConverterQuery().convert(inputJson, ConverterQuery.ConvertTarget.Csv)
         assertEquals(expectedCsv, result)
     }
 }

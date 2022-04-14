@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.graphql.mutations
 
 import com.google.gson.JsonParser
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.dao.CreateFormDao
 import com.leftindust.mockingbird.dao.FormDataDao
 import com.leftindust.mockingbird.dao.entity.Form
@@ -12,6 +11,7 @@ import com.leftindust.mockingbird.graphql.types.GraphQLFormTemplate
 import com.leftindust.mockingbird.graphql.types.GraphQLPatient
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.makeUUID
+import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -29,16 +29,16 @@ internal class FormMutationTest {
         val formMutation = FormMutation(formDao, formDataDao, patientDao)
         val graphQLFormTemplateInput = EntityStore.graphQLFormInput("FormMutationTest")
 
-        val authContext = mockk<GraphQLAuthContext>(relaxed = true)
-
         val mockkForm = mockk<Form>(relaxed = true)
-        every { formDao.addForm(graphQLFormTemplateInput, authContext.mediqAuthToken) } returns mockkForm
+        every { formDao.addForm(graphQLFormTemplateInput, any()) } returns mockkForm
 
-        val result = runBlocking { formMutation.addSurveyTemplate(graphQLFormTemplateInput, authContext = authContext) }
+        val result = runBlocking {
+            formMutation.addSurveyTemplate(graphQLFormTemplateInput, MockDataFetchingEnvironment.withDummyMediqToken)
+        }
 
-        assertEquals(GraphQLFormTemplate(mockkForm, authContext), result)
+        assertEquals(GraphQLFormTemplate(mockkForm), result)
 
-        verify(exactly = 1) { formDao.addForm(graphQLFormTemplateInput, authContext.mediqAuthToken) }
+        verify(exactly = 1) { formDao.addForm(graphQLFormTemplateInput, any()) }
     }
 
     @Test
@@ -53,14 +53,12 @@ internal class FormMutationTest {
 
         every { formDataDao.attachForm(mockkGqlPatient.pid, form, any()) } returns FormData(form, mockkPatient)
 
-        val authContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
+
         val result = runBlocking {
             formMutation.submitSurvey(
-                mockkGqlPatient.pid,
+                patient = mockkGqlPatient.pid,
                 surveyJson = formString,
-                authContext = authContext
+                dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
             )
         }
         assertEquals(formString, result.data)
@@ -71,18 +69,17 @@ internal class FormMutationTest {
         val formMutation = FormMutation(formDao, formDataDao, patientDao)
 
         val mockkPatientList = listOf(mockk<Patient>(relaxed = true))
-        val mockkAuthContext = mockk<GraphQLAuthContext>(relaxed = true)
 
         every { patientDao.assignForms(any(), any(), any()) } returns mockkPatientList
 
         val result = runBlocking {
             formMutation.assignSurvey(
-                listOf(GraphQLPatient.ID(makeUUID())),
-                GraphQLFormTemplate.ID(makeUUID()),
-                mockkAuthContext
+                patients = listOf(GraphQLPatient.ID(makeUUID())),
+                survey = GraphQLFormTemplate.ID(makeUUID()),
+                dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
             )
         }
 
-        assertEquals(mockkPatientList.map { GraphQLPatient(it, mockkAuthContext) }, result)
+        assertEquals(mockkPatientList.map { GraphQLPatient(it) }, result)
     }
 }

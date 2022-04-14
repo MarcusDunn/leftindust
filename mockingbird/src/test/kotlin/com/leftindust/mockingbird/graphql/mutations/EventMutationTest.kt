@@ -1,13 +1,16 @@
 package com.leftindust.mockingbird.graphql.mutations
 
 import com.expediagroup.graphql.generator.execution.OptionalInput
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.dao.EventDao
 import com.leftindust.mockingbird.dao.entity.Event
 import com.leftindust.mockingbird.graphql.types.GraphQLEvent
 import com.leftindust.mockingbird.graphql.types.input.GraphQLEventEditInput
 import com.leftindust.mockingbird.util.EntityStore
-import io.mockk.*
+import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verifyAll
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -26,9 +29,6 @@ internal class EventMutationTest {
     fun addEvent() {
         val eventID = UUID.randomUUID()
 
-        val mockkContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
         val mockkEvent = mockk<Event>(relaxed = true) {
             every { id } returns eventID
         }
@@ -38,14 +38,10 @@ internal class EventMutationTest {
         val eventMutation = EventMutation(eventDao)
         val event = EntityStore.graphQLEventInput("EventMutationTest.addEvent")
         val result = runBlocking {
-            eventMutation.addEvent(
-                event,
-                mockkContext
-            )
+            eventMutation.addEvent(event, MockDataFetchingEnvironment.withDummyMediqToken)
         }
 
         verifyAll {
-            mockkContext.mediqAuthToken
             mockkEvent.id
             mockkEvent.title
             mockkEvent.description
@@ -56,20 +52,15 @@ internal class EventMutationTest {
             eventDao.addEvent(any(), any())
         }
 
-        confirmVerified(mockkEvent, mockkContext)
+        confirmVerified(mockkEvent)
 
-        assertEquals(GraphQLEvent(mockkEvent, mockkContext), result)
+        assertEquals(GraphQLEvent(mockkEvent), result)
 
     }
 
     @Test
     internal fun `edit event`() {
         val eventID = UUID.randomUUID()
-
-
-        val mockkContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val eventMutation = EventMutation(eventDao)
 
@@ -81,16 +72,16 @@ internal class EventMutationTest {
 
         val result = runBlocking {
             eventMutation.editEvent(
-                GraphQLEventEditInput(
-                    GraphQLEvent.ID(eventID),
+                event = GraphQLEventEditInput(
+                    eid = GraphQLEvent.ID(eventID),
                     description = OptionalInput.Defined("new descr")
-                ), mockkContext
+                ),
+                dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
             )
         }
 
 
         verifyAll {
-            mockkContext.mediqAuthToken
             mockkEvent.id
             mockkEvent.title
             mockkEvent.description
@@ -101,9 +92,9 @@ internal class EventMutationTest {
             eventDao.editEvent(any(), any())
         }
 
-        confirmVerified(mockkEvent, mockkContext)
+        confirmVerified(mockkEvent)
 
-        assertEquals(GraphQLEvent(mockkEvent, mockkContext), result)
+        assertEquals(GraphQLEvent(mockkEvent), result)
 
     }
 
@@ -119,23 +110,17 @@ internal class EventMutationTest {
 
         val eventMutation = EventMutation(eventDao)
 
-        val graphQLAuthContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
-
-
         val result = runBlocking {
             eventMutation.editRecurringEvent(
-                mockk(relaxed = true),
-                graphQLAuthContext,
-                mockk()
+                event = mockk(relaxed = true),
+                recurrenceSettings = mockk(),
+                dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
             )
         }
 
 
         verifyAll {
             eventDao.editRecurringEvent(any(), any(), any())
-            graphQLAuthContext.mediqAuthToken
             editedEvent.id
             editedEvent.reoccurrence
             editedEvent.title
@@ -145,8 +130,8 @@ internal class EventMutationTest {
             editedEvent.allDay
         }
 
-        confirmVerified(editedEvent, graphQLAuthContext)
+        confirmVerified(editedEvent)
 
-        assertEquals(GraphQLEvent(editedEvent, graphQLAuthContext), result)
+        assertEquals(GraphQLEvent(editedEvent), result)
     }
 }

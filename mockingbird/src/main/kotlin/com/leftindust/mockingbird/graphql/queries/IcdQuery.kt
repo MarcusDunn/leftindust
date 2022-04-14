@@ -4,14 +4,15 @@ import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.exceptions.GraphQLKotlinException
 import com.expediagroup.graphql.server.operations.Query
 import com.leftindust.mockingbird.auth.Crud
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.auth.NotAuthorizedException
+import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.Tables
 import com.leftindust.mockingbird.extensions.parallelMap
 import com.leftindust.mockingbird.external.icd.IcdFetcher
 import com.leftindust.mockingbird.graphql.types.icd.GraphQLFoundationIcdCode
 import com.leftindust.mockingbird.graphql.types.icd.GraphQLIcdLinearizationEntity
 import com.leftindust.mockingbird.graphql.types.icd.GraphQLIcdSearchResult
+import graphql.schema.DataFetchingEnvironment
 import org.springframework.stereotype.Component
 
 @Component
@@ -31,9 +32,9 @@ class IcdQuery(
         linearization: IcdFetcher.Linearization? = linearizationDefaultValue,
         flexiSearch: Boolean? = flexiSearchDefaultValue,
         flatResults: Boolean? = flatResultsDefaultValue,
-        authContext: GraphQLAuthContext
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): GraphQLIcdSearchResult {
-        if (authContext.mediqAuthToken.isVerified()) {
+        if (dataFetchingEnvironment.authToken.isVerified()) {
             val nnLinearization = linearization ?: linearizationDefaultValue
             val nnFlatResults = flatResults ?: flatResultsDefaultValue
             val nnFlexiSearch = flexiSearch ?: flexiSearchDefaultValue
@@ -56,15 +57,15 @@ class IcdQuery(
 
     suspend fun icd(
         icdCode: String,
-        authContext: GraphQLAuthContext
-    ): GraphQLIcdLinearizationEntity {
-        return if (authContext.mediqAuthToken.isVerified()) {
-            client.linearizationEntity(GraphQLFoundationIcdCode(icdCode))
-        } else {
-            throw NotAuthorizedException(authContext.mediqAuthToken, Crud.READ to Tables.IcdCode)
-        }
+        dataFetchingEnvironment: DataFetchingEnvironment
+    ): GraphQLIcdLinearizationEntity = if (dataFetchingEnvironment.authToken.isVerified()) {
+        client.linearizationEntity(GraphQLFoundationIcdCode(icdCode))
+    } else {
+        throw NotAuthorizedException(dataFetchingEnvironment.authToken, Crud.READ to Tables.IcdCode)
     }
 
-    suspend fun icds(icdCodes: List<String>, authContext: GraphQLAuthContext) =
-        icdCodes.parallelMap { icd(it, authContext) }
+    suspend fun icds(
+        icdCodes: List<String>,
+        dataFetchingEnvironment: DataFetchingEnvironment
+    ) = icdCodes.parallelMap { icd(it, dataFetchingEnvironment) }
 }

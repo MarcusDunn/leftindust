@@ -16,16 +16,16 @@ internal class ContextFactoryTest {
     fun generateContext() {
         val mockkRequest = mockk<ServerRequest> {
             every { method() } returns HttpMethod.POST
-            every { headers() } returns mockk {
+            every { headers() } returns mockk(relaxed = true) {
                 every { firstHeader("mediq-auth-token") } returns "123456"
             }
         }
 
         val actual = runBlocking {
-            contextFactory.generateContext(
+            contextFactory.generateContextMap(
                 request = mockkRequest
-            )
+            )[MediqToken.CONTEXT_MAP_KEY]
         }
-        assertEquals(actual, GraphQLAuthContext(VerifiedFirebaseToken("123456"), mockkRequest))
+        assertEquals(VerifiedFirebaseToken("123456"), actual)
     }
 }

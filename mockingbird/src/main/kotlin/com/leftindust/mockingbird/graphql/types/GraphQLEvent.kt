@@ -2,11 +2,12 @@ package com.leftindust.mockingbird.graphql.types
 
 import com.expediagroup.graphql.generator.annotations.GraphQLIgnore
 import com.expediagroup.graphql.generator.annotations.GraphQLName
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
+import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.DoctorDao
 import com.leftindust.mockingbird.dao.VisitDao
 import com.leftindust.mockingbird.dao.entity.Event
 import com.leftindust.mockingbird.dao.patient.ReadPatientDao
+import graphql.schema.DataFetchingEnvironment
 import java.util.UUID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,7 +22,6 @@ data class GraphQLEvent(
     val endTime: GraphQLUtcTime?,
     val allDay: Boolean,
     val reoccurrence: GraphQLRecurrence?,
-    private val authContext: GraphQLAuthContext,
 ) {
     @GraphQLName("EventId")
     data class ID(val id: UUID)
@@ -30,7 +30,7 @@ data class GraphQLEvent(
     // (such as reoccurrence) in the most unintuitive way possible. reoccurrence CANNOT BE NULL instead hibernate sets
     // all of its fields to null because hibernate hates you and would kill your dog if it had the chance.
     @Suppress("SENSELESS_COMPARISON")
-    constructor(event: Event, authContext: GraphQLAuthContext) : this(
+    constructor(event: Event) : this(
         eid = event.id?.let { ID(it) } ?: throw NullPointerException("id cannot be null when creating a GraphQLEvent"),
         title = event.title,
         description = event.description,
@@ -44,24 +44,26 @@ data class GraphQLEvent(
                 null
             }
         },
-        authContext = authContext
     )
 
     suspend fun doctors(
-        @GraphQLIgnore @Autowired doctorDao: DoctorDao
+        @GraphQLIgnore @Autowired doctorDao: DoctorDao,
+        dataFetchingEnvironment: DataFetchingEnvironment,
     ): List<GraphQLDoctor> = withContext(Dispatchers.IO) {
-        doctorDao.getByEvent(eid, authContext.mediqAuthToken)
-    }.map { GraphQLDoctor(it, authContext) }
+        doctorDao.getByEvent(eid, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLDoctor)
 
     suspend fun patients(
-        @GraphQLIgnore @Autowired patientDao: ReadPatientDao
+        @GraphQLIgnore @Autowired patientDao: ReadPatientDao,
+        dataFetchingEnvironment: DataFetchingEnvironment,
     ): List<GraphQLPatient> = withContext(Dispatchers.IO) {
-        patientDao.getByEvent(eid, authContext.mediqAuthToken)
-    }.map { GraphQLPatient(it, authContext) }
+        patientDao.getByEvent(eid, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLPatient)
 
     suspend fun visit(
-        @GraphQLIgnore @Autowired visitDao: VisitDao
+        @GraphQLIgnore @Autowired visitDao: VisitDao,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): GraphQLVisit? = withContext(Dispatchers.IO) {
-        visitDao.findByEvent(eid, authContext.mediqAuthToken)
-    }?.let { GraphQLVisit(it, authContext) }
+        visitDao.findByEvent(eid, dataFetchingEnvironment.authToken)
+    }?.let(::GraphQLVisit)
 }

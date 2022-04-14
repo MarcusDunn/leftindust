@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.dao.EventDao
 import com.leftindust.mockingbird.dao.VisitDao
 import com.leftindust.mockingbird.dao.entity.Event
@@ -9,26 +8,23 @@ import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLEvent
 import com.leftindust.mockingbird.graphql.types.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.GraphQLVisit
+import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
-import java.util.UUID
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.util.*
 
 internal class VisitQueryTest {
     private val visitDao = mockk<VisitDao>()
     private val eventDao = mockk<EventDao>()
-
-    private val graphQLAuthContext = mockk<GraphQLAuthContext>()
 
     @Test
     fun getVisitsByPatient() {
         val patientID = UUID.randomUUID()
         val eventID = UUID.randomUUID()
         val visitID = UUID.randomUUID()
-
-        every { graphQLAuthContext.mediqAuthToken } returns mockk()
 
         val mockkEvent = mockk<Event> {
             every { id } returns eventID
@@ -46,11 +42,11 @@ internal class VisitQueryTest {
         val result = runBlocking {
             visitQuery.visits(
                 pid = GraphQLPatient.ID(patientID),
-                graphQLAuthContext = graphQLAuthContext
+                dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
             )
         }
 
-        assertEquals(listOf(GraphQLVisit(mockkVisit, graphQLAuthContext)), result)
+        assertEquals(listOf(GraphQLVisit(mockkVisit)), result)
     }
 
     @Test
@@ -58,8 +54,6 @@ internal class VisitQueryTest {
         val doctorID = UUID.randomUUID()
         val eventID = UUID.randomUUID()
         val visitID = UUID.randomUUID()
-
-        every { graphQLAuthContext.mediqAuthToken } returns mockk()
 
         val mockkEvent = mockk<Event> {
             every { id } returns eventID
@@ -75,10 +69,14 @@ internal class VisitQueryTest {
 
         val visitQuery = VisitQuery(visitDao, eventDao)
 
-        val result =
-            runBlocking { visitQuery.visits(did = GraphQLDoctor.ID(doctorID), graphQLAuthContext = graphQLAuthContext) }
+        val result = runBlocking {
+            visitQuery.visits(
+                did = GraphQLDoctor.ID(doctorID),
+                dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
+            )
+        }
 
-        assertEquals(listOf(GraphQLVisit(mockkVisit, graphQLAuthContext)), result)
+        assertEquals(listOf(GraphQLVisit(mockkVisit)), result)
 
     }
 
@@ -86,24 +84,22 @@ internal class VisitQueryTest {
     fun `get visit by vids`() {
         val visitID = UUID.randomUUID()
 
-        every { graphQLAuthContext.mediqAuthToken } returns mockk()
         val mockkVisit = mockk<Visit>(relaxed = true) {
             every { id } returns visitID
         }
-        every { graphQLAuthContext.mediqAuthToken } returns mockk()
+
         every { visitDao.getVisitByVid(GraphQLVisit.ID(visitID), any()) } returns mockkVisit
 
         val visitQuery = VisitQuery(visitDao, eventDao)
 
-        val result =
-            runBlocking {
-                visitQuery.visits(
-                    vids = listOf(GraphQLVisit.ID(visitID)),
-                    graphQLAuthContext = graphQLAuthContext
-                )
-            }
+        val result = runBlocking {
+            visitQuery.visits(
+                vids = listOf(GraphQLVisit.ID(visitID)),
+                dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
+            )
+        }
 
-        assertEquals(listOf(GraphQLVisit(mockkVisit, graphQLAuthContext)), result)
+        assertEquals(listOf(GraphQLVisit(mockkVisit)), result)
     }
 
     @Test
@@ -117,7 +113,7 @@ internal class VisitQueryTest {
         val patientID = UUID.randomUUID()
         val doctorID = UUID.randomUUID()
 
-        every { graphQLAuthContext.mediqAuthToken } returns mockk()
+
         val mockkVisit1 = mockk<Visit>(relaxed = true) {
             every { id } returns visitID1
         }
@@ -159,13 +155,13 @@ internal class VisitQueryTest {
             visitQuery.visits(
                 did = GraphQLDoctor.ID(doctorID),
                 pid = GraphQLPatient.ID(patientID),
-                graphQLAuthContext = graphQLAuthContext
+                dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
             )
         }
 
         assertEquals(
             listOf(mockkVisit1, mockkVisit3, mockkVisit2)
-                .map { GraphQLVisit(it, graphQLAuthContext) },
+                .map { GraphQLVisit(it) },
             result
         )
     }

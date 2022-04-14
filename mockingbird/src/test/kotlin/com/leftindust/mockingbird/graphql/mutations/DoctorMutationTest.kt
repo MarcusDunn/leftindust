@@ -1,12 +1,13 @@
 package com.leftindust.mockingbird.graphql.mutations
 
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.dao.DoctorDao
 import com.leftindust.mockingbird.dao.entity.Doctor
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.input.GraphQLDoctorEditInput
 import com.leftindust.mockingbird.graphql.types.input.GraphQLDoctorInput
-import io.mockk.*
+import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -17,10 +18,6 @@ internal class DoctorMutationTest {
     @Test
     fun addDoctor() {
         val doctorID = UUID.randomUUID()
-
-        val mockkGraphQLAuthContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val mockkDoctor = mockk<Doctor>(relaxed = true) {
             every { id } returns doctorID
@@ -36,9 +33,9 @@ internal class DoctorMutationTest {
 
         val doctorMutation = DoctorMutation(mockkDoctorDao, mockk())
 
-        val result = runBlocking { doctorMutation.addDoctor(mockkGraphQLDoctorInput, mockkGraphQLAuthContext) }
+        val result = runBlocking { doctorMutation.addDoctor(mockkGraphQLDoctorInput, MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        val expected = GraphQLDoctor(mockkDoctor, mockkGraphQLAuthContext)
+        val expected = GraphQLDoctor(mockkDoctor)
 
         assertEquals(expected, result)
     }
@@ -46,9 +43,6 @@ internal class DoctorMutationTest {
     @Test
     fun updateDoctor() {
         val doctorID = UUID.randomUUID()
-        val mockkGraphQLAuthContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val mockkDoctor = mockk<Doctor>(relaxed = true) {
             every { id } returns doctorID
@@ -62,9 +56,9 @@ internal class DoctorMutationTest {
 
         val doctorMutation = DoctorMutation(mockkDoctorDao, mockk())
 
-        val result = runBlocking { doctorMutation.editDoctor(mockkGraphQLDoctorInput, mockkGraphQLAuthContext) }
+        val result = runBlocking { doctorMutation.editDoctor(mockkGraphQLDoctorInput, MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        val expected = GraphQLDoctor(mockkDoctor, mockkGraphQLAuthContext)
+        val expected = GraphQLDoctor(mockkDoctor)
 
         assertEquals(expected, result)
     }

@@ -1,16 +1,16 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.dao.RecordDao
 import com.leftindust.mockingbird.dao.entity.MediqRecord
 import com.leftindust.mockingbird.graphql.types.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.GraphQLRecord
+import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
-import java.util.UUID
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.util.*
 
 internal class RecordQueryTest {
     private val recordDao = mockk<RecordDao>()
@@ -25,17 +25,14 @@ internal class RecordQueryTest {
         every { recordDao.getRecordByRecordId(GraphQLRecord.ID(recordID), any()) } returns mockkRecord
 
         val recordQuery = RecordQuery(recordDao)
-        val mockkAuthContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val result = runBlocking {
             recordQuery.records(
-                rids = listOf(GraphQLRecord.ID(recordID)), authContext = mockkAuthContext
+                rids = listOf(GraphQLRecord.ID(recordID)), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
             )
         }
 
-        assertEquals(GraphQLRecord(mockkRecord, mockkAuthContext), result.first())
+        assertEquals(GraphQLRecord(mockkRecord), result.first())
     }
 
     @Test
@@ -49,13 +46,10 @@ internal class RecordQueryTest {
         every { recordDao.getRecordsByPatientPid(GraphQLPatient.ID(patientID), any()) } returns listOf(mockkRecord)
 
         val recordQuery = RecordQuery(recordDao)
-        val mockkAuthContext = mockk<GraphQLAuthContext> {
-            every { mediqAuthToken } returns mockk()
-        }
 
         val result =
-            runBlocking { recordQuery.records(pid = GraphQLPatient.ID(patientID), authContext = mockkAuthContext) }
+            runBlocking { recordQuery.records(pid = GraphQLPatient.ID(patientID), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        assertEquals(listOf(GraphQLRecord(mockkRecord, mockkAuthContext)), result)
+        assertEquals(listOf(GraphQLRecord(mockkRecord)), result)
     }
 }

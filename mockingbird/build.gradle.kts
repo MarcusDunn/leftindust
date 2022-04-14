@@ -5,15 +5,15 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.0"
-    kotlin("kapt") version "1.6.0"
-    kotlin("plugin.spring") version "1.6.0"
-    kotlin("plugin.allopen") version "1.6.0"
-    kotlin("plugin.jpa") version "1.6.0"
+    kotlin("jvm") version "1.6.20"
+    kotlin("kapt") version "1.6.20"
+    kotlin("plugin.spring") version "1.6.20"
+    kotlin("plugin.allopen") version "1.6.20"
+    kotlin("plugin.jpa") version "1.6.20"
     id("org.jetbrains.kotlinx.kover") version "0.5.0"
 
     // spring
-    id("org.springframework.boot") version "2.6.3"
+    id("org.springframework.boot") version "2.6.6"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
     // liquibase
@@ -25,75 +25,63 @@ repositories {
 }
 
 dependencies {
-    val graphQLKotlinVersion = "4.1.0"
-    val ktorVersion = "1.5.0"
-    val firebaseVersion = "7.0.1"
-    val liquibaseVersion = "4.5.0"
-    val coroutinesVersion = "1.4.3"
-    val springBootVersion = "2.6.3"
-    val jsonFlattenerVersion = "0.12.0"
-    val testContainersVersion = "1.16.3"
-    val jpamodelgenVersion = "5.6.5.Final"
-    val postgressqlVersion = "42.3.2"
-
 
     // spring
-    implementation("org.springframework.boot", "spring-boot-starter-webflux", springBootVersion)
-    implementation("org.springframework.boot", "spring-boot-starter-jdbc", springBootVersion)
-    implementation("org.springframework.boot", "spring-boot-starter-data-jpa", springBootVersion)
-
+    implementation("org.springframework.boot", "spring-boot-starter-webflux")
+    implementation("org.springframework.boot", "spring-boot-starter-jdbc")
+    implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
 
     // kotlin
-    implementation("org.jetbrains.kotlin", "kotlin-reflect")
-    implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutinesVersion)
+    implementation("org.jetbrains.kotlin", "kotlin-reflect", "1.6.20")
+    implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", "1.6.20")
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core")
 
     //json flattener
-    implementation("com.github.wnameless.json", "json-flattener", jsonFlattenerVersion)
+    implementation("com.github.wnameless.json", "json-flattener", "0.13.0")
 
     // graphql kotlin
-    implementation("com.expediagroup", "graphql-kotlin-spring-server", graphQLKotlinVersion)
-    implementation("com.expediagroup", "graphql-kotlin-hooks-provider", graphQLKotlinVersion)
+    implementation("com.expediagroup", "graphql-kotlin-spring-server", "6.+")
+    implementation("com.expediagroup", "graphql-kotlin-hooks-provider", "6.+")
 
     // ktor
-    implementation("io.ktor", "ktor-client", ktorVersion)
-    implementation("io.ktor", "ktor-client-cio", ktorVersion)
-    implementation("io.ktor", "ktor-client-gson", ktorVersion)
+    implementation(platform("io.ktor:ktor-bom:2.0.0"))
+    implementation("io.ktor", "ktor-client")
+    implementation("io.ktor", "ktor-client-cio")
+    implementation("io.ktor", "ktor-client-content-negotiation")
+    implementation("io.ktor", "ktor-serialization-gson")
 
     // hibernate model code generation
-    implementation("org.hibernate", "hibernate-jpamodelgen", jpamodelgenVersion)
-    kapt("org.hibernate", "hibernate-jpamodelgen", jpamodelgenVersion)
+    implementation("org.hibernate", "hibernate-jpamodelgen")
+    kapt("org.hibernate", "hibernate-jpamodelgen")
 
     // firebase
-    implementation("com.google.firebase", "firebase-admin", firebaseVersion)
+    implementation("com.google.firebase", "firebase-admin", "8.+")
 
     // database drivers
-    implementation("org.postgresql", "postgresql", postgressqlVersion)
-    testImplementation("org.testcontainers", "testcontainers", testContainersVersion)
-    testImplementation("org.testcontainers", "postgresql", testContainersVersion)
-    testImplementation("org.testcontainers", "junit-jupiter", testContainersVersion)
+    implementation("org.postgresql", "postgresql")
+    testImplementation("org.testcontainers", "testcontainers", "1.16.3")
+    testImplementation("org.testcontainers", "postgresql", "1.16.3")
+    testImplementation("org.testcontainers", "junit-jupiter", "1.16.3")
 
 
     // liquibase
-    implementation("org.liquibase", "liquibase-core", liquibaseVersion)
+    implementation("org.liquibase", "liquibase-core")
 
     // liquibase runtime dependencies
     liquibaseRuntime("org.postgresql", "postgresql")
-    liquibaseRuntime("org.liquibase", "liquibase-core", liquibaseVersion)
-    liquibaseRuntime("org.liquibase.ext", "liquibase-hibernate5", liquibaseVersion)
+    liquibaseRuntime("org.liquibase", "liquibase-core")
+    liquibaseRuntime("org.liquibase.ext", "liquibase-hibernate5")
     liquibaseRuntime("org.springframework.boot", "spring-boot-starter-data-jpa")
     liquibaseRuntime("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
     liquibaseRuntime(sourceSets.main.get().output)
 
-    testImplementation("com.expediagroup", "graphql-kotlin-spring-client", graphQLKotlinVersion)
-
     // spring testing
-    testImplementation("org.springframework.boot", "spring-boot-starter-test", springBootVersion) {
+    testImplementation("org.springframework.boot", "spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(module = "mockito-core")
     }
 
-    testImplementation("com.ninja-squad", "springmockk", "3.0.1")
+    testImplementation("com.ninja-squad", "springmockk", "3.1.1")
 }
 
 // liquibase plugin config

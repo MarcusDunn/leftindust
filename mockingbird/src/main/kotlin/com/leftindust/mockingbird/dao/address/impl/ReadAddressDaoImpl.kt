@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.dao.address.impl
 
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
 import com.leftindust.mockingbird.auth.MediqToken
 import com.leftindust.mockingbird.dao.address.ReadAddressDao
 import com.leftindust.mockingbird.dao.entity.Address
@@ -12,11 +11,11 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Repository
 class ReadAddressDaoImpl : ReadAddressDao {
-    override fun getDoctorAddresses(did: GraphQLDoctor.ID, mediqAuthToken: MediqToken): List<Address> {
+    override fun getDoctorAddresses(did: GraphQLDoctor.ID, authToken: MediqToken): List<Address> {
         TODO("Not yet implemented")
     }
 
-    override fun getPatientAddresses(pid: GraphQLPatient.ID, authContext: GraphQLAuthContext): List<Address> {
+    override fun getPatientAddresses(pid: GraphQLPatient.ID, authToken: MediqToken): List<Address> {
         TODO("Not yet implemented")
     }
 }

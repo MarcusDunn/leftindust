@@ -2,12 +2,13 @@ package com.leftindust.mockingbird.graphql.queries
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Query
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
+import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.EventDao
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLEvent
 import com.leftindust.mockingbird.graphql.types.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLTimeRangeInput
+import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -23,9 +24,9 @@ class EventQuery(
         Gets a list of events by a list of thier ID's. Will error if any of the ID's us not found.
     """
     )
-    suspend fun eventsByIds(events: List<GraphQLEvent.ID>, graphQLAuthContext: GraphQLAuthContext) = events
-        .map { eventDao.getById(it, graphQLAuthContext.mediqAuthToken) }
-        .map { GraphQLEvent(it, graphQLAuthContext) }
+    suspend fun eventsByIds(events: List<GraphQLEvent.ID>, dataFetchingEnvironment: DataFetchingEnvironment) = events
+        .map { eventDao.getById(it, dataFetchingEnvironment.authToken) }
+        .map(::GraphQLEvent)
 
     @GraphQLDescription(
         """
@@ -34,10 +35,10 @@ class EventQuery(
     )
     suspend fun eventsByTimeRange(
         range: GraphQLTimeRangeInput,
-        graphQLAuthContext: GraphQLAuthContext
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLEvent> = withContext(Dispatchers.IO) {
-        eventDao.getBetween(range, graphQLAuthContext.mediqAuthToken)
-    }.map { GraphQLEvent(it, graphQLAuthContext) }
+        eventDao.getBetween(range, dataFetchingEnvironment.authToken)
+    }.map(::GraphQLEvent)
 
     @GraphQLDescription(
         """
@@ -47,25 +48,27 @@ class EventQuery(
     suspend fun eventsByDoctorsAndPatients(
         patients: List<GraphQLPatient.ID>,
         doctors: List<GraphQLDoctor.ID>,
-        graphQLAuthContext: GraphQLAuthContext
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLEvent> = coroutineScope {
-        val patientEvents = async { eventsByPatient(patients, graphQLAuthContext) }
-        val doctorEvents = async { eventsByDoctor(doctors, graphQLAuthContext) }
+        val patientEvents = async { eventsByPatient(patients, dataFetchingEnvironment) }
+        val doctorEvents = async { eventsByDoctor(doctors, dataFetchingEnvironment) }
 
         patientEvents.await().intersect(doctorEvents.await().toSet()).toList()
     }
 
     suspend fun eventsByPatient(
         patients: List<GraphQLPatient.ID>,
-        graphQLAuthContext: GraphQLAuthContext,
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLEvent> = patients
-        .map { eventDao.getPatientEvents(it, graphQLAuthContext.mediqAuthToken) }
-        .flatMap { events -> events.map { GraphQLEvent(it, graphQLAuthContext) } }
+        .map { eventDao.getPatientEvents(it, dataFetchingEnvironment.authToken) }
+        .flatten()
+        .map(::GraphQLEvent)
 
     suspend fun eventsByDoctor(
         doctors: List<GraphQLDoctor.ID>,
-        graphQLAuthContext: GraphQLAuthContext
+        dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLEvent> = doctors
-        .map { eventDao.getByDoctor(it, graphQLAuthContext.mediqAuthToken) }
-        .flatMap { events -> events.map { GraphQLEvent(it, graphQLAuthContext) } }
+        .map { eventDao.getByDoctor(it, dataFetchingEnvironment.authToken) }
+        .flatten()
+        .map(::GraphQLEvent)
 }

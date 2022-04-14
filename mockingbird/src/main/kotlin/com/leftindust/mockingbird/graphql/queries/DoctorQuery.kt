@@ -2,12 +2,13 @@ package com.leftindust.mockingbird.graphql.queries
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Query
-import com.leftindust.mockingbird.auth.GraphQLAuthContext
+import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.DoctorDao
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
 import com.leftindust.mockingbird.graphql.types.search.example.GraphQLDoctorExample
+import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Component
@@ -22,23 +23,23 @@ class DoctorQuery(
         pid: GraphQLPatient.ID? = null,
         range: GraphQLRangeInput? = null,
         example: GraphQLDoctorExample? = null,
-        authContext: GraphQLAuthContext
+        dataFetchingEnvironment: DataFetchingEnvironment,
     ): List<GraphQLDoctor> = when {
         dids != null && pid == null && range == null && example == null -> dids
-            .map { doctorDao.getByDoctor(it, authContext.mediqAuthToken) }
+            .map { doctorDao.getByDoctor(it, dataFetchingEnvironment.authToken) }
         pid != null && dids == null && range == null && example == null -> withContext(Dispatchers.IO) {
-            doctorDao.getPatientDoctors(pid, authContext.mediqAuthToken)
+            doctorDao.getPatientDoctors(pid, dataFetchingEnvironment.authToken)
         }
         range != null && dids == null && pid == null && example == null -> {
             withContext(Dispatchers.IO) {
-                doctorDao.getMany(range, authContext.mediqAuthToken)
+                doctorDao.getMany(range, dataFetchingEnvironment.authToken)
             }
         }
         example != null && pid == null && range == null && dids == null -> {
             withContext(Dispatchers.IO) {
-                doctorDao.searchByExample(example, authContext.mediqAuthToken)
+                doctorDao.searchByExample(example, dataFetchingEnvironment.authToken)
             }
         }
         else -> throw IllegalArgumentException("invalid argument combination to doctors")
-    }.map { GraphQLDoctor(it, authContext) }
+    }.map(::GraphQLDoctor)
 }
