@@ -30,10 +30,11 @@
     if (index >= 0) sections[sectionIndex].inputs[index].category = selectedCategory;
   };
 
-  $: inputs = sections.flatMap((section, index) => section.inputs.map((input) => ({
+  $: inputs = sections.flatMap((section, sectionIndex) => section.inputs.map((input, inputIndex) => ({
     ...input,
-    originalSectionIndex: index,
-    label: `${input.label}${sections.length > 1 ? ` (${$_('generics.section', { values: { number: index + 1 } })})` : ''}`,
+    originalSectionIndex: sectionIndex,
+    label: `${input.label || $_('generics.inputIndexed', { values: { number: inputIndex + 1 } })}${sections.length > 1
+      ? ` (${$_('generics.sectionIndexed', { values: { number: sectionIndex + 1 } })})` : ''}`,
   })));
 </script>
 

@@ -1,7 +1,34 @@
 {
+  "eslint.format.enable": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "eslint.validate": [
+    "javascript",
+    "svelte"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "vscode-graphql.useSchemaFileDefinitions": true,
+  "eslint.workingDirectories": [
+    {
+      "directory": "ultra/packages/**/*",
+      "changeProcessCWD": true
+    }
+  ],
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.keepFulfilled": true,
+  "i18n-ally.pathMatcher": "{locale}.ts",
+  "i18n-ally.extract.autoDetect": false,
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.enabledFrameworks": [
+    "svelte",
+    "general"
+  ],
+  "i18n-ally.enabledParsers": [
+    "ts"
+  ],
+  "i18n-ally.sourceLanguage": "en",
   "i18n-ally.localesPaths": [
-    "ultra/packages/leftindust/src/language",
-    "ultra/packages/leftindust/src/language/locales",
-    "ultra/packages/legacy/delta/web/src/languages"
+    "ultra/packages/leftindust/src/language/locales"
   ]
 }

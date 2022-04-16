@@ -140,6 +140,9 @@ export type Dictionary = {
     subtitle: string;
     addSection: string;
     section: string;
+    view: string;
+    sectionIndexed: string;
+    inputIndexed: string;
   };
   examples: {
     totalPlateletCount: string;

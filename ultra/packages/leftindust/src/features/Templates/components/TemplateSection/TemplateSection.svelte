@@ -48,7 +48,7 @@
   <div class="templates-template_section-section">
     {#if sections.length > 1}
       <Section
-        title={$_('generics.section', { values: { number: index + 1 } })}
+        title={$_('generics.sectionIndexed', { values: { number: index + 1 } })}
         active={$TemplateIndex === index}
       >
         <TemplateSectionInputs
