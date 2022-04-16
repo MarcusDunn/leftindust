@@ -74,7 +74,7 @@ const client = SvelteApolloClient({
   }),
 });
 
-export {
+export type {
   NamesFragment,
   BasicUserFragment,
   BasicDoctorFragment,
@@ -117,7 +117,9 @@ export {
   GroupsQueryResult,
   Person,
   Document,
-  Comparable,
+};
+
+export {
   defaultRangeInput,
   client,
   realtime,

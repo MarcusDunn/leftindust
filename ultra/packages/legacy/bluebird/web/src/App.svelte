@@ -22,7 +22,7 @@
 
   import { ACCOUNT, SIGN_IN } from '@framework/store/index';
   import { realtime } from '@framework/server';
-  import { openPopup } from '@framework/modules/NavigationModule';
+  import { openPopupUrl } from '@framework/modules/NavigationModule';
   import {
     AppViews,
     AppViewRoutes,
@@ -64,7 +64,7 @@
     void realtime.ref(`users/${$ACCOUNT.uid}`).set($ACCOUNT.database);
 
   $: if ($ACCOUNT?.isRegistered && !$ACCOUNT?.database.settings.setup)
-    f7ready(() => setTimeout(() => openPopup('/setup/'), 100));
+    f7ready(() => setTimeout(() => openPopupUrl('/setup/'), 100));
 
   $: observeHistory();
 </script>
@@ -204,7 +204,7 @@
         <List mediaList noChevron noHairlines>
           <UserItem
             user={$ACCOUNT}
-            on:click={() => openPopup('/settings/')}
+            on:click={() => openPopupUrl('/settings/')}
           />
         </List>
       </div>

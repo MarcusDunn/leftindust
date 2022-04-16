@@ -13,7 +13,7 @@
   } from 'framework7-svelte';
   import Boxed from '@/features/UI/components/Boxed/Boxed.svelte';
 
-  import { openPopup } from '../View';
+  import { openPopupUrl } from '../View';
   import { account } from '@/features/Account/store';
   import UserTags from '@/features/User/components/UserTags/UserTags.svelte';
   
@@ -89,7 +89,7 @@
                 title={$_('generics.settings')}
                 link
                 popupClose
-                on:click={() => openPopup('/settings/')}
+                on:click={() => openPopupUrl('/settings/')}
               />
             </List>
           </Col>

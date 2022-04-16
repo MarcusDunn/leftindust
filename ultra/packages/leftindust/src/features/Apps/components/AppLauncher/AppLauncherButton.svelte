@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Popover, Router } from 'framework7/types';
+  import type { Popover } from 'framework7/types';
   import { openPopover } from '@/features/View';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import AppLauncherPopover from './AppLauncherPopover.svelte';

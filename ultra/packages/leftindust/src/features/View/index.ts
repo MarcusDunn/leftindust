@@ -1,5 +1,5 @@
 import type { SvelteComponentDev } from 'svelte/internal';
-import type { Popover as PopoverType } from 'framework7/types';
+import type { Popover as PopoverType, Popup as PopupType } from 'framework7/types';
 import { f7 } from 'framework7-svelte';
 
 export interface Route {
@@ -13,7 +13,7 @@ export interface Route {
 
 export const masterDetailBreakpoint = 1300;
 
-export const openPopup = (
+export const openPopupUrl = (
   url: string,
   props = {},
 ): void => {
@@ -29,6 +29,8 @@ export const openPopup = (
   f7.popup.open('#popup-default');
 };
 
-export const openPopover = (popup: PopoverType.Popover, event: Event | HTMLElement | string): unknown =>
+export const openPopup = (popup: PopupType.Popup): PopupType.Popup => popup.open();
+
+export const openPopover = (popover: PopoverType.Popover, event: Event | HTMLElement | string): unknown =>
   // @ts-expect-error
-  popup.open(event.currentTarget ? event.currentTarget : event, true);
+  popover.open(event.currentTarget ? event.currentTarget : event, true);

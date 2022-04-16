@@ -5,7 +5,6 @@ import {
   register,
   _,
 } from 'svelte-i18n';
-import type { string } from 'yup';
 
 export type Dictionary = {
   descriptions: {

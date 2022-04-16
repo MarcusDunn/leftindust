@@ -6,6 +6,7 @@
     "build": "node_modules/.bin/cross-env NODE_ENV=development vite build",
     "serve": "node_modules/.bin/cross-env NODE_ENV=development vite",
     "check": "node_modules/.bin/svelte-check --tsconfig ./tsconfig.json",
+    "lint": "eslint --fix",
     "test": "jest src",
     "test:watch": "npm run test -- --watch"
   },

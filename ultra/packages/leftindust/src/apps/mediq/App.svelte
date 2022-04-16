@@ -8,7 +8,7 @@
   import { account } from '@/features/Account/store';
 
   import { AppViews, AppRootRoutes } from '@/features/App';
-  import { openPopup } from '@/features/View';
+  import { openPopupUrl } from '@/features/View';
 
   import { appActiveTab } from '@/features/App/store';
 
@@ -18,7 +18,7 @@
   export let f7params: Framework7Parameters;
 
   $: if ($account?.isRegistered && !$account?.database.settings.setup)
-    f7ready(() => setTimeout(() => openPopup('/setup/'), 100));
+    f7ready(() => setTimeout(() => openPopupUrl('/setup/'), 100));
 </script>
 
 <AppLayout
@@ -69,7 +69,7 @@
     <List mediaList noChevron noHairlines>
       <UserCell
         user={$account}
-        on:click={() => openPopup('/settings/')}
+        on:click={() => openPopupUrl('/settings/')}
       />
     </List>
   </div>

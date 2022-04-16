@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { CardProps } from '@/features/Widgets';
-  import type { Popover } from 'framework7/types';
+  import type { Popup } from 'framework7/types';
   
   import UserEngine from '@/api/server/engines/users/UserEngine';
   
@@ -15,7 +15,7 @@
   } from 'framework7-svelte';
 
   import { AppViews } from '@/features/App';
-  import { openPopover } from '@/features/View';
+  import { openPopup } from '@/features/View';
   
   import Card from '@/features/Widgets/components/Card/Card.svelte';
   
@@ -26,7 +26,7 @@
   import PinButton from '@/features/Pin/components/PinButton/PinButton.svelte';
 
   const { data, dragger, reference, attachments, quicklook } = $$props as CardProps;
-  let quicklookPopover: Popover.Popover;
+  let quicklookPopup: Popup.Popup;
 
   const { user } = UserEngine({
     uid: data.id,
@@ -39,7 +39,7 @@
   {url}
   view={AppViews.Clients}
   color="blue"
-  bind:instance={quicklookPopover}
+  bind:instance={quicklookPopup}
 />
 
 <Card
@@ -137,7 +137,7 @@
       <Col width="50">
         <div
           class={`${quicklook ? 'disabled' : ''}`}
-          on:click={(event) => openPopover(quicklookPopover, event)}
+          on:click={() => openPopup(quicklookPopup)}
         >
           <Button
             round
