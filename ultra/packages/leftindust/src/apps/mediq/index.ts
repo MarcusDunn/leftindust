@@ -2,7 +2,7 @@ import 'framework7-icons';
 import '@/style/fonts/fonts.css';
 import '@/style/index.scss';
 
-import 'framework7/framework7-bundle.css';
+import 'framework7/css/bundle';
 
 import 'svelte';
 
@@ -14,6 +14,8 @@ import { setupI18n } from '@/language';
 import routes from './routes';
 import { isLoading } from 'svelte-i18n';
 
+// https://framework7.io/svelte/init-app
+// @ts-expect-error
 Framework7.use(Framework7Svelte);
 
 // @ts-expect-error

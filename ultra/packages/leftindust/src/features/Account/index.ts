@@ -7,10 +7,13 @@ import type {
 import type { WidgetType } from '../Widgets';
 
 import { account, signInStatus } from './store';
-import { client, realtime } from '@/api/server';
+import { client, realtime, auth } from '@/api/server';
+import { ref, set, onValue, off } from "firebase/database";
 import { Layout } from '../App';
 
-import firebase from 'firebase/app';
+import type { User } from 'firebase/auth';
+import { signOut as firebaseSignOut, setPersistence, browserSessionPersistence, signInWithEmailAndPassword } from 'firebase/auth';
+
 import deepmerge from 'deepmerge';
 
 import { _ } from '@/language';
@@ -64,7 +67,7 @@ export type Account = UserQueryResult['user'] & {
 };
 
 export type SignInStatus = {
-  user?: firebase.User;
+  user?: User;
   error?: string;
   signedIn: boolean;
 };
@@ -133,7 +136,7 @@ const accountDatabaseTemplate: AccountDatabaseTemplate = {
   layout: accountLayoutTemplate,
 };
 
-export const signIn = (fb: { user: firebase.User; database: AccountDatabaseTemplate }): void => {
+export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): void => {
   const { user, database } = fb;
   const request = client.query<UserQueryResult, { uid: string }>(userQuery, {
     variables: {
@@ -170,9 +173,7 @@ export const signIn = (fb: { user: firebase.User; database: AccountDatabaseTempl
 
 export const signOut = (): void => {
   void client.resetStore().then(() => {
-    void firebase
-      .auth()
-      .signOut()
+    void firebaseSignOut(auth)
       .then(() => {
         signInStatus.update(() => ({
           signedIn: false,
@@ -193,39 +194,37 @@ export const signOut = (): void => {
   });
 };
 
-export const getFirebaseUserDatabaseAndSignIn = (user: firebase.User): void => {
-  const database = realtime.ref(`users/${user.uid}`);
+export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
+  const database = ref(realtime, `users/${user.uid}`);
 
-  database.on('value', (snapshot) => {
+  onValue(database, (snapshot) => {
     const data: AccountDatabaseTemplate = snapshot.val();
     if (data) {
       // Update settings with latest templates if versions mismatch
       if (data.version < accountDatabaseTemplate.version) {
-        void database
-          .set({
-            ...accountDatabaseTemplate,
-            ...Object.keys(data)
-              .filter((key) => key !== 'version')
-              .reduce(
-                (result, key) => ({
-                  ...result,
-                  [key]: data[key as keyof AccountDatabaseTemplate],
-                }),
-                {},
-              ),
-          })
+        set(database, {
+          ...accountDatabaseTemplate,
+          ...Object.keys(data)
+            .filter((key) => key !== 'version')
+            .reduce(
+              (result, key) => ({
+                ...result,
+                [key]: data[key as keyof AccountDatabaseTemplate],
+              }),
+              {},
+            ),
+        })
           .then(() => {
             console.log(`User database updated to version ${accountDatabaseTemplate.version}`);
           });
       } else {
         // Sign-in user and authenticate with leftindust servers
         signIn({ user, database: data });
-        database.off();
+        off(database);
       }
     } else {
       // Load default settings
-      void database
-        .set({ ...accountDatabaseTemplate })
+      set(database, { ...accountDatabaseTemplate })
         .then(() => {
           console.log('Default user settings have been loaded');
         });
@@ -245,13 +244,9 @@ export const authenticateFirebaseUser = (input: {
     const { email, password } = input;
 
     if (email && password) {
-      firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      setPersistence(auth, browserSessionPersistence)
         .then(() =>
-          firebase
-            .auth()
-            .signInWithEmailAndPassword(email.trim(), password)
+          signInWithEmailAndPassword(auth, email.trim(), password)
             .then((user) => {
               if (user?.user) {
                 // Firebase auth success

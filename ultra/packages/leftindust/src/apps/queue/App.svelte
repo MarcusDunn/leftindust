@@ -1,9 +1,6 @@
 <script lang="ts">
   import type { Framework7Parameters } from 'framework7/types';
 
-  import firebase from 'firebase/app';
-  import 'firebase/auth';
-
   import {
     App,
     View,
@@ -13,8 +10,9 @@
   } from 'framework7-svelte';
 
   import { account, signInStatus } from '@/features/Account/store';
-  import { realtime } from '@/api/server';
+  import { auth, realtime } from '@/api/server';
 
+  import { onAuthStateChanged } from 'firebase/auth';
   import { AppViews, AppPopups, AppRootRoutes } from '@/features/App';
 
   import { getFirebaseUserDatabaseAndSignIn } from '@/features/Account';
@@ -22,14 +20,14 @@
 
   import { observeHistory } from '@/features/History';
   import Dragbar from '@/features/UI/components/Dragbar/Dragbar.svelte';
-  import AppLayout from '@/features/App/components/AppLayout/AppLayout.svelte';
 
   import routes from './routes';
+  import { ref, set } from 'firebase/database';
 
   export let f7params: Framework7Parameters;
-  const { id, theme, autoDarkTheme } = f7params;
+  const { id, theme, autoDarkMode } = f7params;
 
-  firebase.auth().onAuthStateChanged((user) => {
+  onAuthStateChanged(auth, (user) => {
     if (user) {
       getFirebaseUserDatabaseAndSignIn(user);
     } else {
@@ -38,8 +36,7 @@
   });
 
   // Everytime user account information changes, update the firebase db
-  $: if ($account) 
-    void realtime.ref(`users/${$account.uid}`).set($account.database);
+  $: if ($account) void set(ref(realtime, `users/${$account.uid}`), $account.database);
 
   f7ready(() => {
     observeWindowErrors();
@@ -48,7 +45,7 @@
 
 </script>
 
-<App {...{ id, theme, routes, autoDarkTheme }}>
+<App {...{ id, theme, routes, autoDarkMode }}>
   <Dragbar />
   <LoginScreen opened={!$account?.isRegistered}>
     <View url="/account/login/" />

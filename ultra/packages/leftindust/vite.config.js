@@ -24,9 +24,11 @@ export default defineConfig({
         queue: path.resolve(__dirname, 'src//apps/queue/index.html'),
       },
     },
+    assetsInlineLimit: 0,
+    emptyOutDir: true,
   },
   server: {
-    host: true,
+  host: true,
     port: 5002,
   },
   rollupDedupe: ['svelte', '@fullcalendar/common'],
@@ -53,7 +55,7 @@ export default defineConfig({
   ],
   optimizeDeps: {
     include: ['@apollo/client/core', '@apollo/client/cache', 'fast-json-stable-stringify', 'zen-observable', 'react', '@fullcalendar/common'],
-    exclude: ['@apollo/client', 'framework7', 'framework7-svelte'],
+    exclude: ['@apollo/client'],
   },
   resolve: {
     alias: {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /**
  * CODE FORKED FROM https://github.com/drcallaway/apollo-link-timeout
  * due to issues with vite

@@ -18,7 +18,9 @@
   export let url: string | undefined = undefined;
 
   let swiper: SwiperType | undefined;
-  const setSwiper = (event: CustomEvent<[SwiperType]>) => [swiper] = event.detail;
+  // TODO: Bumped F7 to v7 and type error came up. Investigate later
+  // @ts-expect-error
+  const setSwiper = (event: CustomEvent<void>) => ([swiper] = event.detail);
 
   let isBeginning: boolean;
   let isEnd: boolean;
