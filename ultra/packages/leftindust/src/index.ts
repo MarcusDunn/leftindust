@@ -1,3 +1,4 @@
+import type { Framework7Parameters } from 'framework7/types';
 import 'framework7-icons';
 import '@/style/fonts/fonts.css';
 import '@/style/index.scss';
@@ -21,9 +22,9 @@ document.getElementsByTagName('body')[0].style.zoom = '90%';
 
 setupI18n();
 
-const f7params = {
+const f7params: Framework7Parameters = {
   theme: 'ios',
-  autoDarkTheme: true,
+  autoDarkMode: true,
   name: 'leftindust',
   id: 'com.leftindust.leftindust',
 };

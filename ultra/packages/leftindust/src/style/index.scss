@@ -15,7 +15,7 @@ $master: 400px;
 
 
 :root {
- &.theme-dark {
+ &.dark {
     --f7-list-bg-color: rgb(44, 44, 46) !important;
  }
 }
@@ -58,7 +58,7 @@ html {
     background-color: rgb(174, 174, 178);
   }
 
-  &.theme-dark {
+  &.dark {
     ::-webkit-scrollbar-thumb {
       background-color: rgb(58, 58, 60);
     }
@@ -368,7 +368,7 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
     }
   }
 
-  &.theme-dark {
+  &.dark {
     .views, .popup {
       .page, .page-content {
         &:not(.login-screen-content) {
@@ -409,7 +409,7 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
 
   }
 
-  &.theme-dark {
+  &.dark {
     .view-master-detail .page-master, .view-master-detail .navbar-master {
       border-right: 1px solid black;
     }
@@ -424,7 +424,7 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
     border-left: 1px solid var(--f7-page-master-border-color);
   }
 
-  &.theme-dark {
+  &.dark {
     .panel-left {
       border-right: 1px solid black;
     }
@@ -468,7 +468,7 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
     margin: 5px 0px;
   }
 
-  &.theme-dark {
+  &.dark {
     h1, h2 {
       color: white;
     }
@@ -566,7 +566,7 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
     }
   }
 
-  &.theme-dark {
+  &.dark {
     .chip {
       &:not(.chip-outline) {
         background-color: rgb(40, 40, 40)
@@ -619,7 +619,7 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
     @include Clamps.set(1);
   }
 
-  &.theme-dark {
+  &.dark {
     --f7-list-bg-color: rgb(51, 51, 51);
   }
 
@@ -655,7 +655,7 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
     }
   }
 
-  &.theme-dark {
+  &.dark {
     .calendar-modal {
       background: rgb(30, 30, 30);
 
@@ -675,7 +675,7 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
     }
   }
 
-  &.theme-dark {
+  &.dark {
     .popover {
       .view {
         .page-content {
@@ -703,7 +703,7 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
   background-color: var(--f7-page-bg-color) !important;
 }
 
-.theme-dark {
+.dark {
   .no-vibrancy {
     background-color: rgb(44, 44, 46) !important;
   }

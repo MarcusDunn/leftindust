@@ -25,6 +25,7 @@
   import { observeWindowErrors } from '@/features/Errors';
   import { observeHistory } from '@/features/History';
   import Dragbar from '@/features/UI/components/Dragbar/Dragbar.svelte';
+  import { initAutoDarkTheme } from '@/features/UI';
 
   const { System } = getNativeAPI();
   
@@ -49,8 +50,9 @@
   f7ready(() => {
     observeWindowErrors();
     observeHistory();
-  });
 
+    initAutoDarkTheme();
+  });
 
   let width = window.innerWidth;
 </script>
