@@ -43,8 +43,6 @@
   const { patient, request } = PatientEngine({
     pids: [{ id: data.id }],
   });
-
-  $: $account.database.layout.pinned['Patient'][$patient?.pid.id] ??= [];
 </script>
 
 <Page
@@ -133,9 +131,9 @@
       />
       <div slot="drawer">
         {#key $account}
-          {#if $account.database.layout.pinned['Patient'][$patient?.pid.id].length > 0}
+          {#if $account.database.layout.pinned['Patient'][$patient?.pid.id]?.length > 0}
             <SpecificGrid
-              props={$account.database.layout.pinned['Patient'][$patient?.pid.id].map(({ type, id }) => {
+              props={$account.database.layout.pinned['Patient'][$patient?.pid.id]?.map(({ type, id }) => {
                 if (type) {
                   return {
                     id: type,
