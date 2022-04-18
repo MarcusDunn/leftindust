@@ -74,8 +74,6 @@
     })(),
   }));
 
-  console.log(items);
-
   let previousItems = items;
 
   const gridChange = (event: CustomEvent<WidgetGridItem & { cols: number }>) => {
