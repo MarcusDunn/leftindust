@@ -1,3 +1,11 @@
+import type { SvelteComponentDev } from 'svelte/internal';
+import type { Framework7Parameters } from 'framework7/types';
+
+import Framework7 from 'framework7/lite-bundle';
+import Framework7Svelte from 'framework7-svelte';
+import { setupI18n } from '@/language';
+import { isLoading } from 'svelte-i18n';
+
 export enum AppViews {
   Dashboard = 'view-dashboard',
   Calendar = 'view-calendar',
@@ -31,3 +39,24 @@ export enum Layout {
   Bundled = 'bundled',
   Stacked = 'stacked',
 }
+
+export const initMain = (app: typeof SvelteComponentDev, f7params: Framework7Parameters) => {
+  // https://framework7.io/svelte/init-app
+  // @ts-expect-error
+  Framework7.use(Framework7Svelte);
+
+  // The zoom property is deprecated
+  // @ts-expect-error
+  document.getElementsByTagName('body')[0].style.zoom = '90%';
+
+  setupI18n();
+
+  isLoading.subscribe((loading) => {
+    if (!loading) new app({
+      target: document.body,
+      props: {
+        f7params,
+      },
+    });
+  });
+};

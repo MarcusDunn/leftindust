@@ -14,8 +14,6 @@
   import { ClientsTab } from '../Clients';
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
   import Profile from '../UI/components/Profile/Profile.svelte';
-  import Select from '../Input/components/Select/Select.svelte';
-  import Patients from '../Patients';
   import { WidgetType } from '../Widgets';
   import { _ } from '@/language';
   import SelectButton from '../UI/components/SelectButton/SelectButton.svelte';
