@@ -40,7 +40,7 @@ export type Path =
   | '/blank/'
   | '(.*)';
 
-export const openPopup = (
+export const openPopupUrl = (
   url: Path | string,
   props = {},
 ): void => {

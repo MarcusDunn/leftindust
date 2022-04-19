@@ -45,3 +45,12 @@ export type Template = {
   subtitle?: string;
   sections: TemplateSection[];
 };
+
+export const DefaultTemplate: Template = {
+  title: '',
+  sections: [{
+    title: '',
+    inputs: [],
+    id: 0,
+  }],
+};

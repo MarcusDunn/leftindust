@@ -1,4 +1,4 @@
-import type { FixedLengthArray } from '../../../types';
+import type { FixedLengthArray } from '@/types';
 import type {
   Doctor,
   DoctorIdInput,

@@ -135,7 +135,10 @@ const language: Dictionary = {
     instructions: 'Instructions',
     subtitle: 'Subtitle',
     addSection: 'Add Section',
-    section: 'Section {number}',
+    section: 'Section',
+    view: 'View {label}',
+    sectionIndexed: 'Section {number}',
+    inputIndexed: 'Input {number}',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',

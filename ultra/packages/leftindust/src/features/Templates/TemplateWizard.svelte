@@ -7,7 +7,7 @@
   } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
   import { TemplateInputItems, TemplateSelectedTab } from './store';
-  
+
   import IFrame from '../View/components/IFrame/IFrame.svelte';
   import WizardSplit from '../Wizard/components/WizardSplit/WizardSplit.svelte';
   import TemplateCategoryInputs from './components/TemplateInputs/TemplateCategoryInputs.svelte';
@@ -53,13 +53,15 @@
       <TemplateCategoryInputs bind:sections={$TemplateInputItems.sections} />
     </Tab>
   </Tabs>
-  <br />  
+  <br />
   <svelte:fragment slot="detail">
     <IFrame
-      views={[{
-        url: '/template/preview/',
-        selected: true,
-      }]}
+      views={[
+        {
+          url: '/template/preview/',
+          selected: true,
+        },
+      ]}
     />
   </svelte:fragment>
 </WizardSplit>

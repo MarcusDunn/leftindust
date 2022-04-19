@@ -13,8 +13,7 @@
 
   import './Grid.scss';
 
-  // @ts-ignore
-  import SvelteGrid from 'svelte-grid';
+  import { Grid as SvelteGrid } from './svelte-grid';
 
   import deepmerge from 'deepmerge';
 
@@ -75,8 +74,6 @@
     })(),
   }));
 
-  console.log(items);
-
   let previousItems = items;
 
   const gridChange = (event: CustomEvent<WidgetGridItem & { cols: number }>) => {
@@ -122,6 +119,7 @@
         }
       }
       */
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const newGridState = Object.fromEntries(
         items.map((newItem) => [newItem.id, Object.keys(newItem)
           .filter((key) => !(['id', 'component', 'props'].includes(key)))
@@ -150,6 +148,7 @@
 
   // Calculate grid spacing so widgets don't show up with unbalanced gaps
   // TODO: this is sort of broken right now
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const computeGridSpacing = (item: WidgetGridItem) => {
     let widthOffset = (12 ^ col) / col;
     f7.$('.widgets-grid-item').forEach((node) => {

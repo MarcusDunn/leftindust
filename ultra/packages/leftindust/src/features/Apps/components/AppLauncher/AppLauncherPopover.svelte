@@ -5,12 +5,7 @@
 
   import Appbar from '@/features/UI/components/Appbar/Appbar.svelte';
   import Page from '@/features/UI/components/Page/Page.svelte';
-  import {
-    Popover,
-    View,
-    Button,
-    Link,
-  } from 'framework7-svelte';
+  import { Popover, View, Link } from 'framework7-svelte';
   
   import './AppLauncherPopover.scss';
   import AppLauncher from './AppLauncher.svelte';

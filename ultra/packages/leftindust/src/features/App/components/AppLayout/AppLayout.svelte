@@ -4,10 +4,11 @@
 
   import { AppPopups, AppViews, AppRootRoutes } from '../../';
   import { getFirebaseUserDatabaseAndSignIn } from '@/features/Account';
-  import { realtime } from '@/api/server';
+  import { auth, realtime } from '@/api/server';
   import { account, signInStatus } from '@/features/Account/store';
   
-  import firebase from 'firebase';
+  import { onAuthStateChanged } from 'firebase/auth';
+  import { ref, set } from 'firebase/database';
   import { masterDetailBreakpoint } from '@/features/View';
   import {
     App,
@@ -24,6 +25,7 @@
   import { observeWindowErrors } from '@/features/Errors';
   import { observeHistory } from '@/features/History';
   import Dragbar from '@/features/UI/components/Dragbar/Dragbar.svelte';
+  import { initAutoDarkTheme } from '@/features/UI';
 
   const { System } = getNativeAPI();
   
@@ -32,9 +34,9 @@
   export let items: (AppLayoutItem | AppLayoutSidebarTitle)[];
   export let sidebar = true;
 
-  const { id, theme, routes, autoDarkTheme } = f7params;
+  const { id, theme, routes, autoDarkMode } = f7params;
 
-  firebase.auth().onAuthStateChanged((user) => {
+  onAuthStateChanged(auth, (user) => {
     if (user) {
       getFirebaseUserDatabaseAndSignIn(user);
     } else {
@@ -43,21 +45,21 @@
   });
 
   // Everytime user account information changes, update the firebase db
-  $: if ($account) 
-    void realtime.ref(`users/${$account.uid}`).set($account.database);
+  $: if ($account) void set(ref(realtime, `users/${$account.uid}`), $account.database);
     
   f7ready(() => {
     observeWindowErrors();
     observeHistory();
-  });
 
+    initAutoDarkTheme();
+  });
 
   let width = window.innerWidth;
 </script>
 
 <svelte:window bind:innerWidth={width} />
 
-<App {...{ id, theme, routes, autoDarkTheme }}>
+<App {...{ id, theme, routes, autoDarkMode }}>
   <Dragbar />
   <LoginScreen opened={!$account?.isRegistered}>
     <View url="/account/login/" />

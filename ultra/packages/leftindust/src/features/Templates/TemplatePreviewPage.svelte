@@ -12,13 +12,15 @@
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
   import Page from '../UI/components/Page/Page.svelte';
   import TemplateInputsPreview from './components/TemplateInputs/TemplateInputsPreview.svelte';
-  
+
   let progressbar: Progressbar | undefined;
 
   $: if ($TemplateInputItems.sections.length > 1) {
-    f7.progressbar.set(progressbar?.$$.ctx[1], $TemplateIndex / $TemplateInputItems.sections.length * 100);
+    f7.progressbar.set(
+      progressbar?.$$.ctx[1],
+      ($TemplateIndex / $TemplateInputItems.sections.length) * 100,
+    );
   }
-
 </script>
 
 <Page style="height: 100%; overflow: hidden">
@@ -31,14 +33,22 @@
           <h2>{$TemplateInputItems.sections[$TemplateIndex].title}</h2>
           <p>{$TemplateInputItems.sections[$TemplateIndex].subtitle ?? ''}</p>
           <p />
-          <Progressbar bind:this={progressbar} color="deeppurple" progress={0} />
+          <Progressbar
+            bind:this={progressbar}
+            color="deeppurple"
+            progress={0}
+          />
           <br />
-          <TemplateInputsPreview bind:inputs={$TemplateInputItems.sections[$TemplateIndex].inputs} />
+          <TemplateInputsPreview
+            bind:inputs={$TemplateInputItems.sections[$TemplateIndex].inputs}
+          />
         {:else}
           <h2>{$TemplateInputItems.title}</h2>
           <p>{$TemplateInputItems.subtitle ?? ''}</p>
           <p />
-          <TemplateInputsPreview bind:inputs={$TemplateInputItems.sections[0].inputs} />
+          <TemplateInputsPreview
+            bind:inputs={$TemplateInputItems.sections[0].inputs}
+          />
         {/if}
       </Block>
     </Tab>

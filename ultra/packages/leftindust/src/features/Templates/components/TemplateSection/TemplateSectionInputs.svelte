@@ -24,7 +24,7 @@
       typeof index === 'number' ?
         // eslint has a brain tumor
         // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-        $_('generics.section', { values: { number: index + 1 } })
+        $_('generics.sectionIndexed', { values: { number: index + 1 } })
         : 'Eg. Blood Sample'
       }
     bind:value={title}

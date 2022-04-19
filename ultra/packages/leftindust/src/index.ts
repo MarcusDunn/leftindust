@@ -1,18 +1,19 @@
+import type { Framework7Parameters } from 'framework7/types';
 import 'framework7-icons';
-import './style/fonts/fonts.css';
-import './style/index.scss';
+import '@/style/fonts/fonts.css';
+import '@/style/index.scss';
 
-import 'framework7/framework7-bundle.css';
+import 'framework7/css';
 
 import 'svelte';
 
-import Framework7 from 'framework7/lite-bundle';
+import Framework7 from 'framework7';
 import Framework7Svelte from 'framework7-svelte';
-
-import { setupI18n } from './language';
-import { isLoading } from 'svelte-i18n';
+import 'framework7/lite';
 
 import App from './App.svelte';
+import { setupI18n } from '@/language';
+import { isLoading } from 'svelte-i18n';
 
 Framework7.use(Framework7Svelte);
 
@@ -21,9 +22,9 @@ document.getElementsByTagName('body')[0].style.zoom = '90%';
 
 setupI18n();
 
-const f7params = {
+const f7params: Framework7Parameters = {
   theme: 'ios',
-  autoDarkTheme: true,
+  autoDarkMode: true,
   name: 'leftindust',
   id: 'com.leftindust.leftindust',
 };

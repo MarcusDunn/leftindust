@@ -1,6 +1,6 @@
 import type { SvelteComponent } from 'svelte';
 import type { Coordinates, Dimensions } from '@/types';
-import type { Document, Person, Data } from '@/api/server';
+import type { Data } from '@/api/server';
 
 // @ts-expect-error
 import gridHelp from 'svelte-grid/build/helper';
