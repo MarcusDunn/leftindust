@@ -1,4 +1,5 @@
 import type { Framework7Parameters } from 'framework7/types';
+
 import { initMain } from './features/App';
 
 import 'framework7-icons';
@@ -9,6 +10,8 @@ import 'framework7/css/bundle';
 import 'svelte';
 
 import App from './App.svelte';
+import { setupI18n } from '@/language';
+import { isLoading } from 'svelte-i18n';
 
 const f7params: Framework7Parameters = {
   theme: 'ios',
