@@ -1,37 +1,22 @@
+import type { Framework7Parameters } from 'framework7/types';
 import 'framework7-icons';
 import '@/style/fonts/fonts.css';
 import '@/style/index.scss';
 
-import 'framework7/css';
+import 'framework7/css/bundle';
 
 import 'svelte';
 
-import Framework7 from 'framework7';
-import Framework7Svelte from 'framework7-svelte';
-
 import App from './App.svelte';
-import { setupI18n } from '@/language';
-import { isLoading } from 'svelte-i18n';
+import routes from './routes';
+import { initMain } from '@/features/App';
 
-Framework7.use(Framework7Svelte);
-
-// @ts-expect-error
-document.getElementsByTagName('body')[0].style.zoom = '90%';
-
-setupI18n();
-
-const f7params = {
+const f7params: Framework7Parameters = {
   theme: 'ios',
-  autoDarkTheme: true,
-  name: 'Queue',
+  autoDarkMode: true,
+  name: 'MedIQ',
   id: 'com.leftindust.queue',
+  routes,
 };
 
-isLoading.subscribe((loading) => {
-  if (!loading) new App({
-    target: document.body,
-    props: {
-      f7params,
-    },
-  });
-});
+initMain(App, f7params);

@@ -6,4 +6,4 @@
 
 </script>
 
-<AppLayout items={[]} {f7params} />
+<AppLayout items={[]} {f7params} sidebar={false} />
