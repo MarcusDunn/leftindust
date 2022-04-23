@@ -11,4 +11,8 @@ class AccessControlList(
     val mediqUser: MediqUser? = null,
     @ManyToOne(cascade = [(CascadeType.ALL)])
     val action: Action,
-) : AbstractJpaPersistable()
+) : AbstractJpaPersistable() {
+    override fun toString(): String {
+        return "AccessControlList(group=$group, mediqUser=$mediqUser, action=$action)"
+    }
+}

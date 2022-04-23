@@ -5,12 +5,20 @@ services:
       - acceptLicense=true
       - saveAnalytics=true
       - include=2021-05_en
+    ports:
+      - 81:80
   mockingbird-postgres:
     environment:
       POSTGRES_DB: mediq
       POSTGRES_USER: mediq
       POSTGRES_PASSWORD: mediq
+
     image: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   mockingbird:
     ports:
       - 8080:8080
@@ -23,7 +31,8 @@ services:
     build:
       context: mockingbird
     depends_on:
-      - mockingbird-postgres
+      mockingbird-postgres:
+        condition: service_healthy
   ultra:
     ports:
       - 80:80

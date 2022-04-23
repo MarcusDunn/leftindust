@@ -4,7 +4,7 @@ import com.leftindust.mockingbird.dao.Tables
 import com.leftindust.mockingbird.dao.entity.Action
 
 class NotAuthorizedException(requester: MediqToken, vararg actions: Action) :
-    Throwable("user $requester cannot $actions") {
+    Throwable("user $requester cannot ${actions.joinToString()}") {
     constructor(requester: MediqToken, vararg pairs: Pair<Crud, Tables>) : this(
         requester = requester,
         actions = pairs

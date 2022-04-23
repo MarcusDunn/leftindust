@@ -2,7 +2,6 @@ graphql:
   packages:
     - "com.leftindust.mockingbird.graphql"
     - "java.util.UUID"
-    - "java.util.UUID"
 spring:
   main:
     web-application-type: reactive
@@ -18,4 +17,4 @@ spring:
     password: mediq
 icd:
   client:
-    url: "localhost:80/icd"
+    url: "localhost:81/icd"
