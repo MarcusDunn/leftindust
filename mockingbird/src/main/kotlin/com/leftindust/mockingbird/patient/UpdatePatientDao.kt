@@ -3,11 +3,11 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.Blocking
 import com.leftindust.mockingbird.auth.Crud
 import com.leftindust.mockingbird.auth.MediqToken
-import com.leftindust.mockingbird.dao.GuardedDao
-import com.leftindust.mockingbird.dao.Tables
-import com.leftindust.mockingbird.dao.entity.Action
-import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
-import com.leftindust.mockingbird.graphql.types.GraphQLFormTemplate
+import com.leftindust.mockingbird.persistance.GuardedDao
+import com.leftindust.mockingbird.auth.Tables
+import com.leftindust.mockingbird.auth.Action
+import com.leftindust.mockingbird.doctor.GraphQLDoctor
+import com.leftindust.mockingbird.form.GraphQLFormTemplate
 
 interface UpdatePatientDao : GuardedDao {
     companion object {

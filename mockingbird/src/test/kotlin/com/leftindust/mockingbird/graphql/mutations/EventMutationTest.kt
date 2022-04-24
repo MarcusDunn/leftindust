@@ -1,10 +1,11 @@
 package com.leftindust.mockingbird.graphql.mutations
 
 import com.expediagroup.graphql.generator.execution.OptionalInput
-import com.leftindust.mockingbird.dao.EventDao
-import com.leftindust.mockingbird.dao.entity.Event
-import com.leftindust.mockingbird.graphql.types.GraphQLEvent
-import com.leftindust.mockingbird.graphql.types.input.GraphQLEventEditInput
+import com.leftindust.mockingbird.event.EventDao
+import com.leftindust.mockingbird.event.Event
+import com.leftindust.mockingbird.event.EventMutation
+import com.leftindust.mockingbird.event.GraphQLEvent
+import com.leftindust.mockingbird.event.GraphQLEventEditInput
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.confirmVerified

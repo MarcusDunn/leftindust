@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.graphql.types
 
+import com.leftindust.mockingbird.form.GraphQLFormSection
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.makeUUID
 import org.junit.jupiter.api.Assertions.assertEquals

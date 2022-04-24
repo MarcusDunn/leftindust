@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.auth.impl
 
-import com.leftindust.mockingbird.dao.AuthorizationDao
+import com.leftindust.mockingbird.auth.AuthorizerImpl
+import com.leftindust.mockingbird.auth.AuthorizationDao
 import com.leftindust.mockingbird.extensions.Authorization
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

@@ -1,9 +1,10 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.dao.RecordDao
-import com.leftindust.mockingbird.dao.entity.MediqRecord
+import com.leftindust.mockingbird.record.RecordDao
+import com.leftindust.mockingbird.record.MediqRecord
 import com.leftindust.mockingbird.patient.GraphQLPatient
-import com.leftindust.mockingbird.graphql.types.GraphQLPatientRecord
+import com.leftindust.mockingbird.record.GraphQLPatientRecord
+import com.leftindust.mockingbird.record.RecordQuery
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk

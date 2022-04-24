@@ -1,18 +1,16 @@
 package com.leftindust.mockingbird.graphql.types
 
 import com.google.firebase.auth.UserRecord
-import com.leftindust.mockingbird.auth.Crud
-import com.leftindust.mockingbird.auth.NotAuthorizedException
-import com.leftindust.mockingbird.dao.AuthorizationDao
-import com.leftindust.mockingbird.dao.NameInfoDao
-import com.leftindust.mockingbird.dao.Tables
-import com.leftindust.mockingbird.dao.UserDao
-import com.leftindust.mockingbird.dao.entity.Action
-import com.leftindust.mockingbird.dao.entity.NameInfo
+import com.leftindust.mockingbird.auth.*
+import com.leftindust.mockingbird.person.NameInfoDao
+import com.leftindust.mockingbird.user.UserDao
+import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.patient.ReadPatientDao
-import com.leftindust.mockingbird.external.firebase.UserFetcher
-import com.leftindust.mockingbird.graphql.types.input.GraphQLPermissionInput
+import com.leftindust.mockingbird.user.UserFetcher
 import com.leftindust.mockingbird.patient.GraphQLPatient
+import com.leftindust.mockingbird.person.GraphQLNameInfo
+import com.leftindust.mockingbird.user.GraphQLFirebaseInfo
+import com.leftindust.mockingbird.user.GraphQLUser
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every

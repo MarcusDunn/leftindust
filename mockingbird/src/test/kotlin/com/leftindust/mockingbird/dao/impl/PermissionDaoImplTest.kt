@@ -1,15 +1,16 @@
 package com.leftindust.mockingbird.dao.impl
 
 import com.leftindust.mockingbird.auth.Crud.CREATE
-import com.leftindust.mockingbird.dao.Tables.User
-import com.leftindust.mockingbird.dao.entity.AccessControlList
-import com.leftindust.mockingbird.dao.entity.MediqGroup
-import com.leftindust.mockingbird.dao.entity.MediqUser
-import com.leftindust.mockingbird.dao.impl.repository.HibernateAclRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernateGroupRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernateUserRepository
-import com.leftindust.mockingbird.graphql.types.GraphQLUserGroup
-import com.leftindust.mockingbird.graphql.types.input.GraphQLPermissionInput
+import com.leftindust.mockingbird.auth.Tables.User
+import com.leftindust.mockingbird.auth.AccessControlList
+import com.leftindust.mockingbird.auth.PermissionDaoImpl
+import com.leftindust.mockingbird.group.MediqGroup
+import com.leftindust.mockingbird.user.MediqUser
+import com.leftindust.mockingbird.auth.HibernateAclRepository
+import com.leftindust.mockingbird.group.HibernateGroupRepository
+import com.leftindust.mockingbird.user.HibernateUserRepository
+import com.leftindust.mockingbird.user.GraphQLUserGroup
+import com.leftindust.mockingbird.auth.GraphQLPermissionInput
 import com.leftindust.mockingbird.util.unit.LenientAuthorizerUnitTest
 import io.mockk.every
 import io.mockk.mockk

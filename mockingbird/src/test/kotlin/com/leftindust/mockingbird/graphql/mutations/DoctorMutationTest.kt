@@ -1,10 +1,11 @@
 package com.leftindust.mockingbird.graphql.mutations
 
-import com.leftindust.mockingbird.dao.DoctorDao
-import com.leftindust.mockingbird.dao.entity.Doctor
-import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
-import com.leftindust.mockingbird.graphql.types.input.GraphQLDoctorEditInput
-import com.leftindust.mockingbird.graphql.types.input.GraphQLDoctorInput
+import com.leftindust.mockingbird.doctor.DoctorDao
+import com.leftindust.mockingbird.doctor.Doctor
+import com.leftindust.mockingbird.doctor.DoctorMutation
+import com.leftindust.mockingbird.doctor.GraphQLDoctor
+import com.leftindust.mockingbird.doctor.GraphQLDoctorEditInput
+import com.leftindust.mockingbird.doctor.GraphQLDoctorInput
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk

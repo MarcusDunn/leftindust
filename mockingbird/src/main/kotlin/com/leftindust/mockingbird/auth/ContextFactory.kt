@@ -2,7 +2,6 @@ package com.leftindust.mockingbird.auth
 
 
 import com.expediagroup.graphql.server.spring.execution.DefaultSpringGraphQLContextFactory
-import com.leftindust.mockingbird.auth.impl.VerifiedFirebaseToken
 import graphql.schema.DataFetchingEnvironment
 import org.apache.logging.log4j.LogManager
 import org.springframework.http.HttpMethod

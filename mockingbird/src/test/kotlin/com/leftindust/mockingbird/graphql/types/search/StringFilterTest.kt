@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.graphql.types.search
 
-import com.leftindust.mockingbird.dao.entity.NameInfo
+import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.graphql.types.search.filter.CaseAgnosticStringFilter
 import io.mockk.every
 import io.mockk.mockk

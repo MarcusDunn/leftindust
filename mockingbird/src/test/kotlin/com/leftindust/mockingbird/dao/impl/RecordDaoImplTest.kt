@@ -1,13 +1,14 @@
 package com.leftindust.mockingbird.dao.impl
 
 import com.leftindust.mockingbird.auth.Authorizer
-import com.leftindust.mockingbird.dao.entity.MediqRecord
+import com.leftindust.mockingbird.record.MediqRecord
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.HibernatePatientRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernateRecordRepository
+import com.leftindust.mockingbird.record.HibernateRecordRepository
 import com.leftindust.mockingbird.extensions.Authorization
 import com.leftindust.mockingbird.patient.GraphQLPatient
-import com.leftindust.mockingbird.graphql.types.GraphQLPatientRecord
+import com.leftindust.mockingbird.record.GraphQLPatientRecord
+import com.leftindust.mockingbird.record.RecordDaoImpl
 import com.leftindust.mockingbird.util.EntityStore
 import io.mockk.coEvery
 import io.mockk.every

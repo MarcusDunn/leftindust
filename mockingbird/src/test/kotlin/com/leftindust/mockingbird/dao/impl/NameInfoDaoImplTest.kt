@@ -1,9 +1,10 @@
 package com.leftindust.mockingbird.dao.impl
 
 import com.leftindust.mockingbird.auth.NotAuthorizedException
-import com.leftindust.mockingbird.dao.NameInfoDao
-import com.leftindust.mockingbird.dao.entity.MediqUser
-import com.leftindust.mockingbird.dao.impl.repository.HibernateUserRepository
+import com.leftindust.mockingbird.person.NameInfoDao
+import com.leftindust.mockingbird.person.NameInfoDaoImpl
+import com.leftindust.mockingbird.user.MediqUser
+import com.leftindust.mockingbird.user.HibernateUserRepository
 import com.leftindust.mockingbird.util.unit.LenientAuthorizerUnitTest
 import com.leftindust.mockingbird.util.unit.StrictAuthorizerUnitTest
 import io.mockk.every

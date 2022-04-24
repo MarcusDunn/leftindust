@@ -1,8 +1,9 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.dao.AuthorizationDao
-import com.leftindust.mockingbird.dao.entity.AccessControlList
-import com.leftindust.mockingbird.graphql.types.GraphQLPermissions
+import com.leftindust.mockingbird.auth.AuthorizationDao
+import com.leftindust.mockingbird.auth.AccessControlList
+import com.leftindust.mockingbird.auth.PermissionsQuery
+import com.leftindust.mockingbird.auth.GraphQLPermissions
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk

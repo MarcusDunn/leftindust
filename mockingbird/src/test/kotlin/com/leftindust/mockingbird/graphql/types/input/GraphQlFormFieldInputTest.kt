@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.graphql.types.input
 
-import com.leftindust.mockingbird.graphql.types.DataType
+import com.leftindust.mockingbird.form.GraphQlFormFieldInput
+import com.leftindust.mockingbird.form.DataType
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

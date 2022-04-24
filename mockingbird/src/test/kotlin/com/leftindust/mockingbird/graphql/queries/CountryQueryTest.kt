@@ -1,7 +1,8 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.graphql.types.GraphQLCanadianProvince
-import com.leftindust.mockingbird.graphql.types.GraphQLCountry
+import com.leftindust.mockingbird.country.CountryQuery
+import com.leftindust.mockingbird.country.GraphQLCanadianProvince
+import com.leftindust.mockingbird.country.GraphQLCountry
 import org.junit.jupiter.api.Test
 
 internal class CountryQueryTest {

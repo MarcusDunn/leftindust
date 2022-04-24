@@ -1,6 +1,6 @@
 graphql:
   packages:
-    - "com.leftindust.mockingbird.graphql"
+    - "com.leftindust.mockingbird"
     - "java.util.UUID"
 spring:
   main:

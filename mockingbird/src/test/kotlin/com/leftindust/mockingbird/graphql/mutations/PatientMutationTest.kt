@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.graphql.mutations
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.CreatePatientDao
 import com.leftindust.mockingbird.patient.UpdatePatientDao
-import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
+import com.leftindust.mockingbird.doctor.GraphQLDoctor
 import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.patient.GraphQLPatientEditInput
 import com.leftindust.mockingbird.patient.GraphQLPatientInput

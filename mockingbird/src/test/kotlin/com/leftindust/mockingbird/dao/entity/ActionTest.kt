@@ -1,7 +1,8 @@
 package com.leftindust.mockingbird.dao.entity
 
+import com.leftindust.mockingbird.auth.Action
 import com.leftindust.mockingbird.auth.Crud
-import com.leftindust.mockingbird.dao.Tables
+import com.leftindust.mockingbird.auth.Tables
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.sql.Timestamp

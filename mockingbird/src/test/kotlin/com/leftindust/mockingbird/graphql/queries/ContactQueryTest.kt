@@ -1,8 +1,9 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.dao.ContactDao
-import com.leftindust.mockingbird.dao.entity.EmergencyContact
-import com.leftindust.mockingbird.graphql.types.GraphQLEmergencyContact
+import com.leftindust.mockingbird.contact.ContactDao
+import com.leftindust.mockingbird.contact.ContactQuery
+import com.leftindust.mockingbird.contact.EmergencyContact
+import com.leftindust.mockingbird.contact.GraphQLEmergencyContact
 import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every

@@ -4,7 +4,7 @@ import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.ReadPatientDao
 import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
-import com.leftindust.mockingbird.graphql.types.search.example.GraphQLPatientExample
+import com.leftindust.mockingbird.patient.GraphQLPatientExample
 import com.leftindust.mockingbird.graphql.types.search.filter.CaseAgnosticStringFilter
 import com.leftindust.mockingbird.patient.PatientQuery
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
