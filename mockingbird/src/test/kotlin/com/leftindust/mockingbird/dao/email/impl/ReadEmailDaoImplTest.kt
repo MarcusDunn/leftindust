@@ -1,9 +1,10 @@
 package com.leftindust.mockingbird.dao.email.impl
 
 import com.leftindust.mockingbird.auth.NotAuthorizedException
-import com.leftindust.mockingbird.dao.entity.Email
-import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
-import com.leftindust.mockingbird.graphql.types.GraphQLEmergencyContact
+import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.doctor.GraphQLDoctor
+import com.leftindust.mockingbird.email.ReadEmailDaoImpl
+import com.leftindust.mockingbird.contact.GraphQLEmergencyContact
 import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.util.makeUUID
 import com.leftindust.mockingbird.util.unit.LenientAuthorizerUnitTest

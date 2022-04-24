@@ -1,10 +1,11 @@
 package com.leftindust.mockingbird.dao.impl
 
-import com.leftindust.mockingbird.dao.entity.MediqGroup
-import com.leftindust.mockingbird.dao.impl.repository.HibernateGroupRepository
-import com.leftindust.mockingbird.graphql.types.GraphQLUserGroup
-import com.leftindust.mockingbird.graphql.types.input.GraphQLGroupInput
+import com.leftindust.mockingbird.group.MediqGroup
+import com.leftindust.mockingbird.group.HibernateGroupRepository
+import com.leftindust.mockingbird.user.GraphQLUserGroup
+import com.leftindust.mockingbird.group.GraphQLGroupInput
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
+import com.leftindust.mockingbird.group.GroupDaoImpl
 import com.leftindust.mockingbird.util.unit.LenientAuthorizerUnitTest
 import io.mockk.every
 import io.mockk.mockk

@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.external.icd.impl
 
-import com.leftindust.mockingbird.external.icd.IcdFetcher
-import com.leftindust.mockingbird.graphql.types.icd.GraphQLFoundationIcdCode
+import com.leftindust.mockingbird.icd.IcdFetcher
+import com.leftindust.mockingbird.icd.GraphQLFoundationIcdCode
 import com.leftindust.mockingbird.util.integration.NoAuthIntegrationTest
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals

@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.graphql.types.icd
 
+import com.leftindust.mockingbird.icd.GraphQLFoundationIcdCode
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

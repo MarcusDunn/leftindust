@@ -1,11 +1,12 @@
 package com.leftindust.mockingbird.graphql.mutations
 
-import com.leftindust.mockingbird.dao.clinic.CreateClinicDao
-import com.leftindust.mockingbird.dao.clinic.UpdateClinicDao
-import com.leftindust.mockingbird.dao.entity.Clinic
-import com.leftindust.mockingbird.graphql.types.GraphQLClinic
-import com.leftindust.mockingbird.graphql.types.input.GraphQLClinicEditInput
-import com.leftindust.mockingbird.graphql.types.input.GraphQLClinicInput
+import com.leftindust.mockingbird.clinic.CreateClinicDao
+import com.leftindust.mockingbird.clinic.UpdateClinicDao
+import com.leftindust.mockingbird.clinic.Clinic
+import com.leftindust.mockingbird.clinic.ClinicMutation
+import com.leftindust.mockingbird.clinic.GraphQLClinic
+import com.leftindust.mockingbird.clinic.GraphQLClinicEditInput
+import com.leftindust.mockingbird.clinic.GraphQLClinicInput
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk

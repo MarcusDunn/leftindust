@@ -458,24 +458,12 @@ type Query @extends {
   "only pass one variable"
   doctors(dids: [DoctorIdInput!], example: DoctorExampleInput, pid: PatientIdInput, range: RangeInput): [Doctor!]!
   eventsByDoctor(doctors: [DoctorIdInput!]!): [Event!]!
-  """
-
-  Gets a list of events shared by the doctors and patients. ie. all events where both the doctor and the patient attend.
-
-  """
+  "Gets a list of events shared by the doctors and patients. ie. all events where both the doctor and the patient attend."
   eventsByDoctorsAndPatients(doctors: [DoctorIdInput!]!, patients: [PatientIdInput!]!): [Event!]!
-  """
-
-  Gets a list of events by a list of thier ID's. Will error if any of the ID's us not found.
-
-  """
+  "Gets a list of events by a list of thier ID's. Will error if any of the ID's us not found."
   eventsByIds(events: [EventIdInput!]!): [Event!]!
   eventsByPatient(patients: [PatientIdInput!]!): [Event!]!
-  """
-
-  Gets a list of events by a range of time that returned the events will occur within.
-
-  """
+  "Gets a list of events by a range of time that returned the events will occur within."
   eventsByTimeRange(range: TimeRangeInput!): [Event!]!
   """
   gets all users from firebase, you can

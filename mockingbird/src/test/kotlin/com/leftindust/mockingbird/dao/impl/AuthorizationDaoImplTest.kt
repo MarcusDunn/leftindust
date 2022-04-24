@@ -1,9 +1,10 @@
 package com.leftindust.mockingbird.dao.impl
 
-import com.leftindust.mockingbird.dao.entity.AccessControlList
-import com.leftindust.mockingbird.dao.entity.MediqUser
-import com.leftindust.mockingbird.dao.impl.repository.HibernateAclRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernateUserRepository
+import com.leftindust.mockingbird.auth.AccessControlList
+import com.leftindust.mockingbird.auth.AuthorizationDaoImpl
+import com.leftindust.mockingbird.user.MediqUser
+import com.leftindust.mockingbird.auth.HibernateAclRepository
+import com.leftindust.mockingbird.user.HibernateUserRepository
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

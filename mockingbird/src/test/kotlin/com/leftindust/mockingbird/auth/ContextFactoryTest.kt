@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.auth
 
-import com.leftindust.mockingbird.auth.impl.VerifiedFirebaseToken
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking

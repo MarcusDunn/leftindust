@@ -1,11 +1,14 @@
 package com.leftindust.mockingbird.dao.entity
 
-import com.leftindust.mockingbird.graphql.types.GraphQLAddressType
-import com.leftindust.mockingbird.graphql.types.GraphQLCanadianProvince
-import com.leftindust.mockingbird.graphql.types.GraphQLClinic
-import com.leftindust.mockingbird.graphql.types.GraphQLCountry
-import com.leftindust.mockingbird.graphql.types.input.GraphQLAddressEditInput
-import com.leftindust.mockingbird.graphql.types.input.GraphQLClinicEditInput
+import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.country.CountryState
+import com.leftindust.mockingbird.address.GraphQLAddressType
+import com.leftindust.mockingbird.country.GraphQLCanadianProvince
+import com.leftindust.mockingbird.clinic.GraphQLClinic
+import com.leftindust.mockingbird.country.GraphQLCountry
+import com.leftindust.mockingbird.address.GraphQLAddressEditInput
+import com.leftindust.mockingbird.clinic.Clinic
+import com.leftindust.mockingbird.clinic.GraphQLClinicEditInput
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

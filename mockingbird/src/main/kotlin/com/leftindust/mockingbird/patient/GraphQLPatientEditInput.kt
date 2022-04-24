@@ -4,10 +4,15 @@ import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.annotations.GraphQLName
 import com.expediagroup.graphql.generator.execution.OptionalInput
 import com.expediagroup.graphql.generator.scalars.ID
-import com.leftindust.mockingbird.dao.entity.enums.Ethnicity
-import com.leftindust.mockingbird.dao.entity.enums.Sex
-import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
+import com.leftindust.mockingbird.address.GraphQLAddressInput
+import com.leftindust.mockingbird.contact.GraphQLEmergencyContactInput
+import com.leftindust.mockingbird.email.GraphQLEmailInput
+import com.leftindust.mockingbird.person.Ethnicity
+import com.leftindust.mockingbird.person.Sex
+import com.leftindust.mockingbird.doctor.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.input.*
+import com.leftindust.mockingbird.person.GraphQLNameInfoEditInput
+import com.leftindust.mockingbird.phone.GraphQLPhoneInput
 
 @GraphQLName("PatientEditInput")
 data class GraphQLPatientEditInput(

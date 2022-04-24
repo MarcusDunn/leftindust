@@ -1,7 +1,8 @@
 package com.leftindust.mockingbird.graphql.mutations
 
-import com.leftindust.mockingbird.dao.RecordDao
-import com.leftindust.mockingbird.graphql.types.GraphQLPatientRecord
+import com.leftindust.mockingbird.record.RecordDao
+import com.leftindust.mockingbird.record.GraphQLPatientRecord
+import com.leftindust.mockingbird.record.RecordMutation
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every

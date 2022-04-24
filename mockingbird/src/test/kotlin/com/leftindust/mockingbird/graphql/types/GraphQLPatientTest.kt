@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.graphql.types
 
-import com.leftindust.mockingbird.dao.UserDao
+import com.leftindust.mockingbird.user.GraphQLUser
+import com.leftindust.mockingbird.user.UserDao
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every

@@ -1,16 +1,17 @@
 package com.leftindust.mockingbird.dao.impl
 
 import com.leftindust.mockingbird.auth.Authorizer
-import com.leftindust.mockingbird.dao.entity.Visit
-import com.leftindust.mockingbird.dao.impl.repository.HibernateDoctorRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernateEventRepository
+import com.leftindust.mockingbird.visit.Visit
+import com.leftindust.mockingbird.doctor.HibernateDoctorRepository
+import com.leftindust.mockingbird.event.HibernateEventRepository
 import com.leftindust.mockingbird.patient.HibernatePatientRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernateVisitRepository
+import com.leftindust.mockingbird.visit.HibernateVisitRepository
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.graphql.types.GraphQLEvent
-import com.leftindust.mockingbird.graphql.types.GraphQLVisit
-import com.leftindust.mockingbird.graphql.types.icd.GraphQLFoundationIcdCodeInput
-import com.leftindust.mockingbird.graphql.types.input.GraphQLVisitInput
+import com.leftindust.mockingbird.event.GraphQLEvent
+import com.leftindust.mockingbird.visit.GraphQLVisit
+import com.leftindust.mockingbird.icd.GraphQLFoundationIcdCodeInput
+import com.leftindust.mockingbird.visit.GraphQLVisitInput
+import com.leftindust.mockingbird.visit.VisitDaoImpl
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

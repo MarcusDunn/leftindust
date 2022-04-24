@@ -1,7 +1,8 @@
 package com.leftindust.mockingbird.dao
 
 import com.leftindust.mockingbird.auth.MediqToken
-import com.leftindust.mockingbird.dao.entity.NameInfo
+import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoDao
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals

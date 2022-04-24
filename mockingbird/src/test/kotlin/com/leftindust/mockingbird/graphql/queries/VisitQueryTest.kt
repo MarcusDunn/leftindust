@@ -1,14 +1,15 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.dao.EventDao
-import com.leftindust.mockingbird.dao.VisitDao
-import com.leftindust.mockingbird.dao.entity.Event
-import com.leftindust.mockingbird.dao.entity.Visit
-import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
-import com.leftindust.mockingbird.graphql.types.GraphQLEvent
+import com.leftindust.mockingbird.event.EventDao
+import com.leftindust.mockingbird.visit.VisitDao
+import com.leftindust.mockingbird.event.Event
+import com.leftindust.mockingbird.visit.Visit
+import com.leftindust.mockingbird.doctor.GraphQLDoctor
+import com.leftindust.mockingbird.event.GraphQLEvent
 import com.leftindust.mockingbird.patient.GraphQLPatient
-import com.leftindust.mockingbird.graphql.types.GraphQLVisit
+import com.leftindust.mockingbird.visit.GraphQLVisit
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
+import com.leftindust.mockingbird.visit.VisitQuery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking

@@ -1,7 +1,8 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.dao.DoctorDao
-import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
+import com.leftindust.mockingbird.doctor.DoctorDao
+import com.leftindust.mockingbird.doctor.DoctorQuery
+import com.leftindust.mockingbird.doctor.GraphQLDoctor
 import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment

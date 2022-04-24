@@ -1,12 +1,18 @@
 package com.leftindust.mockingbird.patient
 
 import com.expediagroup.graphql.generator.scalars.ID
-import com.leftindust.mockingbird.dao.entity.*
-import com.leftindust.mockingbird.dao.entity.enums.Ethnicity
-import com.leftindust.mockingbird.dao.entity.enums.Sex
-import com.leftindust.mockingbird.dao.entity.superclasses.Person
+import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.contact.EmergencyContact
+import com.leftindust.mockingbird.doctor.Doctor
+import com.leftindust.mockingbird.doctor.DoctorPatient
+import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.event.Event
 import com.leftindust.mockingbird.extensions.onUndefined
 import com.leftindust.mockingbird.extensions.replaceAllIfNotNull
+import com.leftindust.mockingbird.form.AssignedForm
+import com.leftindust.mockingbird.person.*
+import com.leftindust.mockingbird.phone.Phone
+import com.leftindust.mockingbird.user.MediqUser
 import java.sql.Date
 import javax.persistence.*
 

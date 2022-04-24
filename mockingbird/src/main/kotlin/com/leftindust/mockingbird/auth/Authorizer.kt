@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.auth
 
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.dao.entity.Action
 
 /**
  * Handles all Authorization for requests

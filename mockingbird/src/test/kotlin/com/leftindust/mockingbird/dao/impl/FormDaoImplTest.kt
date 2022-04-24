@@ -1,12 +1,13 @@
 package com.leftindust.mockingbird.dao.impl
 
 import com.leftindust.mockingbird.auth.Authorizer
-import com.leftindust.mockingbird.dao.entity.Form
-import com.leftindust.mockingbird.dao.impl.repository.HibernateAssignedFormRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernateFormRepository
+import com.leftindust.mockingbird.form.Form
+import com.leftindust.mockingbird.form.HibernateAssignedFormRepository
+import com.leftindust.mockingbird.form.HibernateFormRepository
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.graphql.types.GraphQLFormTemplate
-import com.leftindust.mockingbird.graphql.types.input.GraphQLFormTemplateInput
+import com.leftindust.mockingbird.form.FormDaoImpl
+import com.leftindust.mockingbird.form.GraphQLFormTemplate
+import com.leftindust.mockingbird.form.GraphQLFormTemplateInput
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
 import io.mockk.coEvery
 import io.mockk.every
