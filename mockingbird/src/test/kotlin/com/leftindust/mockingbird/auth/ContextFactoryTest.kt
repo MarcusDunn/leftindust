@@ -28,4 +28,21 @@ internal class ContextFactoryTest {
         }
         assertEquals(VerifiedFirebaseToken("123456"), actual)
     }
+
+    @Test
+    fun generateContextWithNoToken() {
+        val mockkRequest = mockk<ServerRequest> {
+            every { method() } returns HttpMethod.POST
+            every { headers() } returns mockk(relaxed = true) {
+                every { firstHeader("Authorization") } returns null
+            }
+        }
+
+        val actual = runBlocking {
+            contextFactory.generateContextMap(
+                request = mockkRequest
+            )[MediqToken.CONTEXT_MAP_KEY]
+        }
+        assertEquals(null, actual)
+    }
 }
