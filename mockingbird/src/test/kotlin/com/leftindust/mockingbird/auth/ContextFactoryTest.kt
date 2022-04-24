@@ -17,7 +17,7 @@ internal class ContextFactoryTest {
         val mockkRequest = mockk<ServerRequest> {
             every { method() } returns HttpMethod.POST
             every { headers() } returns mockk(relaxed = true) {
-                every { firstHeader("mediq-auth-token") } returns "123456"
+                every { firstHeader("Authorization") } returns "Bearer: 123456"
             }
         }
 
