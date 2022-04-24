@@ -9,12 +9,10 @@ spring:
     show-sql: true
   liquibase:
     change-log: classpath:dbchangelog.xml
-    enabled: true
   datasource:
-    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5432/mediq
     username: mediq
     password: mediq
 icd:
   client:
-    url: "localhost:81/icd"
+    url: "localhost:80/icd"

@@ -1,8 +1,7 @@
 package com.leftindust.mockingbird.graphql
 
 import com.leftindust.mockingbird.util.integration.IntegrationTest
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalToCompressingWhiteSpace
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
@@ -22,9 +21,9 @@ class GraphQLSchemaTest(
             .expectBody()
             .returnResult()
         val schemaFile = ClassPathResource("schema.graphqls").file
-        assertThat(
-            request.responseBody!!.decodeToString(),
-            equalToCompressingWhiteSpace(schemaFile.readText())
+        assertEquals(
+            request.responseBody!!.decodeToString().filterNot { it.isWhitespace() },
+            schemaFile.readText().filterNot { it.isWhitespace() }
         )
     }
 }

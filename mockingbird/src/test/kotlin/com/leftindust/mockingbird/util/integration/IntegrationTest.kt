@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.util.integration
 
+import org.apache.logging.log4j.LogManager
 import org.junit.jupiter.api.Tag
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE
@@ -21,13 +22,17 @@ import org.testcontainers.junit.jupiter.Testcontainers
 abstract class IntegrationTest {
 
     companion object {
+        private val logger = LogManager.getLogger()
+
         val postgres = PostgreSQLContainer(PostgreSQLContainer.IMAGE).apply {
+            withLogConsumer { frame -> logger.info(frame.utf8String) }
             waitingFor(LogMessageWaitStrategy().withRegEx(".*database system is ready to accept connections.*"))
             withReuse(true)
             start()
         }
 
         val icdApi = GenericContainer("whoicd/icd-api").apply {
+            withLogConsumer { frame -> logger.info(frame.utf8String) }
             setWaitStrategy(LogMessageWaitStrategy().withRegEx(".*ICD-11 Container is Running!.*"))
             addEnv("acceptLicense", "true")
             addEnv("include", "2021-05_en")
