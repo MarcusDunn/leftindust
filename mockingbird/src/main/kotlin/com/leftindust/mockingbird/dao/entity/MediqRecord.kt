@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.dao.entity
 
 import com.leftindust.mockingbird.dao.entity.enums.RecordType
 import com.leftindust.mockingbird.dao.entity.superclasses.AbstractJpaPersistable
-import com.leftindust.mockingbird.graphql.types.input.GraphQLRecordInput
+import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientRecordInput
 import java.sql.Timestamp
 import java.time.Instant
 import javax.persistence.CascadeType
@@ -24,7 +24,7 @@ class MediqRecord(
     @Column(length = 10_000, nullable = false)
     val jsonBlob: String,
 ) : AbstractJpaPersistable() {
-    constructor(record: GraphQLRecordInput, patient: Patient) : this(
+    constructor(record: GraphQLPatientRecordInput, patient: Patient) : this(
         patient = patient,
         creationDate = Timestamp.from(Instant.now()),
         type = record.recordType,

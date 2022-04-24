@@ -3,8 +3,8 @@ package com.leftindust.mockingbird.graphql.mutations
 import com.expediagroup.graphql.server.operations.Mutation
 import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.RecordDao
-import com.leftindust.mockingbird.graphql.types.GraphQLRecord
-import com.leftindust.mockingbird.graphql.types.input.GraphQLRecordInput
+import com.leftindust.mockingbird.graphql.types.GraphQLPatientRecord
+import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientRecordInput
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component
 @Component
 class RecordMutation(private val recordDao: RecordDao) : Mutation {
     suspend fun addRecord(
-        record: GraphQLRecordInput,
+        record: GraphQLPatientRecordInput,
         dataFetchingEnvironment: DataFetchingEnvironment,
-    ): GraphQLRecord = withContext(Dispatchers.IO) {
+    ): GraphQLPatientRecord = withContext(Dispatchers.IO) {
         recordDao.addRecord(record, dataFetchingEnvironment.authToken)
-    }.let(::GraphQLRecord)
+    }.let(::GraphQLPatientRecord)
 }

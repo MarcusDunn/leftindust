@@ -200,8 +200,8 @@ object EntityStore {
         )
     }
 
-    fun graphQLRecordInput(testName: String): GraphQLRecordInput {
-        return GraphQLRecordInput(
+    fun graphQLPatientRecordInput(testName: String): GraphQLPatientRecordInput {
+        return GraphQLPatientRecordInput(
             patient = GraphQLPatient.ID(UUID.nameUUIDFromBytes("eb".toByteArray())),
             jsonBlob = "{testName: \"$testName\"}",
             recordType = RecordType.Blood

@@ -363,7 +363,7 @@ type Mutation {
   """
   addPatient(patient: PatientInput!): Patient!
   addPermission(groupId: GroupIdInput, permission: GraphQLPermissionInput!, userUid: String): Permission!
-  addRecord(record: GraphQLRecordInput!): Record!
+  addRecord(record: PatientRecordInput!): PatientRecord!
   addSurveyTemplate(surveyTemplate: FormTemplateInput!): GraphQLFormTemplate!
   addUser(user: UserInput!): User!
   addVisit(visit: VisitInput!): Visit!
@@ -411,6 +411,18 @@ type Patient implements Person {
 }
 
 type PatientId {
+  id: UUID!
+}
+
+type PatientRecord {
+  creationDate: UtcTime!
+  jsonBlob: String!
+  patient: Patient!
+  rid: PatientRecordId!
+  type: RecordType!
+}
+
+type PatientRecordId {
   id: UUID!
 }
 
@@ -481,7 +493,7 @@ type Query @extends {
   patientsByPid(pids: [PatientIdInput!]!, sortedBy: SortableField): [Patient!]!
   patientsByRange(range: RangeInput!, sortedBy: SortableField): [Patient!]!
   permissions(uid: String!): Permissions!
-  records(pid: PatientIdInput, rids: [RecordIdInput!]): [Record!]!
+  records(pid: PatientIdInput, rids: [PatientRecordIdInput!]): [PatientRecord!]!
   searchIcd(
     flatResults: Boolean,
     flexiSearch: Boolean,
@@ -496,18 +508,6 @@ type Query @extends {
   "returns a list of users, only one argument should be specified"
   users(range: RangeInput, uniqueIds: [ID!]): [User!]!
   visits(did: DoctorIdInput, pid: PatientIdInput, vids: [VisitIdInput!]): [Visit!]!
-}
-
-type Record {
-  creationDate: UtcTime!
-  jsonBlob: String!
-  patient: Patient!
-  rid: RecordId!
-  type: RecordType!
-}
-
-type RecordId {
-  id: UUID!
 }
 
 type Recurrence {
@@ -959,12 +959,6 @@ input GraphQLPermissionInput {
   startTime: UtcTimeInput
 }
 
-input GraphQLRecordInput {
-  jsonBlob: String!
-  patient: PatientIdInput!
-  recordType: RecordType!
-}
-
 input GraphQLVisitEditInput {
   "the new description, explicitly set to null to clear"
   description: String
@@ -1083,6 +1077,16 @@ input PatientInput {
   thumbnail: String
 }
 
+input PatientRecordIdInput {
+  id: UUID!
+}
+
+input PatientRecordInput {
+  jsonBlob: String!
+  patient: PatientIdInput!
+  recordType: RecordType!
+}
+
 input PhoneInput {
   number: String!
   type: PhoneType!
@@ -1091,10 +1095,6 @@ input PhoneInput {
 input RangeInput {
   from: Int!
   to: Int!
-}
-
-input RecordIdInput {
-  id: UUID!
 }
 
 """
