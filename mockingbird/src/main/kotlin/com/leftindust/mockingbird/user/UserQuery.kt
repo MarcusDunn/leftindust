@@ -42,16 +42,29 @@ class UserQuery(
     }
 
     @GraphQLDescription("returns a list of users, only one argument should be specified")
+    @Deprecated("removed due to lack of query verification", replaceWith = ReplaceWith("usersById"))
     suspend fun users(
         range: GraphQLRangeInput? = null,
         uniqueIds: List<ID>? = null,
         dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLUser> = when {
-        uniqueIds != null -> uniqueIds.map { userDao.findUserByUid(it.value, dataFetchingEnvironment.authToken)!! }
-        range != null -> withContext(Dispatchers.IO) { userDao.getUsers(range, dataFetchingEnvironment.authToken) }
+        uniqueIds != null -> usersById(uniqueIds, dataFetchingEnvironment)
+        range != null -> usersByRange(range, dataFetchingEnvironment)
         else -> throw IllegalArgumentException("invalid argument combination to users")
     }
-        .filter { it.uniqueId != "admin" }
+
+    suspend fun usersByRange(
+        range: GraphQLRangeInput,
+        dataFetchingEnvironment: DataFetchingEnvironment
+    ) = userDao.getUsers(range, dataFetchingEnvironment.authToken)
+        .map(::GraphQLUser)
+
+
+    suspend fun usersById(
+        uniqueIds: List<ID>,
+        dataFetchingEnvironment: DataFetchingEnvironment
+    ) = uniqueIds
+        .map { userDao.findUserByUid(it.value, dataFetchingEnvironment.authToken)!! }
         .map(::GraphQLUser)
 
     @GraphQLDescription(
