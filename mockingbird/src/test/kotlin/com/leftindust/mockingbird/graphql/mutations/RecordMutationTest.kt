@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.graphql.mutations
 
 import com.leftindust.mockingbird.dao.RecordDao
-import com.leftindust.mockingbird.graphql.types.GraphQLRecord
+import com.leftindust.mockingbird.graphql.types.GraphQLPatientRecord
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
@@ -26,6 +26,6 @@ internal class RecordMutationTest {
             RecordMutation(recordDao).addRecord(mockk(), MockDataFetchingEnvironment.withDummyMediqToken)
         }
 
-        assertEquals(GraphQLRecord(expected), result)
+        assertEquals(GraphQLPatientRecord(expected), result)
     }
 }

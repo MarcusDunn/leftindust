@@ -7,7 +7,7 @@ import com.leftindust.mockingbird.dao.impl.repository.HibernatePatientRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateRecordRepository
 import com.leftindust.mockingbird.extensions.Authorization
 import com.leftindust.mockingbird.graphql.types.GraphQLPatient
-import com.leftindust.mockingbird.graphql.types.GraphQLRecord
+import com.leftindust.mockingbird.graphql.types.GraphQLPatientRecord
 import com.leftindust.mockingbird.util.EntityStore
 import io.mockk.coEvery
 import io.mockk.every
@@ -33,7 +33,7 @@ internal class RecordDaoImplTest {
 
         val recordDaoImpl = RecordDaoImpl(authorizer, recordRepository, patientRepository)
 
-        val result = recordDaoImpl.getRecordByRecordId(GraphQLRecord.ID(recordId), mockk())
+        val result = recordDaoImpl.getRecordByRecordId(GraphQLPatientRecord.ID(recordId), mockk())
 
         assertEquals(mockkRecord, result)
     }
@@ -63,7 +63,7 @@ internal class RecordDaoImplTest {
     fun addRecord() {
         val recordDaoImpl = RecordDaoImpl(authorizer, recordRepository, patientRepository)
 
-        val record = EntityStore.graphQLRecordInput("RecordDaoImplTest.addRecord")
+        val record = EntityStore.graphQLPatientRecordInput("RecordDaoImplTest.addRecord")
 
         val expected = MediqRecord(record, mockk())
 

@@ -10,8 +10,8 @@ import com.leftindust.mockingbird.dao.entity.MediqRecord
 import com.leftindust.mockingbird.dao.impl.repository.HibernatePatientRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateRecordRepository
 import com.leftindust.mockingbird.graphql.types.GraphQLPatient
-import com.leftindust.mockingbird.graphql.types.GraphQLRecord
-import com.leftindust.mockingbird.graphql.types.input.GraphQLRecordInput
+import com.leftindust.mockingbird.graphql.types.GraphQLPatientRecord
+import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientRecordInput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -29,7 +29,7 @@ class RecordDaoImpl(
     }
 
     override fun getRecordByRecordId(
-        rid: GraphQLRecord.ID,
+        rid: GraphQLPatientRecord.ID,
         requester: MediqToken
     ): MediqRecord = if (requester can (Crud.READ to Tables.Record)) {
         recordRepository.getById(rid.id)
@@ -48,7 +48,7 @@ class RecordDaoImpl(
     }
 
     override fun addRecord(
-        record: GraphQLRecordInput,
+        record: GraphQLPatientRecordInput,
         requester: MediqToken
     ): MediqRecord = if (requester can createRecords) {
         val patient = patientRepository.getById(record.patient.id)
