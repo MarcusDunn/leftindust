@@ -7,6 +7,7 @@ import com.leftindust.mockingbird.graphql.types.search.filter.CaseAgnosticString
 import com.leftindust.mockingbird.graphql.types.search.filter.DateFilter
 import com.leftindust.mockingbird.graphql.types.search.filter.IcdListFilter
 import com.leftindust.mockingbird.graphql.types.search.filter.WhiteSpaceAgnosticStringFilter
+import com.leftindust.mockingbird.patient.Patient
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root

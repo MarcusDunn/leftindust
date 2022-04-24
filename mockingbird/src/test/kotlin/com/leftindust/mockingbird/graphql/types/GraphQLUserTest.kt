@@ -9,9 +9,10 @@ import com.leftindust.mockingbird.dao.Tables
 import com.leftindust.mockingbird.dao.UserDao
 import com.leftindust.mockingbird.dao.entity.Action
 import com.leftindust.mockingbird.dao.entity.NameInfo
-import com.leftindust.mockingbird.dao.patient.ReadPatientDao
+import com.leftindust.mockingbird.patient.ReadPatientDao
 import com.leftindust.mockingbird.external.firebase.UserFetcher
 import com.leftindust.mockingbird.graphql.types.input.GraphQLPermissionInput
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every

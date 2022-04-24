@@ -5,7 +5,7 @@ import com.leftindust.mockingbird.dao.entity.Phone
 import com.leftindust.mockingbird.dao.phone.ReadPhoneDao
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLEmergencyContact
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 

@@ -2,10 +2,10 @@ package com.leftindust.mockingbird.graphql.queries
 
 import com.leftindust.mockingbird.dao.EventDao
 import com.leftindust.mockingbird.dao.entity.Event
-import com.leftindust.mockingbird.dao.entity.Patient
+import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLEvent
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.GraphQLUtcTime
 import com.leftindust.mockingbird.graphql.types.input.GraphQLTimeRangeInput
 import com.leftindust.mockingbird.util.makeUUID

@@ -4,7 +4,7 @@ import com.leftindust.mockingbird.auth.Authorizer
 import com.leftindust.mockingbird.dao.entity.EmergencyContact
 import com.leftindust.mockingbird.dao.impl.repository.HibernateContactRepository
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

@@ -6,6 +6,7 @@ import com.leftindust.mockingbird.extensions.onUndefined
 import com.leftindust.mockingbird.graphql.types.GraphQLUtcTime
 import com.leftindust.mockingbird.graphql.types.input.GraphQLEventEditInput
 import com.leftindust.mockingbird.graphql.types.input.GraphQLEventInput
+import com.leftindust.mockingbird.patient.Patient
 import java.sql.Timestamp
 import javax.persistence.*
 

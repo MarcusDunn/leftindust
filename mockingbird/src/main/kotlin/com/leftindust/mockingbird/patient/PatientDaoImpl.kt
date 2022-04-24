@@ -1,4 +1,4 @@
-package com.leftindust.mockingbird.dao.impl
+package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.auth.Authorizer
 import com.leftindust.mockingbird.auth.Crud
@@ -6,26 +6,18 @@ import com.leftindust.mockingbird.auth.MediqToken
 import com.leftindust.mockingbird.auth.NotAuthorizedException
 import com.leftindust.mockingbird.dao.Tables
 import com.leftindust.mockingbird.dao.entity.AssignedForm
-import com.leftindust.mockingbird.dao.entity.Patient
+import com.leftindust.mockingbird.dao.impl.AbstractHibernateDao
 import com.leftindust.mockingbird.dao.impl.repository.HibernateAssignedFormRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateDoctorPatientRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateDoctorRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateEventRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateFormRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernatePatientRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateVisitRepository
-import com.leftindust.mockingbird.dao.patient.CreatePatientDao
-import com.leftindust.mockingbird.dao.patient.DeletePatientDao
-import com.leftindust.mockingbird.dao.patient.ReadPatientDao
-import com.leftindust.mockingbird.dao.patient.UpdatePatientDao
 import com.leftindust.mockingbird.extensions.getByIds
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLEvent
 import com.leftindust.mockingbird.graphql.types.GraphQLFormTemplate
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.GraphQLVisit
-import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientEditInput
-import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientInput
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
 import com.leftindust.mockingbird.graphql.types.search.example.GraphQLPatientExample
 import javax.persistence.EntityManager

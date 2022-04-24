@@ -5,7 +5,8 @@ import com.expediagroup.graphql.generator.annotations.GraphQLName
 import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.EventDao
 import com.leftindust.mockingbird.dao.entity.Visit
-import com.leftindust.mockingbird.dao.patient.ReadPatientDao
+import com.leftindust.mockingbird.patient.ReadPatientDao
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

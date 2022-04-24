@@ -4,7 +4,7 @@ import com.leftindust.mockingbird.Blocking
 import com.leftindust.mockingbird.auth.MediqToken
 import com.leftindust.mockingbird.dao.entity.Address
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 
 interface ReadAddressDao {
     @Blocking

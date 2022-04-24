@@ -1,8 +1,9 @@
 package com.leftindust.mockingbird.dao.entity
 
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLNameInfoEditInput
-import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientEditInput
+import com.leftindust.mockingbird.patient.GraphQLPatientEditInput
+import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.util.EntityStore
 import io.mockk.every
 import io.mockk.mockk

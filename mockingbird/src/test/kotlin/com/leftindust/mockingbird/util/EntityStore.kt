@@ -9,6 +9,9 @@ import com.leftindust.mockingbird.dao.entity.enums.Sex
 import com.leftindust.mockingbird.extensions.gqlID
 import com.leftindust.mockingbird.graphql.types.*
 import com.leftindust.mockingbird.graphql.types.input.*
+import com.leftindust.mockingbird.patient.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatientInput
+import com.leftindust.mockingbird.patient.Patient
 import java.sql.Date
 import java.sql.Timestamp
 import java.time.Instant

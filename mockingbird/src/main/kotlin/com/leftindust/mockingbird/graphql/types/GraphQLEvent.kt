@@ -6,7 +6,8 @@ import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.DoctorDao
 import com.leftindust.mockingbird.dao.VisitDao
 import com.leftindust.mockingbird.dao.entity.Event
-import com.leftindust.mockingbird.dao.patient.ReadPatientDao
+import com.leftindust.mockingbird.patient.ReadPatientDao
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import graphql.schema.DataFetchingEnvironment
 import java.util.UUID
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.leftindust.mockingbird.graphql.types
+package com.leftindust.mockingbird.patient
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.annotations.GraphQLIgnore
@@ -7,10 +7,10 @@ import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.*
 import com.leftindust.mockingbird.dao.address.ReadAddressDao
 import com.leftindust.mockingbird.dao.email.ReadEmailDao
-import com.leftindust.mockingbird.dao.entity.Patient
 import com.leftindust.mockingbird.dao.entity.enums.Ethnicity
 import com.leftindust.mockingbird.dao.entity.enums.Sex
 import com.leftindust.mockingbird.dao.phone.ReadPhoneDao
+import com.leftindust.mockingbird.graphql.types.*
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

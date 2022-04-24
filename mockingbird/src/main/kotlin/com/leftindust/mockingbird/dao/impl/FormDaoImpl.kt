@@ -14,7 +14,7 @@ import com.leftindust.mockingbird.dao.impl.repository.HibernateAssignedFormRepos
 import com.leftindust.mockingbird.dao.impl.repository.HibernateFormRepository
 import com.leftindust.mockingbird.extensions.getByIds
 import com.leftindust.mockingbird.graphql.types.GraphQLFormTemplate
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLFormTemplateInput
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
 import javax.transaction.Transactional

@@ -7,7 +7,7 @@ import com.leftindust.mockingbird.dao.entity.Action
 import com.leftindust.mockingbird.dao.entity.AssignedForm
 import com.leftindust.mockingbird.dao.entity.Form
 import com.leftindust.mockingbird.graphql.types.GraphQLFormTemplate
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
 
 interface ReadFormDao : GuardedDao {

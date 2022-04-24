@@ -3,6 +3,7 @@ package com.leftindust.mockingbird.dao.entity
 import com.leftindust.mockingbird.dao.entity.enums.RecordType
 import com.leftindust.mockingbird.dao.entity.superclasses.AbstractJpaPersistable
 import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientRecordInput
+import com.leftindust.mockingbird.patient.Patient
 import java.sql.Timestamp
 import java.time.Instant
 import javax.persistence.CascadeType

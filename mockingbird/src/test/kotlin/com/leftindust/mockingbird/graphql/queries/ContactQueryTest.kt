@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.graphql.queries
 import com.leftindust.mockingbird.dao.ContactDao
 import com.leftindust.mockingbird.dao.entity.EmergencyContact
 import com.leftindust.mockingbird.graphql.types.GraphQLEmergencyContact
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
