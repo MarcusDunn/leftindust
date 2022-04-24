@@ -22,16 +22,23 @@ val DataFetchingEnvironment.authToken: MediqToken
 class ContextFactory : DefaultSpringGraphQLContextFactory() {
     private val logger = LogManager.getLogger()
 
-    override suspend fun generateContextMap(request: ServerRequest): Map<*, Any> =
-        super.generateContextMap(request) + if (request.method() == HttpMethod.OPTIONS) {
-            emptyMap()
+    companion object {
+        private val bearerTokenRegex = Regex("""Bearer: (.*)""")
+    }
+
+    override suspend fun generateContextMap(request: ServerRequest): Map<*, Any> {
+        val contextMap = super.generateContextMap(request)
+        val authContextMap = if (request.method() == HttpMethod.OPTIONS) {
+            return contextMap
         } else {
-            mapOf(
-                MediqToken.CONTEXT_MAP_KEY to VerifiedFirebaseToken(
-                    request.headers().firstHeader("mediq-auth-token")
-                )
-            )
+            val authorization = request.headers().firstHeader("Authorization")
+                ?: return contextMap
+            val (token) = bearerTokenRegex.matchEntire(authorization)?.destructured
+                ?: return contextMap
+            mapOf(MediqToken.CONTEXT_MAP_KEY to VerifiedFirebaseToken(token))
         }.also { logger.info("request $request has context map $it") }
+        return contextMap + authContextMap
+    }
 }
 
 
