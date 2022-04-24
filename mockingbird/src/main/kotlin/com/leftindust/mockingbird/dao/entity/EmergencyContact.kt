@@ -3,6 +3,7 @@ package com.leftindust.mockingbird.dao.entity
 import com.leftindust.mockingbird.dao.entity.enums.Relationship
 import com.leftindust.mockingbird.dao.entity.superclasses.AbstractJpaPersistable
 import com.leftindust.mockingbird.graphql.types.input.GraphQLEmergencyContactInput
+import com.leftindust.mockingbird.patient.Patient
 import javax.persistence.*
 
 @Entity

@@ -1,10 +1,10 @@
 package com.leftindust.mockingbird.graphql.types
 
 import com.leftindust.mockingbird.dao.entity.Event
-import com.leftindust.mockingbird.dao.entity.Patient
+import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.dao.entity.Visit
 import com.leftindust.mockingbird.dao.impl.repository.HibernateEventRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernatePatientRepository
+import com.leftindust.mockingbird.patient.HibernatePatientRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateVisitRepository
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.debugPrint

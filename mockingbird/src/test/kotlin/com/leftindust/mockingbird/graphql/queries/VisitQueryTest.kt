@@ -6,7 +6,7 @@ import com.leftindust.mockingbird.dao.entity.Event
 import com.leftindust.mockingbird.dao.entity.Visit
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLEvent
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.GraphQLVisit
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every

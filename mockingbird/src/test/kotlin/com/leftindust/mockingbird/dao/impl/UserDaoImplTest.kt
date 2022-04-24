@@ -4,10 +4,10 @@ import com.leftindust.mockingbird.auth.Authorizer
 import com.leftindust.mockingbird.dao.entity.MediqUser
 import com.leftindust.mockingbird.dao.impl.repository.HibernateDoctorRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateGroupRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernatePatientRepository
+import com.leftindust.mockingbird.patient.HibernatePatientRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateUserRepository
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLUserInput
 import com.leftindust.mockingbird.util.EntityStore
 import io.mockk.coEvery

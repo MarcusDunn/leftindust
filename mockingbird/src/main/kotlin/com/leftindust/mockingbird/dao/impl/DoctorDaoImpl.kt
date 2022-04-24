@@ -12,12 +12,12 @@ import com.leftindust.mockingbird.dao.impl.repository.HibernateClinicRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateDoctorPatientRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateDoctorRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateEventRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernatePatientRepository
+import com.leftindust.mockingbird.patient.HibernatePatientRepository
 import com.leftindust.mockingbird.extensions.getByIds
 import com.leftindust.mockingbird.graphql.types.GraphQLClinic
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLEvent
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLDoctorEditInput
 import com.leftindust.mockingbird.graphql.types.input.GraphQLDoctorInput
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput

@@ -6,7 +6,7 @@ import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.EventDao
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLEvent
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLTimeRangeInput
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers

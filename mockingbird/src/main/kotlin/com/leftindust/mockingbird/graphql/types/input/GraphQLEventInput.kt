@@ -5,7 +5,7 @@ import com.expediagroup.graphql.generator.annotations.GraphQLName
 import com.expediagroup.graphql.generator.execution.OptionalInput
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLEvent
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.GraphQLUtcTime
 
 

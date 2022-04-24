@@ -2,7 +2,8 @@ package com.leftindust.mockingbird.graphql.types
 
 import com.expediagroup.graphql.generator.annotations.GraphQLIgnore
 import com.leftindust.mockingbird.auth.authToken
-import com.leftindust.mockingbird.dao.patient.ReadPatientDao
+import com.leftindust.mockingbird.patient.ReadPatientDao
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

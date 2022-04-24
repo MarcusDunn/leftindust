@@ -2,6 +2,7 @@ package com.leftindust.mockingbird.dao.entity
 
 import com.google.gson.JsonElement
 import com.leftindust.mockingbird.dao.entity.superclasses.AbstractJpaPersistable
+import com.leftindust.mockingbird.patient.Patient
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity

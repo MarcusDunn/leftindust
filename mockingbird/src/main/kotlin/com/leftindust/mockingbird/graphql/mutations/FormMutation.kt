@@ -5,10 +5,10 @@ import com.google.gson.JsonParser.parseString
 import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.CreateFormDao
 import com.leftindust.mockingbird.dao.FormDataDao
-import com.leftindust.mockingbird.dao.patient.UpdatePatientDao
+import com.leftindust.mockingbird.patient.UpdatePatientDao
 import com.leftindust.mockingbird.graphql.types.GraphQLFormData
 import com.leftindust.mockingbird.graphql.types.GraphQLFormTemplate
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLFormTemplateInput
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers

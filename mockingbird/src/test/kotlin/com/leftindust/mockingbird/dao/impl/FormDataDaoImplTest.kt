@@ -3,11 +3,11 @@ package com.leftindust.mockingbird.dao.impl
 import com.google.gson.JsonObject
 import com.leftindust.mockingbird.auth.Authorizer
 import com.leftindust.mockingbird.dao.entity.FormData
-import com.leftindust.mockingbird.dao.entity.Patient
+import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.dao.impl.repository.HibernateFormDataRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernatePatientRepository
+import com.leftindust.mockingbird.patient.HibernatePatientRepository
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

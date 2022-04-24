@@ -1,10 +1,7 @@
-package com.leftindust.mockingbird.graphql.queries
+package com.leftindust.mockingbird.patient
 
 import com.expediagroup.graphql.server.operations.Query
 import com.leftindust.mockingbird.auth.authToken
-import com.leftindust.mockingbird.dao.entity.Patient
-import com.leftindust.mockingbird.dao.patient.ReadPatientDao
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
 import com.leftindust.mockingbird.graphql.types.search.example.GraphQLPatientExample
 import graphql.schema.DataFetchingEnvironment

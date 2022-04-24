@@ -1,14 +1,9 @@
-package com.leftindust.mockingbird.graphql.mutations
+package com.leftindust.mockingbird.patient
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Mutation
 import com.leftindust.mockingbird.auth.authToken
 
-import com.leftindust.mockingbird.dao.patient.CreatePatientDao
-import com.leftindust.mockingbird.dao.patient.UpdatePatientDao
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
-import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientEditInput
-import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientInput
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

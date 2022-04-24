@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.graphql.queries
 
 import com.leftindust.mockingbird.dao.DoctorDao
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every

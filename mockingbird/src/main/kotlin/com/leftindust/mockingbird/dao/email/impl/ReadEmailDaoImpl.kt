@@ -12,10 +12,10 @@ import com.leftindust.mockingbird.dao.entity.Email
 import com.leftindust.mockingbird.dao.impl.AbstractHibernateDao
 import com.leftindust.mockingbird.dao.impl.repository.HibernateContactRepository
 import com.leftindust.mockingbird.dao.impl.repository.HibernateDoctorRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernatePatientRepository
+import com.leftindust.mockingbird.patient.HibernatePatientRepository
 import com.leftindust.mockingbird.graphql.types.GraphQLDoctor
 import com.leftindust.mockingbird.graphql.types.GraphQLEmergencyContact
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import javax.transaction.Transactional
 import org.hibernate.Hibernate
 import org.springframework.stereotype.Repository

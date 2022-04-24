@@ -11,8 +11,9 @@ import com.leftindust.mockingbird.dao.address.ReadAddressDao
 import com.leftindust.mockingbird.dao.clinic.ReadClinicDao
 import com.leftindust.mockingbird.dao.email.ReadEmailDao
 import com.leftindust.mockingbird.dao.entity.Doctor
-import com.leftindust.mockingbird.dao.patient.ReadPatientDao
+import com.leftindust.mockingbird.patient.ReadPatientDao
 import com.leftindust.mockingbird.dao.phone.ReadPhoneDao
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

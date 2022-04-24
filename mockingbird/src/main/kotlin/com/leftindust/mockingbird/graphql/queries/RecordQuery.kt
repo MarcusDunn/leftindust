@@ -4,7 +4,7 @@ import com.expediagroup.graphql.generator.exceptions.GraphQLKotlinException
 import com.expediagroup.graphql.server.operations.Query
 import com.leftindust.mockingbird.auth.authToken
 import com.leftindust.mockingbird.dao.RecordDao
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.graphql.types.GraphQLPatientRecord
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers

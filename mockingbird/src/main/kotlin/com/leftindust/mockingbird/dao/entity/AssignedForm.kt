@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.dao.entity
 
 import com.leftindust.mockingbird.dao.entity.superclasses.AbstractJpaPersistable
+import com.leftindust.mockingbird.patient.Patient
 import javax.persistence.Entity
 import javax.persistence.ManyToOne
 import javax.persistence.OneToOne

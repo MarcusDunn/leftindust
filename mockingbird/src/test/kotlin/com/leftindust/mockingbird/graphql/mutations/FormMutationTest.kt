@@ -5,10 +5,10 @@ import com.leftindust.mockingbird.dao.CreateFormDao
 import com.leftindust.mockingbird.dao.FormDataDao
 import com.leftindust.mockingbird.dao.entity.Form
 import com.leftindust.mockingbird.dao.entity.FormData
-import com.leftindust.mockingbird.dao.entity.Patient
-import com.leftindust.mockingbird.dao.patient.UpdatePatientDao
+import com.leftindust.mockingbird.patient.Patient
+import com.leftindust.mockingbird.patient.UpdatePatientDao
 import com.leftindust.mockingbird.graphql.types.GraphQLFormTemplate
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.makeUUID
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment

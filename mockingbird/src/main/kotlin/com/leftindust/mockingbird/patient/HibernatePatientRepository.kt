@@ -1,6 +1,5 @@
-package com.leftindust.mockingbird.dao.impl.repository
+package com.leftindust.mockingbird.patient
 
-import com.leftindust.mockingbird.dao.entity.Patient
 import java.util.UUID
 import org.springframework.data.jpa.repository.JpaRepository
 

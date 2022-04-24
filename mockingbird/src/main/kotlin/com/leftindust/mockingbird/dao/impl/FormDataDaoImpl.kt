@@ -9,8 +9,8 @@ import com.leftindust.mockingbird.dao.FormDataDao
 import com.leftindust.mockingbird.dao.Tables
 import com.leftindust.mockingbird.dao.entity.FormData
 import com.leftindust.mockingbird.dao.impl.repository.HibernateFormDataRepository
-import com.leftindust.mockingbird.dao.impl.repository.HibernatePatientRepository
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
+import com.leftindust.mockingbird.patient.HibernatePatientRepository
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 

@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.dao.entity.Patient
-import com.leftindust.mockingbird.dao.impl.repository.HibernatePatientRepository
+import com.leftindust.mockingbird.patient.Patient
+import com.leftindust.mockingbird.patient.HibernatePatientRepository
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.debugPrint
 import com.leftindust.mockingbird.util.gqlRequest

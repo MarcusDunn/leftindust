@@ -1,13 +1,12 @@
-package com.leftindust.mockingbird.dao.entity
+package com.leftindust.mockingbird.patient
 
 import com.expediagroup.graphql.generator.scalars.ID
+import com.leftindust.mockingbird.dao.entity.*
 import com.leftindust.mockingbird.dao.entity.enums.Ethnicity
 import com.leftindust.mockingbird.dao.entity.enums.Sex
 import com.leftindust.mockingbird.dao.entity.superclasses.Person
 import com.leftindust.mockingbird.extensions.onUndefined
 import com.leftindust.mockingbird.extensions.replaceAllIfNotNull
-import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientEditInput
-import com.leftindust.mockingbird.graphql.types.input.GraphQLPatientInput
 import java.sql.Date
 import javax.persistence.*
 
@@ -20,17 +19,13 @@ class Patient(
     schedule: Set<Event> = emptySet(),
     user: MediqUser? = null,
     thumbnail: String? = null,
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     var sex: Sex,
     @Column(nullable = false)
     var dateOfBirth: Date,
-    @Column(nullable = false)
     var gender: String = sex.toString(),
-    @Column(nullable = true)
     @Enumerated(EnumType.STRING)
     var ethnicity: Ethnicity? = null,
-    @Column(nullable = true)
     var insuranceNumber: String? = null,
     @OneToMany(
         mappedBy = "patient",

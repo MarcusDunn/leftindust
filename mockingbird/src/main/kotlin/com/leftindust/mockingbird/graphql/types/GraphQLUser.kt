@@ -10,9 +10,10 @@ import com.leftindust.mockingbird.dao.NameInfoDao
 import com.leftindust.mockingbird.dao.UserDao
 import com.leftindust.mockingbird.dao.entity.Action
 import com.leftindust.mockingbird.dao.entity.MediqUser
-import com.leftindust.mockingbird.dao.patient.ReadPatientDao
+import com.leftindust.mockingbird.patient.ReadPatientDao
 import com.leftindust.mockingbird.external.firebase.UserFetcher
 import com.leftindust.mockingbird.graphql.types.input.GraphQLPermissionInput
+import com.leftindust.mockingbird.patient.GraphQLPatient
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
