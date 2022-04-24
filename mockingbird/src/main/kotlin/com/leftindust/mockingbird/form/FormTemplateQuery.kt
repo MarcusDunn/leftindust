@@ -16,17 +16,28 @@ class FormTemplateQuery(
 ) : Query {
 
     @GraphQLDescription("fetch survey templates by one getting a range or the survey id")
+    @Deprecated("removed due to lack of query verification", replaceWith = ReplaceWith("surveysByRange"))
     suspend fun surveys(
         range: GraphQLRangeInput? = null,
         surveys: List<GraphQLFormTemplate.ID>? = null,
         dataFetchingEnvironment: DataFetchingEnvironment
     ): List<GraphQLFormTemplate> = when {
         range == null && surveys != null -> withContext(Dispatchers.IO) {
-            formDao.getByIds(surveys, dataFetchingEnvironment.authToken)
+            surveysById(surveys, dataFetchingEnvironment)
         }
         range != null && surveys == null -> withContext(Dispatchers.IO) {
-            formDao.getMany(range, dataFetchingEnvironment.authToken)
+            surveysByRange(range, dataFetchingEnvironment)
         }
         else -> throw GraphQLKotlinException("invalid argument combination to surveys")
-    }.map(::GraphQLFormTemplate)
+    }
+
+    private fun surveysByRange(
+        range: GraphQLRangeInput,
+        dataFetchingEnvironment: DataFetchingEnvironment
+    ) = formDao.getMany(range, dataFetchingEnvironment.authToken).map(::GraphQLFormTemplate)
+
+    private fun surveysById(
+        surveys: List<GraphQLFormTemplate.ID>,
+        dataFetchingEnvironment: DataFetchingEnvironment
+    ) = formDao.getByIds(surveys, dataFetchingEnvironment.authToken).map(::GraphQLFormTemplate)
 }
