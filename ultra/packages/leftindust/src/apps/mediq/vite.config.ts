@@ -41,8 +41,8 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ['@apollo/client/core', '@apollo/client/cache', 'fast-json-stable-stringify', 'zen-observable', 'react', '@fullcalendar/common'],
-    exclude: ['@apollo/client', 'framework7', 'framework7-svelte'],
+    include: ['fast-json-stable-stringify', 'zen-observable', '@fullcalendar/common'],
+    exclude: ['@urql/svelte'],
   },
   resolve: {
     alias: {

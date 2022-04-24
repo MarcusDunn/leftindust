@@ -1,0 +1,23 @@
+#import "./patientsFragment.graphql"
+#import "./doctorsFragment.graphql"
+#import "./addressFragment.graphql"
+#import "./phoneFragment.graphql"
+#import "./emailFragment.graphql"
+
+fragment patientFragment on Patient {
+  ...patientsFragment
+  insuranceNumber
+  ethnicity
+  addresses {
+      ...addressFragment
+  }
+  phones {
+      ...phoneFragment
+  }
+  emails {
+      ...emailFragment
+  }
+  doctors {
+      ...doctorsFragment
+  }
+}

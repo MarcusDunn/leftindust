@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PatientsQueryResult } from '@/api/server';
+  import type { PatientsFragmentFragment } from '@/api/server';
   import type { Writable } from 'svelte/types/runtime/store';
 
   import type { Data } from '@/api/server';
@@ -12,7 +12,7 @@
 
   const dispatch = createEventDispatcher();
 
-  export let patients: PatientsQueryResult['patients'];
+  export let patients: PatientsFragmentFragment[];
   export let selected: Writable<Data[]>;
 
 </script>

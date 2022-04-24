@@ -1,0 +1,21 @@
+fragment patientsFragment on Patient {
+    # Make this into a fragment once server-side is updated
+    firstName
+    middleName
+    lastName
+
+    pid {
+        id
+    }
+    dateOfBirth {
+        day
+        month
+        year
+    }
+    sex
+    gender
+    emails {
+        type
+        email
+    }
+}

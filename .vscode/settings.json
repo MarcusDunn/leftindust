@@ -3,6 +3,8 @@
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "eslint.validate": [
     "javascript",
+    "typescript",
+    "graphql",
     "svelte"
   ],
   "editor.codeActionsOnSave": {

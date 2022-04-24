@@ -1,0 +1,4 @@
+fragment firebaseUsersFragment on FirebaseInfo {
+  email
+  uid
+}

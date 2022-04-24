@@ -1,9 +1,0 @@
-#import "../fragments/basicIcdFragment.graphql"
-
-query icdSearchQuery($query: String!) {
-  searchIcd(query: $query) {
-    destinationEntities {
-      ...basicIcdFragment
-    }
-  }
-}

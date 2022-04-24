@@ -2,8 +2,6 @@
   import type { CardProps } from '@/features/Widgets';
   import type { Popup } from 'framework7/types';
   
-  import DoctorsSpecificEngine from '@/api/server/engines/doctors/DoctorsSpecificEngine';
-  
   import { _ } from '@/language';
   import { pin, pinned } from '@/features/Pin';
 
@@ -22,16 +20,22 @@
   import Quicklook from '@/features/View/components/Quicklook/Quicklook.svelte';
   import Boxed from '@/features/UI/components/Boxed/Boxed.svelte';
   import PinButton from '@/features/Pin/components/PinButton/PinButton.svelte';
+  import { type DoctorFragmentFragment, DoctorsQueryDocument } from '@/api/server';
+  import { operationStore, query } from '@urql/svelte';
 
   const { data, dragger, reference, attachments, quicklook } = $$props as CardProps;
 
   let quicklookPopup: Popup.Popup;
 
-  const { doctors } = DoctorsSpecificEngine({
+  let doctors: [DoctorFragmentFragment];
+
+  const request = operationStore(DoctorsQueryDocument, {
     dids: [{ id: data.id }],
   });
 
-  $: doctor = $doctors[0];
+  query(request);
+
+  $: doctor = doctors[0];
 
   const url = `/doctor/${JSON.stringify(data)}/`;
 

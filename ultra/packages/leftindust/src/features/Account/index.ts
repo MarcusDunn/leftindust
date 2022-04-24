@@ -1,18 +1,32 @@
-import type {
-  Data,
-  Person,
-  Document,
-  UserQueryResult,
+import {
+  client,
+  database,
+  UserQueryDocument,
+  type Data,
+  type ResolversTypes,
+  type UserFragmentFragment,
 } from '@/api/server';
 import type { WidgetType } from '../Widgets';
 
+import { get } from 'svelte/store';
+import { operationStore, query } from '@urql/svelte';
 import { account, signInStatus } from './store';
-import { client, realtime, auth } from '@/api/server';
-import { ref, set, onValue, off } from "firebase/database";
+import { auth } from '@/api/server';
+import {
+  ref,
+  set,
+  onValue,
+  off,
+} from 'firebase/database';
 import { Layout } from '../App';
 
 import type { User } from 'firebase/auth';
-import { signOut as firebaseSignOut, setPersistence, browserSessionPersistence, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  signOut as firebaseSignOut,
+  setPersistence,
+  browserSessionPersistence,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 
 import deepmerge from 'deepmerge';
 
@@ -20,19 +34,16 @@ import { _ } from '@/language';
 
 import getNativeAPI from '@/api/bridge';
 
-import userQuery from '@/api/server/requests/queries/userQuery.graphql';
-import { get } from 'svelte/store';
-import type { DataType } from '@/api/server/requests';
 
-export type AccountRecentsTemplate = Record<NonNullable<Person>, string[]>;
+export type AccountRecentsTemplate = Partial<Record<keyof ResolversTypes, string[]>>;
 
 export type AccountLayoutTemplate = {
   pinned: {
-    [K in NonNullable<DataType>]: Record<string, Data[]>;
+    [K in keyof ResolversTypes]?: Record<string, Data[]>;
   };
   grid: {
     [K in WidgetType]: {
-      [K in NonNullable<DataType>]: Record<string, Record<string, Data>>;
+      [K in keyof ResolversTypes]?: Record<string, Record<string, Data>>;
     }
   }
 };
@@ -62,7 +73,7 @@ export type AccountDatabaseTemplate = {
   layout: AccountLayoutTemplate;
 };
 
-export type Account = UserQueryResult['user'] & {
+export type Account = UserFragmentFragment & {
   database: AccountDatabaseTemplate;
 };
 
@@ -100,7 +111,7 @@ export const accountSettingsTemplate: Readonly<AccountSettings> = {
 };
 
 export const accountLayoutTemplate: AccountLayoutTemplate = ((): AccountLayoutTemplate => {
-  const data: { [K in NonNullable<Person | Document>]: Record<string, any> } = {
+  const data: { [K in keyof ResolversTypes]?: Record<string, any> } = {
     Patient: {},
     Doctor: {},
     User: {},
@@ -111,7 +122,6 @@ export const accountLayoutTemplate: AccountLayoutTemplate = ((): AccountLayoutTe
     EmergencyContact: {},
     IcdLinearizationEntity: {},
     IcdSimpleEntity: {},
-    GraphQLFormTemplate: {},
     AssignedSurvey: {},
   };
 
@@ -138,24 +148,21 @@ const accountDatabaseTemplate: AccountDatabaseTemplate = {
 
 export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): void => {
   const { user, database } = fb;
-  const request = client.query<UserQueryResult, { uid: string }>(userQuery, {
-    variables: {
-      uid: user.uid,
-    },
-    fetchPolicy: 'no-cache',
-  });
 
-  request.subscribe(({ loading, data, error }) => {
-    const showSignInError = (message = language('errors.connectionError')) => {
-      signInStatus.update((prev) => ({
-        ...prev,
-        user,
-        error: message,
-      }));
-    };
+  client.query(UserQueryDocument, {
+    uid: user.uid,
+  })
+    .toPromise()
+    .then(({ data, error }) => {
+      const showSignInError = (message = language('errors.connectionError')) => {
+        signInStatus.update((prev) => ({
+          ...prev,
+          user,
+          error: message,
+        }));
+      };
 
-    if (navigator.onLine) {
-      if (!loading) {
+      if (navigator.onLine) {
         if (data) {
           account.update(() => ({
             ...data.user,
@@ -164,45 +171,43 @@ export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): v
         } else if (error) {
           showSignInError();
         }
+      } else {
+        showSignInError(language('errors.offline'));
       }
-    } else {
-      showSignInError(language('errors.offline'));
-    }
-  });
+    })
+    .catch(() => console.log('Error'));
 };
 
 export const signOut = (): void => {
-  void client.resetStore().then(() => {
-    void firebaseSignOut(auth)
-      .then(() => {
-        signInStatus.update(() => ({
-          signedIn: false,
-        }));
+  void firebaseSignOut(auth)
+    .then(() => {
+      signInStatus.update(() => ({
+        signedIn: false,
+      }));
 
-        account.update(() => ({
-          ...get(account),
-          isRegistered: false,
-        }));
+      account.update(() => ({
+        ...get(account),
+        isRegistered: false,
+      }));
 
-        // Clear state 100ms after the application has unloaded views: without it, all
-        // reactive hooks referencing "account" will trigger and throw errors
-        setTimeout(() => {
-          // @ts-expect-error
-          account.set(undefined);
-        }, 100);
-      });
-  });
+      // Clear state 100ms after the application has unloaded views: without it, all
+      // reactive hooks referencing "account" will trigger and throw errors
+      setTimeout(() => {
+        // @ts-expect-error
+        account.set(undefined);
+      }, 100);
+    });
 };
 
 export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
-  const database = ref(realtime, `users/${user.uid}`);
+  const realtime = ref(database, `users/${user.uid}`);
 
-  onValue(database, (snapshot) => {
+  onValue(realtime, (snapshot) => {
     const data: AccountDatabaseTemplate = snapshot.val();
     if (data) {
       // Update settings with latest templates if versions mismatch
       if (data.version < accountDatabaseTemplate.version) {
-        set(database, {
+        void set(realtime, {
           ...accountDatabaseTemplate,
           ...Object.keys(data)
             .filter((key) => key !== 'version')
@@ -220,11 +225,11 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
       } else {
         // Sign-in user and authenticate with leftindust servers
         signIn({ user, database: data });
-        off(database);
+        off(realtime);
       }
     } else {
       // Load default settings
-      set(database, { ...accountDatabaseTemplate })
+      void set(realtime, { ...accountDatabaseTemplate })
         .then(() => {
           console.log('Default user settings have been loaded');
         });

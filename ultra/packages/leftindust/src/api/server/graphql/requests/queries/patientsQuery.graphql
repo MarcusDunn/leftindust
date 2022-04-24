@@ -1,0 +1,12 @@
+#import "../fragments/patientsFragment.graphql"
+
+query patientsQuery(
+    $range: RangeInput,
+    $pids: [PatientIdInput!],
+    $sortedBy: SortableField,
+    $example: PatientExampleInput,
+) {
+    patients(range: $range, sortedBy: $sortedBy, pids: $pids, example: $example) {
+        ...patientsFragment
+    }
+}

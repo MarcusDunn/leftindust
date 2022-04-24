@@ -20,12 +20,15 @@
     "check:ultra": "lerna run check --stream --scope @ultra/leftindust",
     "test:ultra": "lerna run test --stream --scope @ultra/leftindust",
     "test:watch:ultra": "lerna run test:watch --stream --scope @ultra/leftindust",
-
+    
     "lint:ultra": "lerna run lint --stream --scope @ultra/leftindust",
     
-    "schema": "lerna exec graphql-codegen --stream --scope @ultra/leftindust"
+    "generate:ultra": "lerna run generate --stream --scope @ultra/leftindust"
   },
   "devDependencies": {
     "lerna": "^4.0.0"
+  },
+  "resolutions": {
+    "graphql": "^15.7.2"
   }
 }

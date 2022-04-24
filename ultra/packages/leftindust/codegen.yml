@@ -1,16 +1,47 @@
 schema: http://192.168.0.11:8080/graphql
 
 generates:
-  ./src/api/server/schemas/leftindust.schema.ts:
+  ./src/api/server/graphql/schema/leftindust.schema.ts:
     hooks:
       afterOneFileWrite:
         - eslint --fix
     plugins:
       - typescript
-      - typescript-operations
-    config:
-      maybeValue: T | undefined  
 
-  ./src/api/server/schemas/leftindust.schema.graphql:
+    config:
+      maybeValue: T | undefined
+      useTypeImports: true
+
+  ./src/api/server/graphql/requests/index.ts:
+    documents: 'src/api/server/graphql/requests/**/*.graphql'
+    preset: import-types
+
+    presetConfig:
+      typesPath: ../schema/leftindust.schema
+      importTypesNamespace: Schema
+
+    hooks:
+      afterOneFileWrite:
+        - eslint --fix
+
+    plugins:
+      - add:
+          content: '/* eslint-disable @typescript-eslint/ban-types */'
+      - typescript-operations
+      - typescript-resolvers
+      - typed-document-node
+      - urql-svelte-operations-store
+      # - typescript-urql-graphcache
+
+    config:
+      maybeValue: T | undefined
+      useTypeImports: true
+      avoidOptionals:
+        field: true 
+        object: false
+        inputValue: false
+        defaultValue: false
+
+  ./src/api/server/graphql/schema/leftindust.schema.graphql:
     plugins:
       - schema-ast

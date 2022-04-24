@@ -1,9 +1,0 @@
-#import "../fragments/patientInsuranceFragment.graphql"
-
-query patientsInsuranceQuery(
-    $pids: [PatientIdInput!],
-) {
-    patients(pids: $pids) {
-        ...patientInsuranceFragment
-    }
-}

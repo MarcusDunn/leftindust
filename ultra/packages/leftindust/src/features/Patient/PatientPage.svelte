@@ -1,13 +1,11 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
-  import type { Data } from '@/api/server';
-  import type { Patient } from '@/api/server/schema/leftindust.schema';
+  import { PatientQueryDocument, type Data, type PatientFragmentFragment } from '@/api/server';
   
   import { account } from '../Account/store';
   import { PatientTab } from '.';
   import { Layout } from '../App';
-  
-  import PatientEngine from '@/api/server/engines/patients/PatientEngine';
+
   import Page from '../UI/components/Page/Page.svelte';
   import { wizardOpen } from '../Wizard/store';
   import { clientsSelected, clientsSelectedTab } from '../Clients/store';
@@ -27,20 +25,24 @@
   import DescriptivePlaceholder
     from '../App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
   import SpecificGrid from '../Widgets/components/Grid/SpecificGrid.svelte';
+  import { operationStore } from '@urql/svelte';
     
   export let f7router: Router.Router;
   export let f7route: Router.Route;
   export let quicklook = false;
 
+  let patient: PatientFragmentFragment | undefined;
 
   let layout: Layout = $account.database.settings.options.layout || Layout.Bundled;
   let tab: PatientTab = PatientTab.Documents;
 
   const data: Data = JSON.parse(f7route.params.data ?? '{}');
 
-  const { patient, request } = PatientEngine({
+  const request = operationStore(PatientQueryDocument, {
     pids: [{ id: data.id }],
   });
+
+  $: patient = request.data?.patients[0];
 </script>
 
 <Page
@@ -109,41 +111,41 @@
       </svelte:fragment>
     </Appbar>
   </svelte:fragment>
-  <Request {...$request} refetch={request.refetch} large middle>
+  <Request {...$request} refetch={request.reexecute} large middle>
     <Profile drawer={{ ...ProfileDrawer, name: $_('generics.pinned') }}>
       <h2 slot="title">
-        {$patient?.firstName}
-        {#if $patient?.middleName}
-          <Clamp text={$patient?.middleName} />
+        {patient?.firstName}
+        {#if patient?.middleName}
+          <Clamp text={patient?.middleName} />
         {/if}
-        {$patient?.lastName}
+        {patient?.lastName}
       </h2>
       <Boxed slot="media" dimensions={BoxedSizes.Large} color="gray" round fill>
-        <span>{`${$patient?.firstName.charAt(0)}${$patient?.lastName.charAt(0)}`}</span>
+        <span>{`${patient?.firstName.charAt(0)}${patient?.lastName.charAt(0)}`}</span>
       </Boxed>
-      <PatientTags slot="tags" {...$patient} />
+      <PatientTags slot="tags" {...patient} />
       <EntityTable
-        phones={$patient?.phones}
-        emails={$patient?.emails}
-        addresses={$patient?.addresses}
+        phones={patient?.phones}
+        emails={patient?.emails}
+        addresses={patient?.addresses}
       />
       <div slot="drawer">
         {#key $account}
-          {#if $account.database.layout.pinned['Patient'][$patient?.pid.id]?.length > 0}
+          {#if $account.database.layout.pinned['Patient']?.[patient?.pid.id]?.length ?? 0 > 0}
             <SpecificGrid
-              props={$account.database.layout.pinned['Patient'][$patient?.pid.id]?.map(({ type, id }) => {
+              props={$account.database.layout.pinned['Patient']?.[patient?.pid.id]?.map(({ type, id }) => {
                 if (type) {
                   return {
                     id: type,
                     data: { id, type },
                     reference: {
-                      id: $patient?.pid.id,
+                      id: patient?.pid.id,
                       type: 'Patient',
                     },
                     quicklook,
                   };
                 }
-              })}
+              }) ?? []}
               type={WidgetType.Card}
             />
           {:else}

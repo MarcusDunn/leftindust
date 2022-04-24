@@ -1,13 +1,17 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
 
-  import { defaultRangeInput } from '@/api/server';
+  import {
+    defaultRangeInput,
+    PatientsQueryDocument,
+    SortableField,
+    type Patient,
+    type PatientsFragmentFragment,
+  } from '@/api/server';
   import { clientsSelected } from '@/features/Clients/store';
-  import { SortableField } from '@/api/server/schema/leftindust.schema';
 
   import { _ } from '@/language';
-  import PatientsGenericEngine from '@/api/server/engines/patients/PatientsGenericEngine';
-  import PatientsSpecificEngine from '@/api/server/engines/patients/PatientsSpecificEngine';
+  import { operationStore } from '@urql/svelte';
   import { account } from '@/features/Account/store';
   import { updateRecents } from '@/features/Recents';
 
@@ -16,18 +20,22 @@
   import CollapsableContentPlaceholder
     from '@/features/UI/components/Collapsable/CollapsableContentPlaceholder.svelte';
 
-  import MasterListLayout from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
+  import MasterListLayout
+    from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
   import Request from '@/features/Server/components/Request/Request.svelte';
   import PatientsCells from '../PatientsCells/PatientsCells.svelte';
   
   export let f7router: Router.Router;
 
-  const { request, patients } = PatientsGenericEngine({
+  let patients: PatientsFragmentFragment[];
+  let recents: PatientsFragmentFragment[];
+
+  const request = operationStore(PatientsQueryDocument, {
     range: defaultRangeInput,
-    sortBy: SortableField.LastName,
+    sortedBy: SortableField.LastName,
   });
 
-  const { request: recentsRequest, patients: recents } = PatientsSpecificEngine({
+  const recentsRequest = operationStore(PatientsQueryDocument, {
     pids: ($account.database.recents.Patient ??= []).map((id) => ({ id })),
   });
 
@@ -39,18 +47,21 @@
     }
   };
 
-  $: void recentsRequest.setVariables({
-    pids: ($account.database.recents.Patient).map((id) => ({ id })),
+  $: recentsRequest.reexecute({
+    pids: ($account.database.recents.Patient ?? []).map((id) => ({ id })),
   });
+
+  $: patients = $request.data?.patients ?? [];
+  $: recents = $recentsRequest.data?.patients ?? [];
 
 </script>
 
 <PageContent style="padding-top: 10px" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}>
   <MasterListLayout>
-    <Request {...$recentsRequest} refetch={recentsRequest.refetch} slot="recents">
-      {#if $recents.length > 0}
+    <Request {...$recentsRequest} reexecute={recentsRequest.reexecute} slot="recents">
+      {#if recents.length > 0}
         <PatientsCells
-          patients={$recents || []}
+          patients={recents || []}
           selected={clientsSelected}
           on:navigate={() => navigate($clientsSelected.length > 1)}
         />
@@ -62,9 +73,9 @@
       {/if}
     </Request>
 
-    <Request {...$request} refetch={request.refetch}>
+    <Request {...$request} reexecute={request.reexecute}>
       <PatientsCells
-        patients={$patients || []}
+        patients={patients || []}
         selected={clientsSelected}
         on:navigate={() => {
           if ($clientsSelected.length === 1) updateRecents('Patient', $clientsSelected.filter((client) => client.type === 'Patient')[0].id);

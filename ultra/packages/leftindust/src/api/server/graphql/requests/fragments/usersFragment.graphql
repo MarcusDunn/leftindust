@@ -1,0 +1,15 @@
+#import "./namesFragment.graphql"
+
+fragment usersFragment on User {
+    uid
+    isRegistered
+    group {
+        name
+    }
+    firebaseUserInfo {
+        email
+    }
+    names {
+        ...namesFragment
+    }
+}

@@ -1,7 +1,0 @@
-mutation assignSurveyTemplateMutation($patients: [PatientIdInput!]!, $survey: FormTemplateIdInput!) {
-  assignSurvey(patients: $patients, survey: $survey) {
-    pid {
-      id
-    }
-  }
-}

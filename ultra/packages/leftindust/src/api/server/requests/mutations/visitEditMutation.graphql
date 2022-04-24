@@ -1,7 +1,0 @@
-mutation visitEditMutation($visit: GraphQLVisitEditInput!) {
-    editVisit(visit: $visit) {
-        vid {
-            id
-        }
-    }
-}

@@ -1,0 +1,7 @@
+#import "../fragments/patientFragment.graphql"
+
+mutation patientEditMutation($patient: PatientEditInput!) {
+  updatePatient(patient: $patient) {
+    ...patientFragment
+  }
+}

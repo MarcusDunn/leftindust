@@ -1,6 +1,0 @@
-fragment basicIcdFragment on IcdReallySimpleEntity {
-  id
-  title
-  code
-  description
-}
