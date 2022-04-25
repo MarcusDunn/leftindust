@@ -40,8 +40,8 @@ generates:
       avoidOptionals:
         field: true 
         object: false
-        inputValue: false
-        defaultValue: false
+        inputValue: true
+        defaultValue: true
 
   ./src/api/server/graphql/schema/leftindust.schema.graphql:
     plugins:

@@ -27,11 +27,11 @@
   const hour = time.getHours();
 
   if (hour < 12) {
-    message = $_('generics.goodMorning', { values: { name: $account.names.firstName } });
+    message = $_('generics.goodMorning', { values: { name: $account.names?.firstName } });
   } else if (hour < 18) {
-    message = $_('generics.goodAfternoon', { values: { name: $account.names.firstName } });
+    message = $_('generics.goodAfternoon', { values: { name: $account.names?.firstName } });
   } else {
-    message = $_('generics.goodEvening', { values: { name: $account.names.firstName } });
+    message = $_('generics.goodEvening', { values: { name: $account.names?.firstName } });
   }
 
   onMount(() => {
@@ -68,7 +68,7 @@
         fill
         round
       >
-        {`${$account.names.firstName} ${$account.names.lastName}`.match(/\b(\w)/g)?.join('')}
+        {`${$account.names?.firstName} ${$account.names?.lastName}`.match(/\b(\w)/g)?.join('')}
       </Boxed>
     </div>
     <div class="text-align-center" style="margin-top: 20px">

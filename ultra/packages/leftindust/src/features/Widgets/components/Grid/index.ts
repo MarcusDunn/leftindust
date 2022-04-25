@@ -1,10 +1,9 @@
 import type { SvelteComponent } from 'svelte';
 import type { Coordinates, Dimensions } from '@/types';
-import type { Data } from '@/api/server';
+import type { Data, ResolversTypes } from '@/api/server';
 
 // @ts-expect-error
 import gridHelp from 'svelte-grid/build/helper';
-import type { DataType } from '@/api/server/requests';
 
 // Svelte Grid is not typed
 export type SvelteGridConstraints = {
@@ -39,7 +38,7 @@ export type WidgetGridWidget = {
 export type WidgetGridItem = Record<string, SvelteGridConstraints> & WidgetGridWidget;
 
 export type WidgetGridProps = {
-  id: NonNullable<DataType>;
+  id: NonNullable<keyof Partial<ResolversTypes>>;
   data: Data | Data[];
 } & Record<string, unknown>;
 
