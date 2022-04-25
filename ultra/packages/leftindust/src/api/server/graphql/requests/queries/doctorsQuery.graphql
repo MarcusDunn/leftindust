@@ -6,6 +6,6 @@ query doctorsQuery(
     $example: DoctorExampleInput,
 ) {
     doctors(range: $range, dids: $dids, example: $example) {
-        ...doctorsFragment
+        ...doctors
     }
 }

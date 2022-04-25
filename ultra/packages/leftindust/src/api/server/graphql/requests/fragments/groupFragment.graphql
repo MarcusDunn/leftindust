@@ -1,4 +1,5 @@
-fragment groupFragment on Group {
+fragment group on Group {
+  __typename
   gid {
     id
   }

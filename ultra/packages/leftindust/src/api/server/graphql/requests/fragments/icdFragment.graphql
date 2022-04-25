@@ -1,4 +1,5 @@
-fragment icdFragment on IcdReallySimpleEntity {
+fragment icd on IcdReallySimpleEntity {
+  __typename
   id
   title
   code

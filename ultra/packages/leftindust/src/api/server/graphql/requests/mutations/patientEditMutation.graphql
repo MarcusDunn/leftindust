@@ -2,6 +2,6 @@
 
 mutation patientEditMutation($patient: PatientEditInput!) {
   updatePatient(patient: $patient) {
-    ...patientFragment
+    ...patient
   }
 }

@@ -2,7 +2,8 @@
   import type { CardProps } from '@/features/Widgets';
   import type { Popup } from 'framework7/types';
   
-  import UserEngine from '@/api/server/engines/users/UserEngine';
+  import { operationStore } from '@urql/svelte';
+  import { type UserFragment, UserQueryDocument } from '@/api/server';
   
   import { _ } from '@/language';
   import { pin, pinned } from '@/features/Pin';
@@ -28,9 +29,13 @@
   const { data, dragger, reference, attachments, quicklook } = $$props as CardProps;
   let quicklookPopup: Popup.Popup;
 
-  const { user } = UserEngine({
+  let user: UserFragment;
+
+  const request = operationStore(UserQueryDocument, {
     uid: data.id,
   });
+
+  $: if (request.data?.user) user = request.data?.user;
 
   const url = `/user/${JSON.stringify(data)}/`;
 </script>
@@ -45,15 +50,15 @@
 <Card
   color="blue"
   {dragger}
-  loading={!$user}
+  loading={!user}
   shadow={!attachments}
 >
   <svelte:fragment slot="title">
     <div>
-      {#if $user.isRegistered}
-        {`${$user.names.firstName} ${$user.names?.middleName ? `${$user.names?.middleName?.charAt(0)}.` : ''} ${$user.names.lastName}`}
+      {#if user.isRegistered}
+        {`${user.names?.firstName} ${user.names?.middleName ? `${user.names?.middleName?.charAt(0)}.` : ''} ${user.names?.lastName}`}
       {:else}
-        {$user.firebaseUserInfo.email}
+        {user.firebaseUserInfo.email}
       {/if}
     </div>
   </svelte:fragment>
@@ -62,23 +67,23 @@
     {#if reference}
       <PinButton
         pinned={pinned({
-          id: $user.uid,
-          type: $user.__typename,
+          id: user.uid,
+          type: user.__typename,
         }, reference)}
         on:pin={({ detail }) => reference && pin(detail, {
-          id: $user.uid,
-          type: $user.__typename,
+          id: user.uid,
+          type: user.__typename,
         }, reference)}
       />
     {:else}
-      {#if $user.isRegistered}
+      {#if user.isRegistered}
         <div style="margin-top: 6px">
           <Boxed
             color="blue"
             fill
             round
           >
-            {`${$user.names.firstName.charAt(0)}${$user.names.lastName.charAt(0)}`}
+            {`${user.names?.firstName.charAt(0)}${user.names?.lastName.charAt(0)}`}
           </Boxed>
         </div>
       {/if}
@@ -87,10 +92,10 @@
 
   <svelte:fragment slot="subtitle">
     <div>
-      {#if $user.isRegistered}
-        <UserTags {...$user} small outline />
+      {#if user.isRegistered}
+        <UserTags {...user} small outline />
       {:else}
-        <FirebaseUserTags {...$user} small outline />
+        <FirebaseUserTags {...user} small outline />
       {/if}
     </div>
   </svelte:fragment>
@@ -99,12 +104,12 @@
     {#if reference}
       <PinButton
         pinned={pinned({
-          id: $user.uid,
-          type: $user.__typename,
+          id: user.uid,
+          type: user.__typename,
         }, reference)}
         on:pin={({ detail }) => reference && pin(detail, {
-          id: $user.uid,
-          type: $user.__typename,
+          id: user.uid,
+          type: user.__typename,
         }, reference)}
       />
     {/if}

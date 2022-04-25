@@ -1,8 +1,7 @@
 <script lang="ts">
   import type { CardProps } from '@/features/Widgets';
   import type { Popup } from 'framework7/types';
-  
-  import PatientsSpecificEngine from '@/api/server/engines/patients/PatientsSpecificEngine';
+  import { PatientsQueryDocument, type PatientsFragment } from '@/api/server';
   
   import { _ } from '@/language';
   import { pin, pinned } from '@/features/Pin';
@@ -23,16 +22,20 @@
   import Quicklook from '@/features/View/components/Quicklook/Quicklook.svelte';
   import Boxed from '@/features/UI/components/Boxed/Boxed.svelte';
   import PinButton from '@/features/Pin/components/PinButton/PinButton.svelte';
+  import { operationStore, query } from '@urql/svelte';
 
   const { data, dragger, reference, attachments, quicklook } = $$props as CardProps;
 
   let quicklookPopup: Popup.Popup;
+  let patient: PatientsFragment;
 
-  const { patients } = PatientsSpecificEngine({
+  const request = operationStore(PatientsQueryDocument, {
     pids: [{ id: data.id }],
   });
 
-  $: patient = $patients[0];
+  query(request);
+
+  $: if ($request.data?.patients[0]) patient = $request.data?.patients[0];
 
   const url = `/patient/${JSON.stringify(data)}/`;
 </script>

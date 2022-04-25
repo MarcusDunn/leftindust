@@ -2,6 +2,6 @@
 
 mutation doctorEditMutation($doctor: DoctorEditInput!) {
     editDoctor(doctor: $doctor) {
-        ...doctorFragment
+        ...doctor
     }
 }

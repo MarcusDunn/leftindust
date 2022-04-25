@@ -1,15 +1,16 @@
 import {
   client,
   database,
+  resolversArray,
+  resolversRecord,
   UserQueryDocument,
   type Data,
   type ResolversTypes,
-  type UserFragmentFragment,
+  type UserFragment,
 } from '@/api/server';
 import type { WidgetType } from '../Widgets';
 
 import { get } from 'svelte/store';
-import { operationStore, query } from '@urql/svelte';
 import { account, signInStatus } from './store';
 import { auth } from '@/api/server';
 import {
@@ -34,17 +35,16 @@ import { _ } from '@/language';
 
 import getNativeAPI from '@/api/bridge';
 
-
-export type AccountRecentsTemplate = Partial<Record<keyof ResolversTypes, string[]>>;
+export type AccountRecentsTemplate = Record<keyof ResolversTypes, string[]>;
 
 export type AccountLayoutTemplate = {
   pinned: {
-    [K in keyof ResolversTypes]?: Record<string, Data[]>;
+    [K in keyof ResolversTypes]: Record<string, Data[]>;
   };
   grid: {
     [K in WidgetType]: {
-      [K in keyof ResolversTypes]?: Record<string, Record<string, Data>>;
-    }
+      [K in keyof ResolversTypes]: Record<string, Record<string, Data>>;
+    };
   }
 };
 
@@ -73,7 +73,7 @@ export type AccountDatabaseTemplate = {
   layout: AccountLayoutTemplate;
 };
 
-export type Account = UserFragmentFragment & {
+export type Account = UserFragment & {
   database: AccountDatabaseTemplate;
 };
 
@@ -87,9 +87,7 @@ const { Dialog } = getNativeAPI();
 const language = get(_);
 
 export const accountRecentsTemplate: AccountRecentsTemplate = {
-  Patient: [],
-  Doctor: [],
-  User: [],
+  ...resolversArray,
 };
 
 export const accountSettingsTemplate: Readonly<AccountSettings> = {
@@ -110,34 +108,18 @@ export const accountSettingsTemplate: Readonly<AccountSettings> = {
   },
 };
 
-export const accountLayoutTemplate: AccountLayoutTemplate = ((): AccountLayoutTemplate => {
-  const data: { [K in keyof ResolversTypes]?: Record<string, any> } = {
-    Patient: {},
-    Doctor: {},
-    User: {},
-    Event: {},
-    Visit: {},
-    Record: {},
-    FirebaseInfo: {},
-    EmergencyContact: {},
-    IcdLinearizationEntity: {},
-    IcdSimpleEntity: {},
-    AssignedSurvey: {},
-  };
-
-  return {
-    pinned: { ...data },
-    grid: {
-      bundle: { ...data },
-      cluster: { ...data },
-      comparable: { ...data },
-      stack: { ...data },
-      card: { ...data },
-      attachment: { ...data },
-      attribute: { ...data },
-    },
-  };
-})();
+export const accountLayoutTemplate: AccountLayoutTemplate ={
+  pinned: { ...resolversRecord },
+  grid: {
+    bundle: { ...resolversRecord },
+    cluster: { ...resolversRecord },
+    comparable: { ...resolversRecord },
+    stack: { ...resolversRecord },
+    card: { ...resolversRecord },
+    attachment: { ...resolversRecord },
+    attribute: { ...resolversRecord },
+  },
+};
 
 const accountDatabaseTemplate: AccountDatabaseTemplate = {
   version: 1,

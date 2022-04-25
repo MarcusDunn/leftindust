@@ -4,6 +4,6 @@ query doctorQuery(
     $dids: [DoctorIdInput!],
 ) {
     doctors(dids: $dids) {
-        ...doctorFragment
+        ...doctor
     }
 }

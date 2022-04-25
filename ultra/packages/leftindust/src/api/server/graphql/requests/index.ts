@@ -5,69 +5,65 @@ import type { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } f
 import type { OperationStore } from '@urql/svelte';
 import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
-export type AddressFragmentFragment = (
-  { __typename?: 'Address' }
+export type AddressFragment = (
+  { __typename: 'Address' }
   & Pick<Schema.Address, 'addressType' | 'address' | 'city' | 'country' | 'postalCode' | 'province'>
 );
 
-export type ContactFragmentFragment = (
-  { __typename?: 'EmergencyContact' }
+export type ContactFragment = (
+  { __typename: 'EmergencyContact' }
   & Pick<Schema.EmergencyContact, 'firstName' | 'middleName' | 'lastName' | 'relationship' | 'thumbnail'>
   & { phones: Array<(
     { __typename?: 'Phone' }
-    & PhoneFragmentFragment
+    & PhoneFragment
   )>, emails: Array<(
     { __typename?: 'Email' }
-    & EmailFragmentFragment
+    & EmailFragment
   )> }
 );
 
-export type DoctorFragmentFragment = (
-  { __typename: 'Doctor' }
-  & Pick<Schema.Doctor, 'firstName' | 'middleName' | 'lastName'>
+export type DoctorFragment = (
+  { __typename?: 'Doctor' }
   & { addresses: Array<(
     { __typename?: 'Address' }
-    & AddressFragmentFragment
+    & AddressFragment
   )>, phones: Array<(
     { __typename?: 'Phone' }
-    & PhoneFragmentFragment
-  )>, emails: Array<(
-    { __typename?: 'Email' }
-    & EmailFragmentFragment
+    & PhoneFragment
   )>, user: Schema.Maybe<(
     { __typename?: 'User' }
-    & UsersFragmentFragment
+    & UsersFragment
   )>, patients: Array<(
     { __typename?: 'Patient' }
-    & PatientsFragmentFragment
+    & PatientsFragment
   )> }
-  & DoctorsFragmentFragment
+  & DoctorsFragment
 );
 
-export type DoctorsFragmentFragment = (
-  { __typename?: 'Doctor' }
-  & Pick<Schema.Doctor, 'title'>
+export type DoctorsFragment = (
+  { __typename: 'Doctor' }
+  & Pick<Schema.Doctor, 'firstName' | 'middleName' | 'lastName' | 'title'>
   & { did: (
     { __typename?: 'DoctorId' }
     & Pick<Schema.DoctorId, 'id'>
   ), emails: Array<(
     { __typename?: 'Email' }
-    & EmailFragmentFragment
+    & EmailFragment
   )> }
 );
 
-export type EmailFragmentFragment = (
-  { __typename?: 'Email' }
+export type EmailFragment = (
+  { __typename: 'Email' }
   & Pick<Schema.Email, 'type' | 'email'>
 );
 
-export type FirebaseUsersFragmentFragment = (
-  { __typename?: 'FirebaseInfo' }
+export type FirebaseUsersFragment = (
+  { __typename: 'FirebaseInfo' }
   & Pick<Schema.FirebaseInfo, 'email' | 'uid'>
 );
 
-export type GroupFragmentFragment = (
-  { __typename?: 'Group' }
+export type GroupFragment = (
+  { __typename: 'Group' }
   & Pick<Schema.Group, 'name'>
   & { gid: (
     { __typename?: 'GroupId' }
@@ -75,44 +71,44 @@ export type GroupFragmentFragment = (
   ) }
 );
 
-type IcdFragment_IcdLinearizationEntity_Fragment = (
-  { __typename?: 'IcdLinearizationEntity' }
+type Icd_IcdLinearizationEntity_Fragment = (
+  { __typename: 'IcdLinearizationEntity' }
   & Pick<Schema.IcdLinearizationEntity, 'id' | 'title' | 'code' | 'description'>
 );
 
-type IcdFragment_IcdSimpleEntity_Fragment = (
-  { __typename?: 'IcdSimpleEntity' }
+type Icd_IcdSimpleEntity_Fragment = (
+  { __typename: 'IcdSimpleEntity' }
   & Pick<Schema.IcdSimpleEntity, 'id' | 'title' | 'code' | 'description'>
 );
 
-export type IcdFragmentFragment = IcdFragment_IcdLinearizationEntity_Fragment | IcdFragment_IcdSimpleEntity_Fragment;
+export type IcdFragment = Icd_IcdLinearizationEntity_Fragment | Icd_IcdSimpleEntity_Fragment;
 
-export type NamesFragmentFragment = (
-  { __typename?: 'NameInfo' }
+export type NamesFragment = (
+  { __typename: 'NameInfo' }
   & Pick<Schema.NameInfo, 'firstName' | 'middleName' | 'lastName'>
 );
 
-export type PatientFragmentFragment = (
+export type PatientFragment = (
   { __typename?: 'Patient' }
   & Pick<Schema.Patient, 'insuranceNumber' | 'ethnicity'>
   & { addresses: Array<(
     { __typename?: 'Address' }
-    & AddressFragmentFragment
+    & AddressFragment
   )>, phones: Array<(
     { __typename?: 'Phone' }
-    & PhoneFragmentFragment
+    & PhoneFragment
   )>, emails: Array<(
     { __typename?: 'Email' }
-    & EmailFragmentFragment
+    & EmailFragment
   )>, doctors: Array<(
     { __typename?: 'Doctor' }
-    & DoctorsFragmentFragment
+    & DoctorsFragment
   )> }
-  & PatientsFragmentFragment
+  & PatientsFragment
 );
 
-export type PatientsFragmentFragment = (
-  { __typename?: 'Patient' }
+export type PatientsFragment = (
+  { __typename: 'Patient' }
   & Pick<Schema.Patient, 'firstName' | 'middleName' | 'lastName' | 'sex' | 'gender'>
   & { pid: (
     { __typename?: 'PatientId' }
@@ -122,29 +118,29 @@ export type PatientsFragmentFragment = (
     & Pick<Schema.Date, 'day' | 'month' | 'year'>
   ), emails: Array<(
     { __typename?: 'Email' }
-    & Pick<Schema.Email, 'type' | 'email'>
+    & EmailFragment
   )> }
 );
 
-export type PhoneFragmentFragment = (
-  { __typename?: 'Phone' }
+export type PhoneFragment = (
+  { __typename: 'Phone' }
   & Pick<Schema.Phone, 'type' | 'number'>
 );
 
-export type UserFragmentFragment = (
+export type UserFragment = (
   { __typename?: 'User' }
   & { doctor: Schema.Maybe<(
     { __typename?: 'Doctor' }
-    & DoctorsFragmentFragment
+    & DoctorsFragment
   )>, patient: Schema.Maybe<(
     { __typename?: 'Patient' }
-    & PatientsFragmentFragment
+    & PatientsFragment
   )> }
-  & UsersFragmentFragment
+  & UsersFragment
 );
 
-export type UsersFragmentFragment = (
-  { __typename?: 'User' }
+export type UsersFragment = (
+  { __typename: 'User' }
   & Pick<Schema.User, 'uid' | 'isRegistered'>
   & { group: Schema.Maybe<(
     { __typename?: 'Group' }
@@ -154,7 +150,7 @@ export type UsersFragmentFragment = (
     & Pick<Schema.FirebaseInfo, 'email'>
   ), names: Schema.Maybe<(
     { __typename?: 'NameInfo' }
-    & NamesFragmentFragment
+    & NamesFragment
   )> }
 );
 
@@ -167,7 +163,7 @@ export type DoctorEditMutationMutation = (
   { __typename?: 'Mutation' }
   & { editDoctor: (
     { __typename?: 'Doctor' }
-    & DoctorFragmentFragment
+    & DoctorFragment
   ) }
 );
 
@@ -180,7 +176,7 @@ export type DoctorMutationMutation = (
   { __typename?: 'Mutation' }
   & { addDoctor: (
     { __typename?: 'Doctor' }
-    & DoctorFragmentFragment
+    & DoctorFragment
   ) }
 );
 
@@ -193,7 +189,7 @@ export type PatientEditMutationMutation = (
   { __typename?: 'Mutation' }
   & { updatePatient: (
     { __typename?: 'Patient' }
-    & PatientFragmentFragment
+    & PatientFragment
   ) }
 );
 
@@ -206,7 +202,7 @@ export type PatientMutationMutation = (
   { __typename?: 'Mutation' }
   & { addPatient: (
     { __typename?: 'Patient' }
-    & PatientFragmentFragment
+    & PatientFragment
   ) }
 );
 
@@ -219,7 +215,7 @@ export type UserEditMutationMutation = (
   { __typename?: 'Mutation' }
   & { editUser: (
     { __typename?: 'User' }
-    & UserFragmentFragment
+    & UserFragment
   ) }
 );
 
@@ -232,7 +228,7 @@ export type UserMutationMutation = (
   { __typename?: 'Mutation' }
   & { addUser: (
     { __typename?: 'User' }
-    & UserFragmentFragment
+    & UserFragment
   ) }
 );
 
@@ -245,7 +241,7 @@ export type DoctorQueryQuery = (
   { __typename?: 'Query' }
   & { doctors: Array<(
     { __typename?: 'Doctor' }
-    & DoctorFragmentFragment
+    & DoctorFragment
   )> }
 );
 
@@ -260,7 +256,7 @@ export type DoctorsQueryQuery = (
   { __typename?: 'Query' }
   & { doctors: Array<(
     { __typename?: 'Doctor' }
-    & DoctorsFragmentFragment
+    & DoctorsFragment
   )> }
 );
 
@@ -274,8 +270,21 @@ export type GroupsQueryQuery = (
   { __typename?: 'Query' }
   & { groups: Array<(
     { __typename?: 'Group' }
-    & GroupFragmentFragment
+    & GroupFragment
   )> }
+);
+
+export type IcdQueryQueryVariables = Schema.Exact<{
+  icdCode: Schema.Scalars['String'];
+}>;
+
+
+export type IcdQueryQuery = (
+  { __typename?: 'Query' }
+  & { icd: (
+    { __typename?: 'IcdLinearizationEntity' }
+    & Icd_IcdLinearizationEntity_Fragment
+  ) }
 );
 
 export type PatientQueryQueryVariables = Schema.Exact<{
@@ -287,7 +296,7 @@ export type PatientQueryQuery = (
   { __typename?: 'Query' }
   & { patients: Array<(
     { __typename?: 'Patient' }
-    & PatientFragmentFragment
+    & PatientFragment
   )> }
 );
 
@@ -303,7 +312,7 @@ export type PatientsQueryQuery = (
   { __typename?: 'Query' }
   & { patients: Array<(
     { __typename?: 'Patient' }
-    & PatientsFragmentFragment
+    & PatientsFragment
   )> }
 );
 
@@ -316,7 +325,7 @@ export type UserQueryQuery = (
   { __typename?: 'Query' }
   & { user: (
     { __typename?: 'User' }
-    & UserFragmentFragment
+    & UserFragment
   ) }
 );
 
@@ -329,7 +338,7 @@ export type UsersQueryQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
-    & UsersFragmentFragment
+    & UsersFragment
   )> }
 );
 
@@ -1230,33 +1239,34 @@ export type DirectiveResolvers<ContextType = any> = {
   requires?: RequiresDirectiveResolver<any, any, ContextType>;
 };
 
-export const PhoneFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'phoneFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Phone' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'type' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'number' } }] } }] } as unknown as DocumentNode<PhoneFragmentFragment, unknown>;
-export const EmailFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'emailFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Email' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'type' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'email' } }] } }] } as unknown as DocumentNode<EmailFragmentFragment, unknown>;
-export const ContactFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'contactFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'EmergencyContact' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'relationship' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'phones' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'phoneFragment' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'emails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'emailFragment' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'thumbnail' } }] } },...PhoneFragmentFragmentDoc.definitions,...EmailFragmentFragmentDoc.definitions] } as unknown as DocumentNode<ContactFragmentFragment, unknown>;
-export const DoctorsFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'doctorsFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Doctor' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'title' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'did' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'emails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'emailFragment' } }] } }] } },...EmailFragmentFragmentDoc.definitions] } as unknown as DocumentNode<DoctorsFragmentFragment, unknown>;
-export const AddressFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'addressFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Address' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'addressType' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'address' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'city' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'country' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'postalCode' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'province' } }] } }] } as unknown as DocumentNode<AddressFragmentFragment, unknown>;
-export const NamesFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'namesFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'NameInfo' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } }] } }] } as unknown as DocumentNode<NamesFragmentFragment, unknown>;
-export const UsersFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'usersFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'User' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'uid' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'isRegistered' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'group' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'name' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firebaseUserInfo' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'email' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'names' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'namesFragment' } }] } }] } },...NamesFragmentFragmentDoc.definitions] } as unknown as DocumentNode<UsersFragmentFragment, unknown>;
-export const PatientsFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'patientsFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Patient' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'pid' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'dateOfBirth' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'day' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'month' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'year' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'sex' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'gender' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'emails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'type' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'email' } }] } }] } }] } as unknown as DocumentNode<PatientsFragmentFragment, unknown>;
-export const DoctorFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'doctorFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Doctor' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctorsFragment' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'addresses' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'addressFragment' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'phones' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'phoneFragment' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'emails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'emailFragment' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'user' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'usersFragment' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'patients' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patientsFragment' } }] } }] } },...DoctorsFragmentFragmentDoc.definitions,...AddressFragmentFragmentDoc.definitions,...PhoneFragmentFragmentDoc.definitions,...EmailFragmentFragmentDoc.definitions,...UsersFragmentFragmentDoc.definitions,...PatientsFragmentFragmentDoc.definitions] } as unknown as DocumentNode<DoctorFragmentFragment, unknown>;
-export const FirebaseUsersFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'firebaseUsersFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'FirebaseInfo' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'email' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'uid' } }] } }] } as unknown as DocumentNode<FirebaseUsersFragmentFragment, unknown>;
-export const GroupFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'groupFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Group' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'gid' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'name' } }] } }] } as unknown as DocumentNode<GroupFragmentFragment, unknown>;
-export const IcdFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'icdFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'IcdReallySimpleEntity' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'title' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'code' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'description' } }] } }] } as unknown as DocumentNode<IcdFragmentFragment, unknown>;
-export const PatientFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'patientFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Patient' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patientsFragment' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'insuranceNumber' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'ethnicity' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'addresses' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'addressFragment' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'phones' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'phoneFragment' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'emails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'emailFragment' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'doctors' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctorsFragment' } }] } }] } },...PatientsFragmentFragmentDoc.definitions,...AddressFragmentFragmentDoc.definitions,...PhoneFragmentFragmentDoc.definitions,...EmailFragmentFragmentDoc.definitions,...DoctorsFragmentFragmentDoc.definitions] } as unknown as DocumentNode<PatientFragmentFragment, unknown>;
-export const UserFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'userFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'User' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'usersFragment' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'doctor' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctorsFragment' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'patient' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patientsFragment' } }] } }] } },...UsersFragmentFragmentDoc.definitions,...DoctorsFragmentFragmentDoc.definitions,...PatientsFragmentFragmentDoc.definitions] } as unknown as DocumentNode<UserFragmentFragment, unknown>;
-export const DoctorEditMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'doctorEditMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'doctor' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorEditInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'editDoctor' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'doctor' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'doctor' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctorFragment' } }] } }] } },...DoctorFragmentFragmentDoc.definitions] } as unknown as DocumentNode<DoctorEditMutationMutation, DoctorEditMutationMutationVariables>;
-export const DoctorMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'doctorMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'doctor' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'addDoctor' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'doctor' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'doctor' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctorFragment' } }] } }] } },...DoctorFragmentFragmentDoc.definitions] } as unknown as DocumentNode<DoctorMutationMutation, DoctorMutationMutationVariables>;
-export const PatientEditMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'patientEditMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patient' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientEditInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'updatePatient' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'patient' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patient' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patientFragment' } }] } }] } },...PatientFragmentFragmentDoc.definitions] } as unknown as DocumentNode<PatientEditMutationMutation, PatientEditMutationMutationVariables>;
-export const PatientMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'patientMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patient' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'addPatient' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'patient' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patient' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patientFragment' } }] } }] } },...PatientFragmentFragmentDoc.definitions] } as unknown as DocumentNode<PatientMutationMutation, PatientMutationMutationVariables>;
-export const UserEditMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'userEditMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'user' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'UserEditInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'editUser' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'user' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'user' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'userFragment' } }] } }] } },...UserFragmentFragmentDoc.definitions] } as unknown as DocumentNode<UserEditMutationMutation, UserEditMutationMutationVariables>;
-export const UserMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'userMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'user' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'UserInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'addUser' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'user' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'user' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'userFragment' } }] } }] } },...UserFragmentFragmentDoc.definitions] } as unknown as DocumentNode<UserMutationMutation, UserMutationMutationVariables>;
-export const DoctorQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'doctorQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'dids' } },'type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorIdInput' } } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'doctors' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'dids' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'dids' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctorFragment' } }] } }] } },...DoctorFragmentFragmentDoc.definitions] } as unknown as DocumentNode<DoctorQueryQuery, DoctorQueryQueryVariables>;
-export const DoctorsQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'doctorsQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'RangeInput' } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'dids' } },'type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorIdInput' } } } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'example' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorExampleInput' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'doctors' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'dids' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'dids' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'example' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'example' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctorsFragment' } }] } }] } },...DoctorsFragmentFragmentDoc.definitions] } as unknown as DocumentNode<DoctorsQueryQuery, DoctorsQueryQueryVariables>;
-export const GroupsQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'groupsQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'gids' } },'type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'GroupIdInput' } } } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'RangeInput' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'groups' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'gids' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'gids' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'groupFragment' } }] } }] } },...GroupFragmentFragmentDoc.definitions] } as unknown as DocumentNode<GroupsQueryQuery, GroupsQueryQueryVariables>;
-export const PatientQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'patientQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'pids' } },'type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientIdInput' } } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'patients' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'pids' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'pids' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patientFragment' } }] } }] } },...PatientFragmentFragmentDoc.definitions] } as unknown as DocumentNode<PatientQueryQuery, PatientQueryQueryVariables>;
-export const PatientsQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'patientsQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'RangeInput' } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'pids' } },'type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientIdInput' } } } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'sortedBy' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'SortableField' } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'example' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientExampleInput' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'patients' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'sortedBy' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'sortedBy' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'pids' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'pids' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'example' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'example' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patientsFragment' } }] } }] } },...PatientsFragmentFragmentDoc.definitions] } as unknown as DocumentNode<PatientsQueryQuery, PatientsQueryQueryVariables>;
-export const UserQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'userQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'uid' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'ID' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'user' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'uid' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'uid' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'userFragment' } }] } }] } },...UserFragmentFragmentDoc.definitions] } as unknown as DocumentNode<UserQueryQuery, UserQueryQueryVariables>;
-export const UsersQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'usersQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'RangeInput' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'users' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'usersFragment' } }] } }] } },...UsersFragmentFragmentDoc.definitions] } as unknown as DocumentNode<UsersQueryQuery, UsersQueryQueryVariables>;
+export const PhoneFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'phone' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Phone' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'type' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'number' } }] } }] } as unknown as DocumentNode<PhoneFragment, unknown>;
+export const EmailFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'email' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Email' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'type' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'email' } }] } }] } as unknown as DocumentNode<EmailFragment, unknown>;
+export const ContactFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'contact' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'EmergencyContact' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'relationship' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'phones' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'phone' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'emails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'email' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'thumbnail' } }] } }] } as unknown as DocumentNode<ContactFragment, unknown>;
+export const DoctorsFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'doctors' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Doctor' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'title' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'did' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'emails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'email' } }] } }] } }] } as unknown as DocumentNode<DoctorsFragment, unknown>;
+export const AddressFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'address' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Address' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'addressType' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'address' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'city' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'country' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'postalCode' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'province' } }] } }] } as unknown as DocumentNode<AddressFragment, unknown>;
+export const NamesFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'names' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'NameInfo' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } }] } }] } as unknown as DocumentNode<NamesFragment, unknown>;
+export const UsersFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'users' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'User' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'uid' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'isRegistered' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'group' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'name' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firebaseUserInfo' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'email' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'names' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'names' } }] } }] } }] } as unknown as DocumentNode<UsersFragment, unknown>;
+export const PatientsFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'patients' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Patient' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'pid' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'dateOfBirth' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'day' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'month' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'year' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'sex' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'gender' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'emails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'email' } }] } }] } }] } as unknown as DocumentNode<PatientsFragment, unknown>;
+export const DoctorFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'doctor' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Doctor' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctors' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'addresses' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'address' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'phones' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'phone' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'user' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'users' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'patients' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patients' } }] } }] } }] } as unknown as DocumentNode<DoctorFragment, unknown>;
+export const FirebaseUsersFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'firebaseUsers' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'FirebaseInfo' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'email' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'uid' } }] } }] } as unknown as DocumentNode<FirebaseUsersFragment, unknown>;
+export const GroupFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'group' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Group' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'gid' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'name' } }] } }] } as unknown as DocumentNode<GroupFragment, unknown>;
+export const IcdFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'icd' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'IcdReallySimpleEntity' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'__typename' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'id' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'title' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'code' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'description' } }] } }] } as unknown as DocumentNode<IcdFragment, unknown>;
+export const PatientFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'patient' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Patient' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patients' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'insuranceNumber' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'ethnicity' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'addresses' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'address' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'phones' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'phone' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'emails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'email' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'doctors' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctors' } }] } }] } }] } as unknown as DocumentNode<PatientFragment, unknown>;
+export const UserFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'user' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'User' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'users' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'doctor' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctors' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'patient' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patients' } }] } }] } }] } as unknown as DocumentNode<UserFragment, unknown>;
+export const DoctorEditMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'doctorEditMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'doctor' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorEditInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'editDoctor' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'doctor' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'doctor' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctor' } }] } }] } },...DoctorFragmentDoc.definitions,...DoctorsFragmentDoc.definitions,...EmailFragmentDoc.definitions,...AddressFragmentDoc.definitions,...PhoneFragmentDoc.definitions,...UsersFragmentDoc.definitions,...NamesFragmentDoc.definitions,...PatientsFragmentDoc.definitions] } as unknown as DocumentNode<DoctorEditMutationMutation, DoctorEditMutationMutationVariables>;
+export const DoctorMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'doctorMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'doctor' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'addDoctor' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'doctor' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'doctor' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctor' } }] } }] } },...DoctorFragmentDoc.definitions,...DoctorsFragmentDoc.definitions,...EmailFragmentDoc.definitions,...AddressFragmentDoc.definitions,...PhoneFragmentDoc.definitions,...UsersFragmentDoc.definitions,...NamesFragmentDoc.definitions,...PatientsFragmentDoc.definitions] } as unknown as DocumentNode<DoctorMutationMutation, DoctorMutationMutationVariables>;
+export const PatientEditMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'patientEditMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patient' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientEditInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'updatePatient' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'patient' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patient' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patient' } }] } }] } },...PatientFragmentDoc.definitions,...PatientsFragmentDoc.definitions,...EmailFragmentDoc.definitions,...AddressFragmentDoc.definitions,...PhoneFragmentDoc.definitions,...DoctorsFragmentDoc.definitions] } as unknown as DocumentNode<PatientEditMutationMutation, PatientEditMutationMutationVariables>;
+export const PatientMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'patientMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patient' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'addPatient' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'patient' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patient' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patient' } }] } }] } },...PatientFragmentDoc.definitions,...PatientsFragmentDoc.definitions,...EmailFragmentDoc.definitions,...AddressFragmentDoc.definitions,...PhoneFragmentDoc.definitions,...DoctorsFragmentDoc.definitions] } as unknown as DocumentNode<PatientMutationMutation, PatientMutationMutationVariables>;
+export const UserEditMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'userEditMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'user' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'UserEditInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'editUser' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'user' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'user' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'user' } }] } }] } },...UserFragmentDoc.definitions,...UsersFragmentDoc.definitions,...NamesFragmentDoc.definitions,...DoctorsFragmentDoc.definitions,...EmailFragmentDoc.definitions,...PatientsFragmentDoc.definitions] } as unknown as DocumentNode<UserEditMutationMutation, UserEditMutationMutationVariables>;
+export const UserMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'userMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'user' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'UserInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'addUser' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'user' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'user' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'user' } }] } }] } },...UserFragmentDoc.definitions,...UsersFragmentDoc.definitions,...NamesFragmentDoc.definitions,...DoctorsFragmentDoc.definitions,...EmailFragmentDoc.definitions,...PatientsFragmentDoc.definitions] } as unknown as DocumentNode<UserMutationMutation, UserMutationMutationVariables>;
+export const DoctorQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'doctorQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'dids' } },'type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorIdInput' } } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'doctors' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'dids' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'dids' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctor' } }] } }] } },...DoctorFragmentDoc.definitions,...DoctorsFragmentDoc.definitions,...EmailFragmentDoc.definitions,...AddressFragmentDoc.definitions,...PhoneFragmentDoc.definitions,...UsersFragmentDoc.definitions,...NamesFragmentDoc.definitions,...PatientsFragmentDoc.definitions] } as unknown as DocumentNode<DoctorQueryQuery, DoctorQueryQueryVariables>;
+export const DoctorsQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'doctorsQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'RangeInput' } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'dids' } },'type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorIdInput' } } } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'example' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorExampleInput' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'doctors' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'dids' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'dids' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'example' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'example' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctors' } }] } }] } },...DoctorsFragmentDoc.definitions,...EmailFragmentDoc.definitions] } as unknown as DocumentNode<DoctorsQueryQuery, DoctorsQueryQueryVariables>;
+export const GroupsQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'groupsQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'gids' } },'type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'GroupIdInput' } } } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'RangeInput' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'groups' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'gids' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'gids' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'group' } }] } }] } },...GroupFragmentDoc.definitions] } as unknown as DocumentNode<GroupsQueryQuery, GroupsQueryQueryVariables>;
+export const IcdQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'icdQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'icdCode' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'String' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'icd' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'icdCode' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'icdCode' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'icd' } }] } }] } },...IcdFragmentDoc.definitions] } as unknown as DocumentNode<IcdQueryQuery, IcdQueryQueryVariables>;
+export const PatientQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'patientQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'pids' } },'type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientIdInput' } } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'patients' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'pids' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'pids' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patient' } }] } }] } },...PatientFragmentDoc.definitions,...PatientsFragmentDoc.definitions,...EmailFragmentDoc.definitions,...AddressFragmentDoc.definitions,...PhoneFragmentDoc.definitions,...DoctorsFragmentDoc.definitions] } as unknown as DocumentNode<PatientQueryQuery, PatientQueryQueryVariables>;
+export const PatientsQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'patientsQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'RangeInput' } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'pids' } },'type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientIdInput' } } } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'sortedBy' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'SortableField' } } },{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'example' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientExampleInput' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'patients' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'sortedBy' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'sortedBy' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'pids' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'pids' } } },{ 'kind':'Argument','name':{ 'kind':'Name','value':'example' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'example' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patients' } }] } }] } },...PatientsFragmentDoc.definitions,...EmailFragmentDoc.definitions] } as unknown as DocumentNode<PatientsQueryQuery, PatientsQueryQueryVariables>;
+export const UserQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'userQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'uid' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'ID' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'user' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'uid' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'uid' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'user' } }] } }] } },...UserFragmentDoc.definitions,...UsersFragmentDoc.definitions,...NamesFragmentDoc.definitions,...DoctorsFragmentDoc.definitions,...EmailFragmentDoc.definitions,...PatientsFragmentDoc.definitions] } as unknown as DocumentNode<UserQueryQuery, UserQueryQueryVariables>;
+export const UsersQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'usersQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'RangeInput' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'users' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'users' } }] } }] } },...UsersFragmentDoc.definitions,...NamesFragmentDoc.definitions] } as unknown as DocumentNode<UsersQueryQuery, UsersQueryQueryVariables>;
 export type DoctorEditMutationMutationStore = OperationStore<DoctorEditMutationMutation, DoctorEditMutationMutationVariables>;
 export type DoctorMutationMutationStore = OperationStore<DoctorMutationMutation, DoctorMutationMutationVariables>;
 export type PatientEditMutationMutationStore = OperationStore<PatientEditMutationMutation, PatientEditMutationMutationVariables>;
@@ -1266,6 +1276,7 @@ export type UserMutationMutationStore = OperationStore<UserMutationMutation, Use
 export type DoctorQueryQueryStore = OperationStore<DoctorQueryQuery, DoctorQueryQueryVariables>;
 export type DoctorsQueryQueryStore = OperationStore<DoctorsQueryQuery, DoctorsQueryQueryVariables>;
 export type GroupsQueryQueryStore = OperationStore<GroupsQueryQuery, GroupsQueryQueryVariables>;
+export type IcdQueryQueryStore = OperationStore<IcdQueryQuery, IcdQueryQueryVariables>;
 export type PatientQueryQueryStore = OperationStore<PatientQueryQuery, PatientQueryQueryVariables>;
 export type PatientsQueryQueryStore = OperationStore<PatientsQueryQuery, PatientsQueryQueryVariables>;
 export type UserQueryQueryStore = OperationStore<UserQueryQuery, UserQueryQueryVariables>;

@@ -1,16 +1,17 @@
 #import "./phoneFragment.graphql"
 #import "./emailFragment.graphql"
 
-fragment contactFragment on EmergencyContact {
+fragment contact on EmergencyContact {
+  __typename
   firstName
   middleName
   lastName
   relationship
   phones {
-    ...phoneFragment
+    ...phone
   }
   emails {
-    ...emailFragment
+    ...email
   }
   thumbnail
 }

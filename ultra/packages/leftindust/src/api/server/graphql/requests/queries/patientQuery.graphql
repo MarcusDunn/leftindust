@@ -4,6 +4,6 @@ query patientQuery(
     $pids: [PatientIdInput!],
 ) {
     patients(pids: $pids) {
-        ...patientFragment
+        ...patient
     }
 }

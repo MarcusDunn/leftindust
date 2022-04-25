@@ -5,13 +5,12 @@
     defaultRangeInput,
     PatientsQueryDocument,
     SortableField,
-    type Patient,
-    type PatientsFragmentFragment,
+    type PatientsFragment,
   } from '@/api/server';
   import { clientsSelected } from '@/features/Clients/store';
 
   import { _ } from '@/language';
-  import { operationStore } from '@urql/svelte';
+  import { operationStore, query } from '@urql/svelte';
   import { account } from '@/features/Account/store';
   import { updateRecents } from '@/features/Recents';
 
@@ -27,8 +26,8 @@
   
   export let f7router: Router.Router;
 
-  let patients: PatientsFragmentFragment[];
-  let recents: PatientsFragmentFragment[];
+  let patients: PatientsFragment[];
+  let recents: PatientsFragment[];
 
   const request = operationStore(PatientsQueryDocument, {
     range: defaultRangeInput,
@@ -53,6 +52,9 @@
 
   $: patients = $request.data?.patients ?? [];
   $: recents = $recentsRequest.data?.patients ?? [];
+
+  query(request);
+  query(recentsRequest);
 
 </script>
 

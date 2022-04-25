@@ -1,4 +1,5 @@
-fragment firebaseUsersFragment on FirebaseInfo {
+fragment firebaseUsers on FirebaseInfo {
+  __typename
   email
   uid
 }

@@ -1,4 +1,5 @@
-fragment namesFragment on NameInfo {
+fragment names on NameInfo {
+    __typename
     firstName
     middleName
     lastName

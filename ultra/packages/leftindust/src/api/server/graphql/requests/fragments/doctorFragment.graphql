@@ -3,29 +3,19 @@
 #import "./patientsFragment.graphql"
 #import "./addressFragment.graphql"
 #import "./phoneFragment.graphql"
-#import "./emailFragment.graphql"
 
-fragment doctorFragment on Doctor {
-  __typename
-  ...doctorsFragment
-  # Make this into a fragment once server-side is updated
-  firstName
-  middleName
-  lastName
-
+fragment doctor on Doctor {
+  ...doctors
   addresses {
-      ...addressFragment
+      ...address
   }
   phones {
-      ...phoneFragment
-  }
-  emails {
-      ...emailFragment
+      ...phone
   }
   user {
-      ...usersFragment
+      ...users
   }
   patients {
-      ...patientsFragment
+      ...patients
   }
 }

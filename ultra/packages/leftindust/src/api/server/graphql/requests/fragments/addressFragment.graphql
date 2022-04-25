@@ -1,4 +1,5 @@
-fragment addressFragment on Address {
+fragment address on Address {
+  __typename
   addressType
   address
   city

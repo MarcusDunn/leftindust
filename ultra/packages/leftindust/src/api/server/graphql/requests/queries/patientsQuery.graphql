@@ -7,6 +7,6 @@ query patientsQuery(
     $example: PatientExampleInput,
 ) {
     patients(range: $range, sortedBy: $sortedBy, pids: $pids, example: $example) {
-        ...patientsFragment
+        ...patients
     }
 }

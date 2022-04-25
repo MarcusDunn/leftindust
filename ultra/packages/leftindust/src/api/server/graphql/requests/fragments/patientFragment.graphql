@@ -4,20 +4,20 @@
 #import "./phoneFragment.graphql"
 #import "./emailFragment.graphql"
 
-fragment patientFragment on Patient {
-  ...patientsFragment
+fragment patient on Patient {
+  ...patients
   insuranceNumber
   ethnicity
   addresses {
-      ...addressFragment
+      ...address
   }
   phones {
-      ...phoneFragment
+      ...phone
   }
   emails {
-      ...emailFragment
+      ...email
   }
   doctors {
-      ...doctorsFragment
+      ...doctors
   }
 }

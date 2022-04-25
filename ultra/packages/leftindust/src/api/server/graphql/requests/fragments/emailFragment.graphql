@@ -1,4 +1,5 @@
-fragment emailFragment on Email {
+fragment email on Email {
+  __typename
   type
   email
 }

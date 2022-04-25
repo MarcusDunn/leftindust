@@ -18,6 +18,8 @@
     "start:ultra": "lerna run start --stream --scope @ultra/leftindust",
     "build:ultra": "lerna run build --stream --scope @ultra/leftindust",
     "check:ultra": "lerna run check --stream --scope @ultra/leftindust",
+    "check:warnings:ultra": "lerna run check:warnings --stream --scope @ultra/leftindust",
+
     "test:ultra": "lerna run test --stream --scope @ultra/leftindust",
     "test:watch:ultra": "lerna run test:watch --stream --scope @ultra/leftindust",
     

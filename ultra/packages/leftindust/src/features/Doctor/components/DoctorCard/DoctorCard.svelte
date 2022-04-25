@@ -20,14 +20,14 @@
   import Quicklook from '@/features/View/components/Quicklook/Quicklook.svelte';
   import Boxed from '@/features/UI/components/Boxed/Boxed.svelte';
   import PinButton from '@/features/Pin/components/PinButton/PinButton.svelte';
-  import { type DoctorFragmentFragment, DoctorsQueryDocument } from '@/api/server';
+  import { type DoctorsFragment, DoctorsQueryDocument } from '@/api/server';
   import { operationStore, query } from '@urql/svelte';
 
   const { data, dragger, reference, attachments, quicklook } = $$props as CardProps;
 
   let quicklookPopup: Popup.Popup;
 
-  let doctors: [DoctorFragmentFragment];
+  let doctor: DoctorsFragment;
 
   const request = operationStore(DoctorsQueryDocument, {
     dids: [{ id: data.id }],
@@ -35,7 +35,7 @@
 
   query(request);
 
-  $: doctor = doctors[0];
+  $: if ($request.data?.doctors[0]) doctor = $request.data?.doctors[0];
 
   const url = `/doctor/${JSON.stringify(data)}/`;
 

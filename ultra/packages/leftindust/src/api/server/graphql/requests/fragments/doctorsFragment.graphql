@@ -1,11 +1,16 @@
 #import "./emailFragment.graphql"
 
-fragment doctorsFragment on Doctor {
+fragment doctors on Doctor {
+    __typename
+    # Make this into a fragment once server-side is updated
+    firstName
+    middleName
+    lastName
     title
     did {
         id
     }
     emails {
-        ...emailFragment
+        ...email
     }
 }

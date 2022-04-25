@@ -2,12 +2,12 @@
 #import "./doctorsFragment.graphql"
 #import "./patientsFragment.graphql"
 
-fragment userFragment on User {
-  ...usersFragment
+fragment user on User {
+  ...users
   doctor {
-      ...doctorsFragment
+      ...doctors
   }
   patient {
-      ...patientsFragment
+      ...patients
   }
 }

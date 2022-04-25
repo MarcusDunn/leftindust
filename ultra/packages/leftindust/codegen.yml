@@ -36,6 +36,7 @@ generates:
     config:
       maybeValue: T | undefined
       useTypeImports: true
+      dedupeFragments: true
       avoidOptionals:
         field: true 
         object: false

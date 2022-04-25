@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _ } from '@/language';
-  import type { Address, Email, Phone } from '@/api/server/schema/leftindust.schema';
+  import type { Address, Email, Phone } from '@/api/server';
 
   import { Block } from 'framework7-svelte';
 

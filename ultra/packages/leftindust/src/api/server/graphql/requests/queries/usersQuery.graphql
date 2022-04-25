@@ -2,6 +2,6 @@
 
 query usersQuery($range: RangeInput) {
    users(range: $range) {
-      ...usersFragment
+      ...users
    }
 }

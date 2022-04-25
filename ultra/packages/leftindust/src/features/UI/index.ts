@@ -1,5 +1,3 @@
-import type { Writable } from 'svelte/store';
-
 export type Color = 'primary' | 'red' | 'green' | 'blue' | 'pink' | 'yellow' | 'orange' | 'purple'
   | 'deeppurple' | 'lightblue' | 'teal' | 'lime' | 'deeporange' | 'gray' | 'white' | 'black';
 

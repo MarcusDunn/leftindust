@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
-  import { PatientQueryDocument, type Data, type PatientFragmentFragment } from '@/api/server';
+  import { PatientQueryDocument, type Data, type PatientFragment } from '@/api/server';
   
   import { account } from '../Account/store';
   import { PatientTab } from '.';
@@ -25,13 +25,13 @@
   import DescriptivePlaceholder
     from '../App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
   import SpecificGrid from '../Widgets/components/Grid/SpecificGrid.svelte';
-  import { operationStore } from '@urql/svelte';
+  import { operationStore, query } from '@urql/svelte';
     
   export let f7router: Router.Router;
   export let f7route: Router.Route;
   export let quicklook = false;
 
-  let patient: PatientFragmentFragment | undefined;
+  let patient: PatientFragment | undefined;
 
   let layout: Layout = $account.database.settings.options.layout || Layout.Bundled;
   let tab: PatientTab = PatientTab.Documents;
@@ -42,7 +42,9 @@
     pids: [{ id: data.id }],
   });
 
-  $: patient = request.data?.patients[0];
+  $: patient = $request.data?.patients[0];
+
+  query(request);
 </script>
 
 <Page

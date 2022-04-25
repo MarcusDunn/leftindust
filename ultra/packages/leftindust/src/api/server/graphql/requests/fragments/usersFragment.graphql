@@ -1,6 +1,7 @@
 #import "./namesFragment.graphql"
 
-fragment usersFragment on User {
+fragment users on User {
+    __typename
     uid
     isRegistered
     group {
@@ -10,6 +11,6 @@ fragment usersFragment on User {
         email
     }
     names {
-        ...namesFragment
+        ...names
     }
 }

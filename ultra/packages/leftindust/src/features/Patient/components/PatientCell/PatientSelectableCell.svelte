@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Writable } from 'svelte/types/runtime/store';
 
-  import type { Data, PatientsFragmentFragment } from '@/api/server';
+  import type { Data, PatientsFragment } from '@/api/server';
 
   import { createEventDispatcher, tick } from 'svelte';
 
@@ -14,8 +14,8 @@
 
   const dispatch = createEventDispatcher();
   
-  export let patient: PatientsFragmentFragment;
-  export let patients: PatientsFragmentFragment[];
+  export let patient: PatientsFragment;
+  export let patients: PatientsFragment[];
   export let selected: Writable<Data[]>;
 
   export let multiselect = true;
