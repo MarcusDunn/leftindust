@@ -6,6 +6,7 @@ import com.google.firebase.auth.UserRecord
 import com.leftindust.mockingbird.auth.Authorizer
 import com.leftindust.mockingbird.auth.MediqToken
 import com.leftindust.mockingbird.extensions.Authorization
+import com.leftindust.mockingbird.user.UserFetcher
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

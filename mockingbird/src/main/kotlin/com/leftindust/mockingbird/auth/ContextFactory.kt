@@ -2,8 +2,8 @@ package com.leftindust.mockingbird.auth
 
 
 import com.expediagroup.graphql.server.spring.execution.DefaultSpringGraphQLContextFactory
-import com.leftindust.mockingbird.auth.impl.VerifiedFirebaseToken
 import graphql.schema.DataFetchingEnvironment
+import org.apache.logging.log4j.LogManager
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -19,16 +19,25 @@ val DataFetchingEnvironment.authToken: MediqToken
  */
 @Component
 class ContextFactory : DefaultSpringGraphQLContextFactory() {
-    override suspend fun generateContextMap(request: ServerRequest): Map<*, Any> =
-        super.generateContextMap(request) + if (request.method() == HttpMethod.OPTIONS) {
-            emptyMap()
+    private val logger = LogManager.getLogger()
+
+    companion object {
+        private val bearerTokenRegex = Regex("""Bearer: (.*)""")
+    }
+
+    override suspend fun generateContextMap(request: ServerRequest): Map<*, Any> {
+        val contextMap = super.generateContextMap(request)
+        val authContextMap = if (request.method() == HttpMethod.OPTIONS) {
+            return contextMap
         } else {
-            mapOf(
-                MediqToken.CONTEXT_MAP_KEY to VerifiedFirebaseToken(
-                    request.headers().firstHeader("mediq-auth-token")
-                )
-            )
-        }
+            val authorization = request.headers().firstHeader("Authorization")
+                ?: return contextMap
+            val (token) = bearerTokenRegex.matchEntire(authorization)?.destructured
+                ?: return contextMap
+            mapOf(MediqToken.CONTEXT_MAP_KEY to VerifiedFirebaseToken(token))
+        }.also { logger.info("request $request has context map $it") }
+        return contextMap + authContextMap
+    }
 }
 
 

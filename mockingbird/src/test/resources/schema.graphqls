@@ -3,11 +3,32 @@ schema {
   mutation: Mutation
 }
 
+"Marks the field, argument, input field or enum value as deprecated"
+directive @deprecated(
+  "The reason for the deprecation"
+  reason: String = "No longer supported"
+) on FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM_VALUE | INPUT_FIELD_DEFINITION
+
+"Marks target object as extending part of the federated schema"
+directive @extends on OBJECT | INTERFACE
+
+"Marks target field as external meaning it will be resolved by federated schema"
+directive @external on FIELD_DEFINITION
+
 "Directs the executor to include this field or fragment only when the `if` argument is true"
 directive @include(
   "Included when true."
   if: Boolean!
 ) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"Space separated list of primary keys needed to access federated object"
+directive @key(fields: _FieldSet!) repeatable on OBJECT | INTERFACE
+
+"Specifies the base type field set that will be selectable by the gateway"
+directive @provides(fields: _FieldSet!) on FIELD_DEFINITION
+
+"Specifies required input field set from the base type for a resolver"
+directive @requires(fields: _FieldSet!) on FIELD_DEFINITION
 
 "Directs the executor to skip this field or fragment when the `if`'argument is true."
 directive @skip(
@@ -15,32 +36,11 @@ directive @skip(
   if: Boolean!
 ) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
 
-"Marks the field, argument, input field or enum value as deprecated"
-directive @deprecated(
-  "The reason for the deprecation"
-  reason: String = "No longer supported"
-) on FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM_VALUE | INPUT_FIELD_DEFINITION
-
 "Exposes a URL that specifies the behaviour of this scalar."
 directive @specifiedBy(
   "The URL that specifies the behaviour of this scalar."
   url: String!
 ) on SCALAR
-
-"Marks target field as external meaning it will be resolved by federated schema"
-directive @external on FIELD_DEFINITION
-
-"Specifies required input field set from the base type for a resolver"
-directive @requires(fields: _FieldSet!) on FIELD_DEFINITION
-
-"Specifies the base type field set that will be selectable by the gateway"
-directive @provides(fields: _FieldSet!) on FIELD_DEFINITION
-
-"Space separated list of primary keys needed to access federated object"
-directive @key(fields: _FieldSet!) repeatable on OBJECT | INTERFACE
-
-"Marks target object as extending part of the federated schema"
-directive @extends on OBJECT | INTERFACE
 
 interface GraphQLProvince {
   asShortStrings: [String!]!
@@ -363,7 +363,7 @@ type Mutation {
   """
   addPatient(patient: PatientInput!): Patient!
   addPermission(groupId: GroupIdInput, permission: GraphQLPermissionInput!, userUid: String): Permission!
-  addRecord(record: GraphQLRecordInput!): Record!
+  addRecord(record: PatientRecordInput!): PatientRecord!
   addSurveyTemplate(surveyTemplate: FormTemplateInput!): GraphQLFormTemplate!
   addUser(user: UserInput!): User!
   addVisit(visit: VisitInput!): Visit!
@@ -414,6 +414,18 @@ type PatientId {
   id: UUID!
 }
 
+type PatientRecord {
+  creationDate: UtcTime!
+  jsonBlob: String!
+  patient: Patient!
+  rid: PatientRecordId!
+  type: RecordType!
+}
+
+type PatientRecordId {
+  id: UUID!
+}
+
 type Permission {
   columnName: String
   endTime: UtcTime
@@ -444,26 +456,18 @@ type Query @extends {
   convert(json: String!, target: ConvertTarget!): String!
   country(country: Country!): GraphQLProvince!
   "only pass one variable"
-  doctors(dids: [DoctorIdInput!], example: DoctorExampleInput, pid: PatientIdInput, range: RangeInput): [Doctor!]!
+  doctors(dids: [DoctorIdInput!], example: DoctorExampleInput, pid: PatientIdInput, range: RangeInput): [Doctor!]! @deprecated(reason : "removed due to lack of query verification, replace with doctorsByExample")
+  doctorsByExample(example: DoctorExampleInput!): [Doctor!]!
+  doctorsById(dids: [DoctorIdInput!]!): [Doctor!]!
+  doctorsByPatientId(pid: PatientIdInput!): [Doctor!]!
+  doctorsByRange(range: RangeInput!): [Doctor!]!
   eventsByDoctor(doctors: [DoctorIdInput!]!): [Event!]!
-  """
-
-  Gets a list of events shared by the doctors and patients. ie. all events where both the doctor and the patient attend.
-
-  """
+  "Gets a list of events shared by the doctors and patients. ie. all events where both the doctor and the patient attend."
   eventsByDoctorsAndPatients(doctors: [DoctorIdInput!]!, patients: [PatientIdInput!]!): [Event!]!
-  """
-
-  Gets a list of events by a list of thier ID's. Will error if any of the ID's us not found.
-
-  """
+  "Gets a list of events by a list of thier ID's. Will error if any of the ID's us not found."
   eventsByIds(events: [EventIdInput!]!): [Event!]!
   eventsByPatient(patients: [PatientIdInput!]!): [Event!]!
-  """
-
-  Gets a list of events by a range of time that returned the events will occur within.
-
-  """
+  "Gets a list of events by a range of time that returned the events will occur within."
   eventsByTimeRange(range: TimeRangeInput!): [Event!]!
   """
   gets all users from firebase, you can
@@ -473,7 +477,9 @@ type Query @extends {
   """
   firebaseUsers(filterRegistered: Boolean, range: RangeInput): [FirebaseInfo!]!
   getContactsByPatient(pid: PatientIdInput!): [Person!]!
-  groups(gids: [GroupIdInput!], range: RangeInput): [Group!]!
+  groups(gids: [GroupIdInput!], range: RangeInput): [Group!]! @deprecated(reason : "removed due to lack of query verification, replace with groupsByRange")
+  groupsById(gids: [GroupIdInput!]!): [Group!]!
+  groupsByRange(range: RangeInput!): [Group!]!
   icd(icdCode: String!): IcdLinearizationEntity!
   icds(icdCodes: [String!]!): [IcdLinearizationEntity!]!
   mockingbirdIsAlive: Boolean!
@@ -481,7 +487,7 @@ type Query @extends {
   patientsByPid(pids: [PatientIdInput!]!, sortedBy: SortableField): [Patient!]!
   patientsByRange(range: RangeInput!, sortedBy: SortableField): [Patient!]!
   permissions(uid: String!): Permissions!
-  records(pid: PatientIdInput, rids: [RecordIdInput!]): [Record!]!
+  records(pid: PatientIdInput, rids: [PatientRecordIdInput!]): [PatientRecord!]! @deprecated(reason : "removed due to lack of query verification, replace with recordByPatient")
   searchIcd(
     flatResults: Boolean,
     flexiSearch: Boolean,
@@ -490,24 +496,18 @@ type Query @extends {
     query: String!
   ): IcdSearchResult!
   "fetch survey templates by one getting a range or the survey id"
-  surveys(range: RangeInput, surveys: [FormTemplateIdInput!]): [GraphQLFormTemplate!]!
+  surveys(range: RangeInput, surveys: [FormTemplateIdInput!]): [GraphQLFormTemplate!]! @deprecated(reason : "removed due to lack of query verification, replace with surveysByRange")
   "attempts to find the mediq-registered user by uid, if the user does not exist in the DB"
   user(uid: ID!): User!
   "returns a list of users, only one argument should be specified"
-  users(range: RangeInput, uniqueIds: [ID!]): [User!]!
-  visits(did: DoctorIdInput, pid: PatientIdInput, vids: [VisitIdInput!]): [Visit!]!
-}
-
-type Record {
-  creationDate: UtcTime!
-  jsonBlob: String!
-  patient: Patient!
-  rid: RecordId!
-  type: RecordType!
-}
-
-type RecordId {
-  id: UUID!
+  users(range: RangeInput, uniqueIds: [ID!]): [User!]! @deprecated(reason : "removed due to lack of query verification, replace with usersById")
+  usersById(uniqueIds: [ID!]!): [User!]!
+  usersByRange(range: RangeInput!): [User!]!
+  visitByPatientOrDoctor(did: DoctorIdInput!, pid: PatientIdInput!): [Visit!]!
+  visits(did: DoctorIdInput, pid: PatientIdInput, vids: [VisitIdInput!]): [Visit!]! @deprecated(reason : "removed due to lack of query verification, replace with visitsById")
+  visitsByDoctor(did: DoctorIdInput!): [Visit!]!
+  visitsById(vids: [VisitIdInput!]!): [Visit!]!
+  visitsByPatient(pid: PatientIdInput!): [Visit!]!
 }
 
 type Recurrence {
@@ -959,12 +959,6 @@ input GraphQLPermissionInput {
   startTime: UtcTimeInput
 }
 
-input GraphQLRecordInput {
-  jsonBlob: String!
-  patient: PatientIdInput!
-  recordType: RecordType!
-}
-
 input GraphQLVisitEditInput {
   "the new description, explicitly set to null to clear"
   description: String
@@ -1083,6 +1077,16 @@ input PatientInput {
   thumbnail: String
 }
 
+input PatientRecordIdInput {
+  id: UUID!
+}
+
+input PatientRecordInput {
+  jsonBlob: String!
+  patient: PatientIdInput!
+  recordType: RecordType!
+}
+
 input PhoneInput {
   number: String!
   type: PhoneType!
@@ -1091,10 +1095,6 @@ input PhoneInput {
 input RangeInput {
   from: Int!
   to: Int!
-}
-
-input RecordIdInput {
-  id: UUID!
 }
 
 """

@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.auth
 
-import com.leftindust.mockingbird.auth.impl.VerifiedFirebaseToken
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -17,7 +16,7 @@ internal class ContextFactoryTest {
         val mockkRequest = mockk<ServerRequest> {
             every { method() } returns HttpMethod.POST
             every { headers() } returns mockk(relaxed = true) {
-                every { firstHeader("mediq-auth-token") } returns "123456"
+                every { firstHeader("Authorization") } returns "Bearer: 123456"
             }
         }
 
@@ -27,5 +26,22 @@ internal class ContextFactoryTest {
             )[MediqToken.CONTEXT_MAP_KEY]
         }
         assertEquals(VerifiedFirebaseToken("123456"), actual)
+    }
+
+    @Test
+    fun generateContextWithNoToken() {
+        val mockkRequest = mockk<ServerRequest> {
+            every { method() } returns HttpMethod.POST
+            every { headers() } returns mockk(relaxed = true) {
+                every { firstHeader("Authorization") } returns null
+            }
+        }
+
+        val actual = runBlocking {
+            contextFactory.generateContextMap(
+                request = mockkRequest
+            )[MediqToken.CONTEXT_MAP_KEY]
+        }
+        assertEquals(null, actual)
     }
 }

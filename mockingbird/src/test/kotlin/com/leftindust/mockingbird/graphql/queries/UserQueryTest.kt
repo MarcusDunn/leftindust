@@ -2,11 +2,12 @@ package com.leftindust.mockingbird.graphql.queries
 
 import com.expediagroup.graphql.generator.scalars.ID
 import com.google.firebase.auth.ExportedUserRecord
-import com.leftindust.mockingbird.dao.UserDao
-import com.leftindust.mockingbird.dao.entity.MediqUser
-import com.leftindust.mockingbird.external.firebase.UserFetcher
-import com.leftindust.mockingbird.graphql.types.GraphQLUser
+import com.leftindust.mockingbird.user.UserDao
+import com.leftindust.mockingbird.user.MediqUser
+import com.leftindust.mockingbird.user.UserFetcher
+import com.leftindust.mockingbird.user.GraphQLUser
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
+import com.leftindust.mockingbird.user.UserQuery
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk

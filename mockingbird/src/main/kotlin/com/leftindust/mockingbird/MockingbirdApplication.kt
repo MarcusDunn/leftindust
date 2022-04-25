@@ -1,8 +1,8 @@
 package com.leftindust.mockingbird
 
 
-import com.leftindust.mockingbird.external.icd.IcdApiClient
-import com.leftindust.mockingbird.graphql.hooks.CustomSchemaGeneratorHooks
+import com.leftindust.mockingbird.graphql.CustomSchemaGeneratorHooks
+import com.leftindust.mockingbird.icd.IcdApiClient
 import kotlin.annotation.AnnotationRetention.SOURCE
 import kotlin.annotation.AnnotationTarget.FUNCTION
 import org.springframework.boot.autoconfigure.SpringBootApplication

@@ -1,5 +1,8 @@
 package com.leftindust.mockingbird.graphql.types.input
 
+import com.leftindust.mockingbird.doctor.GraphQLDoctorInput
+import com.leftindust.mockingbird.person.GraphQLNameInfoInput
+import com.leftindust.mockingbird.user.GraphQLUserInput
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

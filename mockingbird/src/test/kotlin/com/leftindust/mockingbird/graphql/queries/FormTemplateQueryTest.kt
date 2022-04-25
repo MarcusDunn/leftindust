@@ -1,9 +1,10 @@
 package com.leftindust.mockingbird.graphql.queries
 
 import com.expediagroup.graphql.generator.exceptions.GraphQLKotlinException
-import com.leftindust.mockingbird.dao.ReadFormDao
-import com.leftindust.mockingbird.dao.entity.Form
-import com.leftindust.mockingbird.graphql.types.GraphQLFormTemplate
+import com.leftindust.mockingbird.form.ReadFormDao
+import com.leftindust.mockingbird.form.Form
+import com.leftindust.mockingbird.form.FormTemplateQuery
+import com.leftindust.mockingbird.form.GraphQLFormTemplate
 import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every

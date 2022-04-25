@@ -1,8 +1,9 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.external.icd.IcdFetcher
-import com.leftindust.mockingbird.graphql.types.icd.GraphQLIcdLinearizationEntity
-import com.leftindust.mockingbird.graphql.types.icd.GraphQLIcdSearchResult
+import com.leftindust.mockingbird.icd.IcdFetcher
+import com.leftindust.mockingbird.icd.GraphQLIcdLinearizationEntity
+import com.leftindust.mockingbird.icd.GraphQLIcdSearchResult
+import com.leftindust.mockingbird.icd.IcdQuery
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.coEvery
 import io.mockk.every

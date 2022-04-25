@@ -1,14 +1,35 @@
 package com.leftindust.mockingbird.util
 
 import com.google.gson.JsonObject
-import com.leftindust.mockingbird.dao.entity.*
-import com.leftindust.mockingbird.dao.entity.enums.Ethnicity
-import com.leftindust.mockingbird.dao.entity.enums.RecordType
-import com.leftindust.mockingbird.dao.entity.enums.Relationship
-import com.leftindust.mockingbird.dao.entity.enums.Sex
+import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.country.CountryState
+import com.leftindust.mockingbird.address.GraphQLAddressInput
+import com.leftindust.mockingbird.address.GraphQLAddressType
+import com.leftindust.mockingbird.contact.GraphQLEmergencyContactInput
+import com.leftindust.mockingbird.country.GraphQLCanadianProvince
+import com.leftindust.mockingbird.country.GraphQLCountry
+import com.leftindust.mockingbird.email.GraphQLEmailInput
+import com.leftindust.mockingbird.email.GraphQLEmailType
+import com.leftindust.mockingbird.record.RecordType
+import com.leftindust.mockingbird.doctor.Doctor
+import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.event.Event
+import com.leftindust.mockingbird.event.GraphQLEventInput
 import com.leftindust.mockingbird.extensions.gqlID
+import com.leftindust.mockingbird.form.*
 import com.leftindust.mockingbird.graphql.types.*
 import com.leftindust.mockingbird.graphql.types.input.*
+import com.leftindust.mockingbird.group.MediqGroup
+import com.leftindust.mockingbird.patient.GraphQLPatient
+import com.leftindust.mockingbird.patient.GraphQLPatientInput
+import com.leftindust.mockingbird.patient.Patient
+import com.leftindust.mockingbird.person.*
+import com.leftindust.mockingbird.phone.GraphQLPhoneInput
+import com.leftindust.mockingbird.phone.GraphQLPhoneType
+import com.leftindust.mockingbird.phone.Phone
+import com.leftindust.mockingbird.record.GraphQLPatientRecordInput
+import com.leftindust.mockingbird.record.MediqRecord
+import com.leftindust.mockingbird.user.MediqUser
 import java.sql.Date
 import java.sql.Timestamp
 import java.time.Instant
@@ -200,8 +221,8 @@ object EntityStore {
         )
     }
 
-    fun graphQLRecordInput(testName: String): GraphQLRecordInput {
-        return GraphQLRecordInput(
+    fun graphQLPatientRecordInput(testName: String): GraphQLPatientRecordInput {
+        return GraphQLPatientRecordInput(
             patient = GraphQLPatient.ID(UUID.nameUUIDFromBytes("eb".toByteArray())),
             jsonBlob = "{testName: \"$testName\"}",
             recordType = RecordType.Blood

@@ -1,9 +1,10 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.dao.RecordDao
-import com.leftindust.mockingbird.dao.entity.MediqRecord
-import com.leftindust.mockingbird.graphql.types.GraphQLPatient
-import com.leftindust.mockingbird.graphql.types.GraphQLRecord
+import com.leftindust.mockingbird.record.RecordDao
+import com.leftindust.mockingbird.record.MediqRecord
+import com.leftindust.mockingbird.patient.GraphQLPatient
+import com.leftindust.mockingbird.record.GraphQLPatientRecord
+import com.leftindust.mockingbird.record.RecordQuery
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
@@ -22,17 +23,17 @@ internal class RecordQueryTest {
         val mockkRecord = mockk<MediqRecord>(relaxed = true) {
             every { id } returns recordID
         }
-        every { recordDao.getRecordByRecordId(GraphQLRecord.ID(recordID), any()) } returns mockkRecord
+        every { recordDao.getRecordByRecordId(GraphQLPatientRecord.ID(recordID), any()) } returns mockkRecord
 
         val recordQuery = RecordQuery(recordDao)
 
         val result = runBlocking {
             recordQuery.records(
-                rids = listOf(GraphQLRecord.ID(recordID)), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
+                rids = listOf(GraphQLPatientRecord.ID(recordID)), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
             )
         }
 
-        assertEquals(GraphQLRecord(mockkRecord), result.first())
+        assertEquals(GraphQLPatientRecord(mockkRecord), result.first())
     }
 
     @Test
@@ -50,6 +51,6 @@ internal class RecordQueryTest {
         val result =
             runBlocking { recordQuery.records(pid = GraphQLPatient.ID(patientID), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        assertEquals(listOf(GraphQLRecord(mockkRecord)), result)
+        assertEquals(listOf(GraphQLPatientRecord(mockkRecord)), result)
     }
 }

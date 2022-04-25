@@ -1,7 +1,6 @@
 graphql:
   packages:
-    - "com.leftindust.mockingbird.graphql"
-    - "java.util.UUID"
+    - "com.leftindust.mockingbird"
     - "java.util.UUID"
 spring:
   main:
@@ -10,9 +9,7 @@ spring:
     show-sql: true
   liquibase:
     change-log: classpath:dbchangelog.xml
-    enabled: true
   datasource:
-    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5432/mediq
     username: mediq
     password: mediq
