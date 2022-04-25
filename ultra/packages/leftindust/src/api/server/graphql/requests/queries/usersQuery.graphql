@@ -1,0 +1,7 @@
+#import "../fragments/usersFragment.graphql"
+
+query usersQuery($range: RangeInput) {
+   users(range: $range) {
+      ...users
+   }
+}

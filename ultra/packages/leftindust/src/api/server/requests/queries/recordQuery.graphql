@@ -1,9 +1,0 @@
-#import "../fragments/basicRecordFragment.graphql"
-
-query recordQuery(
-    $rid: RecordIdInput!,
-) {
-    getRecord(rid: $rid) {
-      ...basicRecordFragment
-    }
-}

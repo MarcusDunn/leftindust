@@ -4,7 +4,7 @@
 
   import { AppPopups, AppViews, AppRootRoutes } from '../../';
   import { getFirebaseUserDatabaseAndSignIn } from '@/features/Account';
-  import { auth, realtime } from '@/api/server';
+  import { auth, client, database } from '@/api/server';
   import { account, signInStatus } from '@/features/Account/store';
   
   import { onAuthStateChanged } from 'firebase/auth';
@@ -25,6 +25,7 @@
   import { observeWindowErrors } from '@/features/Errors';
   import { observeHistory } from '@/features/History';
   import Dragbar from '@/features/UI/components/Dragbar/Dragbar.svelte';
+  import { setClient } from '@urql/svelte';
   import { initAutoDarkTheme } from '@/features/UI';
 
   const { System } = getNativeAPI();
@@ -45,7 +46,7 @@
   });
 
   // Everytime user account information changes, update the firebase db
-  $: if ($account) void set(ref(realtime, `users/${$account.uid}`), $account.database);
+  $: if ($account) void set(ref(database, `users/${$account.uid}`), $account.database);
     
   f7ready(() => {
     observeWindowErrors();
@@ -55,6 +56,9 @@
   });
 
   let width = window.innerWidth;
+
+  setClient(client);
+  
 </script>
 
 <svelte:window bind:innerWidth={width} />

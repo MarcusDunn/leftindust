@@ -1,9 +1,7 @@
 <script lang="ts">
-  import type { PatientsQueryResult } from '@/api/server/requests/queries/index';
-  import type { BasicPatientFragment } from '@/api/server/requests/fragments';
   import type { Writable } from 'svelte/types/runtime/store';
 
-  import type { Data } from '@/api/server';
+  import type { Data, PatientsFragment } from '@/api/server';
 
   import { createEventDispatcher, tick } from 'svelte';
 
@@ -16,8 +14,8 @@
 
   const dispatch = createEventDispatcher();
   
-  export let patient: BasicPatientFragment;
-  export let patients: PatientsQueryResult['patients'];
+  export let patient: PatientsFragment;
+  export let patients: PatientsFragment[];
   export let selected: Writable<Data[]>;
 
   export let multiselect = true;

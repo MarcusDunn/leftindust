@@ -1,0 +1,13 @@
+#import "./usersFragment.graphql"
+#import "./doctorsFragment.graphql"
+#import "./patientsFragment.graphql"
+
+fragment user on User {
+  ...users
+  doctor {
+      ...doctors
+  }
+  patient {
+      ...patients
+  }
+}

@@ -1,7 +1,0 @@
-#import "../fragments/basicVisitFragment.graphql"
-
-query visitsQuery($vids: [VisitIdInput!]) {
-  visits(vids: $vids, strict: false) {
-    ...basicVisitFragment
-  }
-}

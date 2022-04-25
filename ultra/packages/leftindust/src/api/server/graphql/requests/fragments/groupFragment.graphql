@@ -1,0 +1,7 @@
+fragment group on Group {
+  __typename
+  gid {
+    id
+  }
+  name
+}

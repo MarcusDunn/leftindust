@@ -18,14 +18,20 @@
     "start:ultra": "lerna run start --stream --scope @ultra/leftindust",
     "build:ultra": "lerna run build --stream --scope @ultra/leftindust",
     "check:ultra": "lerna run check --stream --scope @ultra/leftindust",
+    "check:warnings:ultra": "lerna run check:warnings --stream --scope @ultra/leftindust",
+
     "test:ultra": "lerna run test --stream --scope @ultra/leftindust",
     "test:watch:ultra": "lerna run test:watch --stream --scope @ultra/leftindust",
-
+    
     "lint:ultra": "lerna run lint --stream --scope @ultra/leftindust",
     
-    "schema": "lerna exec graphql-codegen --stream --scope @ultra/leftindust"
+    "generate:ultra": "lerna run generate --stream --scope @ultra/leftindust"
   },
   "devDependencies": {
     "lerna": "^4.0.0"
+  },
+  "resolutions": {
+    "graphql": "^15.7.2",
+    "typescript": "^4.6.3"
   }
 }

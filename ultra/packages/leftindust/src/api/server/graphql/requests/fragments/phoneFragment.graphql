@@ -1,0 +1,5 @@
+fragment phone on Phone {
+  __typename
+  type
+  number
+}

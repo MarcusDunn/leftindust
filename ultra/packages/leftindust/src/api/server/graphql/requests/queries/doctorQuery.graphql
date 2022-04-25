@@ -1,0 +1,9 @@
+#import "../fragments/doctorFragment.graphql"
+
+query doctorQuery(
+    $dids: [DoctorIdInput!],
+) {
+    doctors(dids: $dids) {
+        ...doctor
+    }
+}

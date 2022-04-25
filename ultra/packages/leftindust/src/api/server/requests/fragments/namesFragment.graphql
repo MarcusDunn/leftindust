@@ -1,5 +1,0 @@
-fragment namesFragment on NameInfo {
-    firstName
-    middleName
-    lastName
-}

@@ -1,0 +1,23 @@
+#import "./emailFragment.graphql"
+
+fragment patients on Patient {
+    __typename
+    # Make this into a fragment once server-side is updated
+    firstName
+    middleName
+    lastName
+
+    pid {
+        id
+    }
+    dateOfBirth {
+        day
+        month
+        year
+    }
+    sex
+    gender
+    emails {
+        ...email
+    }
+}

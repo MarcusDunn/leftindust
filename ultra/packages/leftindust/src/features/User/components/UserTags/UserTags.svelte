@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { Group } from '@/api/server/schema/leftindust.schema';
+  import type { Group } from '@/api/server';
   import { Chip, Icon } from 'framework7-svelte';
 
-  export let group: Group | undefined = undefined;
+  export let group: Partial<Group> | undefined = undefined;
 
   export let outline = false;
   export let small = false;

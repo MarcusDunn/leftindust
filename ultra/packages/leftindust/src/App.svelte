@@ -7,7 +7,6 @@
   import routes from './routes';
 
   export let f7params: Framework7Parameters;
-
 </script>
 
 <AppLayout

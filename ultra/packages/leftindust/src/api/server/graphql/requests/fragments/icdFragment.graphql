@@ -1,0 +1,7 @@
+fragment icd on IcdReallySimpleEntity {
+  __typename
+  id
+  title
+  code
+  description
+}

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Chip } from 'framework7-svelte';
-  import { Sex } from '@/api/server/schema/leftindust.schema';
+  import { Sex } from '@/api/server';
 
   export let sex: Sex;
   export let gender: string | undefined;

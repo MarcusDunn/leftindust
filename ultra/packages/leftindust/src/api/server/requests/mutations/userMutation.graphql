@@ -1,5 +1,0 @@
-mutation userMutation($user: UserInput!) {
-    addUser(user: $user) {
-        uid
-    }
-}

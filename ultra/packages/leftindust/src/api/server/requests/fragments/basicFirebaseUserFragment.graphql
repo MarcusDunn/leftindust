@@ -1,4 +1,0 @@
-fragment basicFirebaseUserFragment on FirebaseInfo {
-  email
-  uid
-}

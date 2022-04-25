@@ -1,5 +1,5 @@
 import type { Data } from '@/api/server';
-import type { DataType } from '@/api/server/requests';
+import type { ResolversTypes } from '@/api/server';
 import type { SvelteComponentDev } from 'svelte/internal';
 import type { Writable } from 'svelte/store';
 
@@ -25,26 +25,26 @@ export enum WidgetCategory {
 }
 
 export type Widget = {
-  type?: DataType[];
+  type?: (keyof Partial<ResolversTypes>)[];
   category?: WidgetCategory[];
   component: typeof SvelteComponentDev;
   properties?: Record<string, unknown>;
 };
 
-export type DraggableWidgetProps<T = DataType> = {
+export type DraggableWidgetProps<T = keyof Partial<ResolversTypes>> = {
   dragger: () => void | undefined;
   properties: Record<string, unknown>;
   data: Data<T>;
 };
 
-export type CardProps<T = DataType, R = DataType> = DraggableWidgetProps<T> & {
+export type CardProps<T = keyof Partial<ResolversTypes>, R = keyof Partial<ResolversTypes>> = DraggableWidgetProps<T> & {
   reference?: Data<R>;
   attachments?: Writable<Data<T>[]>;
   quicklook: boolean;
 };
 
-export type BundleProps<T = DataType> = DraggableWidgetProps<T>;
-export type StackProps<T = DataType> = DraggableWidgetProps<T>;
+export type BundleProps<T = keyof Partial<ResolversTypes>> = DraggableWidgetProps<T>;
+export type StackProps<T = keyof Partial<ResolversTypes>> = DraggableWidgetProps<T>;
 
 export type AttachmentProps = {
   attachments: Writable<string[]>;

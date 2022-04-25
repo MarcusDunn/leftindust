@@ -1,8 +1,0 @@
-fragment addressFragment on Address {
-  addressType
-  address
-  city
-  country
-  postalCode
-  province
-}

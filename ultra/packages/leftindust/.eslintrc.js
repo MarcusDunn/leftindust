@@ -17,6 +17,13 @@ module.exports = {
       files: ['*.svelte'],
       processor: 'svelte3/svelte3',
     },
+    {
+      files: ['*.graphql'],
+      extends: 'plugin:@graphql-eslint/schema-recommended',
+      parserOptions: {
+        schema: './src/api/server/graphql/schema/leftindust.schema.graphql',
+      },
+    },
   ],
   env: {
     node: true,
@@ -27,7 +34,7 @@ module.exports = {
     'svelte3/typescript': require('typescript'),
     'svelte3/ignore-styles': () => true,
   },
-  plugins: ['@typescript-eslint', 'svelte3', 'import-newlines', 'autofix'],
+  plugins: ['@typescript-eslint', 'svelte3', 'import-newlines', 'autofix', 'graphql'],
   ignorePatterns: ['node_modules', '.eslintrc.js', 'vite.config.js'],
   rules: {
     '@typescript-eslint/no-unsafe-member-access': 'off',
@@ -37,6 +44,8 @@ module.exports = {
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/no-unsafe-argument': 'off',
+    '@typescript-eslint/unbound-method': 'off',
     'comma-dangle': ['error', 'always-multiline'],
     quotes: ['error', 'single'],
     semi: 'error',
@@ -48,6 +57,6 @@ module.exports = {
           'max-len': 100,
           'semi': true
         }
-    ]
-  }
+    ],
+  },
 };

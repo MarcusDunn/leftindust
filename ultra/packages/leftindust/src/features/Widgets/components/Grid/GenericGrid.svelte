@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Dimensions } from '@/types';
   import type { WidgetGridWidget, WidgetGridProps, SvelteGridConstraints } from '.';
-  import type { DataType } from '@/api/server/requests';
+  import type { ResolversTypes } from '@/api/server';
 
   import type { WidgetCategory, WidgetType } from '../..';
 
@@ -14,7 +14,7 @@
   export let props: WidgetGridProps;
   export let type: WidgetType;
 
-  export let dataType: DataType[] = [];
+  export let dataType: (keyof Partial<ResolversTypes>)[] = [];
   export let category: WidgetCategory[] = [];
 
   export let fixed = false;

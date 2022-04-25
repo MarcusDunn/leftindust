@@ -1,7 +1,0 @@
-query introspectionQuery($name: String!) {  
-  __type(name: $name) {
-      enumValues {
-          name
-      }
-  }
-}

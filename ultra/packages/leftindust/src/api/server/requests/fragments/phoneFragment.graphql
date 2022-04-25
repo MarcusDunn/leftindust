@@ -1,4 +1,0 @@
-fragment phoneFragment on Phone {
-  type
-  number
-}

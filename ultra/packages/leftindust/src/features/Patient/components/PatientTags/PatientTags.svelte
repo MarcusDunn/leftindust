@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { DateInput, Ethnicity, Sex } from '@/api/server/schema/leftindust.schema';
+  import type { DateInput, Ethnicity, Sex } from '@/api/server';
   import intervalToDuration from 'date-fns/intervalToDuration';
   import format from 'date-fns/format';
 

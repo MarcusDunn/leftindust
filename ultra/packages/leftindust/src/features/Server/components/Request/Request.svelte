@@ -1,27 +1,27 @@
 <script lang="ts">
-  import type { ApolloError, ObservableQuery } from '@apollo/client';
+  import type { CombinedError, OperationContext } from '@urql/svelte';
   import { Preloader, Block } from 'framework7-svelte';
   import { _ } from '@/language';
   import Notice from '@/features/UI/components/Notice/Notice.svelte';
   import ErrorButtons from '@/features/Errors/components/ErrorButtons/ErrorButtons.svelte';
 
   type Error = {
-    loading: false;
+    fetching: boolean;
     data?: undefined;
-    error: ApolloError | Error;
+    error: CombinedError | Error;
   }
 
-  export let loading: boolean | undefined = undefined;
+  export let fetching: boolean | undefined = undefined;
   export let data: unknown = {};
-  export let error: Error | ApolloError | undefined = undefined;
-  export let refetch: ObservableQuery['refetch'];
+  export let error: Error | CombinedError | undefined = undefined;
+  export let reexecute: (context?: Partial<OperationContext> | undefined) => void;
 
   export let large = false;
   export let middle = false;
 </script>
 
 <div>
-  {#if loading}
+  {#if fetching}
     <Block class={middle ? 'middle-of-page' : undefined}>
       <Preloader />
     </Block>
@@ -34,7 +34,7 @@
       {large}
       {middle}
     >
-      <ErrorButtons tryAgain={() => refetch()} />
+      <ErrorButtons tryAgain={() => reexecute()} />
     </Notice>
   {:else if data}
     <div {...$$restProps}> 

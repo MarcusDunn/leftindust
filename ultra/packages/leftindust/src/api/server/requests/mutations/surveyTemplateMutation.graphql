@@ -1,7 +1,0 @@
-mutation surveyMutation($survey: FormTemplateInput!) {
-    addSurveyTemplate(surveyTemplate: $survey) {
-      id {
-        id
-      }
-    }
-}

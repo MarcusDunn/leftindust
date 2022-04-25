@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { CardProps } from '@/features/Widgets';
   
-  import IcdsSpecificEngine from '@/api/server/engines/icd/IcdsSpecificEngine';
+  import { operationStore } from '@urql/svelte';
+  import { type IcdFragment, IcdQueryDocument } from '@/api/server';
   
   import { _ } from '@/language';
 
@@ -16,11 +17,13 @@
 
   const { dragger, data, attachments } = $$props as CardProps;
 
-  const { icds } = IcdsSpecificEngine({
+  let icd: IcdFragment;
+
+  const request = operationStore(IcdQueryDocument, {
     icdCode: data.id,
   });
 
-  $: icd = $icds[0];
+  $: if (request.data?.icd) icd = request.data.icd;
 </script>
 
 <Card
