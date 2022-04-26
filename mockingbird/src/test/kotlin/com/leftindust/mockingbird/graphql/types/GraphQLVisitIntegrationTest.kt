@@ -19,6 +19,7 @@ import org.junit.jupiter.api.parallel.ResourceAccessMode.READ_WRITE
 import org.junit.jupiter.api.parallel.ResourceLock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
+import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.web.reactive.server.WebTestClient
 
 @AutoConfigureWebTestClient
@@ -69,7 +70,9 @@ internal class GraphQLVisitIntegrationTest(
 
     @Test
     internal fun `test get patient by visit`() {
-        webTestClient.gqlRequest(
+        webTestClient
+            .mutateWith(SecurityMockServerConfigurers.mockJwt())
+            .gqlRequest(
             //language=graphql
             """
             { 

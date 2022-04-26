@@ -14,15 +14,12 @@ val MediqToken.Companion.CONTEXT_MAP_KEY: Any
 val DataFetchingEnvironment.authToken: MediqToken
     get() = graphQlContext[MediqToken.CONTEXT_MAP_KEY]
 
-/**
- * Handles turning headers into GraphQLContext
- */
 @Component
 class ContextFactory : DefaultSpringGraphQLContextFactory() {
     private val logger = LogManager.getLogger()
 
     companion object {
-        private val bearerTokenRegex = Regex("""Bearer: (.*)""")
+        private val bearerTokenRegex = Regex("""Bearer (.*)""")
     }
 
     override suspend fun generateContextMap(request: ServerRequest): Map<*, Any> {
@@ -34,7 +31,7 @@ class ContextFactory : DefaultSpringGraphQLContextFactory() {
                 ?: return contextMap
             val (token) = bearerTokenRegex.matchEntire(authorization)?.destructured
                 ?: return contextMap
-            mapOf(MediqToken.CONTEXT_MAP_KEY to VerifiedFirebaseToken(token))
+            mapOf(MediqToken.CONTEXT_MAP_KEY to FirebaseToken(token))
         }.also { logger.info("request $request has context map $it") }
         return contextMap + authContextMap
     }

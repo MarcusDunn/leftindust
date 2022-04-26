@@ -13,6 +13,11 @@ spring:
     url: jdbc:postgresql://127.0.0.1:5432/mediq
     username: mediq
     password: mediq
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken%40system.gserviceaccount.com
 icd:
   client:
     url: "localhost:80/icd"
