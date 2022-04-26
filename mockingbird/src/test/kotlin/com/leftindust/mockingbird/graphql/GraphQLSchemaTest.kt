@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.core.io.ClassPathResource
+import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.web.reactive.server.WebTestClient
 import kotlin.io.path.Path
 import kotlin.io.path.writeText
@@ -17,7 +18,9 @@ class GraphQLSchemaTest(
 
     @Test
     internal fun `check schema is up to date`() {
-        val request = webTestClient.get()
+        val request = webTestClient
+            .mutateWith(SecurityMockServerConfigurers.mockJwt())
+            .get()
             .uri("/sdl")
             .exchange()
             .expectBody()

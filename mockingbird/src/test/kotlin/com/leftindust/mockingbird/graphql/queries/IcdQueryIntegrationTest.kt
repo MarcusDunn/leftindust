@@ -6,6 +6,7 @@ import com.leftindust.mockingbird.util.integration.NoAuthIntegrationTest
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
+import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.web.reactive.server.WebTestClient
 
 @AutoConfigureWebTestClient
@@ -14,7 +15,9 @@ class IcdQueryIntegrationTest(
 ) : NoAuthIntegrationTest() {
     @Test
     internal fun `test search for aids`() {
-        webTestClient.gqlRequest(
+        webTestClient
+            .mutateWith(SecurityMockServerConfigurers.mockJwt())
+            .gqlRequest(
             //language=graphql
             """
             query {

@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.auth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseToken
 
-class VerifiedFirebaseToken constructor(
+class FirebaseToken constructor(
     private val token: String?,
 ) : MediqToken {
 
@@ -25,7 +25,7 @@ class VerifiedFirebaseToken constructor(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as VerifiedFirebaseToken
+        other as com.leftindust.mockingbird.auth.FirebaseToken
 
         if (token != other.token) return false
 

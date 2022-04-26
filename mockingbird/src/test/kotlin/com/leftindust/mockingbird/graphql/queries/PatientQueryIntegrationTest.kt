@@ -15,6 +15,7 @@ import org.junit.jupiter.api.parallel.ResourceAccessMode.READ_WRITE
 import org.junit.jupiter.api.parallel.ResourceLock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
+import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.web.reactive.server.WebTestClient
 
 @AutoConfigureWebTestClient
@@ -45,7 +46,9 @@ class PatientQueryIntegrationTest(
 
     @Test
     internal fun `get patients by range`() {
-        webTestClient.gqlRequest(
+        webTestClient
+            .mutateWith(SecurityMockServerConfigurers.mockJwt())
+            .gqlRequest(
             // language=graphql
             """
             query {
@@ -62,7 +65,9 @@ class PatientQueryIntegrationTest(
 
     @Test
     internal fun `get patients by id`() {
-        webTestClient.gqlRequest(
+        webTestClient
+            .mutateWith(SecurityMockServerConfigurers.mockJwt())
+            .gqlRequest(
             // language=graphql
             """
             query {
@@ -79,7 +84,9 @@ class PatientQueryIntegrationTest(
 
     @Test
     internal fun `get patients by visit`() {
-        webTestClient.gqlRequest(
+        webTestClient
+            .mutateWith(SecurityMockServerConfigurers.mockJwt())
+            .gqlRequest(
             // language=graphql
             """
             query {
@@ -96,7 +103,9 @@ class PatientQueryIntegrationTest(
 
     @Test
     internal fun `get patient emails`() {
-        webTestClient.gqlRequest(
+        webTestClient
+            .mutateWith(SecurityMockServerConfigurers.mockJwt())
+            .gqlRequest(
             // language=graphql
             """
             query {

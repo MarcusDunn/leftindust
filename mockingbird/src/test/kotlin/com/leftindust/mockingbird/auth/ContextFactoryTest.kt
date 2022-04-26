@@ -16,7 +16,7 @@ internal class ContextFactoryTest {
         val mockkRequest = mockk<ServerRequest> {
             every { method() } returns HttpMethod.POST
             every { headers() } returns mockk(relaxed = true) {
-                every { firstHeader("Authorization") } returns "Bearer: 123456"
+                every { firstHeader("Authorization") } returns "Bearer 123456"
             }
         }
 
@@ -25,7 +25,7 @@ internal class ContextFactoryTest {
                 request = mockkRequest
             )[MediqToken.CONTEXT_MAP_KEY]
         }
-        assertEquals(VerifiedFirebaseToken("123456"), actual)
+        assertEquals(FirebaseToken("123456"), actual)
     }
 
     @Test
