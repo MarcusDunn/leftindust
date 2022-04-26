@@ -10,3 +10,9 @@ val svelteCheck by tasks.register("svelteCheck", YarnTask::class) {
     dependsOn(tasks.yarn)
     args.set(listOf("run", "check:ultra"))
 }
+
+val generate by tasks.register("generate", YarnTask::class) {
+    description = "checks written queries and fragments are valid"
+    dependsOn(tasks.yarn)
+    args.set(listOf("run", "ultra:generate"))
+}
