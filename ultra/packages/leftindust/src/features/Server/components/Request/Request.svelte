@@ -26,7 +26,6 @@
     <Preloader />
   </Block>
 {:else if error}
-  <br />
   <Notice
     title={$_('errors.internalError')}
     text={$_('errors.connectionError')}

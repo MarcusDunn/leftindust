@@ -1,6 +1,6 @@
 export const configuration = {
-  color: 'purple',
+  color: 'primary',
   icon: {
-    f7: 'person_2_alt',
+    f7: 'briefcase_fill',
   },
 };
