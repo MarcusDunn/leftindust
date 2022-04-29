@@ -57,7 +57,7 @@
 >
   <svelte:fragment slot="fixed">
     <Appbar
-      close={{ popover: quicklook }}
+      close={{ popup: quicklook }}
       history={!quicklook}
       {f7router}
       right={[
