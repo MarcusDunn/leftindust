@@ -5,6 +5,9 @@ import {
   register,
   _,
 } from 'svelte-i18n';
+import { get } from 'svelte/store';
+
+import * as yup from 'yup';
 
 export type Dictionary = {
   descriptions: {
@@ -29,6 +32,8 @@ export type Dictionary = {
     loginIncorrectFields: string;
     loginEmptyFields: string;
     offline: string;
+    requiredField: string;
+    invalidEmail: string;
   };
   generics: {
     tryAgain: string;
@@ -151,15 +156,28 @@ export type Dictionary = {
   };
 }
 
-const setupI18n = (withLocale = getLocaleFromNavigator() ?? 'en'): void => {
+const setupI18n = async (withLocale = getLocaleFromNavigator() ?? 'en'): Promise<void> => {
+  // Svelte i18n
   register('en', () => import('./locales/en'));
 
-  void init({
+  await init({
     fallbackLocale: 'en',
     initialLocale: withLocale,
   });
 
-  void locale.set(withLocale);
+  await locale.set(withLocale);
+
+  // yup
+  const language = get(_);
+  
+  yup.setLocale({
+    mixed: {
+      required: language('errors.requiredField'),
+    },
+    string: {
+      email: language('errors.invalidEmail'),
+    },
+  });
 };
 
 export { _, setupI18n };

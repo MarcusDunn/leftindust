@@ -31,7 +31,7 @@
 />
 
 {#each buttons as button}  
-  {#if !button.condense || (button.condense && !mobile)}
+  {#if !button?.hidden && (!button.condense || (button.condense && !mobile))}
     <MenuButton
       title={button.title}
       icon={button.icon}

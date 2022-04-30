@@ -29,6 +29,10 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
+import * as yup from 'yup';
+import { createForm } from 'felte';
+import { validator } from '@felte/validator-yup';
+
 import deepmerge from 'deepmerge';
 
 import { _ } from '@/language';
@@ -223,6 +227,41 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
   });
 };
 
+export const loginForm = () => {
+  const schema = yup.object({
+    email: yup.string().email().required(),
+    password: yup.string().required(),
+  });
+
+  return createForm<yup.InferType<typeof schema>>({
+    onSubmit: async ({ email, password }) => {
+      try {
+        await setPersistence(auth, browserSessionPersistence);
+      } catch (error) {
+        throw new Error(`${language('errors.internalError')}: ${error}`);
+      }
+
+      try {
+        const user = await signInWithEmailAndPassword(auth, email.trim(), password);
+        getFirebaseUserDatabaseAndSignIn(user.user);
+      } catch (_) {
+        throw new Error(language('errors.loginIncorrectFields'));
+      }
+    },
+    onError: (error) => {
+      void Dialog.alert({
+        message: language('generics.signIn'),
+        detail: (error as Error).message,
+        buttons: [language('generics.tryAgain'), language('generics.ok')],
+        defaultId: 0,
+      });
+    },
+    extend: [
+      validator({ schema }),
+    ],
+  });
+};
+
 export const authenticateFirebaseUser = (input: {
   email: string;
   password: string;
@@ -244,9 +283,9 @@ export const authenticateFirebaseUser = (input: {
             .catch(() => {
               // Incorrect email or password
               void Dialog.alert({
-                message: language('buttons.signIn'),
+                message: language('generics.signIn'),
                 detail: language('errors.loginIncorrectFields'),
-                buttons: [language('buttons.tryAgain'), language('buttons.ok')],
+                buttons: [language('generics.tryAgain'), language('generics.ok')],
                 defaultId: 0,
               }).then(() => {
                 resolve(false);
@@ -256,9 +295,9 @@ export const authenticateFirebaseUser = (input: {
         .catch((error) => {
           // Handle Errors here.
           void Dialog.alert({
-            message: language('buttons.signIn'),
+            message: language('generics.signIn'),
             detail: `${language('errors.internalError')} ${error.message}`,
-            buttons: [language('buttons.ok')],
+            buttons: [language('generics.ok')],
             defaultId: 0,
           }).then(() => {
             reject(error);
@@ -267,9 +306,9 @@ export const authenticateFirebaseUser = (input: {
     } else {
       // Missing fields
       void Dialog.alert({
-        message: language('buttons.signIn'),
+        message: language('generics.signIn'),
         detail: language('errors.loginEmptyFields'),
-        buttons: [language('buttons.ok')],
+        buttons: [language('generics.ok')],
         defaultId: 0,
       }).then(() => {
         resolve(false);

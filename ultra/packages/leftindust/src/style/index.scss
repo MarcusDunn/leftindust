@@ -323,6 +323,11 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
   }
 }
 
+input:-internal-autofill-selected {
+  background-color: transparent !important;
+  color: var(--f7-input-text-color) !important;
+}
+
 /* -=-=-=-=-=-=-=- HELPER CLASSES -=-=-=-=-=-=-=- */
 .one-line-word-clamp {
   @include Clamps.set(1);

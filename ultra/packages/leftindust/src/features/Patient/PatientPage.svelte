@@ -60,7 +60,7 @@
       close={{ popup: quicklook }}
       history={!quicklook}
       {f7router}
-      right={[
+      right={!quicklook ? [
         {
           title: $_('generics.edit'),
           icon: { f7: 'pencil_outline', color: 'gray' },
@@ -71,7 +71,7 @@
           icon: { f7: 'plus_circle_fill', color: 'purple' },
           condense: true,
         },
-      ]}
+      ] : []}
     >
       <svelte:fragment slot="left">
         <SelectButton

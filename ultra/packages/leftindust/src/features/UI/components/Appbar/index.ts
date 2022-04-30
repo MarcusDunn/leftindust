@@ -16,6 +16,7 @@ export type AppbarButton = {
   title: string;
   onClick?: () => void;
   condense?: boolean;
+  hidden?: boolean;
 };
 
 export type AppbarTitle = {
