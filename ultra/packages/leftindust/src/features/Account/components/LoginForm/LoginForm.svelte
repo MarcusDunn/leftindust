@@ -7,8 +7,6 @@ import {
   Button,
 } from 'framework7-svelte';
 
-import type { Framework7Parameters } from 'framework7/types';
-
 import { _ } from '@/language';
 import { loginForm } from '../..';
 
@@ -17,7 +15,7 @@ export let buttonProps: Record<string, unknown> = {};
 const { form, errors } = loginForm();
 </script>
 
-<form use:form>            
+<form use:form>
   <List noHairlinesMd>
     <ListInput
       type="text"

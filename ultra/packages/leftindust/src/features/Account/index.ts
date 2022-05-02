@@ -229,7 +229,7 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
 
 export const loginForm = () => {
   const schema = yup.object({
-    email: yup.string().email().required(),
+    email: yup.string().required(),
     password: yup.string().required(),
   });
 
@@ -252,7 +252,7 @@ export const loginForm = () => {
       void Dialog.alert({
         message: language('generics.signIn'),
         detail: (error as Error).message,
-        buttons: [language('generics.tryAgain'), language('generics.ok')],
+        buttons: [language('generics.ok')],
         defaultId: 0,
       });
     },
@@ -261,57 +261,3 @@ export const loginForm = () => {
     ],
   });
 };
-
-export const authenticateFirebaseUser = (input: {
-  email: string;
-  password: string;
-}): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const { email, password } = input;
-
-    if (email && password) {
-      setPersistence(auth, browserSessionPersistence)
-        .then(() =>
-          signInWithEmailAndPassword(auth, email.trim(), password)
-            .then((user) => {
-              if (user?.user) {
-                // Firebase auth success
-                resolve(true);
-                getFirebaseUserDatabaseAndSignIn(user.user);
-              }
-            })
-            .catch(() => {
-              // Incorrect email or password
-              void Dialog.alert({
-                message: language('generics.signIn'),
-                detail: language('errors.loginIncorrectFields'),
-                buttons: [language('generics.tryAgain'), language('generics.ok')],
-                defaultId: 0,
-              }).then(() => {
-                resolve(false);
-              });
-            }),
-        )
-        .catch((error) => {
-          // Handle Errors here.
-          void Dialog.alert({
-            message: language('generics.signIn'),
-            detail: `${language('errors.internalError')} ${error.message}`,
-            buttons: [language('generics.ok')],
-            defaultId: 0,
-          }).then(() => {
-            reject(error);
-          });
-        });
-    } else {
-      // Missing fields
-      void Dialog.alert({
-        message: language('generics.signIn'),
-        detail: language('errors.loginEmptyFields'),
-        buttons: [language('generics.ok')],
-        defaultId: 0,
-      }).then(() => {
-        resolve(false);
-      });
-    }
-  });

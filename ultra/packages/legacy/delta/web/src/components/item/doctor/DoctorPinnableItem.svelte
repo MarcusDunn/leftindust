@@ -11,7 +11,6 @@
 
   export let doctor: BasicDoctorFragment;
   export let pinned: boolean;
-
 </script>
 
 <PinnableItemUI

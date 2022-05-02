@@ -1,24 +1,29 @@
 .ui-cell {
-  .item-link, .item-checkbox {
-    border-radius: var(--f7-list-inset-border-radius) !important;
-  }
+  display: flex;
 
-  .ui-cell-toggle {    
-    margin-right: 0;
-    transition-property: margin-right;
-    transition-duration: 260ms;
-
-    &.ui-cell-toggle-active {
-      margin-right: 10px;
+  .ui-cell-item {
+    width: 100%;
+    .item-link, .item-checkbox {
+      border-radius: var(--f7-list-inset-border-radius) !important;
+    }
+  
+    .ui-cell-item-toggle {    
+      margin-right: 0;
+      transition-property: margin-right;
+      transition-duration: 260ms;
+  
+      &.ui-cell-item-toggle-active {
+        margin-right: 10px;
+      }
     }
   }
-}
-
-.view-master-detail {
-  .ui-cell {
-    &.ui-cell-selected {
-      .item-link, .item-checkbox {
-        background-color: rgb(220, 220, 220);
+  
+  .view-master-detail {
+    .ui-cell-item {
+      &.ui-cell-item-selected {
+        .item-link, .item-checkbox {
+          background-color: rgb(220, 220, 220);
+        }
       }
     }
   }
@@ -27,9 +32,11 @@
 .dark {
   .view-master-detail {
     .ui-cell {
-      &.ui-cell-selected {
-        .item-link, .item-checkbox {
-          background-color: rgba(44, 44, 46);
+      .ui-cell-item {
+        &.ui-cell-item-selected {
+          .item-link, .item-checkbox {
+            background-color: rgba(44, 44, 46);
+          }
         }
       }
     }

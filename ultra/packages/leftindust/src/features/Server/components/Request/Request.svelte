@@ -5,12 +5,6 @@
   import Notice from '@/features/UI/components/Notice/Notice.svelte';
   import ErrorButtons from '@/features/Errors/components/ErrorButtons/ErrorButtons.svelte';
 
-  type Error = {
-    fetching: boolean;
-    data?: undefined;
-    error: CombinedError | Error;
-  }
-
   export let fetching: boolean | undefined = undefined;
   export let data: unknown = {};
   export let error: Error | CombinedError | undefined = undefined;
