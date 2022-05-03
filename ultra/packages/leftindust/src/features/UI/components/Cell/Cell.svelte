@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Icon, ListItem } from 'framework7-svelte';
+	import sk from 'date-fns/locale/sk';
+import { Icon, ListItem } from 'framework7-svelte';
 
 	import './Cell.scss';
 
@@ -9,7 +10,12 @@
 </script>
 
 <div class="ui-cell">
-	<slot name="root-start" />
+	{#if $$slots['root-start']}
+		<div class="ui-cell-start">
+			<slot name="root-start" />
+		</div>
+	{/if}
+	
 	<ListItem
 		class={`ui-cell-item ${selected ? 'ui-cell-item-selected' : ''}`}
 		{link}
@@ -47,5 +53,10 @@
 			<slot name="content-end" />
 		</svelte:fragment>
 	</ListItem>
-	<slot name="root-end" />
+
+	{#if $$slots['root-end']}
+		<div class="ui-cell-end">
+			<slot name="root-end" />
+		</div>
+	{/if}
 </div>

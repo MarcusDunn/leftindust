@@ -49,7 +49,7 @@
 />
 
 <Card
-  color="blue"
+  color="primary"
   dragger={dragger}
   shadow={!attachments}
   loading={!doctor}
@@ -63,7 +63,7 @@
   <svelte:fragment slot="before-title">
     <div style="margin-right: 14px; margin-top: 6px">
       <Boxed
-        color="gray"
+        color="primary"
         fill
         round
       >
@@ -110,7 +110,6 @@
           <Button
             round
             fill
-            color="blue"
           >
             {$_('generics.viewDoctor')}
           </Button>

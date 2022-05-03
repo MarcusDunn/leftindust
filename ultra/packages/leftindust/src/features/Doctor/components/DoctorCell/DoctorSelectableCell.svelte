@@ -36,7 +36,7 @@
     });
   }}
 >
-  <Boxed slot="media" color="gray" fill round>
+  <Boxed slot="media" color="primary" fill round>
     {`${doctor.firstName.charAt(0)}${doctor.lastName.charAt(0)}`}
   </Boxed>
   <DoctorTags slot="text" {...doctor} small outline />

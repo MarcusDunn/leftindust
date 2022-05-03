@@ -122,7 +122,7 @@
         {/if}
         {doctor?.lastName}
       </h2>
-      <Boxed slot="media" dimensions={BoxedSizes.Large} color="blue" round fill>
+      <Boxed slot="media" dimensions={BoxedSizes.Large} color="primary" round fill>
         <span>{`${doctor?.firstName.charAt(0)}${doctor?.lastName.charAt(0)}`}</span>
       </Boxed>
       <DoctorTags slot="tags" {...doctor} />

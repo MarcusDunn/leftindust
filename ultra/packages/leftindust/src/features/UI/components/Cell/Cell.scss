@@ -1,6 +1,15 @@
 .ui-cell {
   display: flex;
 
+  .ui-cell-start {
+    display: flex;
+  }
+
+  .ui-cell-end {
+    display: flex;
+    margin-left: 10px;
+  }
+
   .ui-cell-item {
     width: 100%;
     .item-link, .item-checkbox {

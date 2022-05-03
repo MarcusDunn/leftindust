@@ -11,6 +11,7 @@
 
   export let doctor: Partial<DoctorsFragment>;
   export let link = true;
+  export let pinned = false;
 </script>
 
 <Cell
@@ -18,7 +19,7 @@
   {link}
   on:click
 >
-  <PinButton slot="root-start" on:pin={({ detail }) => dispatch('pin', detail)} />
+  <PinButton slot="root-start" {pinned} on:pin={({ detail }) => dispatch('pin', detail)} />
   <Boxed slot="media" color="primary" fill round>
     {`${doctor.firstName?.charAt(0)}${doctor.lastName?.charAt(0)}`}
   </Boxed>

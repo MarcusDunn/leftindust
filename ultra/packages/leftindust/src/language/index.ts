@@ -147,6 +147,8 @@ export type Dictionary = {
     view: string;
     sectionIndexed: string;
     inputIndexed: string;
+    viewAll: string;
+    newDoctor: string;
   };
   examples: {
     totalPlateletCount: string;

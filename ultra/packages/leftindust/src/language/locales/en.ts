@@ -141,6 +141,8 @@ const language: Dictionary = {
     view: 'View {label}',
     sectionIndexed: 'Section {number}',
     inputIndexed: 'Input {number}',
+    viewAll: 'View All',
+    newDoctor: 'New Doctor',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',
