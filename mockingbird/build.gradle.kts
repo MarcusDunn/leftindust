@@ -28,8 +28,9 @@ repositories {
 dependencies {
     // spring
     implementation("org.springframework.boot", "spring-boot-starter-webflux")
-    implementation("org.springframework.boot", "spring-boot-starter-jdbc")
     implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot", "spring-boot-starter-actuator")
+    implementation("org.springframework.boot", "spring-boot-starter-oauth2-resource-server")
 
     // kotlin
     implementation("org.jetbrains.kotlin", "kotlin-reflect")
@@ -73,12 +74,12 @@ dependencies {
     liquibaseRuntime("org.springframework.boot", "spring-boot-starter-data-jpa")
     liquibaseRuntime("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
     liquibaseRuntime(sourceSets.main.get().output)
-
     // spring testing
     testImplementation("org.springframework.boot", "spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(module = "mockito-core")
     }
+    testImplementation("org.springframework.security", "spring-security-test")
 
     testImplementation("com.ninja-squad", "springmockk", "3.1.1")
 }
@@ -135,9 +136,11 @@ tasks.withType<KotlinCompile> {
 tasks.withType<JavaCompile> {
     targetCompatibility = "${JavaVersion.VERSION_1_8}"
     sourceCompatibility = "${JavaVersion.VERSION_1_8}"
+    inputs.files(tasks.processResources)
 }
 
 kapt {
     includeCompileClasspath = false
     strictMode = true
+    correctErrorTypes = true
 }

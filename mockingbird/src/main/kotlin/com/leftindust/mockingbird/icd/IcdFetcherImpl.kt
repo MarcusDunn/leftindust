@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.icd
 
+import com.leftindust.mockingbird.config.IcdApiClientConfiguration
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class IcdFetcherImpl(
-    @Autowired private val config: IcdApiClient,
+    @Autowired private val config: IcdApiClientConfiguration,
 ) : IcdFetcher {
 
     private val client = HttpClient(CIO) {
