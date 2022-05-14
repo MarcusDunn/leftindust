@@ -7,6 +7,7 @@ import {
 } from '@urql/svelte';
 import { retryExchange } from '@urql/exchange-retry';
 import { authExchange } from '@urql/exchange-auth';
+import { devtoolsExchange } from '@urql/devtools';
 import config from '@/../config.json';
 import { auth } from '../firebase';
 import type { ResolversTypes } from './requests';
@@ -275,6 +276,7 @@ export const client = createClient({
   url: `${config.mockingbird.address}:${config.mockingbird.port}/graphql`,
   maskTypename: true,
   exchanges: [
+    devtoolsExchange,
     dedupExchange,
     cacheExchange,
     retryExchange({
@@ -283,6 +285,13 @@ export const client = createClient({
       randomDelay: true,
       maxNumberAttempts: 2,
       retryIf: (error) => !!(error && error.networkError),
+      retryWith: (error, operation) => {
+        if (error.networkError) {
+          const context = { ...operation.context };
+          return { ...operation, context };
+        }
+        return null;
+      },
     }),
     authExchange<{ token: string | undefined } | undefined>({
       getAuth: async () => {
@@ -294,13 +303,12 @@ export const client = createClient({
         });
         
         const token = await user?.getIdToken();
+        const refreshToken = await user?.getIdToken();
         
-        return { token };
+        return { token, refreshToken };
       },
       addAuthToOperation: ({ authState, operation }) => {
-        if (!authState || !authState.token) {
-          return operation;
-        }
+        if (!authState || !authState.token) return operation;
       
         const fetchOptions =
           typeof operation.context.fetchOptions === 'function'

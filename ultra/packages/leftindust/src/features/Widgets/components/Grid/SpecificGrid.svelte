@@ -37,8 +37,6 @@
         }
       }))
     .filter((widget): widget is WidgetGridWidget => !!widget);
-
-  console.log(widgets);
 </script>
 
 <Grid

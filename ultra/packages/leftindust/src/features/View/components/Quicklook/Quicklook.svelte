@@ -69,7 +69,7 @@
           fill
           round
           style="width: 200px"
-          popoverClose
+          popupClose
         >
           {$_('generics.viewFile')}
         </Button>

@@ -29,6 +29,10 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
+import * as yup from 'yup';
+import { createForm } from 'felte';
+import { validator } from '@felte/validator-yup';
+
 import deepmerge from 'deepmerge';
 
 import { _ } from '@/language';
@@ -223,56 +227,37 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
   });
 };
 
-export const authenticateFirebaseUser = (input: {
-  email: string;
-  password: string;
-}): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const { email, password } = input;
-
-    if (email && password) {
-      setPersistence(auth, browserSessionPersistence)
-        .then(() =>
-          signInWithEmailAndPassword(auth, email.trim(), password)
-            .then((user) => {
-              if (user?.user) {
-                // Firebase auth success
-                resolve(true);
-                getFirebaseUserDatabaseAndSignIn(user.user);
-              }
-            })
-            .catch(() => {
-              // Incorrect email or password
-              void Dialog.alert({
-                message: language('buttons.signIn'),
-                detail: language('errors.loginIncorrectFields'),
-                buttons: [language('buttons.tryAgain'), language('buttons.ok')],
-                defaultId: 0,
-              }).then(() => {
-                resolve(false);
-              });
-            }),
-        )
-        .catch((error) => {
-          // Handle Errors here.
-          void Dialog.alert({
-            message: language('buttons.signIn'),
-            detail: `${language('errors.internalError')} ${error.message}`,
-            buttons: [language('buttons.ok')],
-            defaultId: 0,
-          }).then(() => {
-            reject(error);
-          });
-        });
-    } else {
-      // Missing fields
-      void Dialog.alert({
-        message: language('buttons.signIn'),
-        detail: language('errors.loginEmptyFields'),
-        buttons: [language('buttons.ok')],
-        defaultId: 0,
-      }).then(() => {
-        resolve(false);
-      });
-    }
+export const loginForm = () => {
+  const schema = yup.object({
+    email: yup.string().required(),
+    password: yup.string().required(),
   });
+
+  return createForm<yup.InferType<typeof schema>>({
+    onSubmit: async ({ email, password }) => {
+      try {
+        await setPersistence(auth, browserSessionPersistence);
+      } catch (error) {
+        throw new Error(`${language('errors.internalError')}: ${error}`);
+      }
+
+      try {
+        const user = await signInWithEmailAndPassword(auth, email.trim(), password);
+        getFirebaseUserDatabaseAndSignIn(user.user);
+      } catch (_) {
+        throw new Error(language('errors.loginIncorrectFields'));
+      }
+    },
+    onError: (error) => {
+      void Dialog.alert({
+        message: language('generics.signIn'),
+        detail: (error as Error).message,
+        buttons: [language('generics.ok')],
+        defaultId: 0,
+      });
+    },
+    extend: [
+      validator({ schema }),
+    ],
+  });
+};

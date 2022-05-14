@@ -6,6 +6,7 @@ import ClientsPage from '@/features/Clients/ClientsPage.svelte';
 import TemplatesPage from '@/features/Templates/TemplatesPage.svelte';
 
 import PatientPage from '@/features/Patient/PatientPage.svelte';
+import DoctorPage from '@/features/Doctor/DoctorPage.svelte';
 import PeoplePage from '@/features/People/PeoplePage.svelte';
 
 import TemplatePreviewPage from '@/features/Templates/TemplatePreviewPage.svelte';
@@ -21,6 +22,7 @@ export type Path =
   | '/dashboard/'
   | '/clients/'
   | '/patient/:data/'
+  | '/doctor/:data/'
   | '/people/:data/'
   | '/templates/'
   | '/wizard/template/'
@@ -52,6 +54,10 @@ const routes: Route[] = [
   {
     path: '/patient/:data/',
     component: PatientPage,
+  },
+  {
+    path: '/doctor/:data/',
+    component: DoctorPage,
   },
   {
     path: '/people/:data/',

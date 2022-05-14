@@ -79,10 +79,15 @@
 
           ul {
             background: transparent;
-            .item-title {
-              font-size: 17px;
-              font-weight: 600;
+
+            .item-link {
+              border-radius: 0 !important;
+              .item-title {
+                font-size: 17px;
+                font-weight: 600;
+              }
             }
+            
           }
         }
       }

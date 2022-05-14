@@ -20,6 +20,7 @@
     "@fullcalendar/list": "^5.11.0",
     "@fullcalendar/timegrid": "^5.11.0",
     "@urql/core": "^2.4.4",
+    "@urql/devtools": "^2.0.3",
     "@urql/exchange-auth": "^0.1.7",
     "@urql/exchange-graphcache": "^4.3.6",
     "@urql/exchange-retry": "^0.3.3",

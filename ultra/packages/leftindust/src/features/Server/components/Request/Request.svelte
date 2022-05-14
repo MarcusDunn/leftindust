@@ -5,12 +5,6 @@
   import Notice from '@/features/UI/components/Notice/Notice.svelte';
   import ErrorButtons from '@/features/Errors/components/ErrorButtons/ErrorButtons.svelte';
 
-  type Error = {
-    fetching: boolean;
-    data?: undefined;
-    error: CombinedError | Error;
-  }
-
   export let fetching: boolean | undefined = undefined;
   export let data: unknown = {};
   export let error: Error | CombinedError | undefined = undefined;
@@ -20,26 +14,25 @@
   export let middle = false;
 </script>
 
-<div>
-  {#if fetching}
-    <Block class={middle ? 'middle-of-page' : undefined}>
-      <Preloader />
-    </Block>
-  {:else if error}
-    <br />
-    <Notice
-      title={$_('errors.internalError')}
-      text={$_('errors.connectionError')}
-      icon={{ f7: 'exclamationmark_triangle_fill', color: 'orange' }}
-      {large}
-      {middle}
-    >
-      <ErrorButtons tryAgain={() => reexecute()} />
-    </Notice>
-  {:else if data}
-    <div {...$$restProps}> 
-      <slot />
-    </div>
-  {/if}
-</div>
+
+{#if fetching}
+  <Block class="middle" style="margin-top: 40px; margin-bottom: 40px;">
+    <Preloader />
+  </Block>
+{:else if error}
+  <Notice
+    title={$_('errors.internalError')}
+    text={$_('errors.connectionError')}
+    icon={{ f7: 'exclamationmark_triangle_fill', color: 'orange' }}
+    {large}
+    {middle}
+  >
+    <ErrorButtons tryAgain={() => reexecute()} />
+  </Notice>
+{:else if data}
+  <div {...$$restProps}> 
+    <slot />
+  </div>
+{/if}
+
 

@@ -6,13 +6,14 @@
   import { PatientTab } from '.';
   import { Layout } from '../App';
 
+  import { Tab, Tabs, Block } from 'framework7-svelte';
   import Page from '../UI/components/Page/Page.svelte';
   import { wizardOpen } from '../Wizard/store';
   import { clientsSelected, clientsSelectedTab } from '../Clients/store';
   import { ClientsTab } from '../Clients';
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
   import Profile from '../UI/components/Profile/Profile.svelte';
-  import { WidgetType } from '../Widgets';
+  import { WidgetCategory, WidgetType } from '../Widgets';
   import { _ } from '@/language';
   import SelectButton from '../UI/components/SelectButton/SelectButton.svelte';
   import Request from '../Server/components/Request/Request.svelte';
@@ -26,6 +27,7 @@
     from '../App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
   import SpecificGrid from '../Widgets/components/Grid/SpecificGrid.svelte';
   import { operationStore, query } from '@urql/svelte';
+import GenericGrid from '../Widgets/components/Grid/GenericGrid.svelte';
     
   export let f7router: Router.Router;
   export let f7route: Router.Route;
@@ -57,10 +59,10 @@
 >
   <svelte:fragment slot="fixed">
     <Appbar
-      close={{ popover: quicklook }}
+      close={{ popup: quicklook }}
       history={!quicklook}
       {f7router}
-      right={[
+      right={!quicklook ? [
         {
           title: $_('generics.edit'),
           icon: { f7: 'pencil_outline', color: 'gray' },
@@ -71,7 +73,7 @@
           icon: { f7: 'plus_circle_fill', color: 'purple' },
           condense: true,
         },
-      ]}
+      ] : []}
     >
       <svelte:fragment slot="left">
         <SelectButton
@@ -168,5 +170,22 @@
         {/key}
       </div>
     </Profile>
+    <Tabs>
+      <Tab tabActive={layout === Layout.Bundled && tab !== PatientTab.Overview}>
+        <Block style="margin-left: 25px;margin-right: 25px">
+          <Tabs>
+            <Tab tabActive={tab === PatientTab.Contacts}>
+              <GenericGrid
+                props={{ id: 'Patient', data, quicklook }}
+                type={WidgetType.Bundle}
+                dataType={['Patient']}
+                category={[WidgetCategory.Contact]}
+                store
+              />
+            </Tab>
+          </Tabs>
+        </Block>
+      </Tab>
+    </Tabs>
   </Request>
 </Page>

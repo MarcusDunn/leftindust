@@ -3,6 +3,8 @@ import type { ResolversTypes } from '@/api/server';
 import type { SvelteComponentDev } from 'svelte/internal';
 import type { Writable } from 'svelte/store';
 
+import DoctorsBundle from '@/features/Doctors/components/DoctorsBundle/DoctorsBundle.svelte';
+
 import PatientCard from '@/features/Patient/components/PatientCard/PatientCard.svelte';
 import DoctorCard from '@/features/Doctor/components/DoctorCard/DoctorCard.svelte';
 import UserCard from '@/features/User/components/UserCard/UserCard.svelte';
@@ -35,12 +37,12 @@ export type DraggableWidgetProps<T = keyof Partial<ResolversTypes>> = {
   dragger: () => void | undefined;
   properties: Record<string, unknown>;
   data: Data<T>;
+  quicklook: boolean;
 };
 
 export type CardProps<T = keyof Partial<ResolversTypes>, R = keyof Partial<ResolversTypes>> = DraggableWidgetProps<T> & {
   reference?: Data<R>;
   attachments?: Writable<Data<T>[]>;
-  quicklook: boolean;
 };
 
 export type BundleProps<T = keyof Partial<ResolversTypes>> = DraggableWidgetProps<T>;
@@ -57,11 +59,16 @@ export type Widgets = {
   [K in WidgetType]: Record<string, Widget>;
 };
 
-
 const Widgets: Widgets = {
   attachment: {},
   attribute: {},
-  bundle: {},
+  bundle: {
+    doctors: {
+      type: ['Patient'],
+      component: DoctorsBundle,
+      category: [WidgetCategory.Contact],
+    },
+  },
   card: {
     patient: {
       type: ['Patient'],
