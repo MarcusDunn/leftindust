@@ -30,6 +30,7 @@
     <List
       class="no-hairlines no-hairlines-between"
       mediaList
+      noChevron
     >
       {#each items as {title, text, icon, onClick}}
         <ListItem

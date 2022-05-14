@@ -24,6 +24,7 @@
   import Menu from '@/features/UI/components/Menu/Menu.svelte';
 
   import PatientsTab from '@/features/Patients/components/PatientsTab/PatientsTab.svelte';
+import DoctorsTab from '../Doctors/components/DoctorsTab/DoctorsTab.svelte';
 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
@@ -105,6 +106,7 @@
 			<PatientsTab {f7router} {f7route}/>
 		</Tab>
 		<Tab tabActive={$clientsSelectedTab === ClientsTab.Doctors}>
+			<DoctorsTab {f7router} {f7route} />
 		</Tab>
 	</Tabs>
 </Page>

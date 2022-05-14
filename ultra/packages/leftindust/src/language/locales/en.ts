@@ -26,6 +26,8 @@ const language: Dictionary = {
     loginIncorrectFields: 'Incorrect email or password. You can reset your password by contacting your administrator.',
     loginEmptyFields: 'Please enter a valid email and password.',
     offline: 'You are currently offline. Check your internet connection and try again.',
+    requiredField: 'This is a required field',
+    invalidEmail: 'Please enter a valid email',
   },
   generics: {
     tryAgain: 'Try Again',
@@ -139,6 +141,8 @@ const language: Dictionary = {
     view: 'View {label}',
     sectionIndexed: 'Section {number}',
     inputIndexed: 'Input {number}',
+    viewAll: 'View All',
+    newDoctor: 'New Doctor',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',

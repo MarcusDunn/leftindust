@@ -1,15 +1,7 @@
 <script lang="ts">
   import { _ } from '@/language';
   import { signInStatus } from './store';
-  import {
-    Block,
-    List,
-    ListInput,
-    Button,
-    BlockFooter,
-    Preloader,
-    PageContent,
-  } from 'framework7-svelte';
+  import { Block, Preloader, PageContent } from 'framework7-svelte';
   
   import { signOut } from '.';
   
@@ -17,18 +9,9 @@
   import MedIQBanner from '../App/components/MedIQBanner/MedIQBanner.svelte';
   import ErrorButtons from '../Errors/components/ErrorButtons/ErrorButtons.svelte';
 
-  import { authenticateFirebaseUser, getFirebaseUserDatabaseAndSignIn } from '.';
+  import { getFirebaseUserDatabaseAndSignIn } from '.';
 
-  let email = '';
-  let password = '';
-
-  const submit = () => void authenticateFirebaseUser({ email, password }).then((signInSuccess) => {
-    if (signInSuccess) {
-      email = '';
-      password = '';
-    }
-  });
-
+  import LoginForm from './components/LoginForm/LoginForm.svelte';
 </script>
 
 <Page pageContent={false} loginScreen>
@@ -37,28 +20,11 @@
       <MedIQBanner>
         {#if !$signInStatus.signedIn}
           <p>{$_('descriptions.signIn')}</p>
-          <List noHairlinesMd>
-            <ListInput
-              label={$_('generics.email')}
-              type="text"
-              placeholder={$_('generics.emailPlaceholder')}
-              bind:value={email}
-            />
-            <ListInput
-              label={$_('generics.password')}
-              type="password"
-              placeholder={$_('generics.password')}
-              clearButton
-              bind:value={password}
-            />
-          </List>
-          <Block class="no-padding">
-            <Button on:click={submit} large fill color="purple">
-              {$_('generics.signIn')}
-            </Button>
-            <br />
-            <BlockFooter>{$_('descriptions.alphaLoginNotice')}</BlockFooter>
-          </Block>
+          <LoginForm buttonProps={{
+            fill: true,
+            color: 'purple',
+            large: true,
+          }} />
         {:else if $signInStatus.error}
           <p>{$signInStatus.error}</p>
           <br />
