@@ -6,9 +6,8 @@ import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.HibernatePatientRepository
 import com.leftindust.mockingbird.record.HibernateRecordRepository
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.patient.GraphQLPatient
-import com.leftindust.mockingbird.record.GraphQLPatientRecord
-import com.leftindust.mockingbird.record.RecordDaoImpl
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.record.RecordDto
 import com.leftindust.mockingbird.util.EntityStore
 import io.mockk.coEvery
 import io.mockk.every
@@ -34,7 +33,7 @@ internal class RecordDaoImplTest {
 
         val recordDaoImpl = RecordDaoImpl(authorizer, recordRepository, patientRepository)
 
-        val result = recordDaoImpl.getRecordByRecordId(GraphQLPatientRecord.ID(recordId), mockk())
+        val result = recordDaoImpl.getRecordByRecordId(RecordDto.RecordDtoId(recordId), mockk())
 
         assertEquals(mockkRecord, result)
     }
@@ -55,7 +54,7 @@ internal class RecordDaoImplTest {
 
         val recordDaoImpl = RecordDaoImpl(authorizer, recordRepository, patientRepository)
 
-        val result = recordDaoImpl.getRecordsByPatientPid(GraphQLPatient.ID(patientID), mockk())
+        val result = recordDaoImpl.getRecordsByPatientPid(PatientDto.PatientDtoId(patientID), mockk())
 
         assertEquals(listOf(mockkRecord), result)
     }

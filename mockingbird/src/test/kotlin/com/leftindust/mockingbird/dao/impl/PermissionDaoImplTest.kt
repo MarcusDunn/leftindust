@@ -9,7 +9,7 @@ import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.auth.HibernateAclRepository
 import com.leftindust.mockingbird.group.HibernateGroupRepository
 import com.leftindust.mockingbird.user.HibernateUserRepository
-import com.leftindust.mockingbird.user.GraphQLUserGroup
+import com.leftindust.mockingbird.user.MediqGroupDto
 import com.leftindust.mockingbird.auth.GraphQLPermissionInput
 import com.leftindust.mockingbird.util.unit.LenientAuthorizerUnitTest
 import io.mockk.every
@@ -57,7 +57,7 @@ internal class PermissionDaoImplTest : LenientAuthorizerUnitTest() {
         }
         val permissionDao = PermissionDaoImpl(groupRepository, aclRepository, userRepository, authorizer)
         val result =
-            permissionDao.addGroupPermission(GraphQLUserGroup.ID(uuid), GraphQLPermissionInput(User, CREATE), mockk())
+            permissionDao.addGroupPermission(MediqGroupDto.MediqGroupId(uuid), GraphQLPermissionInput(User, CREATE), mockk())
         assertEquals(accessControlList, result)
     }
 }

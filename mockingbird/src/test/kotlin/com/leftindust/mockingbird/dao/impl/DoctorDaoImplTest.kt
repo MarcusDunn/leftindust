@@ -3,22 +3,19 @@ package com.leftindust.mockingbird.dao.impl
 import com.leftindust.mockingbird.auth.Authorizer
 import com.leftindust.mockingbird.auth.NotAuthorizedException
 import com.leftindust.mockingbird.doctor.Doctor
-import com.leftindust.mockingbird.doctor.DoctorPatient
 import com.leftindust.mockingbird.event.Event
 import com.leftindust.mockingbird.patient.Patient
-import com.leftindust.mockingbird.clinic.HibernateClinicRepository
+import com.leftindust.mockingbird.clinic.ClinicRepository
 import com.leftindust.mockingbird.doctor.HibernateDoctorPatientRepository
-import com.leftindust.mockingbird.doctor.HibernateDoctorRepository
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.event.HibernateEventRepository
-import com.leftindust.mockingbird.doctor.DoctorDaoImpl
 import com.leftindust.mockingbird.patient.HibernatePatientRepository
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.clinic.GraphQLClinic
-import com.leftindust.mockingbird.doctor.GraphQLDoctor
-import com.leftindust.mockingbird.event.GraphQLEvent
-import com.leftindust.mockingbird.patient.GraphQLPatient
-import com.leftindust.mockingbird.doctor.GraphQLDoctorEditInput
-import com.leftindust.mockingbird.doctor.GraphQLDoctorInput
+import com.leftindust.mockingbird.doctor.DoctorDto
+import com.leftindust.mockingbird.event.EventDto
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.doctor.UpdateDoctorDto
+import com.leftindust.mockingbird.doctor.CreateDoctorDto
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -32,11 +29,11 @@ import org.junit.jupiter.api.assertThrows
 
 internal class DoctorDaoImplTest {
     private val authorizer = mockk<Authorizer>()
-    private val doctorRepository = mockk<HibernateDoctorRepository>()
+    private val doctorRepository = mockk<DoctorRepository>()
     private val doctorPatientRepository = mockk<HibernateDoctorPatientRepository>()
     private val patientRepository = mockk<HibernatePatientRepository>()
     private val eventRepository = mockk<HibernateEventRepository>()
-    private val clinicRepository = mockk<HibernateClinicRepository>()
+    private val clinicRepository = mockk<ClinicRepository>()
     private val entityManager = mockk<EntityManager>()
 
 
@@ -62,7 +59,7 @@ internal class DoctorDaoImplTest {
             patientRepository, eventRepository, clinicRepository, entityManager
         )
 
-        val actual = doctorDaoImpl.getPatientDoctors(GraphQLPatient.ID(patientID), mockk())
+        val actual = doctorDaoImpl.getPatientDoctors(PatientDto.PatientDtoId(patientID), mockk())
 
         assertEquals(listOf(mockkDoctor), actual)
 
@@ -95,7 +92,7 @@ internal class DoctorDaoImplTest {
                 eventRepository,
                 clinicRepository, entityManager
             )
-        val actual = doctorDaoImpl.getByEvent(GraphQLEvent.ID(eventID), mockk())
+        val actual = doctorDaoImpl.getByEvent(EventDto.EventDtoId(eventID), mockk())
 
         assertEquals(setOf(mockkDoctor), actual)
 
@@ -123,7 +120,7 @@ internal class DoctorDaoImplTest {
                 eventRepository,
                 clinicRepository, entityManager
             )
-        val actual = doctorDaoImpl.getByDoctor(GraphQLDoctor.ID(doctorID), mockk())
+        val actual = doctorDaoImpl.getByDoctor(DoctorDto.DoctorDtoId(doctorID), mockk())
 
         assertEquals(mockkDoctor, actual)
 
@@ -140,7 +137,7 @@ internal class DoctorDaoImplTest {
         val doctor = mockk<Doctor>()
         every { doctorRepository.save(any()) } returns doctor
 
-        val graphQLDoctorInput = mockk<GraphQLDoctorInput>(relaxed = true)
+        val createDoctorDto = mockk<CreateDoctorDto>(relaxed = true)
 
         every { patientRepository.findAllById(emptyList()) } returns emptyList<Patient>()
 
@@ -155,7 +152,7 @@ internal class DoctorDaoImplTest {
                 entityManager
             )
 
-        val result = doctorDaoImpl.addDoctor(graphQLDoctorInput, mockk())
+        val result = doctorDaoImpl.addDoctor(createDoctorDto, mockk())
 
         assertEquals(doctor, result)
 
@@ -171,12 +168,12 @@ internal class DoctorDaoImplTest {
 
         val doctorID = UUID.randomUUID()
 
-        val graphQLDoctorInput = mockk<GraphQLDoctorEditInput> {
-            every { did } returns GraphQLDoctor.ID(doctorID)
+        val doctorDtoInput = mockk<UpdateDoctorDto> {
+            every { did } returns DoctorDto.DoctorDtoId(doctorID)
         }
 
         val mockkDoctor = mockk<Doctor> {
-            every { setByGqlInput(graphQLDoctorInput, any()) } just runs
+            every { setByGqlInput(doctorDtoInput, any()) } just runs
         }
 
 
@@ -192,10 +189,10 @@ internal class DoctorDaoImplTest {
                 clinicRepository, entityManager
             )
 
-        val result = doctorDaoImpl.editDoctor(graphQLDoctorInput, mockk())
+        val result = doctorDaoImpl.editDoctor(doctorDtoInput, mockk())
 
         verifyAll {
-            mockkDoctor.setByGqlInput(graphQLDoctorInput, any())
+            mockkDoctor.setByGqlInput(doctorDtoInput, any())
         }
 
         assertEquals(mockkDoctor, result)
@@ -208,12 +205,12 @@ internal class DoctorDaoImplTest {
         val doctorID = UUID.randomUUID()
 
 
-        val graphQLDoctorInput = mockk<GraphQLDoctorEditInput> {
-            every { did } returns GraphQLDoctor.ID(doctorID)
+        val doctorDtoInput = mockk<UpdateDoctorDto> {
+            every { did } returns DoctorDto.DoctorDtoId(doctorID)
         }
 
         val mockkDoctor = mockk<Doctor> {
-            every { setByGqlInput(graphQLDoctorInput, any()) } just runs
+            every { setByGqlInput(doctorDtoInput, any()) } just runs
         }
 
         every { doctorRepository.getById(doctorID) } returns mockkDoctor
@@ -229,7 +226,7 @@ internal class DoctorDaoImplTest {
         )
 
         assertThrows<NotAuthorizedException> {
-            doctorDaoImpl.editDoctor(graphQLDoctorInput, mockk())
+            doctorDaoImpl.editDoctor(doctorDtoInput, mockk())
         }
     }
 

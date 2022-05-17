@@ -1,10 +1,5 @@
 package com.leftindust.mockingbird.icd
 
-import com.expediagroup.graphql.generator.annotations.GraphQLDescription
-import com.expediagroup.graphql.generator.annotations.GraphQLName
-
-@GraphQLName("ReleaseIdInput")
-@GraphQLDescription("release ids for icd-11. See https://icd.who.int/icdapi/docs2/SupportedClassifications/")
 enum class GraphQLReleaseIdInput {
     // supported for icd 11
     R_2021_05,

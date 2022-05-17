@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot", "spring-boot-starter-webflux")
     implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
     implementation("org.springframework.boot", "spring-boot-starter-actuator")
+    implementation("org.springframework.boot", "spring-boot-starter-graphql")
     implementation("org.springframework.boot", "spring-boot-starter-oauth2-resource-server")
 
     // kotlin
@@ -37,12 +38,11 @@ dependencies {
     implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core")
 
+    // logging
+    implementation("io.github.microutils", "kotlin-logging-jvm", "2.1.20")
+
     //json flattener
     implementation("com.github.wnameless.json", "json-flattener", "0.13.0")
-
-    // graphql kotlin
-    implementation("com.expediagroup", "graphql-kotlin-spring-server", "6.+")
-    implementation("com.expediagroup", "graphql-kotlin-hooks-provider", "6.+")
 
     // ktor
     implementation(platform("io.ktor:ktor-bom:2.0.0"))
@@ -63,7 +63,6 @@ dependencies {
     testImplementation("org.testcontainers", "testcontainers", "1.16.3")
     testImplementation("org.testcontainers", "postgresql", "1.16.3")
     testImplementation("org.testcontainers", "junit-jupiter", "1.16.3")
-
     // liquibase
     implementation("org.liquibase", "liquibase-core")
 
@@ -80,6 +79,7 @@ dependencies {
         exclude(module = "mockito-core")
     }
     testImplementation("org.springframework.security", "spring-security-test")
+    testImplementation("org.springframework.graphql", "spring-graphql-test")
 
     testImplementation("com.ninja-squad", "springmockk", "3.1.1")
 }

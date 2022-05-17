@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.event
 
-import com.leftindust.mockingbird.graphql.types.GraphQLDayOfWeek
+import java.time.DayOfWeek
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -10,15 +10,5 @@ class Reoccurrence(
     val endDate: LocalDate,
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    val days: List<GraphQLDayOfWeek>,
-) {
-    constructor(reoccurrence: GraphQLRecurrenceInput) : this(
-        startDate = reoccurrence.startDate.toLocalDate(),
-        endDate = reoccurrence.endDate.toLocalDate(),
-        days = reoccurrence.daysOfWeek,
-    )
-
-    override fun toString(): String {
-        return "Reoccurrence(startDate=$startDate, endDate=$endDate, days=$days)"
-    }
-}
+    val days: List<DayOfWeek>,
+)
