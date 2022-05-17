@@ -5,8 +5,8 @@ import com.google.firebase.auth.ExportedUserRecord
 import com.leftindust.mockingbird.user.UserDao
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.user.UserFetcher
-import com.leftindust.mockingbird.user.GraphQLUser
-import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
+import com.leftindust.mockingbird.user.MediqUserDto
+import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.user.UserQuery
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
@@ -29,7 +29,7 @@ internal class UserQueryTest {
         val userQuery = UserQuery(userDao, firebaseFetcher)
 
         val result = runBlocking { userQuery.user(ID("uid"), MockDataFetchingEnvironment.withDummyMediqToken) }
-        assertEquals(GraphQLUser(user), result)
+        assertEquals(MediqUserDto(user), result)
     }
 
     @Test
@@ -40,8 +40,8 @@ internal class UserQueryTest {
         }
         every { userDao.getUsers(any(), any()) } returns listOf(user)
         val userQuery = UserQuery(userDao, firebaseFetcher)
-        val result = runBlocking { userQuery.users(GraphQLRangeInput(0, 3), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken) }
-        assertEquals(listOf(GraphQLUser(user)), result)
+        val result = runBlocking { userQuery.users(RangeDto(0, 3), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken) }
+        assertEquals(listOf(MediqUserDto(user)), result)
     }
 
     @Test
@@ -67,7 +67,7 @@ internal class UserQueryTest {
 
         val userQuery = UserQuery(userDao, firebaseFetcher)
 
-        val result = runBlocking { userQuery.firebaseUsers(GraphQLRangeInput(0, 4), true, MockDataFetchingEnvironment.withDummyMediqToken) }
+        val result = runBlocking { userQuery.firebaseUsers(RangeDto(0, 4), true, MockDataFetchingEnvironment.withDummyMediqToken) }
 
         assertEquals(4, result.size)
     }

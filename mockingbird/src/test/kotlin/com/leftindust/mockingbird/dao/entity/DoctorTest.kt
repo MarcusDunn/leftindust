@@ -1,8 +1,8 @@
 package com.leftindust.mockingbird.dao.entity
 
-import com.leftindust.mockingbird.doctor.GraphQLDoctor
-import com.leftindust.mockingbird.doctor.GraphQLDoctorEditInput
-import com.leftindust.mockingbird.person.GraphQLNameInfoEditInput
+import com.leftindust.mockingbird.doctor.DoctorDto
+import com.leftindust.mockingbird.doctor.UpdateDoctorDto
+import com.leftindust.mockingbird.person.UpdateNameInfoDto
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.util.EntityStore
 import io.mockk.mockk
@@ -36,9 +36,9 @@ internal class DoctorTest {
 
         val oldMiddleName = doctor.nameInfo.middleName
 
-        val gqlInput = GraphQLDoctorEditInput(
-            did = GraphQLDoctor.ID(doctorID),
-            nameInfo = GraphQLNameInfoEditInput(firstName = "new name", lastName = "new LN")
+        val gqlInput = UpdateDoctorDto(
+            did = DoctorDto.DoctorDtoId(doctorID),
+            nameInfo = UpdateNameInfoDto(firstName = "new name", lastName = "new LN")
         )
 
         doctor.setByGqlInput(gqlInput, mockk())

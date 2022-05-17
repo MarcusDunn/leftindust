@@ -1,8 +1,5 @@
 package com.leftindust.mockingbird.icd
 
-import com.expediagroup.graphql.generator.annotations.GraphQLName
-
-@GraphQLName("Icd10Entity")
 data class GraphQLIcd10Entity(
     val context: String?,
     val id: String?,

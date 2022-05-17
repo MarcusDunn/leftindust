@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.graphql.mutations
 
 import com.leftindust.mockingbird.visit.VisitDao
 import com.leftindust.mockingbird.visit.Visit
-import com.leftindust.mockingbird.visit.GraphQLVisit
+import com.leftindust.mockingbird.visit.VisitDto
 import com.leftindust.mockingbird.visit.GraphQLVisitInput
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import com.leftindust.mockingbird.visit.VisitMutation
@@ -32,6 +32,6 @@ internal class VisitMutationTest {
 
         val result = runBlocking { visitMutation.addVisit(visitMockk, MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        assertEquals(GraphQLVisit(mockkVisit), result)
+        assertEquals(VisitDto(mockkVisit), result)
     }
 }

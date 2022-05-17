@@ -23,7 +23,7 @@ class MediqRecord(
     @Column(length = 10_000, nullable = false)
     val jsonBlob: String,
 ) : AbstractJpaPersistable() {
-    constructor(record: GraphQLPatientRecordInput, patient: Patient) : this(
+    constructor(record: CreateRecordDto, patient: Patient) : this(
         patient = patient,
         creationDate = Timestamp.from(Instant.now()),
         type = record.recordType,

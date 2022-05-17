@@ -2,16 +2,15 @@ package com.leftindust.mockingbird.dao.impl
 
 import com.leftindust.mockingbird.auth.Authorizer
 import com.leftindust.mockingbird.visit.Visit
-import com.leftindust.mockingbird.doctor.HibernateDoctorRepository
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.event.HibernateEventRepository
 import com.leftindust.mockingbird.patient.HibernatePatientRepository
 import com.leftindust.mockingbird.visit.HibernateVisitRepository
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.event.GraphQLEvent
-import com.leftindust.mockingbird.visit.GraphQLVisit
+import com.leftindust.mockingbird.event.EventDto
+import com.leftindust.mockingbird.visit.VisitDto
 import com.leftindust.mockingbird.icd.GraphQLFoundationIcdCodeInput
 import com.leftindust.mockingbird.visit.GraphQLVisitInput
-import com.leftindust.mockingbird.visit.VisitDaoImpl
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -24,7 +23,7 @@ internal class VisitDaoImplTest {
     private val authorizer = mockk<Authorizer>()
     private val eventRepository = mockk<HibernateEventRepository>()
     private val visitRepository = mockk<HibernateVisitRepository>()
-    private val doctorRepository = mockk<HibernateDoctorRepository>()
+    private val doctorRepository = mockk<DoctorRepository>()
     private val patientRepository = mockk<HibernatePatientRepository>()
     private val sessionFactory = mockk<SessionFactory>()
 
@@ -46,7 +45,7 @@ internal class VisitDaoImplTest {
             patientRepository
         )
 
-        val result = visitDaoImpl.getVisitByVid(GraphQLVisit.ID(visitID), mockk())
+        val result = visitDaoImpl.getVisitByVid(VisitDto.VisitDtoId(visitID), mockk())
 
         assertEquals(mockkVisit, result)
     }
@@ -77,7 +76,7 @@ internal class VisitDaoImplTest {
         )
 
         val visitInput = mockk<GraphQLVisitInput>(relaxed = true) {
-            every { eid } returns GraphQLEvent.ID(eventID)
+            every { eid } returns EventDto.EventDtoId(eventID)
             every { foundationIcdCodes } returns listOf(GraphQLFoundationIcdCodeInput("1222121"))
         }
 

@@ -7,14 +7,14 @@ import javax.persistence.criteria.Predicate
 import javax.persistence.metamodel.SingularAttribute
 
 data class FloatFilter(
-    val gt: Int? = null,
-    val lt: Int? = null,
+    val gt: Float? = null,
+    val lt: Float? = null,
     override val strict: Boolean,
-) : Filter<Int> {
+) : Filter<Float> {
     override fun <Z, X> toPredicate(
         criteriaBuilder: CriteriaBuilder,
         root: From<Z, X>,
-        columnName: SingularAttribute<X, Int>
+        columnName: SingularAttribute<X, Float>
     ): Predicate {
         val predicates = listOfNotNull(
             gt?.let { criteriaBuilder.greaterThanOrEqualTo(root.get(columnName), gt) },

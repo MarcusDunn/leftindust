@@ -1,35 +1,38 @@
 package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.doctor.ClinicDoctorEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.doctor.Doctor
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.EntityManager
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToMany
+import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 
 @Entity
 class Clinic(
     @Column(nullable = false)
     var name: String,
-    @OneToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(nullable = false)
+    @OneToOne(optional = false)
     var address: Address,
-    @ManyToMany(mappedBy = "clinics")
-    var doctors: MutableSet<Doctor>,
+    @OneToMany(mappedBy = "clinic", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var doctors: MutableSet<ClinicDoctorEntity> = mutableSetOf(),
 ) : AbstractJpaPersistable() {
-    fun setByGqlInput(clinic: GraphQLClinicEditInput, entityManager: EntityManager) {
-        name = clinic.name ?: name
-        clinic.address?.let { address.setByGqlInput(it) }
-        doctors = clinic.doctors?.map { entityManager.find(Doctor::class.java, it.id) }?.toMutableSet() ?: doctors
+    fun clearDoctors() {
+        doctors.forEach { it.doctor.clinics.remove(it) }
+        doctors.clear()
     }
 
-    constructor(gqlClinicInput: GraphQLClinicInput, entityManager: EntityManager) : this(
-        name = gqlClinicInput.name,
-        address = Address(gqlClinicInput.address),
-        doctors = gqlClinicInput.doctors?.map { entityManager.find(Doctor::class.java, it.id) }?.toMutableSet() ?: mutableSetOf(),
-    )
+    fun addDoctor(doctor: Doctor) {
+        val clinicDoctor = ClinicDoctorEntity(this, doctor)
+        doctors.add(clinicDoctor)
+        doctor.clinics.add(clinicDoctor)
+    }
+
+    fun removeDoctor(doctor: Doctor) {
+        val clinicDoctor = ClinicDoctorEntity(this, doctor)
+        doctors.remove(clinicDoctor)
+        doctor.clinics.remove(clinicDoctor)
+    }
 }

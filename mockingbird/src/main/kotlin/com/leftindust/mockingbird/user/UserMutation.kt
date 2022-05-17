@@ -1,28 +1,14 @@
 package com.leftindust.mockingbird.user
 
-import com.expediagroup.graphql.server.operations.Mutation
-import com.leftindust.mockingbird.auth.authToken
-import graphql.schema.DataFetchingEnvironment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Controller
 
-@Component
-class UserMutation(
-    private val userDao: UserDao,
-) : Mutation {
-    suspend fun addUser(
-        user: GraphQLUserInput,
-        dataFetchingEnvironment: DataFetchingEnvironment
-    ): GraphQLUser = withContext(Dispatchers.IO) {
-        userDao
-            .addUser(user, dataFetchingEnvironment.authToken)
-    }.let(::GraphQLUser)
+@Controller
+class UserMutationController() {
+    suspend fun addUser(user: CreateUserDto): MediqUserDto {
+        TODO()
+    }
 
-    suspend fun editUser(
-        user: GraphQLUserEditInput,
-        dataFetchingEnvironment: DataFetchingEnvironment
-    ): GraphQLUser = withContext(Dispatchers.IO) {
-        userDao.updateUser(user, dataFetchingEnvironment.authToken)
-    }.let(::GraphQLUser)
+    suspend fun editUser(user: GraphQLUserEditInput): MediqUserDto {
+        TODO()
+    }
 }

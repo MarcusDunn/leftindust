@@ -8,31 +8,71 @@ import com.google.firebase.auth.FirebaseAuth
 import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
-import com.leftindust.mockingbird.graphql.CustomSchemaGeneratorHooks
+import graphql.language.StringValue
+import graphql.schema.Coercing
+import graphql.schema.CoercingSerializeException
+import graphql.schema.GraphQLScalarType
+import java.util.UUID
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.core.io.ClassPathResource
+import org.springframework.graphql.execution.RuntimeWiringConfigurer
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ResourceServerSpec
 import org.springframework.security.web.server.SecurityWebFilterChain
-import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.web.cors.reactive.CorsUtils
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
-import kotlin.annotation.AnnotationRetention.SOURCE
-import kotlin.annotation.AnnotationTarget.FUNCTION
 
 
 @SpringBootApplication
 @EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class)
 class MockingbirdApplication {
     @Bean
-    fun hooks() = CustomSchemaGeneratorHooks(emptyList())
+    fun runtimeWiringConfigurer() = RuntimeWiringConfigurer { builder ->
+        builder.scalar(GraphQLScalarType.newScalar()
+            .name("UUID")
+            .coercing(object : Coercing<Any, Any> {
+                override fun serialize(dataFetcherResult: Any): Any {
+                    try {
+                        return UUID.fromString(dataFetcherResult.toString())
+                    } catch (e: Exception) {
+                        throw CoercingSerializeException(e)
+                    }
+                }
+
+                override fun parseValue(input: Any): Any {
+                    if (input is String) {
+                        try {
+                            return UUID.fromString(input)
+                        } catch (e: Exception) {
+                            throw CoercingSerializeException(e)
+                        }
+                    } else {
+                        throw CoercingSerializeException("UUID must be a string")
+                    }
+                }
+
+                override fun parseLiteral(input: Any): Any {
+                    if (input is StringValue) {
+                        try {
+                            return UUID.fromString(input.value)
+                        } catch (e: Exception) {
+                            throw CoercingSerializeException(e)
+                        }
+                    } else {
+                        throw CoercingSerializeException("UUID must be a StringValue")
+                    }
+                }
+            }).build()
+        )
+    }
 
     @Bean
     fun firebaseApp(firebaseConfiguration: FirebaseConfiguration): FirebaseApp =
@@ -88,7 +128,3 @@ class MockingbirdApplication {
 fun main(args: Array<String>) {
     runApplication<MockingbirdApplication>(*args)
 }
-
-@Target(FUNCTION)
-@Retention(SOURCE)
-annotation class Blocking

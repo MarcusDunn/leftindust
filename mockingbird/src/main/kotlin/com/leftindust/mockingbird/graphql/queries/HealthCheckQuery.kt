@@ -1,9 +1,10 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.expediagroup.graphql.server.operations.Query
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Component
 
 @Component
-class HealthCheckQuery: Query {
+class HealthCheckQuery {
+    @QueryMapping
     fun mockingbirdIsAlive() = true
 }

@@ -1,8 +1,5 @@
 package com.leftindust.mockingbird.icd
 
-import com.expediagroup.graphql.generator.annotations.GraphQLName
-
-@GraphQLName("IcdLinearizationEntity")
 data class GraphQLIcdLinearizationEntity(
     val context: String?,
     override val id: String?,

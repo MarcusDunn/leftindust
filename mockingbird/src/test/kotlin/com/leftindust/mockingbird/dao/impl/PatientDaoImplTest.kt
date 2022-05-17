@@ -1,23 +1,21 @@
 package com.leftindust.mockingbird.dao.impl
 
 import com.leftindust.mockingbird.auth.Authorizer
-import com.leftindust.mockingbird.form.AssignedForm
+import com.leftindust.mockingbird.survey.PatientSurveyEntity
 import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.person.Sex
-import com.leftindust.mockingbird.form.HibernateAssignedFormRepository
+import com.leftindust.mockingbird.survey.HibernateAssignedFormRepository
 import com.leftindust.mockingbird.doctor.HibernateDoctorPatientRepository
-import com.leftindust.mockingbird.doctor.HibernateDoctorRepository
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.event.HibernateEventRepository
-import com.leftindust.mockingbird.form.HibernateFormRepository
+import com.leftindust.mockingbird.survey.HibernateSurveyRepository
 import com.leftindust.mockingbird.visit.HibernateVisitRepository
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.doctor.GraphQLDoctor
-import com.leftindust.mockingbird.form.GraphQLFormTemplate
-import com.leftindust.mockingbird.graphql.types.GraphQLMonth
-import com.leftindust.mockingbird.visit.GraphQLVisit
-import com.leftindust.mockingbird.graphql.types.input.GraphQLDateInput
-import com.leftindust.mockingbird.person.GraphQLNameInfoInput
+import com.leftindust.mockingbird.doctor.DoctorDto
+import com.leftindust.mockingbird.survey.SurveyDto
+import com.leftindust.mockingbird.visit.VisitDto
+import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.patient.*
 import com.leftindust.mockingbird.util.EntityStore
 import com.leftindust.mockingbird.util.makeUUID
@@ -32,12 +30,12 @@ import org.junit.jupiter.api.Test
 internal class PatientDaoImplTest {
     private val authorizer = mockk<Authorizer>()
     private val patientRepository = mockk<HibernatePatientRepository>()
-    private val doctorRepository = mockk<HibernateDoctorRepository>()
+    private val doctorRepository = mockk<DoctorRepository>()
     private val doctorPatientRepository = mockk<HibernateDoctorPatientRepository>()
     private val visitRepository = mockk<HibernateVisitRepository>()
     private val entityManager = mockk<EntityManager>()
     private val eventRepository = mockk<HibernateEventRepository>()
-    private val formRepository = mockk<HibernateFormRepository>()
+    private val formRepository = mockk<HibernateSurveyRepository>()
     private val assignedFormRepository = mockk<HibernateAssignedFormRepository>()
 
 
@@ -49,12 +47,12 @@ internal class PatientDaoImplTest {
         coEvery { authorizer.getAuthorization(any(), any()) } returns Authorization.Allowed
         every { patientRepository.getById(patientID) } returns mockkPatient
 
-        val patientDaoImpl = PatientDaoImpl(
+        val patientDaoImpl = PatientServiceImpl(
             authorizer, patientRepository, doctorRepository,
             doctorPatientRepository, eventRepository, visitRepository, entityManager, formRepository,
             assignedFormRepository
         )
-        val actual = patientDaoImpl.getByPID(GraphQLPatient.ID(patientID), mockk())
+        val actual = patientDaoImpl.getByPatientId(PatientDto.PatientDtoId(patientID))
 
         assertEquals(mockkPatient, actual)
 
@@ -62,8 +60,8 @@ internal class PatientDaoImplTest {
 
     @Test
     fun addNewPatient() {
-        val graphQLPatientInput = GraphQLPatientInput(
-            nameInfo = GraphQLNameInfoInput(
+        val createPatientDto = CreatePatientDto(
+            nameInfo = CreateNameInfoDto(
                 firstName = "hello",
                 lastName = "world",
             ),
@@ -74,13 +72,13 @@ internal class PatientDaoImplTest {
         coEvery { authorizer.getAuthorization(any(), any()) } returns Authorization.Allowed
         every { patientRepository.save(any()) } returns mockkPatient
 
-        val patientDaoImpl = PatientDaoImpl(
+        val patientDaoImpl = PatientServiceImpl(
             authorizer, patientRepository, doctorRepository,
             doctorPatientRepository, eventRepository, visitRepository, entityManager, formRepository,
             assignedFormRepository
         )
 
-        val actual = patientDaoImpl.addNewPatient(graphQLPatientInput, mockk())
+        val actual = patientDaoImpl.addNewPatient(createPatientDto, mockk())
 
         assertEquals(mockkPatient, actual)
     }
@@ -96,13 +94,13 @@ internal class PatientDaoImplTest {
         every { patientRepository.delete(any()) } returns Unit
 
 
-        val patientDaoImpl = PatientDaoImpl(
+        val patientDaoImpl = PatientServiceImpl(
             authorizer, patientRepository, doctorRepository,
             doctorPatientRepository, eventRepository, visitRepository, entityManager, formRepository,
             assignedFormRepository
         )
 
-        val actual = patientDaoImpl.removeByPID(GraphQLPatient.ID(patientID), mockk())
+        val actual = patientDaoImpl.removeByPID(PatientDto.PatientDtoId(patientID), mockk())
 
         assertEquals(mockkPatient, actual)
     }
@@ -120,13 +118,13 @@ internal class PatientDaoImplTest {
             every { patient } returns mockkPatient
         })
 
-        val patientDaoImpl = PatientDaoImpl(
+        val patientDaoImpl = PatientServiceImpl(
             authorizer, patientRepository, doctorRepository,
             doctorPatientRepository, eventRepository, visitRepository, entityManager, formRepository,
             assignedFormRepository
         )
 
-        val actual = patientDaoImpl.getByDoctor(GraphQLDoctor.ID(doctorID), mockk())
+        val actual = patientDaoImpl.getByDoctor(DoctorDto.DoctorDtoId(doctorID), mockk())
 
         assertEquals(listOf(mockkPatient), actual)
     }
@@ -143,13 +141,13 @@ internal class PatientDaoImplTest {
             }
         }
 
-        val patientDaoImpl = PatientDaoImpl(
+        val patientDaoImpl = PatientServiceImpl(
             authorizer, patientRepository, doctorRepository,
             doctorPatientRepository, eventRepository, visitRepository, entityManager, formRepository,
             assignedFormRepository
         )
 
-        val actual = patientDaoImpl.getVisitPatients(GraphQLVisit.ID(visitID), mockk())
+        val actual = patientDaoImpl.getVisitPatients(VisitDto.VisitDtoId(visitID), mockk())
 
         assertEquals(listOf(mockkPatient), actual.toList())
     }
@@ -168,15 +166,15 @@ internal class PatientDaoImplTest {
         every { patientRepository.getById(patientID) } returns mockkPatient
         every { doctorRepository.getById(doctorID) } returns mockkDoctor
 
-        val patientDaoImpl = PatientDaoImpl(
+        val patientDaoImpl = PatientServiceImpl(
             authorizer, patientRepository, doctorRepository,
             doctorPatientRepository, eventRepository, visitRepository, entityManager, formRepository,
             assignedFormRepository
         )
 
         val actual = patientDaoImpl.addDoctorToPatient(
-            GraphQLPatient.ID(patientID),
-            GraphQLDoctor.ID(doctorID),
+            PatientDto.PatientDtoId(patientID),
+            DoctorDto.DoctorDtoId(doctorID),
             mockk()
         )
 
@@ -194,14 +192,14 @@ internal class PatientDaoImplTest {
         coEvery { authorizer.getAuthorization(any(), any()) } returns Authorization.Allowed
         every { patientRepository.getById(patientID) } returns mockkPatient
 
-        val patientDaoImpl = PatientDaoImpl(
+        val patientDaoImpl = PatientServiceImpl(
             authorizer, patientRepository, doctorRepository,
             doctorPatientRepository, eventRepository, visitRepository, entityManager, formRepository,
             assignedFormRepository
         )
 
-        val patientInput = mockk<GraphQLPatientEditInput> {
-            every { pid } returns GraphQLPatient.ID(patientID)
+        val patientInput = mockk<UpdatePatientDto> {
+            every { pid } returns PatientDto.PatientDtoId(patientID)
         }
 
         val actual = patientDaoImpl.update(patientInput, mockk())
@@ -217,7 +215,7 @@ internal class PatientDaoImplTest {
 
         coEvery { authorizer.getAuthorization(any(), any()) } returns Authorization.Allowed
 
-        val patientDaoImpl = PatientDaoImpl(
+        val patientDaoImpl = PatientServiceImpl(
             authorizer, patientRepository, doctorRepository,
             doctorPatientRepository, eventRepository, visitRepository, entityManager, formRepository,
             assignedFormRepository
@@ -238,23 +236,23 @@ internal class PatientDaoImplTest {
         every { formRepository.getById(any()) } returns form
         every { patientRepository.findAllById(any()) } returns listOf(patient)
 
-        val patientDaoImpl = PatientDaoImpl(
+        val patientDaoImpl = PatientServiceImpl(
             authorizer, patientRepository, doctorRepository,
             doctorPatientRepository, eventRepository, visitRepository, entityManager, formRepository,
             assignedFormRepository
         )
 
-        every { assignedFormRepository.save(any()) } returns AssignedForm(form, patient).apply { id = makeUUID("yeet") }
+        every { assignedFormRepository.save(any()) } returns PatientSurveyEntity(form, patient).apply { id = makeUUID("yeet") }
 
         patientDaoImpl.assignForms(
-            listOf(GraphQLPatient.ID(makeUUID("qwsdq"))),
-            GraphQLFormTemplate.ID(makeUUID("d3f")),
+            listOf(PatientDto.PatientDtoId(makeUUID("qwsdq"))),
+            SurveyDto.SurveyDtoId(makeUUID("d3f")),
             mockk()
         )
 
         assertEquals(
-            patient.assignedForms.onEach { it.id = makeUUID("yeet") }.toList(),
-            listOf(AssignedForm(form, patient).apply { id = makeUUID("yeet") })
+            patient.patientFormEntities.onEach { it.id = makeUUID("yeet") }.toList(),
+            listOf(PatientSurveyEntity(form, patient).apply { id = makeUUID("yeet") })
         )
     }
 }

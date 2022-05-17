@@ -3,9 +3,9 @@ package com.leftindust.mockingbird.graphql.mutations
 import com.leftindust.mockingbird.doctor.DoctorDao
 import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.doctor.DoctorMutation
-import com.leftindust.mockingbird.doctor.GraphQLDoctor
-import com.leftindust.mockingbird.doctor.GraphQLDoctorEditInput
-import com.leftindust.mockingbird.doctor.GraphQLDoctorInput
+import com.leftindust.mockingbird.doctor.DoctorDto
+import com.leftindust.mockingbird.doctor.UpdateDoctorDto
+import com.leftindust.mockingbird.doctor.CreateDoctorDto
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
@@ -28,15 +28,15 @@ internal class DoctorMutationTest {
             every { addDoctor(any(), any()) } returns mockkDoctor
         }
 
-        val mockkGraphQLDoctorInput = mockk<GraphQLDoctorInput> {
+        val mockkCreateDoctorDto = mockk<CreateDoctorDto> {
             every { user } returns null
         }
 
         val doctorMutation = DoctorMutation(mockkDoctorDao, mockk())
 
-        val result = runBlocking { doctorMutation.addDoctor(mockkGraphQLDoctorInput, MockDataFetchingEnvironment.withDummyMediqToken) }
+        val result = runBlocking { doctorMutation.addDoctor(mockkCreateDoctorDto, MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        val expected = GraphQLDoctor(mockkDoctor)
+        val expected = DoctorDto(mockkDoctor)
 
         assertEquals(expected, result)
     }
@@ -53,13 +53,13 @@ internal class DoctorMutationTest {
             every { editDoctor(any(), any()) } returns mockkDoctor
         }
 
-        val mockkGraphQLDoctorInput = mockk<GraphQLDoctorEditInput>()
+        val mockkGraphQLDoctorInput = mockk<UpdateDoctorDto>()
 
         val doctorMutation = DoctorMutation(mockkDoctorDao, mockk())
 
         val result = runBlocking { doctorMutation.editDoctor(mockkGraphQLDoctorInput, MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        val expected = GraphQLDoctor(mockkDoctor)
+        val expected = DoctorDto(mockkDoctor)
 
         assertEquals(expected, result)
     }

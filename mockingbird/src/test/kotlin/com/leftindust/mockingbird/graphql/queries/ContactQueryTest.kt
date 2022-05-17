@@ -1,10 +1,10 @@
 package com.leftindust.mockingbird.graphql.queries
 
-import com.leftindust.mockingbird.contact.ContactDao
+import com.leftindust.mockingbird.contact.ReadContactService
 import com.leftindust.mockingbird.contact.ContactQuery
-import com.leftindust.mockingbird.contact.EmergencyContact
-import com.leftindust.mockingbird.contact.GraphQLEmergencyContact
-import com.leftindust.mockingbird.patient.GraphQLPatient
+import com.leftindust.mockingbird.contact.Contact
+import com.leftindust.mockingbird.contact.ContactDto
+import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
 import io.mockk.mockk
@@ -14,27 +14,27 @@ import org.junit.jupiter.api.Test
 import java.util.*
 
 internal class ContactQueryTest {
-    private val contactDao = mockk<ContactDao>()
+    private val readContactService = mockk<ReadContactService>()
 
     @Test
     fun getContactsByPatient() {
         val patientId = UUID.randomUUID()
 
-        val mockkContact = mockk<EmergencyContact>(relaxed = true)
+        val mockkContact = mockk<Contact>(relaxed = true)
 
-        val graphQLEmergencyContact = GraphQLEmergencyContact(mockkContact)
+        val contactDto = ContactDto(mockkContact)
 
-        every { contactDao.getPatientContacts(GraphQLPatient.ID(patientId), any()) } returns listOf(mockkContact)
+        every { readContactService.getByPatientId(PatientDto.PatientDtoId(patientId), any()) } returns listOf(mockkContact)
 
-        val contactQuery = ContactQuery(contactDao)
+        val contactQuery = ContactQuery(readContactService)
 
         val result = runBlocking {
             contactQuery.getContactsByPatient(
-                pid = GraphQLPatient.ID(patientId),
+                patientId = PatientDto.PatientDtoId(patientId),
                 dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
             )
         }
 
-        assertEquals(listOf(graphQLEmergencyContact), result)
+        assertEquals(listOf(contactDto), result)
     }
 }
