@@ -1,0 +1,23 @@
+schema {
+    query: Query
+}
+
+type Query {
+    mockingbirdIsAlive: Boolean
+    clinicByCid(id: ClinicIdInput!): Clinic
+}
+
+type ClinicId {
+    id: UUID
+}
+
+input ClinicIdInput {
+    id: UUID
+}
+
+type Clinic {
+    id: ClinicId
+    name: String
+}
+
+scalar UUID

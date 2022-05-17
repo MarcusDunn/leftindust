@@ -2,32 +2,30 @@ package com.leftindust.mockingbird.util
 
 import com.google.gson.JsonObject
 import com.leftindust.mockingbird.address.Address
-import com.leftindust.mockingbird.country.CountryState
-import com.leftindust.mockingbird.address.GraphQLAddressInput
-import com.leftindust.mockingbird.address.GraphQLAddressType
-import com.leftindust.mockingbird.contact.GraphQLEmergencyContactInput
-import com.leftindust.mockingbird.country.GraphQLCanadianProvince
-import com.leftindust.mockingbird.country.GraphQLCountry
-import com.leftindust.mockingbird.email.GraphQLEmailInput
-import com.leftindust.mockingbird.email.GraphQLEmailType
+import com.leftindust.mockingbird.address.CreateAddressDto
+import com.leftindust.mockingbird.address.AddressType
+import com.leftindust.mockingbird.contact.CreateContactDto
+import com.leftindust.mockingbird.country.CanadianProvince
+import com.leftindust.mockingbird.country.Countries
+import com.leftindust.mockingbird.email.EmailType
 import com.leftindust.mockingbird.record.RecordType
 import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.email.Email
 import com.leftindust.mockingbird.event.Event
-import com.leftindust.mockingbird.event.GraphQLEventInput
+import com.leftindust.mockingbird.event.CreateEventDto
 import com.leftindust.mockingbird.extensions.gqlID
-import com.leftindust.mockingbird.form.*
+import com.leftindust.mockingbird.survey.*
 import com.leftindust.mockingbird.graphql.types.*
 import com.leftindust.mockingbird.graphql.types.input.*
 import com.leftindust.mockingbird.group.MediqGroup
-import com.leftindust.mockingbird.patient.GraphQLPatient
-import com.leftindust.mockingbird.patient.GraphQLPatientInput
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.patient.CreatePatientDto
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.person.*
-import com.leftindust.mockingbird.phone.GraphQLPhoneInput
-import com.leftindust.mockingbird.phone.GraphQLPhoneType
+import com.leftindust.mockingbird.phone.CreatePhoneDto
+import com.leftindust.mockingbird.phone.PhoneType
 import com.leftindust.mockingbird.phone.Phone
-import com.leftindust.mockingbird.record.GraphQLPatientRecordInput
+import com.leftindust.mockingbird.record.CreateRecordDto
 import com.leftindust.mockingbird.record.MediqRecord
 import com.leftindust.mockingbird.user.MediqUser
 import java.sql.Date
@@ -46,18 +44,14 @@ object EntityStore {
         dateOfBirth = Date.valueOf(LocalDate.of(2020, 1, 2)),
         addresses = setOf(
             Address(
-                type = GraphQLAddressType.Home,
-                city = "North Vancouver",
-                countryState = CountryState(
-                    country = GraphQLCountry.Canada,
-                    province = GraphQLCanadianProvince.Provinces.Alberta.name
-                ),
+                type = AddressType.Home,
                 address = "874 West 1st Street",
+                city = "North Vancouver",
                 postalCode = "y7h1p4",
             )
         ),
-        emails = setOf(Email(email = "hello@world.ca", type = GraphQLEmailType.Personal)),
-        phones = setOf(Phone("6632231111", GraphQLPhoneType.Home)),
+        emails = setOf(Email(email = "hello@world.ca", type = EmailType.Personal)),
+        phones = setOf(Phone("6632231111", PhoneType.Home)),
         sex = Sex.Male,
         gender = Sex.Male.name,
         ethnicity = Ethnicity.White,
@@ -75,33 +69,29 @@ object EntityStore {
         dateOfBirth = Date.valueOf(LocalDate.of(2018, 1, 24)),
         addresses = setOf(
             Address(
-                type = GraphQLAddressType.Home,
+                type = AddressType.Home,
                 address = "999 East 7th Drive",
                 city = "West Vancouver",
-                countryState = CountryState(
-                    country = GraphQLCountry.Canada,
-                    province = GraphQLCanadianProvince.Provinces.Alberta.name
-                ),
                 postalCode = "y7h1p5",
             )
         ),
-        emails = setOf(Email(email = "world@hello.ca", type = GraphQLEmailType.Personal)),
-        phones = setOf(Phone("6632231211", GraphQLPhoneType.Home)),
+        emails = setOf(Email(email = "world@hello.ca", type = EmailType.Personal)),
+        phones = setOf(Phone("6632231211", PhoneType.Home)),
         title = "sir",
         patients = mutableSetOf(),
         schedule = emptySet(),
     )
 
-    fun graphQLPatientInput(testName: String) = GraphQLPatientInput(
-        nameInfo = GraphQLNameInfoInput(
+    fun graphQLPatientInput(testName: String) = CreatePatientDto(
+        nameInfo = CreateNameInfoDto(
             firstName = "aydan",
             middleName = testName,
             lastName = "gaite",
         ),
         phones = listOf(
-            GraphQLPhoneInput(
+            CreatePhoneDto(
                 number = "11111111",
-                type = GraphQLPhoneType.Work,
+                type = PhoneType.Work,
             )
         ),
         dateOfBirth = GraphQLDateInput(
@@ -110,18 +100,18 @@ object EntityStore {
             year = 1948
         ),
         addresses = listOf(
-            GraphQLAddressInput(
-                addressType = GraphQLAddressType.Home,
+            CreateAddressDto(
+                addressType = AddressType.Home,
                 address = "6732 main st",
                 city = "East Vancouver",
-                country = GraphQLCountry.Canada,
-                province = GraphQLCanadianProvince.Provinces.NewBrunswick.name,
+                country = Countries.Canada,
+                province = CanadianProvince.Provinces.NewBrunswick.name,
                 postalCode = "h221234",
             )
         ),
         emails = listOf(
             GraphQLEmailInput(
-                type = GraphQLEmailType.School,
+                type = EmailType.School,
                 email = "hello@mars.ca",
             )
         ),
@@ -129,24 +119,24 @@ object EntityStore {
         sex = Sex.Male,
         ethnicity = Ethnicity.AmericanAboriginal,
         emergencyContacts = listOf(
-            GraphQLEmergencyContactInput(
+            CreateContactDto(
                 firstName = "mom firstName",
                 middleName = "mom middleName",
                 lastName = "mom lastName",
                 relationship = Relationship.Parent,
                 phones = listOf(
-                    GraphQLPhoneInput(
+                    CreatePhoneDto(
                         number = "111111111",
-                        type = GraphQLPhoneType.Work,
+                        type = PhoneType.Work,
                     ),
-                    GraphQLPhoneInput(
+                    CreatePhoneDto(
                         number = "223223222",
-                        type = GraphQLPhoneType.Home,
+                        type = PhoneType.Home,
                     ),
                 ),
                 emails = listOf(
                     GraphQLEmailInput(
-                        type = GraphQLEmailType.School,
+                        type = EmailType.School,
                         email = "bye@saturn.uk",
                     )
                 )
@@ -155,7 +145,7 @@ object EntityStore {
     )
 
     fun graphQLEventInput(testName: String) =
-        GraphQLEventInput(
+        CreateEventDto(
             title = testName,
             description = "some description",
             start = GraphQLUtcTime(Timestamp.valueOf("2020-01-02 09:00:00")),
@@ -175,13 +165,9 @@ object EntityStore {
     )
 
     fun address(testName: String) = Address(
-        type = GraphQLAddressType.Other,
+        type = AddressType.Other,
         address = testName,
         city = "East Vancouver",
-        countryState = CountryState(
-            country = GraphQLCountry.Canada,
-            province = GraphQLCanadianProvince.Provinces.Yukon.name
-        ),
         postalCode = "23efa",
     )
 
@@ -197,9 +183,9 @@ object EntityStore {
         )
     }
 
-    fun graphQLPatient(testName: String): GraphQLPatient {
-        return GraphQLPatient(
-            pid = GraphQLPatient.ID(UUID.nameUUIDFromBytes("bytes!".encodeToByteArray())),
+    fun graphQLPatient(testName: String): PatientDto {
+        return PatientDto(
+            pid = PatientDto.PatientDtoId(UUID.nameUUIDFromBytes("bytes!".encodeToByteArray())),
             firstName = testName,
             middleName = "middle name!",
             lastName = "last name!",
@@ -221,66 +207,66 @@ object EntityStore {
         )
     }
 
-    fun graphQLPatientRecordInput(testName: String): GraphQLPatientRecordInput {
-        return GraphQLPatientRecordInput(
-            patient = GraphQLPatient.ID(UUID.nameUUIDFromBytes("eb".toByteArray())),
+    fun graphQLPatientRecordInput(testName: String): CreateRecordDto {
+        return CreateRecordDto(
+            patient = PatientDto.PatientDtoId(UUID.nameUUIDFromBytes("eb".toByteArray())),
             jsonBlob = "{testName: \"$testName\"}",
             recordType = RecordType.Blood
         )
     }
 
-    fun form(testName: String): Form {
-        return Form(
+    fun form(testName: String): Survey {
+        return Survey(
             name = "$testName. find out what kind of harry potter house elf you are",
             sections = setOf(
-                FormSection(
+                SurveySection(
                     name = "$testName. astrological sign",
                     number = 1,
                     description = null,
                     fields = setOf(
-                        FormField(
+                        SurveyFieldEntity(
                             title = "$testName. when were you born?",
-                            dataType = DataType.Date,
+                            surveyFieldType = SurveyFieldType.Date,
                             dateUpperBound = Date(Instant.now().toEpochMilli()),
                             dateLowerBound = null,
                             number = 1,
                         )
                     )
                 ),
-                FormSection(
+                SurveySection(
                     name = "$testName. body type",
                     number = 2,
                     description = null,
                     fields = setOf(
-                        FormField(
+                        SurveyFieldEntity(
                             title = "$testName. u fat?",
-                            dataType = DataType.SingleMultiSelect,
+                            surveyFieldType = SurveyFieldType.SingleMultiSelect,
                             multiSelectPossibilities = listOf("yes", "no"),
                             number = 1,
                         ),
-                        FormField(
+                        SurveyFieldEntity(
                             title = "$testName. u tall?",
-                            dataType = DataType.SingleMultiSelect,
+                            surveyFieldType = SurveyFieldType.SingleMultiSelect,
                             multiSelectPossibilities = listOf("yes", "no"),
                             number = 2,
                         )
                     )
                 ),
-                FormSection(
+                SurveySection(
                     name = "$testName. how much you like ice cream",
                     number = 3,
                     description = null,
                     fields = mutableSetOf(
-                        FormField(
+                        SurveyFieldEntity(
                             title = "$testName. how long have you had this opinion on ice cream",
                             number = 1,
-                            dataType = DataType.Date,
+                            surveyFieldType = SurveyFieldType.Date,
                             dateUpperBound = Date(Instant.now().toEpochMilli()),
                             dateLowerBound = null
                         ),
-                        FormField(
+                        SurveyFieldEntity(
                             title = "$testName. how long have you had this opinion on ice cream",
-                            dataType = DataType.Date,
+                            surveyFieldType = SurveyFieldType.Date,
                             dateUpperBound = Date(Instant.now().toEpochMilli()),
                             number = 2,
                             dateLowerBound = null
@@ -291,22 +277,22 @@ object EntityStore {
         )
     }
 
-    fun formField(testName: String) = FormField(
+    fun formField(testName: String) = SurveyFieldEntity(
         title = "$testName. what is your least favorite way to say yes",
-        dataType = DataType.SingleMultiSelect,
+        surveyFieldType = SurveyFieldType.SingleMultiSelect,
         multiSelectPossibilities = listOf("yes", "yee", "ye", "yeee"),
         number = 1,
     )
 
-    fun graphQLFormInput(testName: String): GraphQLFormTemplateInput {
-        return GraphQLFormTemplateInput(
+    fun graphQLFormInput(testName: String): CreateSurveyDto {
+        return CreateSurveyDto(
             name = testName,
             sections = emptyList(),
         )
     }
 
-    fun formData(testName: String, patient: Patient): FormData {
-        return FormData(JsonObject().apply {
+    fun formData(testName: String, patient: Patient): SurveyResponse {
+        return SurveyResponse(JsonObject().apply {
             addProperty("hello", testName)
         }, patient)
     }

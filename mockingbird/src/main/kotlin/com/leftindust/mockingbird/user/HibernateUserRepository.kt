@@ -6,6 +6,4 @@ import java.util.*
 
 @Transactional
 interface HibernateUserRepository : JpaRepository<MediqUser, UUID> {
-    fun getByUniqueId(uniqueId: String): MediqUser
-    fun findByUniqueId(uniqueId: String): MediqUser?
 }

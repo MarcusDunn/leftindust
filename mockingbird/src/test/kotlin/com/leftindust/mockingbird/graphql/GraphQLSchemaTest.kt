@@ -25,7 +25,7 @@ class GraphQLSchemaTest(
             .exchange()
             .expectBody()
             .returnResult()
-        val schemaFile = ClassPathResource("schema.graphqls").file
+        val schemaFile = ClassPathResource("schema.graphqls.approved").file
         try {
             assertEquals(
                 request.responseBody!!.decodeToString().filterNot { it.isWhitespace() },

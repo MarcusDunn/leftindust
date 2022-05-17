@@ -18,6 +18,10 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken%40system.gserviceaccount.com
+  graphql:
+    graphiql:
+      enabled: true
+    path: graphql/v2
 icd:
   client:
-    url: "localhost:80/icd"
+    url: localhost:80/icd

@@ -1,9 +1,7 @@
 package com.leftindust.mockingbird.patient
 
 import java.util.UUID
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.CrudRepository
 
-@Suppress("FunctionName")
-interface HibernatePatientRepository : JpaRepository<Patient, UUID> {
-    fun findByUser_UniqueId(user_uniqueId: String): Patient?
+interface HibernatePatientRepository : CrudRepository<Patient, UUID> {
 }

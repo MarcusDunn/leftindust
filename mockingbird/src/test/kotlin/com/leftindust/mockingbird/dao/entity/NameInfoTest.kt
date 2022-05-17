@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.dao.entity
 
 import com.expediagroup.graphql.generator.execution.OptionalInput
-import com.leftindust.mockingbird.person.GraphQLNameInfoEditInput
+import com.leftindust.mockingbird.person.UpdateNameInfoDto
 import com.leftindust.mockingbird.person.NameInfo
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -17,7 +17,7 @@ internal class NameInfoTest {
         )
 
         original.setByGqlInput(
-            GraphQLNameInfoEditInput(
+            UpdateNameInfoDto(
                 firstName = null,
                 middleName = OptionalInput.Undefined,
                 lastName = "earth"

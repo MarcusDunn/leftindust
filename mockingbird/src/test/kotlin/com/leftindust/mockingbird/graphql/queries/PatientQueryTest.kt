@@ -1,10 +1,10 @@
 package com.leftindust.mockingbird.graphql.queries
 
 import com.leftindust.mockingbird.patient.Patient
-import com.leftindust.mockingbird.patient.ReadPatientDao
-import com.leftindust.mockingbird.patient.GraphQLPatient
-import com.leftindust.mockingbird.graphql.types.input.GraphQLRangeInput
-import com.leftindust.mockingbird.patient.GraphQLPatientExample
+import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.graphql.types.input.RangeDto
+import com.leftindust.mockingbird.patient.PatientExampleDto
 import com.leftindust.mockingbird.graphql.types.search.filter.CaseAgnosticStringFilter
 import com.leftindust.mockingbird.patient.PatientQuery
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class PatientQueryTest {
-    private val readPatientDao = mockk<ReadPatientDao>()
+    private val readPatientService = mockk<ReadPatientService>()
 
     @Test
     fun patient() {
@@ -25,14 +25,14 @@ internal class PatientQueryTest {
         val mockkPatient = mockk<Patient>(relaxed = true) {
             every { id } returns patientID
         }
-        every { readPatientDao.getPatientsByPids(listOf(GraphQLPatient.ID(patientID)), any()) } returns listOf(
+        every { readPatientService.getPatientsByPids(listOf(PatientDto.PatientDtoId(patientID)), any()) } returns listOf(
             mockkPatient
         )
 
-        val graphQLPatient = GraphQLPatient(mockkPatient)
-        val patientQuery = PatientQuery(readPatientDao)
-        val result = runBlocking { patientQuery.patientsByPid(listOf(GraphQLPatient.ID(patientID)), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken) }
-        assertEquals(listOf(graphQLPatient), result)
+        val patientDto = PatientDto(mockkPatient)
+        val patientQuery = PatientQuery(readPatientService)
+        val result = runBlocking { patientQuery.patientsByPatientId(listOf(PatientDto.PatientDtoId(patientID)), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken) }
+        assertEquals(listOf(patientDto), result)
     }
 
     @Test
@@ -43,17 +43,17 @@ internal class PatientQueryTest {
             every { id } returns patientID
         }
 
-        every { readPatientDao.getMany(any(), any(), any()) } returns listOf(
+        every { readPatientService.getMany(any(), any(), any()) } returns listOf(
             mockkPatient,
             mockkPatient,
             mockkPatient,
             mockkPatient,
             mockkPatient
         )
-        val patientQuery = PatientQuery(readPatientDao)
-        val graphQLPatient = GraphQLPatient(mockkPatient)
-        val result = runBlocking { patientQuery.patientsByRange(GraphQLRangeInput(0, 5), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken) }
-        assertEquals((0 until 5).map { graphQLPatient }, result)
+        val patientQuery = PatientQuery(readPatientService)
+        val patientDto = PatientDto(mockkPatient)
+        val result = runBlocking { patientQuery.patientsByRange(RangeDto(0, 5), dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken) }
+        assertEquals((0 until 5).map { patientDto }, result)
     }
 
     @Test
@@ -64,24 +64,24 @@ internal class PatientQueryTest {
             every { id } returns patientID
         }
 
-        every { readPatientDao.searchByExample(any(), any()) } returns listOf(
+        every { readPatientService.searchByExample(any(), any()) } returns listOf(
             mockkPatient,
             mockkPatient,
             mockkPatient,
             mockkPatient,
             mockkPatient
         )
-        val patientQuery = PatientQuery(readPatientDao)
-        val graphQLPatient = GraphQLPatient(mockkPatient)
+        val patientQuery = PatientQuery(readPatientService)
+        val patientDto = PatientDto(mockkPatient)
         val result = runBlocking {
             patientQuery.patientsByExample(
-                GraphQLPatientExample(
+                PatientExampleDto(
                     firstName = CaseAgnosticStringFilter(eq = "Marcus", strict = true),
                     strict = true
                 ),
                 dataFetchingEnvironment = MockDataFetchingEnvironment.withDummyMediqToken
             )
         }
-        assertEquals((0 until 1).map { graphQLPatient }, result)
+        assertEquals((0 until 1).map { patientDto }, result)
     }
 }

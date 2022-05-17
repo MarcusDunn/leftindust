@@ -1,9 +1,9 @@
 package com.leftindust.mockingbird.dao.entity
 
 import com.leftindust.mockingbird.doctor.Doctor
-import com.leftindust.mockingbird.patient.GraphQLPatient
-import com.leftindust.mockingbird.person.GraphQLNameInfoEditInput
-import com.leftindust.mockingbird.patient.GraphQLPatientEditInput
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.person.UpdateNameInfoDto
+import com.leftindust.mockingbird.patient.UpdatePatientDto
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.util.EntityStore
 import io.mockk.every
@@ -50,9 +50,9 @@ internal class PatientTest {
         val patientID = UUID.randomUUID()
         val patient = EntityStore.patient("PatientTest.setByGqlInput").apply { id = patientID }
 
-        val gqlInput = GraphQLPatientEditInput(
-            pid = GraphQLPatient.ID(patientID),
-            nameInfo = GraphQLNameInfoEditInput(
+        val gqlInput = UpdatePatientDto(
+            pid = PatientDto.PatientDtoId(patientID),
+            nameInfo = UpdateNameInfoDto(
                 firstName = "grape"
             )
         )

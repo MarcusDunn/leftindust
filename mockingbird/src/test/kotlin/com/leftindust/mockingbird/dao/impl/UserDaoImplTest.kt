@@ -2,14 +2,13 @@ package com.leftindust.mockingbird.dao.impl
 
 import com.leftindust.mockingbird.auth.Authorizer
 import com.leftindust.mockingbird.user.MediqUser
-import com.leftindust.mockingbird.doctor.HibernateDoctorRepository
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.group.HibernateGroupRepository
 import com.leftindust.mockingbird.patient.HibernatePatientRepository
 import com.leftindust.mockingbird.user.HibernateUserRepository
 import com.leftindust.mockingbird.extensions.Authorization
-import com.leftindust.mockingbird.patient.GraphQLPatient
-import com.leftindust.mockingbird.user.GraphQLUserInput
-import com.leftindust.mockingbird.user.UserDaoImpl
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.user.CreateUserDto
 import com.leftindust.mockingbird.util.EntityStore
 import io.mockk.coEvery
 import io.mockk.every
@@ -22,7 +21,7 @@ internal class UserDaoImplTest {
     private val authorizer = mockk<Authorizer>()
     private val userRepository = mockk<HibernateUserRepository>()
     private val groupRepository = mockk<HibernateGroupRepository>()
-    private val doctorRepository = mockk<HibernateDoctorRepository>()
+    private val doctorRepository = mockk<DoctorRepository>()
     private val patientRepository = mockk<HibernatePatientRepository>()
 
     @Test
@@ -40,7 +39,7 @@ internal class UserDaoImplTest {
 
     @Test
     fun addUser() {
-        val mockkUser = mockk<GraphQLUserInput>(relaxed = true) {
+        val mockkUser = mockk<CreateUserDto>(relaxed = true) {
             every { uid } returns "uid"
             every { group } returns null
             every { doctor } returns null
@@ -59,7 +58,7 @@ internal class UserDaoImplTest {
 
     @Test
     fun findByPatient() {
-        val pid = GraphQLPatient.ID(UUID.nameUUIDFromBytes("kuyvl".toByteArray()))
+        val pid = PatientDto.PatientDtoId(UUID.nameUUIDFromBytes("kuyvl".toByteArray()))
 
         coEvery { authorizer.getAuthorization(any(), any()) } returns Authorization.Allowed
 

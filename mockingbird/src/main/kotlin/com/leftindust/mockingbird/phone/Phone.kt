@@ -12,7 +12,5 @@ class Phone(
     var number: String,
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    var type: GraphQLPhoneType
-) : AbstractJpaPersistable() {
-    constructor(graphQLPhone: GraphQLPhoneInput) : this(graphQLPhone.number, graphQLPhone.type)
-}
+    var type: PhoneType,
+) : AbstractJpaPersistable()

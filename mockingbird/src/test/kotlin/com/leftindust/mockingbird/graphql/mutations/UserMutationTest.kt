@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.graphql.mutations
 
 import com.leftindust.mockingbird.user.UserDao
 import com.leftindust.mockingbird.user.MediqUser
-import com.leftindust.mockingbird.user.GraphQLUser
+import com.leftindust.mockingbird.user.MediqUserDto
 import com.leftindust.mockingbird.user.UserMutation
 import com.leftindust.mockingbird.util.unit.MockDataFetchingEnvironment
 import io.mockk.every
@@ -26,7 +26,7 @@ internal class UserMutationTest {
             }
         }
 
-        val mockkGraphQLUser = GraphQLUser(mockkUser)
+        val mockkMediqUserDto = MediqUserDto(mockkUser)
 
         every { userDao.addUser(any(), any()) } returns mockkUser
 
@@ -34,6 +34,6 @@ internal class UserMutationTest {
 
         val result = runBlocking { userMutation.addUser(mockk(), MockDataFetchingEnvironment.withDummyMediqToken) }
 
-        assertEquals(mockkGraphQLUser, result)
+        assertEquals(mockkMediqUserDto, result)
     }
 }

@@ -1,25 +1,34 @@
 package com.leftindust.mockingbird.user
 
 import com.leftindust.mockingbird.person.NameInfo
-import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.group.MediqGroup
 import javax.persistence.CascadeType
-import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
 
 @Entity
 class MediqUser(
-    @Column(unique = true, nullable = false)
+    @Id
     val uniqueId: String,
-    @OneToOne(cascade = [(CascadeType.ALL)], orphanRemoval = false)
+    @ManyToOne
     var group: MediqGroup? = null,
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne
     var nameInfo: NameInfo,
-) : AbstractJpaPersistable() {
-    constructor(graphQLUserInput: GraphQLUserInput, group: MediqGroup?) : this(
-        nameInfo = NameInfo(graphQLUserInput.nameInfo),
-        uniqueId = graphQLUserInput.uid,
-        group = group,
-    )
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MediqUser
+
+        if (uniqueId != other.uniqueId) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return uniqueId.hashCode()
+    }
 }
