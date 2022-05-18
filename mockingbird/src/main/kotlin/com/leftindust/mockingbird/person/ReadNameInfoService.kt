@@ -7,5 +7,5 @@ interface CreateNameInfoService {
 }
 
 interface ReadNameInfoService {
-    fun getByUniqueId(mediqUserUid: MediqUserDto.Uid): NameInfo?
+    fun getByUniqueId(mediqUserUniqueId: MediqUserDto.MediqUserUniqueId): NameInfo?
 }

@@ -13,7 +13,7 @@ class ReadUserServiceImpl : ReadUserService {
     }
 
     override suspend fun getByUserUid(uid: String): MediqUser? {
-        TODO("Not yet implemented")
+        return null
     }
 
     override suspend fun getUsers(range: RangeDto): Flow<MediqUser> {
