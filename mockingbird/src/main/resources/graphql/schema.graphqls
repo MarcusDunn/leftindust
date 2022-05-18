@@ -1,18 +1,90 @@
 schema {
     query: Query
+    mutation: Mutation
+}
+
+type Mutation {
+    addClinic(clinic: CreateClinic!): Clinic!
+}
+
+type DoctorId {
+    value: UUID!
+}
+
+input DoctorIdInput {
+    value: UUID!
+}
+
+input CreateClinic {
+    name: String!
+    address: CreateAddress!
+    doctors: [DoctorIdInput!]!
+}
+
+enum AddressType {
+    Home
+    Work
+    School
+    Apartment
+    Other
+}
+
+enum Countries {
+    Canada
+}
+
+input CreateAddress {
+    addressType: AddressType!
+    address: String!
+    city: String!
+    country: Countries!
+    province: String!
+    postalCode: String!
 }
 
 type Query {
-    mockingbirdIsAlive: Boolean
-    clinicByCid(id: ClinicIdInput!): Clinic
+    mockingbirdIsAlive: Boolean!
+    clinicByClinicId(clinicId: ClinicIdInput!): Clinic
+    userByUserUniqueId(uniqueId: String): MediqUser
+}
+
+type MediqUserId {
+    value: UUID
+}
+
+type MediqGroupId {
+    value: MediqGroupId
+}
+
+type MediqGroup {
+    id: MediqGroupId
+    name: String
+}
+
+type MediqUser {
+    id: MediqUserId
+    group: MediqGroup
+    name: NameInfo
+    accountDetails: UserAccountDetails
+}
+
+type UserAccountDetails {
+    isRegistered: Boolean!
+    email: String
+}
+
+type NameInfo {
+    firstName: String
+    middleName: String
+    lastName: String
 }
 
 type ClinicId {
-    id: UUID
+    value: UUID
 }
 
 input ClinicIdInput {
-    id: UUID
+    value: UUID
 }
 
 type Clinic {

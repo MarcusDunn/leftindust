@@ -26,10 +26,4 @@ class ClinicQueryController(
             null
         }
     }
-
-    @QueryMapping
-    suspend fun clinicByDoctor(doctorDto: DoctorDto): Flow<Clinic> {
-        return readClinicService.getByDoctor(doctorDto.id)
-            ?: throw IllegalStateException("No doctor found via ${ReadClinicService::getByDoctor.name} but id was obtained from $doctorDto")
-    }
 }

@@ -1,10 +1,4 @@
-graphql:
-  packages:
-    - "com.leftindust.mockingbird"
-    - "java.util.UUID"
 spring:
-  main:
-    web-application-type: reactive
   jpa:
     show-sql: true
   liquibase:
@@ -21,7 +15,9 @@ spring:
   graphql:
     graphiql:
       enabled: true
-    path: graphql/v2
 icd:
   client:
     url: localhost:80/icd
+logging:
+  level:
+    root: debug
