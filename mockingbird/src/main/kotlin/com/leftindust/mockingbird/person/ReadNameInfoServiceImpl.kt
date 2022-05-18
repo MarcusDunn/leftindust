@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 class ReadNameInfoServiceImpl(
     @Autowired private val hibernateUserRepository: HibernateUserRepository,
 ) : ReadNameInfoService {
-    override fun getByUniqueId(mediqUserUid: MediqUserDto.Uid): NameInfo? {
+    override fun getByUniqueId(mediqUserUniqueId: MediqUserDto.MediqUserUniqueId): NameInfo? {
         TODO("Not yet implemented")
     }
 }

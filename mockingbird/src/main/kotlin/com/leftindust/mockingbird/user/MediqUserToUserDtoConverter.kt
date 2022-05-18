@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 class MediqUserToUserDtoConverter(private val mediqGroupToMediqGroupDtoConverter: InfallibleConverter<MediqGroup, MediqGroupDto>) : InfallibleConverter<MediqUser, MediqUserDto> {
     override fun convert(source: MediqUser): MediqUserDto {
         return MediqUserDto(
-            MediqUserDto.Uid(source.uniqueId),
+            MediqUserDto.MediqUserUniqueId(source.uniqueId),
             source.group?.let { mediqGroupToMediqGroupDtoConverter.convert(it) }
         )
     }
