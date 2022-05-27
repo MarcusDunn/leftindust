@@ -12,7 +12,7 @@ plugins {
     kotlin("plugin.allopen") version "1.6.20"
     kotlin("plugin.jpa") version "1.6.20"
     id("org.jetbrains.kotlinx.kover") version "0.5.0"
-    id("org.springframework.boot") version "2.7.0-SNAPSHOT"
+    id("org.springframework.boot") version "2.7.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
     // liquibase
@@ -21,8 +21,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven { url = URI.create("https://repo.spring.io/milestone") }
-    maven { url = URI.create("https://repo.spring.io/snapshot") }
 }
 
 dependencies {
@@ -42,9 +40,6 @@ dependencies {
     // logging
     implementation("io.github.microutils", "kotlin-logging-jvm", "2.1.20")
 
-    //json flattener
-    implementation("com.github.wnameless.json", "json-flattener", "0.13.0")
-
     // ktor
     implementation(platform("io.ktor:ktor-bom:2.0.0"))
     implementation("io.ktor", "ktor-client")
@@ -53,8 +48,8 @@ dependencies {
     implementation("io.ktor", "ktor-serialization-gson")
 
     // hibernate model code generation
-    implementation("org.hibernate", "hibernate-jpamodelgen", "5.6.7.Final")
-    kapt("org.hibernate", "hibernate-jpamodelgen", "5.6.7.Final")
+    implementation("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
+    kapt("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
 
     // firebase
     implementation("com.google.firebase", "firebase-admin", "8.+")
@@ -64,6 +59,7 @@ dependencies {
     testImplementation("org.testcontainers", "testcontainers", "1.16.3")
     testImplementation("org.testcontainers", "postgresql", "1.16.3")
     testImplementation("org.testcontainers", "junit-jupiter", "1.16.3")
+
     // liquibase
     implementation("org.liquibase", "liquibase-core")
 
@@ -74,6 +70,7 @@ dependencies {
     liquibaseRuntime("org.springframework.boot", "spring-boot-starter-data-jpa")
     liquibaseRuntime("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
     liquibaseRuntime(sourceSets.main.get().output)
+
     // spring testing
     testImplementation("org.springframework.boot", "spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
@@ -130,13 +127,13 @@ tasks.koverMergedXmlReport {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "${JavaVersion.VERSION_1_8}"
+        jvmTarget = "${JavaVersion.VERSION_17}"
     }
 }
 
 tasks.withType<JavaCompile> {
-    targetCompatibility = "${JavaVersion.VERSION_1_8}"
-    sourceCompatibility = "${JavaVersion.VERSION_1_8}"
+    targetCompatibility = "${JavaVersion.VERSION_17}"
+    sourceCompatibility = "${JavaVersion.VERSION_17}"
     inputs.files(tasks.processResources)
 }
 

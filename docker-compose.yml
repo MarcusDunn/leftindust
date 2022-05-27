@@ -12,7 +12,6 @@ services:
       POSTGRES_DB: mediq
       POSTGRES_USER: mediq
       POSTGRES_PASSWORD: mediq
-
     image: postgres
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
@@ -23,8 +22,7 @@ services:
     ports:
       - 8080:8080
     environment:
-      - WHO_ICD_API=http://mockingbird-icd-api:80/icd
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - WHO_ICD_API=http://mockingbird-icd-api:81/icd
       - SPRING_DATASOURCE_URL=jdbc:postgresql://mockingbird-postgres:5432/mediq
       - SPRING_DATASOURCE_USERNAME=mediq
       - SPRING_DATASOURCE_PASSWORD=mediq
