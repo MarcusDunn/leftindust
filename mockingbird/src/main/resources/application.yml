@@ -18,6 +18,3 @@ spring:
 icd:
   client:
     url: localhost:80/icd
-logging:
-  level:
-    root: debug
