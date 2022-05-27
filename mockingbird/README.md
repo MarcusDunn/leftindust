@@ -10,8 +10,7 @@ The second layer is the service layer, this is where most of the magic happens. 
 `@Services` and contains all of our authentication logic. This should be considered a pretty *pure* layer where it
 should not have to concern itself with serialization or persistence details - instead just having logic around what it
 needs to do. A *true OOP* approach would have us put a lot of the logic you find here into objects with state and data,
-but I've chosen (for
-better or worse) to keep behaviour and data as separate as possible.
+but I've chosen (for better or worse) to keep behaviour and data as separate as possible.
 
 The final layer is the persistence / external layer this is mostly `@Entity`'s and `@Repository` annotated classes. This
 handles mapping from the service layer to the tables in the database as well as object lifecycle. This is also where we
