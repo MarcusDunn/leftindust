@@ -3,7 +3,6 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.net.URI
 
 plugins {
     kotlin("jvm") version "1.6.20"
@@ -78,6 +77,7 @@ dependencies {
     }
     testImplementation("org.springframework.security", "spring-security-test")
     testImplementation("org.springframework.graphql", "spring-graphql-test")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
 
     testImplementation("com.ninja-squad", "springmockk", "3.1.1")
 }
@@ -128,6 +128,7 @@ tasks.koverMergedXmlReport {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         jvmTarget = "${JavaVersion.VERSION_17}"
+        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
 }
 
