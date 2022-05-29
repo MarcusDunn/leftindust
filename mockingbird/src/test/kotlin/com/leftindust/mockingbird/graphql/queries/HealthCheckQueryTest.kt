@@ -28,8 +28,10 @@ internal class HealthCheckQueryControllerWebTestTest(
 
     @Test
     internal fun `test mockingbirdIsAlive`() {
+        //language=graphql
+        val query = """query { mockingbirdIsAlive }"""
         graphqlTester
-            .document("""query { mockingbirdIsAlive }""")
+            .document(query)
             .execute()
             .errors()
             .satisfy { assertThat(it, hasSize(0)) }
