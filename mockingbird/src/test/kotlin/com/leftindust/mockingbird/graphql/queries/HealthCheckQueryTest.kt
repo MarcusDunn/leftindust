@@ -3,6 +3,7 @@ package com.leftindust.mockingbird.graphql.queries
 import com.ninjasquad.springmockk.MockkBean
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
@@ -26,10 +27,14 @@ internal class HealthCheckQueryControllerWebTestTest(
     private lateinit var serverHttpSecurity: SecurityWebFilterChain
 
     @Test
-    internal fun `test is alive has no errors`() {
-        val response = graphqlTester
+    internal fun `test mockingbirdIsAlive`() {
+        graphqlTester
             .document("""query { mockingbirdIsAlive }""")
             .execute()
-        println(response)
+            .errors()
+            .satisfy { assertThat(it, hasSize(0)) }
+            .path("data.mockingbirdIsAlive")
+            .entity(Boolean::class.java)
+            .satisfies { assertThat(it, equalTo(true)) }
     }
 }
