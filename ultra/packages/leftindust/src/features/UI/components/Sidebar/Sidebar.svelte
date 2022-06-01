@@ -26,8 +26,6 @@
   $: opened = !mobile || !$wizardOpen;
   
   let ref: Panel;
-
-  $: console.log(ref?.$$);
   
   $: (() => {
     if (!$wizardOpen) {
