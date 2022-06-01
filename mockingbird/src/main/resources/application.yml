@@ -1,10 +1,4 @@
-graphql:
-  packages:
-    - "com.leftindust.mockingbird"
-    - "java.util.UUID"
 spring:
-  main:
-    web-application-type: reactive
   jpa:
     show-sql: true
   liquibase:
@@ -18,6 +12,9 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken%40system.gserviceaccount.com
+  graphql:
+    graphiql:
+      enabled: true
 icd:
   client:
-    url: "localhost:80/icd"
+    url: localhost:80/icd

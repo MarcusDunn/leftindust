@@ -1,37 +1,31 @@
 package com.leftindust.mockingbird.patient
 
-import com.expediagroup.graphql.generator.annotations.GraphQLDescription
-import com.expediagroup.graphql.server.operations.Mutation
-import com.leftindust.mockingbird.auth.authToken
-
+import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.survey.SurveyDto
 import graphql.schema.DataFetchingEnvironment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.springframework.stereotype.Component
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import org.springframework.stereotype.Controller
 
-@Component
+@Controller
 class PatientMutation(
-    private val updatePatientDao: UpdatePatientDao,
-    private val createPatientDao: CreatePatientDao,
-) : Mutation {
+    private val updatePatientService: UpdatePatientService,
+    private val createPatientService: CreatePatientService,
+    private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>
+) {
 
-    @GraphQLDescription("updates a patient by their pid, only the not null fields are updated, pid MUST be defined")
-    suspend fun updatePatient(
-        patient: GraphQLPatientEditInput,
-        dataFetchingEnvironment: DataFetchingEnvironment
-    ): GraphQLPatient = withContext(Dispatchers.IO) {
-        updatePatientDao.update(patient, dataFetchingEnvironment.authToken)
-    }.let(::GraphQLPatient)
+    suspend fun updatePatient(patient: UpdatePatientDto): PatientDto {
+        TODO()
+    }
 
-    @GraphQLDescription(
-        """adds a new patient and connects them to already existing doctors and contacts
-        contacts and doctors default to empty lists"""
-    )
     suspend fun addPatient(
-        patient: GraphQLPatientInput,
+        patient: CreatePatientDto,
         dataFetchingEnvironment: DataFetchingEnvironment,
-    ): GraphQLPatient = withContext(Dispatchers.IO) {
-        createPatientDao
-            .addNewPatient(patient, dataFetchingEnvironment.authToken)
-    }.let(::GraphQLPatient)
+    ): PatientDto {
+        TODO()
+    }
+
+    suspend fun assignSurvey(patients: List<PatientDto.PatientDtoId>, survey: SurveyDto.SurveyDtoId): Flow<PatientDto> {
+        return updatePatientService.assignForms(patients, survey).map { patientToPatientDtoConverter.convert(it) }
+    }
 }

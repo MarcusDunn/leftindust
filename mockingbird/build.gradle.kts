@@ -12,7 +12,7 @@ plugins {
     kotlin("plugin.allopen") version "1.6.20"
     kotlin("plugin.jpa") version "1.6.20"
     id("org.jetbrains.kotlinx.kover") version "0.5.0"
-    id("org.springframework.boot") version "2.7.0-SNAPSHOT"
+    id("org.springframework.boot") version "2.7.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
     // liquibase
@@ -21,8 +21,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven { url = URI.create("https://repo.spring.io/milestone") }
-    maven { url = URI.create("https://repo.spring.io/snapshot") }
 }
 
 dependencies {
@@ -30,19 +28,17 @@ dependencies {
     implementation("org.springframework.boot", "spring-boot-starter-webflux")
     implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
     implementation("org.springframework.boot", "spring-boot-starter-actuator")
+    implementation("org.springframework.boot", "spring-boot-starter-graphql")
     implementation("org.springframework.boot", "spring-boot-starter-oauth2-resource-server")
 
     // kotlin
     implementation("org.jetbrains.kotlin", "kotlin-reflect")
     implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core")
+    runtimeOnly("org.jetbrains.kotlinx", "kotlinx-coroutines-reactor")
 
-    //json flattener
-    implementation("com.github.wnameless.json", "json-flattener", "0.13.0")
-
-    // graphql kotlin
-    implementation("com.expediagroup", "graphql-kotlin-spring-server", "6.+")
-    implementation("com.expediagroup", "graphql-kotlin-hooks-provider", "6.+")
+    // logging
+    implementation("io.github.microutils", "kotlin-logging-jvm", "2.1.20")
 
     // ktor
     implementation(platform("io.ktor:ktor-bom:2.0.0"))
@@ -52,8 +48,8 @@ dependencies {
     implementation("io.ktor", "ktor-serialization-gson")
 
     // hibernate model code generation
-    implementation("org.hibernate", "hibernate-jpamodelgen", "5.6.7.Final")
-    kapt("org.hibernate", "hibernate-jpamodelgen", "5.6.7.Final")
+    implementation("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
+    kapt("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
 
     // firebase
     implementation("com.google.firebase", "firebase-admin", "8.+")
@@ -74,12 +70,14 @@ dependencies {
     liquibaseRuntime("org.springframework.boot", "spring-boot-starter-data-jpa")
     liquibaseRuntime("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
     liquibaseRuntime(sourceSets.main.get().output)
+
     // spring testing
     testImplementation("org.springframework.boot", "spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(module = "mockito-core")
     }
     testImplementation("org.springframework.security", "spring-security-test")
+    testImplementation("org.springframework.graphql", "spring-graphql-test")
 
     testImplementation("com.ninja-squad", "springmockk", "3.1.1")
 }
@@ -129,13 +127,13 @@ tasks.koverMergedXmlReport {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "${JavaVersion.VERSION_1_8}"
+        jvmTarget = "${JavaVersion.VERSION_17}"
     }
 }
 
 tasks.withType<JavaCompile> {
-    targetCompatibility = "${JavaVersion.VERSION_1_8}"
-    sourceCompatibility = "${JavaVersion.VERSION_1_8}"
+    targetCompatibility = "${JavaVersion.VERSION_17}"
+    sourceCompatibility = "${JavaVersion.VERSION_17}"
     inputs.files(tasks.processResources)
 }
 
