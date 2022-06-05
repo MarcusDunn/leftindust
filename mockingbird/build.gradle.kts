@@ -30,7 +30,7 @@ dependencies {
     implementation("org.springframework.boot", "spring-boot-starter-actuator")
     implementation("org.springframework.boot", "spring-boot-starter-graphql")
     implementation("org.springframework.boot", "spring-boot-starter-oauth2-resource-server")
-
+    annotationProcessor("org.springframework.boot", "spring-boot-configuration-processor")
     // kotlin
     implementation("org.jetbrains.kotlin", "kotlin-reflect")
     implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
@@ -78,6 +78,7 @@ dependencies {
     }
     testImplementation("org.springframework.security", "spring-security-test")
     testImplementation("org.springframework.graphql", "spring-graphql-test")
+    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.2")
 
     testImplementation("com.ninja-squad", "springmockk", "3.1.1")
 }

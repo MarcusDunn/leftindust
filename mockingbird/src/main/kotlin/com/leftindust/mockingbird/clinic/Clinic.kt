@@ -9,6 +9,9 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
+import mu.KotlinLogging
+
+private val logger = KotlinLogging.logger { }
 
 @Entity
 class Clinic(
@@ -20,6 +23,7 @@ class Clinic(
     var doctors: MutableSet<ClinicDoctorEntity> = mutableSetOf(),
 ) : AbstractJpaPersistable() {
     fun clearDoctors() {
+        logger.trace { "Clearing doctors from $this" }
         doctors.forEach { it.doctor.clinics.remove(it) }
         doctors.clear()
     }

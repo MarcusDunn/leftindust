@@ -12,7 +12,7 @@ class LocalDateDtoToLocalDateConverter : FallibleConverter<LocalDateDto, LocalDa
 
     override fun convert(source: LocalDateDto): LocalDate? {
         return runCatching { LocalDate.parse(source.isoDateString) }
-            .onFailure { throwable -> logger.warn(LogMessage("Returning null from ${LocalDateDtoToLocalDateConverter::class.simpleName} ${Converter<LocalDateDto, LocalDate>::convert.name}", throwable.toString()).toString()) }
+            .onFailure { throwable -> logger.warn("returning null", throwable) }
             .getOrNull()
     }
 }

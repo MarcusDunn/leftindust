@@ -11,24 +11,24 @@ import com.leftindust.mockingbird.user.MediqGroupDto
 
 data class CreateDoctorDto(
     override val user: CreateDoctor.User,
-    override val phones: List<CreatePhoneDto>?,
+    override val phones: List<CreatePhoneDto>,
     override val title: String?,
     override val clinic: List<ClinicDto.ClinicDtoId>,
     override val dateOfBirth: LocalDateDto?,
-    override val addresses: List<CreateAddressDto>?,
-    override val emails: List<CreateEmailDto>?,
-    override val patients: List<PatientDto.PatientDtoId>?,
+    override val addresses: List<CreateAddressDto>,
+    override val emails: List<CreateEmailDto>,
+    override val patients: List<PatientDto.PatientDtoId>,
 ) : CreateDoctor
 
 interface CreateDoctor {
     val user: User
-    val phones: List<CreatePhoneDto>?
+    val phones: List<CreatePhoneDto>
     val title: String?
     val clinic: List<ClinicDto.ClinicDtoId>
     val dateOfBirth: LocalDateDto?
-    val addresses: List<CreateAddressDto>?
-    val emails: List<CreateEmailDto>?
-    val patients: List<PatientDto.PatientDtoId>?
+    val addresses: List<CreateAddressDto>
+    val emails: List<CreateEmailDto>
+    val patients: List<PatientDto.PatientDtoId>
 
     sealed class User {
         data class NoUser(val nameInfo: CreateNameInfo) : User()

@@ -1,13 +1,12 @@
 package com.leftindust.mockingbird.clinic
 
-import com.leftindust.mockingbird.LogMessage
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
 import com.leftindust.mockingbird.graphql.types.Updatable
 import javax.transaction.Transactional
-import org.slf4j.LoggerFactory
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,13 +16,13 @@ class ClinicUpdaterServiceImpl(
     private val createAddressService: CreateAddressService,
     private val readDoctorService: ReadDoctorService,
 ) : UpdateClinicService {
-    private val logger = LoggerFactory.getLogger(ClinicUpdaterServiceImpl::class.java)
+    private val logger = KotlinLogging.logger { }
 
     override suspend fun editClinic(clinicEdit: ClinicEdit): Clinic? {
         val clinicId = clinicEdit.cid.value
         val clinic = clinicRepository.findById(clinicId).orElse(null)
         return if (clinic == null) {
-            logger.warn(LogMessage("editClinic call with $clinicEdit did not update any clinic", "No clinic with $clinicId was found").toString())
+            logger.warn { "No clinic was updated via $clinicEdit. No clinic with $clinicId was found" }
             null
         } else {
             updateAddress(clinicEdit.address, clinic)
@@ -39,11 +38,11 @@ class ClinicUpdaterServiceImpl(
     ) {
         when (nameEdit) {
             is Updatable.Ignore -> {
-                logger.trace(LogMessage("Did not update $clinic name", "Update was $nameEdit").toString())
+                logger.trace { "Did not update $clinic name. Update was $nameEdit" }
             }
             is Updatable.Update -> {
                 clinic.name = nameEdit.value
-                logger.trace(LogMessage("Updated $clinic name to ${nameEdit.value}", "Update was $nameEdit").toString())
+                logger.trace { "Updated $clinic name to ${nameEdit.value}" }
             }
         }
     }
@@ -54,22 +53,20 @@ class ClinicUpdaterServiceImpl(
     ) {
         when (doctorsEdit) {
             is Updatable.Ignore -> {
-                logger.trace(LogMessage("Did not update $clinic doctors", "Update was $doctorsEdit").toString())
+                logger.trace { "Did not update $clinic doctors. Update was Ignore" }
             }
             is Updatable.Update -> {
                 val doctorIds = doctorsEdit.value
-                val newDoctors = doctorIds.map { readDoctorService.getByDoctorId(it) }
+                val newDoctors = doctorIds.map { it to readDoctorService.getByDoctorId(it) }
 
-                // we expect all doctors to be valid to update to - if they are not we simply do not update that field
-                // at all we do however continue to update the rest.
-                val notFoundDoctorsId = newDoctors.withIndex().filter { it.value == null }.map { it.index }.map { doctorIds[it] }
-                if (notFoundDoctorsId.isNotEmpty()) {
-                    logger.warn(LogMessage("Did not update $clinic doctors", "No doctors with id $notFoundDoctorsId").toString())
-                } else {
-                    val doctors = newDoctors.map { it!! } // this is a safe assertion as we check when we ensure all the ids exist.
-                    logger.trace(LogMessage("Updated $clinic doctors to $doctors", "Update was $doctorsEdit and all the ids had corresponding doctors").toString())
-                    clinic.clearDoctors()
-                    doctors.forEach { clinic.addDoctor(it) }
+                clinic.clearDoctors()
+
+                newDoctors.forEach { (id, doctor) ->
+                    if (doctor == null) {
+                        logger.warn { "Did not add a doctor with id $id to $clinic. Could not find a doctor with that id" }
+                    } else {
+                        clinic.addDoctor(doctor)
+                    }
                 }
             }
         }
@@ -81,11 +78,11 @@ class ClinicUpdaterServiceImpl(
     ) {
         when (addressEdit) {
             is Updatable.Ignore -> {
-                logger.trace(LogMessage("Did not update $clinic address", "Update was $addressEdit").toString())
+                logger.trace { "Did not update $clinic address. Update was Ignore" }
             }
             is Updatable.Update -> {
                 val createAddress = createAddressService.createAddress(addressEdit.value)
-                logger.trace(LogMessage("Updated $clinic address to $createAddress", "Update was $addressEdit ").toString())
+                logger.trace { "Updated $clinic address to $createAddress. Update was $addressEdit" }
                 clinic.address = createAddress
             }
         }

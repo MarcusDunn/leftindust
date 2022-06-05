@@ -5,6 +5,14 @@ schema {
 
 type Mutation {
     addClinic(clinic: CreateClinic!): Clinic!
+    editClinic(clinic: EditClinic!): Clinic
+}
+
+input EditClinic {
+    cid: ClinicIdInput!
+    name: String
+    address: CreateAddress
+    doctors: [DoctorIdInput!]! = []
 }
 
 type DoctorId {
@@ -18,7 +26,7 @@ input DoctorIdInput {
 input CreateClinic {
     name: String!
     address: CreateAddress!
-    doctors: [DoctorIdInput!]!
+    doctors: [DoctorIdInput!]! = []
 }
 
 enum AddressType {
