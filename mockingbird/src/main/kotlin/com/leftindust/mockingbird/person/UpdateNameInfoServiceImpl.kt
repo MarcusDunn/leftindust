@@ -1,10 +1,9 @@
 package com.leftindust.mockingbird.person
 
-import com.leftindust.mockingbird.LogMessage
 import com.leftindust.mockingbird.graphql.types.Deletable
 import com.leftindust.mockingbird.graphql.types.Updatable
 import javax.transaction.Transactional
-import org.slf4j.LoggerFactory
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service
 class UpdateNameInfoServiceImpl(
     private val nameInfoRepository: NameInfoRepository,
 ) : UpdateNameInfoService {
-    private val logger = LoggerFactory.getLogger(UpdateNameInfoServiceImpl::class.java)
+    private val logger = KotlinLogging.logger { }
 
     override suspend fun updateNameInfo(updateNameInfo: UpdateNameInfo, nameInfo: NameInfo) {
         updateFirstName(updateNameInfo.firstName, nameInfo)
@@ -24,10 +23,10 @@ class UpdateNameInfoServiceImpl(
     private fun updateLastName(lastName: Updatable<String>, nameInfo: NameInfo) {
         when (lastName) {
             is Updatable.Ignore -> {
-                logger.trace(LogMessage("Did not update $nameInfo ${NameInfo::lastName.name}", "Update was $nameInfo").toString())
+                logger.trace { "Did not update $nameInfo lastName" }
             }
             is Updatable.Update -> {
-                logger.trace(LogMessage("Updated $nameInfo ${NameInfo::lastName.name} to ${lastName.value}", "Update was $nameInfo").toString())
+                logger.trace { "Updated $nameInfo lastName to ${lastName.value}" }
                 nameInfo.lastName = lastName.value
             }
         }
@@ -36,14 +35,14 @@ class UpdateNameInfoServiceImpl(
     private fun updateMiddleName(middleName: Deletable<String>, nameInfo: NameInfo) {
         when (middleName) {
             is Updatable.Ignore -> {
-                logger.trace(LogMessage("Did not update $nameInfo ${NameInfo::middleName.name}", "Update was $nameInfo").toString())
+                logger.trace { "Did not update $nameInfo middleName" }
             }
             is Updatable.Update -> {
-                logger.trace(LogMessage("Updated $nameInfo ${NameInfo::middleName.name} to ${middleName.value}", "Update was $nameInfo").toString())
+                logger.trace { "Updated $nameInfo middleName to ${middleName.value}" }
                 nameInfo.middleName = middleName.value
             }
             is Deletable.Delete -> {
-                logger.trace(LogMessage("Removed $nameInfo ${NameInfo::middleName.name}", "Update was $nameInfo").toString())
+                logger.trace { "Removed $nameInfo middleName" }
             }
         }
     }
@@ -51,10 +50,10 @@ class UpdateNameInfoServiceImpl(
     private fun updateFirstName(firstName: Updatable<String>, nameInfo: NameInfo) {
         when (firstName) {
             is Updatable.Ignore -> {
-                logger.trace(LogMessage("Did not update $nameInfo ${NameInfo::firstName.name}", "Update was $nameInfo").toString())
+                logger.trace { "Did not update $nameInfo firstName" }
             }
             is Updatable.Update -> {
-                logger.trace(LogMessage("Updated $nameInfo ${NameInfo::firstName.name} to ${firstName.value}", "Update was $nameInfo").toString())
+                logger.trace { "Updated $nameInfo firstName to ${firstName.value}" }
                 nameInfo.firstName = firstName.value
             }
         }

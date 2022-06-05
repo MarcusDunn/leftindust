@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.doctor
 
-import com.leftindust.mockingbird.LogMessage
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.clinic.ReadClinicService
 import com.leftindust.mockingbird.email.CreateEmailService
@@ -51,27 +50,23 @@ class CreateDoctorServiceImpl(
             title = createDoctor.title,
             dateOfBirth = createDoctor.dateOfBirth?.let {
                 localDateDtoToLocalDateConverter.convert(it) ?: run {
-                    logger.warn(LogMessage("Set the doctor ${notNullNameInfo.firstName} ${notNullNameInfo.lastName}'s date of birth to null",
-                        "$localDateDtoToLocalDateConverter failed to convert $it to a LocalDate").toString())
+                    logger.warn("Set the doctor ${notNullNameInfo.firstName} ${notNullNameInfo.lastName}'s date of birth to null. $localDateDtoToLocalDateConverter failed to convert $it to a LocalDate")
                     null
                 }
             },
             clinics = mutableSetOf(), // set in apply block
             patients = mutableSetOf(), // set in apply block
         ).apply {
-            val patients = createDoctor.patients?.map { it to readPatientService.getByPatientId(it) } ?: emptyList()
-            if (patients.any { it.second == null }) {
-                logger.warn(LogMessage("Did not add ${patients.filter { it.second == null }.map { it.first }} to the doctor ${notNullNameInfo.firstName} ${notNullNameInfo.lastName}",
-                    "${ReadPatientService::class.simpleName}.${ReadPatientService::getByPatientId.name} returned null for those patientntId(s)").toString())
-            }
-            patients.mapNotNull { it.second }.forEach { addPatient(it) }
+            createDoctor.patients
+                .map {
+                    readPatientService.getByPatientId(it)
+                        ?: throw IllegalArgumentException("No such patient with id $it")
+                }.forEach { addPatient(it) }
 
-            val clinics = createDoctor.clinic.map { it to readClinicService.getByClinicId(it) }
-            if (clinics.any { it.second == null }) {
-                logger.warn(LogMessage("Did not add ${clinics.filter { it.second == null }.map { it.first }} to the doctor ${notNullNameInfo.firstName} ${notNullNameInfo.lastName}",
-                    "${ReadPatientService::class.simpleName}.${ReadClinicService::getByClinicId.name} returned null for those clinicId(s)").toString())
-            }
-            clinics.mapNotNull { it.second }.forEach { it.addDoctor(this) }
+            createDoctor.clinic.map {
+                readClinicService.getByClinicId(it)
+                    ?: throw IllegalArgumentException("No such clinic with id $it")
+            }.forEach { it.addDoctor(this) }
         }
         return doctorRepository.save(doctor)
     }

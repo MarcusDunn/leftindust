@@ -10,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 interface ReadPhoneService {
     fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): Flow<Phone>?
 
-    fun getByContactId(contactId: ContactDto.Id): Flow<Phone>?
+    fun getByContactId(contactContactDtoId: ContactDto.ContactDtoId): Flow<Phone>?
 
     fun getPatientId(patientId: PatientDto.PatientDtoId): Flow<Phone>?
 }
