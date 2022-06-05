@@ -26,8 +26,10 @@
       }
     }
   }
-  
-  .view-master-detail {
+}
+
+.view-master-detail {
+  .ui-cell {
     .ui-cell-item {
       &.ui-cell-item-selected {
         .item-link, .item-checkbox {
