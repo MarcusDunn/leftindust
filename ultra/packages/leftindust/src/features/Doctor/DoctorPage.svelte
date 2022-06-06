@@ -5,6 +5,7 @@
   import { account } from '../Account/store';
   import { DoctorTab } from '.';
   import { Layout } from '../App';
+
   import { Tab, Tabs, Block } from 'framework7-svelte';
   import Page from '../UI/components/Page/Page.svelte';
   import { wizardOpen } from '../Wizard/store';
@@ -180,7 +181,7 @@
               dataType={['Doctor']}
               category={[WidgetCategory.Contact]}
               store
-               />
+              />
             </Tab>
           </Tabs>
         </Block>

@@ -18,7 +18,7 @@
   const { data, dragger, quicklook } = $$props as BundleProps;
 
   const request = operationStore(PatientsQueryDocument, {
-    pids: { id: data.id }, // pid vs pids? DoctorBundle only has pid.
+    pids: { id: data.id },
   });
 
   query(request);
@@ -52,8 +52,8 @@
     </Cells>
     {/if}
   </Request>
-<Row slot='controls'>
-  <Col width='50'>
+<Row slot="controls">
+  <Col width="50">
     <Button
       class={`${quicklook ? 'disabled' : ''}`}
       color={configuration.color}
@@ -63,7 +63,7 @@
       {$_('generics.newPatient')}
     </Button>
   </Col>
-  <Col width='50'>
+  <Col width="50">
     <Button 
       color={configuration.color}
       outline
