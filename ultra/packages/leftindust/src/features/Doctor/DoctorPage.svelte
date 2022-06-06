@@ -5,14 +5,14 @@
   import { account } from '../Account/store';
   import { DoctorTab } from '.';
   import { Layout } from '../App';
-
+  import { Tab, Tabs, Block } from 'framework7-svelte';
   import Page from '../UI/components/Page/Page.svelte';
   import { wizardOpen } from '../Wizard/store';
   import { clientsSelected, clientsSelectedTab } from '../Clients/store';
   import { ClientsTab } from '../Clients';
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
   import Profile from '../UI/components/Profile/Profile.svelte';
-  import { WidgetType } from '../Widgets';
+  import { WidgetCategory, WidgetType } from '../Widgets';
   import { _ } from '@/language';
   import SelectButton from '../UI/components/SelectButton/SelectButton.svelte';
   import Request from '../Server/components/Request/Request.svelte';
@@ -26,6 +26,7 @@
     from '../App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
   import SpecificGrid from '../Widgets/components/Grid/SpecificGrid.svelte';
   import { operationStore, query } from '@urql/svelte';
+  import GenericGrid from '../Widgets/components/Grid/GenericGrid.svelte';
     
   export let f7router: Router.Router;
   export let f7route: Router.Route;
@@ -168,5 +169,22 @@
         {/key}
       </div>
     </Profile>
+    <Tabs>
+      <Tab tabActive={layout === Layout.Bundled && tab !== DoctorTab.Overview}>
+        <Block style="margin-left: 25px;margin-right: 25px">
+          <Tabs>
+            <Tab tabActive={tab === DoctorTab.Contacts}>
+              <GenericGrid 
+              props={{ id:'Doctor', data, quicklook }}
+              type={WidgetType.Bundle}
+              dataType={['Doctor']}
+              category={[WidgetCategory.Contact]}
+              store
+               />
+            </Tab>
+          </Tabs>
+        </Block>
+      </Tab>
+    </Tabs>
   </Request>
 </Page>

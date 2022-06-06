@@ -8,7 +8,7 @@
   import { PatientsQueryDocument } from '@/api/server';
   import { pinned, pin } from '@/features/Pin';
   import PatientPinnableCell from
-    '@/features/Patients/components/PatientPinnableCell/PatientPinnableCell.svelte';
+    '@/features/Patient/components/PatientCell/PatientPinnableCell.svelte';
   import Request from '@/features/Server/components/Request/Request.svelte';
   import Cells from '@/features/UI/components/Cells/Cells.svelte';
   import { Row, Col, Button } from 'framework7-svelte';

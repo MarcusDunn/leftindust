@@ -9,6 +9,7 @@ import PatientCard from '@/features/Patient/components/PatientCard/PatientCard.s
 import DoctorCard from '@/features/Doctor/components/DoctorCard/DoctorCard.svelte';
 import UserCard from '@/features/User/components/UserCard/UserCard.svelte';
 import IcdCard from '@/features/Icd/components/IcdCard/IcdCard.svelte';
+import PatientsBundle from '../Patients/components/PatientsBundle/PatientsBundle.svelte';
 
 export enum WidgetType {
   Attachment = 'attachment',
@@ -66,6 +67,11 @@ const Widgets: Widgets = {
     doctors: {
       type: ['Patient'],
       component: DoctorsBundle,
+      category: [WidgetCategory.Contact],
+    },
+    patients: {
+      type: ['Doctor'],
+      component: PatientsBundle,
       category: [WidgetCategory.Contact],
     },
   },
