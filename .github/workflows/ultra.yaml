@@ -27,7 +27,4 @@ jobs:
     
     - name: SvelteCheck
       run: ./gradlew ultra:svelteCheck
-      
-    - name: Generate
-      run: ./gradlew ultra:generate
     
