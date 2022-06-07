@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.group
 
-import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
+import org.springframework.data.repository.CrudRepository
 
-interface HibernateGroupRepository : JpaRepository<MediqGroup, UUID>
+interface HibernateGroupRepository : CrudRepository<MediqGroup, UUID>
 

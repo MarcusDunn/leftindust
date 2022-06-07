@@ -1,10 +1,6 @@
 package com.leftindust.mockingbird.icd
 
-import com.expediagroup.graphql.generator.annotations.GraphQLIgnore
-import com.expediagroup.graphql.generator.annotations.GraphQLName
 import org.springframework.beans.factory.annotation.Autowired
-
-@GraphQLName("IcdSimpleEntity")
 data class GraphQLIcdSimpleEntity(
     override val id: String,
     private val internalId: String?,
@@ -28,8 +24,8 @@ data class GraphQLIcdSimpleEntity(
     val descendants: List<GraphQLIcdSimpleEntity>,
     override val title: String?,
 ) : GraphQLIcdReallySimpleEntity {
-    suspend fun entity(@Autowired @GraphQLIgnore icdFetcher: IcdFetcher): GraphQLIcdFoundationEntity? {
-        return icdFetcher.getDetails(GraphQLFoundationIcdCode(internalId ?: return null))
+    suspend fun entity(icdFetcherService: IcdFetcherService): GraphQLIcdFoundationEntity? {
+        return icdFetcherService.getDetails(GraphQLFoundationIcdCode(internalId ?: return null))
     }
 
     fun urlId(asUrl: Boolean? = false): String? = if (asUrl == true) {

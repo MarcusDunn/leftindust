@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.phone
 
-import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
+import org.springframework.data.repository.CrudRepository
 
-interface HibernatePhoneRepository : JpaRepository<Phone, UUID>
+interface HibernatePhoneRepository : CrudRepository<Phone, UUID>

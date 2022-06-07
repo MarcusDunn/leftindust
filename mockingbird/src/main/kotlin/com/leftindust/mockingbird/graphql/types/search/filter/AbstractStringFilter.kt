@@ -18,7 +18,6 @@ abstract class AbstractStringFilter(
     val notEndWith: String? = null,
     override val strict: Boolean,
 ) : Filter<String> {
-
     override fun <Z, X> toPredicate(
         criteriaBuilder: CriteriaBuilder,
         root: From<Z, X>,

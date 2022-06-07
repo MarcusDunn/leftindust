@@ -14,7 +14,6 @@
 
   export let patients: PatientsFragment[];
   export let selected: Writable<Data[]>;
-
 </script>
 
 <Cells selected={$selected}>

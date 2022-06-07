@@ -1,15 +1,14 @@
 package com.leftindust.mockingbird.persistance
 
+import java.util.UUID
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Type
-import java.util.*
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.MappedSuperclass
 
 @MappedSuperclass
 abstract class AbstractJpaPersistable {
-
     companion object
 
     @Id
@@ -32,7 +31,7 @@ abstract class AbstractJpaPersistable {
     }
 
     override fun hashCode(): Int {
-        return id.hashCode()
+        return 13
     }
 
     override fun toString() = "Entity of type ${this.javaClass.name} with id: $id"
