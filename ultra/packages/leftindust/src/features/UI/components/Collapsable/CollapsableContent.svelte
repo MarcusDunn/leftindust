@@ -15,7 +15,7 @@
 </script>
 
 <div class="ui-collapsable_content">
-  <AccordionItem opened={opened}>
+  <AccordionItem {opened}>
     <div class="ui-collapsable_content-title">
       <CollapsableButton
         on:click={() => (openState = !openState)}

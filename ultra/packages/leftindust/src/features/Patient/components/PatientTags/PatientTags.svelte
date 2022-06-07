@@ -27,20 +27,20 @@
     class={`${small ? 'chip-small' : ''}`}
     text={format(birthday, 'dd/MM/yyyy')}
     mediaBgColor="blue"
-    outline={outline}
+    {outline}
   >
     <span slot="media">{intervalToDuration({ start: birthday, end: new Date() }).years}</span>
   </Chip>
 {/if}
 {#if sex}
-  <SexTag {...{ small, outline }} gender={gender} sex={sex} />
+  <SexTag {...{ small, outline }} {gender} {sex} />
 {/if}
 {#if ethnicity}
   <Chip
     class={`${small ? 'chip-small' : ''}`}
     text={ethnicity}
     mediaBgColor="primary"
-    outline={outline}
+    {outline}
   >
     <span slot="media"><Icon f7="globe" /></span>
   </Chip>

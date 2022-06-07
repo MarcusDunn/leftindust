@@ -12,8 +12,8 @@
   {#if opened}
     {text}
   {:else}
-  <span class="ui-clamp-ellipsis">
-    {text.charAt(0)}.
-  </span>
+    <span class="ui-clamp-ellipsis">
+      {text.charAt(0)}.
+    </span>
   {/if}
 </span>

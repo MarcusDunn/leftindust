@@ -41,13 +41,13 @@
 </script>
 
 <section
-  use:dndzone="{{ items: sections, dragDisabled, flipDurationMs, type: 'sections' }}"
-  on:consider="{handleConsider}"
-  on:finalize="{handleFinalize}"
+  use:dndzone={{ items: sections, dragDisabled, flipDurationMs, type: 'sections' }}
+  on:consider={handleConsider}
+  on:finalize={handleFinalize}
 >
   {#each sections as section, index (section.id)}
     <div
-      animate:flip="{{ duration: flipDurationMs }}"
+      animate:flip={{ duration: flipDurationMs }}
     >
       <TemplateSection
         dragger={sections.length > 1 ? startDrag : undefined}
