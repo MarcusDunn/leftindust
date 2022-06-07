@@ -32,7 +32,7 @@
       mediaList
       noChevron
     >
-      {#each items as {title, text, icon, onClick}}
+      {#each items as { title, text, icon, onClick }}
         <ListItem
           {title}
           {text}

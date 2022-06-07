@@ -25,8 +25,7 @@
 <Menu
   items={buttons
     .filter(({ condense }) => condense)
-    .map(({ title, icon, onClick }) => ({ title, icon, onClick }))
-  }
+    .map(({ title, icon, onClick }) => ({ title, icon, onClick }))}
   bind:instance={menuRef}
 />
 

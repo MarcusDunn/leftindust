@@ -12,9 +12,9 @@
   import { SettingsTabs } from '.';
 
   import AboutTab from './components/AboutTab/AboutTab.svelte';
+  import AccountTab from './components/AccountTab/AccountTab.svelte';
 
   import Page from '@/features/UI/components/Page/Page.svelte';
-import AccountTab from './components/AccountTab/AccountTab.svelte';
 </script>
 
 <Page>

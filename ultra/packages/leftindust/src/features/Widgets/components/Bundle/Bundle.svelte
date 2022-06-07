@@ -17,10 +17,9 @@
 
 {#key $account}
   <Block
-    class={
-      `widget-bundle
+    class={`widget-bundle
       ${shadow ? 'elevation-4' : ''}
-  `}
+    `}
     strong
     inset
   >

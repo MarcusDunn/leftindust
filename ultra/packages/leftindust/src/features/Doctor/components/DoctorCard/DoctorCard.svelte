@@ -50,7 +50,7 @@
 
 <Card
   color="primary"
-  dragger={dragger}
+  {dragger}
   shadow={!attachments}
   loading={!doctor}
 >

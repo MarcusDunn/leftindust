@@ -36,22 +36,21 @@
     <NavLeft>
       {#if (close && typeof close === 'boolean')
         || (close && 'popover' in close && close.popover)
-        || (close && 'popup' in close && close.popup)
-      }
+        || (close && 'popup' in close && close.popup)}
         <MenuButton
           title={$_('generics.close')}
           icon={{ f7: 'xmark_circle_fill' }}
           on:click={() => {
             if (
               typeof close === 'boolean'
-              || (close && 'popup' in close && close.popup)
+                || (close && 'popup' in close && close.popup)
             ) {
               f7.popup.close();
             }
 
             if (
               typeof close === 'boolean'
-              || (close && 'popover' in close && close.popover)
+                || (close && 'popover' in close && close.popover)
             ) {
               f7.popover.close();
             } 
