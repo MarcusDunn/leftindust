@@ -80,6 +80,7 @@ dependencies {
     testImplementation("org.springframework.graphql", "spring-graphql-test")
 
     testImplementation("com.ninja-squad", "springmockk", "3.1.1")
+    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.2")
 }
 
 // liquibase plugin config
