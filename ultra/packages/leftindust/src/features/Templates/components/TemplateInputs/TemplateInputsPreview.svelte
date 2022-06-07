@@ -46,7 +46,7 @@
           <textarea {placeholder} />
         </Input>
       {:else if type === TemplateInputType.Upload}
-        <Add title="{label}" placeholder={placeholder || getUploadLabel(uploadAccept, uploadMultiple)} />
+        <Add title={label} placeholder={placeholder || getUploadLabel(uploadAccept, uploadMultiple)} />
       {:else if type === TemplateInputType.MultiSelect || type === TemplateInputType.SingleSelect}
         {#if options}
           <div style="margin-top: 10px; margin-bottom: -10px; font-size: 14px">{label}</div>

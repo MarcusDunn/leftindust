@@ -15,11 +15,10 @@
 </script>
 
 <Block
-  class={
-    `widget-stack
+  class={`widget-stack
     ${optionsOpen ? 'widget-stack-options-open' : ''}
     ${fill ? 'widget-stack-fill' : ''}
- `}
+  `}
 >
   <div class="widget-stack-inner">
     <h4 class="widget-stack-title" on:pointerdown={dragger}>

@@ -10,8 +10,8 @@
 
   let mediaBgColor =
     (sex === Sex.Male && 'primary') ||
-    (sex === Sex.Female && 'pink') ||
-    (sex === Sex.Intersex && 'purple');
+      (sex === Sex.Female && 'pink') ||
+      (sex === Sex.Intersex && 'purple');
 
 </script>
 
@@ -19,7 +19,7 @@
   class={`${small ? 'chip-small' : ''}`}
   mediaBgColor={mediaBgColor || ''}
   text={gender && gender !== sex ? `${sex}/${gender}` : sex}
-  outline={outline}
+  {outline}
 >
   <span slot="media">{sex.charAt(0)}</span>
 </Chip>

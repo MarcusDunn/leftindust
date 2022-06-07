@@ -135,13 +135,12 @@
         ),
       );
 
-      // Update grid state
-      /*
-      if (Boolean(store) && store && props) {
-        $ACCOUNT.database.layout.grid[type][props.id] = newGridState;
-      } else if (store) {
-        store = newGridState;
-      }
+    /*
+        if (Boolean(store) && store && props) {
+          $ACCOUNT.database.layout.grid[type][props.id] = newGridState;
+        } else if (store) {
+          store = newGridState;
+        }
       */
     }
   };

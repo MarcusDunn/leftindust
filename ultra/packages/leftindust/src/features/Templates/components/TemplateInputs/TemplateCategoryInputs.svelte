@@ -74,9 +74,9 @@
           .filter(({ category }) => category ? category === TemplateCategory.Title : !category)
           .filter(({ type }) =>
             type === TemplateInputType.Text
-            || type === TemplateInputType.Number
-            || type === TemplateInputType.SingleSelect
-            || type === TemplateInputType.MultiSelect,
+              || type === TemplateInputType.Number
+              || type === TemplateInputType.SingleSelect
+              || type === TemplateInputType.MultiSelect,
           )
           .map((input) => ({
             text: input.label,
@@ -100,10 +100,10 @@
           .filter(({ category }) => category ? category === TemplateCategory.Body : !category)
           .filter(({ type }) =>
             type === TemplateInputType.Text
-            || type === TemplateInputType.Number
-            || type === TemplateInputType.SingleSelect
-            || type === TemplateInputType.MultiSelect
-            || type === TemplateInputType.Paragraph,
+              || type === TemplateInputType.Number
+              || type === TemplateInputType.SingleSelect
+              || type === TemplateInputType.MultiSelect
+              || type === TemplateInputType.Paragraph,
           )
           .map((input) => ({
             text: input.label,

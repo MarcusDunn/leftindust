@@ -42,7 +42,7 @@
     return () => {
       clearInterval(interval);
     };
-});
+  });
 </script>
 
 <style lang="scss">
