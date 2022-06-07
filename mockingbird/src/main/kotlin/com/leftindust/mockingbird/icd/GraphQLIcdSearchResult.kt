@@ -1,8 +1,5 @@
 package com.leftindust.mockingbird.icd
 
-import com.expediagroup.graphql.generator.annotations.GraphQLName
-
-@GraphQLName("IcdSearchResult")
 data class GraphQLIcdSearchResult(
     val destinationEntities: List<GraphQLIcdSimpleEntity>?,
     val error: Boolean,

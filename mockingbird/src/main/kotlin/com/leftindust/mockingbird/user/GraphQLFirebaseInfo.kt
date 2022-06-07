@@ -1,9 +1,7 @@
 package com.leftindust.mockingbird.user
 
-import com.expediagroup.graphql.generator.annotations.GraphQLName
 import com.google.firebase.auth.UserRecord
 
-@GraphQLName("FirebaseInfo")
 data class GraphQLFirebaseInfo(
     val uid: String? = null,
     val tenantId: String? = null,

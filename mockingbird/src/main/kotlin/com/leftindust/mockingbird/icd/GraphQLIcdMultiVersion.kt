@@ -1,8 +1,5 @@
 package com.leftindust.mockingbird.icd
 
-import com.expediagroup.graphql.generator.annotations.GraphQLName
-
-@GraphQLName("IcdMultiVersion")
 data class GraphQLIcdMultiVersion(
     val context: String?,
     val id: String?,
