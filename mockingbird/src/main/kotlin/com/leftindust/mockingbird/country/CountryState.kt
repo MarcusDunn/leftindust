@@ -7,7 +7,7 @@ import javax.persistence.Enumerated
 @Embeddable
 class CountryState(
     @Enumerated(EnumType.STRING)
-    var country: GraphQLCountry,
+    var country: Countries,
     province: String,
 ) {
 

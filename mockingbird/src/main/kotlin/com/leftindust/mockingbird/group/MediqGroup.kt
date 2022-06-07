@@ -8,6 +8,4 @@ import javax.persistence.Entity
 class MediqGroup(
     @Column(nullable = false)
     val name: String,
-) : AbstractJpaPersistable() {
-    constructor(graphQLGroupInput: GraphQLGroupInput) : this(name = graphQLGroupInput.name)
-}
+) : AbstractJpaPersistable()
