@@ -5,18 +5,18 @@ import type { ResolversTypes } from '@/api/server';
 export const updateRecents = (key: Partial<keyof ResolversTypes>, value: string): void => {
   const data = get(account);
 
-  if (!data.database.recents[key]?.includes(value)) {
+  if (!data.database.recents[key]?.includes(value)) { // Reordering 
     const recent = [value].concat(data.database.recents[key]?.slice(0, 2) ?? '');
 
-    account.set({
-      ...data,
+    account.update((prevAccount) => ({
+      ...prevAccount,
       database: {
-        ...data.database,
+        ...prevAccount.database,
         recents: {
-          ...data.database.recents,
+          ...prevAccount.database.recents,
           [key]: recent,
         },
       },
-    });
+    }));
   }
 };

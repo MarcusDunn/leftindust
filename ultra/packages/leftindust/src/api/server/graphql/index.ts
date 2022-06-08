@@ -303,6 +303,7 @@ export const client = createClient({
         });
         
         const token = await user?.getIdToken();
+
         const refreshToken = await user?.getIdToken();
         
         return { token, refreshToken };

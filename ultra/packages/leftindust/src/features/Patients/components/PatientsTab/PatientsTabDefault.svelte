@@ -23,7 +23,7 @@
     from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
   import Request from '@/features/Server/components/Request/Request.svelte';
   import PatientsCells from '../PatientsCells/PatientsCells.svelte';
-  
+
   export let f7router: Router.Router;
 
   let patients: PatientsFragment[];
@@ -46,9 +46,11 @@
     }
   };
 
-  $: recentsRequest.reexecute({
-    pids: ($account.database.recents.Patient ?? []).map((id) => ({ id })),
-  });
+  $: $recentsRequest = {
+    variables: {
+      pids: ($account.database.recents.Patient ?? []).map((id) => ({ id })),
+    },
+  };
 
   $: patients = $request.data?.patients ?? [];
   $: recents = $recentsRequest.data?.patients ?? [];
