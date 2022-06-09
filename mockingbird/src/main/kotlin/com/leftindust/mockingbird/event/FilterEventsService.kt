@@ -1,8 +1,6 @@
 package com.leftindust.mockingbird.event
 
-import kotlinx.coroutines.flow.Flow
-
 interface FilterEventsService {
-    suspend fun filterEvents(events: Flow<Event>, eventFilter: EventFilter): Flow<Event>
+    suspend fun filterEvents(events: List<Event>, eventFilter: EventFilter): List<Event>
 }
 

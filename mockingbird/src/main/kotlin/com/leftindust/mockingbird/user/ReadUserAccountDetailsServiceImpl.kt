@@ -3,7 +3,6 @@ package com.leftindust.mockingbird.user
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserRecord
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.extensions.doThenNull
 import mu.KotlinLogging
 import org.springframework.stereotype.Component
 
@@ -15,8 +14,7 @@ class ReadUserAccountDetailsServiceImpl(
     private val logger = KotlinLogging.logger { }
 
     override fun getUserInfoByMediqUserUniqueId(mediqUserUniqueId: MediqUserDto.MediqUserUniqueId): UserAccountDetails? {
-        val user = firebaseAuth.getUser(mediqUserUniqueId.value)
-            ?: return doThenNull { logger.debug { "returning null from getUserInfoByMediqUserUniqueId for $mediqUserUniqueId" } }
+        val user = firebaseAuth.getUser(mediqUserUniqueId.value) ?: return null
         return userRecordToUserAccountDetailsConverter.convert(user)
     }
 }

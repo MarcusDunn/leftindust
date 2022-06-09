@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.event
 
+import com.leftindust.mockingbird.FailedConversionMessage.Companion.FailedConversionMessage
 import java.time.Period
 import mu.KotlinLogging
 import org.springframework.core.convert.converter.Converter
@@ -11,7 +12,7 @@ class PeriodDtoToPeriodConverter : Converter<PeriodDto, Period> {
 
     override fun convert(source: PeriodDto): Period? {
         return runCatching { Period.parse(source.periodIsoString) }
-            .onFailure { logger.debug { "failed to convert $source to a Period" } }
+            .onFailure { FailedConversionMessage(source) }
             .getOrNull()
     }
 }

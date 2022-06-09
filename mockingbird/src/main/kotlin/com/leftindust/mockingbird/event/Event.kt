@@ -4,6 +4,7 @@ import com.leftindust.mockingbird.visit.Visit
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.doctor.DoctorEventEntity
+import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.PatientEventEntity
 import java.sql.Timestamp

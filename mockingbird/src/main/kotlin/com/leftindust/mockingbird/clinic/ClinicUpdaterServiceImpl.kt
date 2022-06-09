@@ -1,5 +1,9 @@
 package com.leftindust.mockingbird.clinic
 
+import com.leftindust.mockingbird.AddedElementMessage
+import com.leftindust.mockingbird.NoOpUpdatedEntityFieldMessage
+import com.leftindust.mockingbird.NoUpdatesOccurredNoEntityWithId
+import com.leftindust.mockingbird.SetEntityFieldMessage
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.doctor.DoctorDto
@@ -21,13 +25,15 @@ class ClinicUpdaterServiceImpl(
     override suspend fun editClinic(clinicEdit: ClinicEdit): Clinic? {
         val clinicId = clinicEdit.cid.value
         val clinic = clinicRepository.findById(clinicId).orElse(null)
+
         return if (clinic == null) {
-            logger.warn { "No clinic was updated via $clinicEdit. No clinic with $clinicId was found" }
+            logger.warn { NoUpdatesOccurredNoEntityWithId(Clinic::class, clinicId) }
             null
         } else {
             updateAddress(clinicEdit.address, clinic)
             updateDoctors(clinicEdit.doctors, clinic)
             updateName(clinicEdit.name, clinic)
+
             clinicRepository.save(clinic)
         }
     }
@@ -36,13 +42,13 @@ class ClinicUpdaterServiceImpl(
         nameEdit: Updatable<String>,
         clinic: Clinic,
     ) {
-        when (nameEdit) {
+        return when (nameEdit) {
             is Updatable.Ignore -> {
-                logger.trace { "Did not update $clinic name. Update was $nameEdit" }
+                logger.trace { NoOpUpdatedEntityFieldMessage(clinic, clinic::name) }
             }
             is Updatable.Update -> {
                 clinic.name = nameEdit.value
-                logger.trace { "Updated $clinic name to ${nameEdit.value}" }
+                logger.trace { SetEntityFieldMessage(clinic, clinic::name, nameEdit.value) }
             }
         }
     }
@@ -53,7 +59,7 @@ class ClinicUpdaterServiceImpl(
     ) {
         when (doctorsEdit) {
             is Updatable.Ignore -> {
-                logger.trace { "Did not update $clinic doctors. Update was Ignore" }
+                logger.trace { NoOpUpdatedEntityFieldMessage(clinic, clinic::doctors) }
             }
             is Updatable.Update -> {
                 val doctorIds = doctorsEdit.value
@@ -63,10 +69,12 @@ class ClinicUpdaterServiceImpl(
 
                 newDoctors.forEach { (id, doctor) ->
                     if (doctor == null) {
-                        logger.warn { "Did not add a doctor with id $id to $clinic. Could not find a doctor with that id" }
+                        logger.warn { NoOpUpdatedEntityFieldMessage(clinic, clinic::doctors, "Could not find a doctor with id: $id") }
                     } else {
-                        clinic.addDoctor(doctor)
+                        val clinicDoctorEntity = clinic.addDoctor(doctor)
+                        logger.trace { AddedElementMessage(clinic, clinic::doctors, clinicDoctorEntity) }
                     }
+
                 }
             }
         }
@@ -78,12 +86,12 @@ class ClinicUpdaterServiceImpl(
     ) {
         when (addressEdit) {
             is Updatable.Ignore -> {
-                logger.trace { "Did not update $clinic address. Update was Ignore" }
+                logger.trace { NoOpUpdatedEntityFieldMessage(clinic, clinic::address) }
             }
             is Updatable.Update -> {
                 val createAddress = createAddressService.createAddress(addressEdit.value)
-                logger.trace { "Updated $clinic address to $createAddress. Update was $addressEdit" }
                 clinic.address = createAddress
+                logger.trace { SetEntityFieldMessage(clinic, clinic::address, createAddress) }
             }
         }
     }

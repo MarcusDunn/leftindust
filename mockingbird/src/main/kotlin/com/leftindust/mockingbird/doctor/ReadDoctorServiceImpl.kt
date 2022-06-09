@@ -17,13 +17,10 @@ class ReadDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
     private val readPatientService: ReadPatientService,
 ) : ReadDoctorService {
-    private val logger = KotlinLogging.logger {  }
+    private val logger = KotlinLogging.logger { }
 
     override suspend fun getByPatientId(patientDtoId: PatientDto.PatientDtoId): Flow<Doctor>? {
-        val patient = readPatientService.getByPatientId(patientDtoId) ?: run {
-            logger.trace { "Returning null from getByPatientId. Could not find a patient with id $patientDtoId" }
-            return null
-        }
+        val patient = readPatientService.getByPatientId(patientDtoId) ?: return null
         return patient.doctors.asFlow().map { it.doctor }
     }
 

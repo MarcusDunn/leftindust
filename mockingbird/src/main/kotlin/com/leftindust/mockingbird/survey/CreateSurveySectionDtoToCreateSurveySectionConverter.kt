@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.survey
 
+import com.leftindust.mockingbird.FailedConversionMessage.Companion.FailedConversionMessage
 import com.leftindust.mockingbird.FallibleConverter
-import com.leftindust.mockingbird.extensions.doThenNull
 import mu.KotlinLogging
 import org.springframework.stereotype.Component
 
@@ -12,11 +12,9 @@ class CreateSurveySectionDtoToCreateSurveySectionConverter(
     private val logger = KotlinLogging.logger { }
 
     override fun convert(source: CreateSurveySectionDto): CreateSurveySection? {
-        val fields = buildList {
-            for (field in source.fields) {
-                add(createSurveyFieldDtoToCreateSurveyFieldConverter.convert(field)
-                    ?: return doThenNull { logger.debug { "failed to convert $source" } })
-            }
+        val fields = source.fields.map {
+            createSurveyFieldDtoToCreateSurveyFieldConverter.convert(it)
+                ?: return null.also { logger.debug { FailedConversionMessage(source) } }
         }
         return object : CreateSurveySection {
             override val name = source.name

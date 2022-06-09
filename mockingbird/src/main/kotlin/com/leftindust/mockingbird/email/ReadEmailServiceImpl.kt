@@ -7,10 +7,7 @@ import com.leftindust.mockingbird.doctor.ReadDoctorService
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import mu.KotlinLogging
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 
 @Transactional
@@ -21,23 +18,21 @@ class ReadEmailServiceImpl(
     val readPatientService: ReadPatientService,
     val readContactService: ReadContactService,
 ) : ReadEmailService {
-    private val logger = KotlinLogging.logger {  }
+    private val logger = KotlinLogging.logger { }
     override suspend fun getByEmailId(emailId: EmailDto.Id): Email? {
-        return emailRepository.findById(emailId.value).orElseGet(null) ?: run {
-            logger.trace { "Returning null from getByEmailId. Could not find a email with id $emailId" }
-            null
-        }
+        return emailRepository.findById(emailId.value).orElse(null)
     }
 
-    override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): Flow<Email>? {
-        return readDoctorService.getByDoctorId(doctorId)?.emails?.asFlow()
+    override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Email>? {
+        val doctor = readDoctorService.getByDoctorId(doctorId) ?: return null
+        return doctor.emails.toList()
     }
 
-    override suspend fun getPatientEmails(patientId: PatientDto.PatientDtoId): Flow<Email>? {
-        return readPatientService.getByPatientId(patientId)?.emails?.asFlow()
+    override suspend fun getPatientEmails(patientId: PatientDto.PatientDtoId): List<Email>? {
+        return readPatientService.getByPatientId(patientId)?.emails?.toList()
     }
 
-    override suspend fun getContactEmails(contactContactDtoId: ContactDto.ContactDtoId): Flow<Email>? {
-        return readContactService.getByContactId(contactContactDtoId)?.email?.asFlow()
+    override suspend fun getContactEmails(contactContactDtoId: ContactDto.ContactDtoId): List<Email>? {
+        return readContactService.getByContactId(contactContactDtoId)?.email?.toList()
     }
 }

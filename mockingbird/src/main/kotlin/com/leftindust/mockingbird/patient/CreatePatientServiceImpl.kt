@@ -4,7 +4,6 @@ import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.contact.CreateContactService
 import com.leftindust.mockingbird.doctor.ReadDoctorService
 import com.leftindust.mockingbird.email.CreateEmailService
-import com.leftindust.mockingbird.extensions.doThenNull
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhoneService
 import javax.transaction.Transactional

@@ -22,6 +22,7 @@ class DeletableMapDelegate<in G, out T : Any>(private val map: Map<String, Any?>
                 if (it is Map<*, *>) {
                     update(clazz.constructors.first().call(map))
                 } else {
+                    // if this throws there is likely a mismatch between the schema and the class
                     update(it as T)
                 }
             } ?: delete()
