@@ -26,7 +26,7 @@
           const scrollPos: number = f7.$(page)
             .scrollTop();
           let navbar: Element | null | undefined =
-              page.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.querySelector('.navbars > .navbar-current') ?? null;
+            page.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.querySelector('.navbars > .navbar-current') ?? null;
               
           // Add effects to navbar
           if (navbar) {
