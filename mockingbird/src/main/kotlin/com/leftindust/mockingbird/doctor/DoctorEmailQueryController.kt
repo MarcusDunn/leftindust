@@ -5,8 +5,6 @@ import com.leftindust.mockingbird.NullSubQueryException
 import com.leftindust.mockingbird.email.Email
 import com.leftindust.mockingbird.email.EmailDto
 import com.leftindust.mockingbird.email.ReadEmailService
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import org.springframework.graphql.data.method.annotation.SchemaMapping
 import org.springframework.stereotype.Controller
 
@@ -17,8 +15,8 @@ class DoctorEmailQueryController(
 ) {
     @SchemaMapping
     suspend fun emails(doctorDto: DoctorDto): List<EmailDto> {
-        val emailFlow = readEmailService.getByDoctorId(doctorDto.id)
+        val emails = readEmailService.getByDoctorId(doctorDto.id)
             ?: throw NullSubQueryException(doctorDto, ReadEmailService::getByDoctorId)
-        return emailFlow.map { emailToEmailDtoConverter.convert(it) }
+        return emails.map { emailToEmailDtoConverter.convert(it) }
     }
 }

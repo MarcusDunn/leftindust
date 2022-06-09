@@ -3,8 +3,6 @@ package com.leftindust.mockingbird.graphql.queries
 import com.leftindust.mockingbird.event.*
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
@@ -32,7 +30,7 @@ internal class EventQueryControllerUnitTest () {
         coEvery { readEventService.getByEventId(eventIds[1]) } returns event2
         coEvery { readEventService.getByEventId(eventIds[2]) } returns event3
 
-        val result = eventQueryController.eventsByIds(eventIds.asFlow()).toList()
+        val result = eventQueryController.eventsByIds(eventIds).toList()
         assertThat(result, Matchers.hasSize(3))
         assertThat(result.first(), Matchers.notNullValue())
         assertThat(result[1], Matchers.notNullValue())
@@ -55,7 +53,7 @@ internal class EventQueryControllerUnitTest () {
         coEvery { readEventService.getByEventId(eventIds[1]) } returns event2
         coEvery { readEventService.getByEventId(eventIds[2]) } returns event3
 
-        val result = eventQueryController.eventsByIds(eventIds.asFlow()).toList()
+        val result = eventQueryController.eventsByIds(eventIds).toList()
         assertThat( result, Matchers.hasSize(3))
         assertThat(result.first(), Matchers.notNullValue())
         assertThat(result[1], Matchers.equalTo(null))
@@ -78,7 +76,7 @@ internal class EventQueryControllerUnitTest () {
         coEvery { readEventService.getByEventId(eventIds[1]) } returns event2
         coEvery { readEventService.getByEventId(eventIds[2]) } returns event3
 
-        val result = eventQueryController.eventsByIds(eventIds.asFlow()).toList()
+        val result = eventQueryController.eventsByIds(eventIds).toList()
         assertThat( result, Matchers.hasSize(3))
         assertThat( result.first(), Matchers.equalTo(null))
         assertThat(result[1], Matchers.equalTo(null))

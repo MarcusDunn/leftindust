@@ -2,7 +2,6 @@ package com.leftindust.mockingbird.survey
 
 import com.leftindust.mockingbird.patient.PatientDto
 import javax.transaction.Transactional
-import kotlinx.coroutines.flow.Flow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service
 class ReadSurveyResponseServiceImpl(
     @Autowired private val formDataRepository: HibernateSurveyResponseRepository,
 ) : ReadSurveyResponseService {
-    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): Flow<SurveyResponse>? {
+    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<SurveyResponse>? {
         TODO()
     }
 }
