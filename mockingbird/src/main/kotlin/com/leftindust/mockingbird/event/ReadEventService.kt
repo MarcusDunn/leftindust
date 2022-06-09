@@ -3,9 +3,6 @@ package com.leftindust.mockingbird.event
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.visit.VisitDto
-import java.time.Period
-import java.time.ZonedDateTime
-import kotlinx.coroutines.flow.Flow
 import org.springframework.security.access.prepost.PreAuthorize
 
 @PreAuthorize("hasAuthority('READ_EVENT')")
