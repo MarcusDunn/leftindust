@@ -16,7 +16,7 @@ class DoctorEmailQueryController(
     private val emailToEmailDtoConverter: InfallibleConverter<Email, EmailDto>,
 ) {
     @SchemaMapping
-    suspend fun emails(doctorDto: DoctorDto): Flow<EmailDto> {
+    suspend fun emails(doctorDto: DoctorDto): List<EmailDto> {
         val emailFlow = readEmailService.getByDoctorId(doctorDto.id)
             ?: throw NullSubQueryException(doctorDto, ReadEmailService::getByDoctorId)
         return emailFlow.map { emailToEmailDtoConverter.convert(it) }

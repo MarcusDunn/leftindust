@@ -16,7 +16,7 @@ class DoctorPatientsQueryController(
     private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>,
 ) {
     @SchemaMapping
-    suspend fun patients(doctorDto: DoctorDto): Flow<PatientDto> {
+    suspend fun patients(doctorDto: DoctorDto): List<PatientDto> {
         val patientFlow = patientService.getByDoctor(doctorDto.id)
             ?: throw NullSubQueryException(doctorDto, ReadPatientService::getByDoctor)
         return patientFlow.map { patientToPatientDtoConverter.convert(it) }

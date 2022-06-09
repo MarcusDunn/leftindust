@@ -5,7 +5,6 @@ import com.leftindust.mockingbird.NullSubQueryException
 import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
-import com.leftindust.mockingbird.extensions.doThenNull
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
@@ -29,23 +28,20 @@ class EventQueryController(
     @QueryMapping
     suspend fun eventsByIds(events: Flow<EventDto.EventDtoId>): Flow<EventDto?> {
         return events
-            .map { readEventService.getByEventId(it) ?: doThenNull { logger.debug { "returning a null element from eventsByIds for $it" } } }
+            .map { readEventService.getByEventId(it) }
             .map { it?.let { event -> eventToEventDtoConverter.convert(event) } }
     }
 
     @QueryMapping
-    suspend fun eventsByDoctorId(@Argument doctorId: DoctorDto.DoctorDtoId): Flow<EventDto>? {
-        return readEventService.getByDoctorId(doctorId)
-            ?.map { eventToEventDtoConverter.convert(it) }
-            ?: doThenNull { logger.debug { "returning null from eventsByDoctorId for $doctorId" } }
+    suspend fun eventsByDoctorId(@Argument doctorId: DoctorDto.DoctorDtoId): List<EventDto>? {
+        val events = readEventService.getByDoctorId(doctorId) ?: return null
+        return events.map { eventToEventDtoConverter.convert(it) }
     }
 
     @QueryMapping
-    suspend fun eventsByPatientId(@Argument patientId: PatientDto.PatientDtoId): Flow<EventDto>? {
-        return readEventService
-            .getByPatientId(patientId)
-            ?.map { eventToEventDtoConverter.convert(it) }
-            ?: doThenNull { logger.debug { "returning null from eventByPatientId for $patientId" } }
+    suspend fun eventsByPatientId(@Argument patientId: PatientDto.PatientDtoId): List<EventDto>? {
+        val events = readEventService.getByPatientId(patientId) ?: return null
+        return events.map { eventToEventDtoConverter.convert(it) }
     }
 }
 
@@ -55,11 +51,10 @@ class EventPatientController(
     private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>,
 ) {
     @QueryMapping
-    suspend fun patients(eventDto: EventDto): Flow<PatientDto> {
-        return readPatientService
-            .getByEvent(eventDto.id)
-            ?.map { patientToPatientDtoConverter.convert(it) }
+    suspend fun patients(eventDto: EventDto): List<PatientDto> {
+        val patients = readPatientService.getByEvent(eventDto.id)
             ?: throw NullSubQueryException(eventDto, ReadPatientService::getByEvent)
+        return patients.map { patientToPatientDtoConverter.convert(it) }
     }
 }
 

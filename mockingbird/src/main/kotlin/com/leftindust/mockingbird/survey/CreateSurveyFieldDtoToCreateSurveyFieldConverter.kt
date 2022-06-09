@@ -1,8 +1,7 @@
 package com.leftindust.mockingbird.survey
 
+import com.leftindust.mockingbird.FailedConversionMessage.Companion.FailedConversionMessage
 import com.leftindust.mockingbird.FallibleConverter
-import com.leftindust.mockingbird.LocalDateDtoToLocalDateConverter
-import com.leftindust.mockingbird.extensions.doThenNull
 import com.leftindust.mockingbird.graphql.types.LocalDateDto
 import java.time.LocalDate
 import mu.KotlinLogging
@@ -18,7 +17,7 @@ class CreateSurveyFieldDtoToCreateSurveyFieldConverter(
         return when (source.surveyFieldType) {
             SurveyFieldType.SingleMultiSelect -> {
                 val multiSelectPossibilities = source.multiSelectPossibilities
-                    ?: return doThenNull { logger.debug { "could not create a CreateSingleMultiSelectSurveyField object from $source due to multiSelectPossibilities being null" } }
+                    ?: return null.also { logger.trace { FailedConversionMessage(source) } }
                 object : CreateSurveyField.CreateSingleMultiSelectSurveyField {
                     override val multiSelectPossibilities = multiSelectPossibilities
                     override val title = source.title
@@ -27,7 +26,7 @@ class CreateSurveyFieldDtoToCreateSurveyFieldConverter(
             }
             SurveyFieldType.MultiMultiSelect -> {
                 val multiSelectPossibilities = source.multiSelectPossibilities
-                    ?: return doThenNull { logger.debug { "could not create a CreateSingleMultiSelectSurveyField object from $source due to multiSelectPossibilities being null" } }
+                    ?: return null.also { logger.debug { FailedConversionMessage(source) } }
                 object : CreateSurveyField.CreateMultiMultiSelectSurveyField {
                     override val multiSelectPossibilities = multiSelectPossibilities
                     override val title = source.title
@@ -51,9 +50,9 @@ class CreateSurveyFieldDtoToCreateSurveyFieldConverter(
             }
             SurveyFieldType.Date -> {
                 val upperBound = localDateDtoToLocalDateConverter.convert(source.dateUpperBound)
-                    ?: return doThenNull { logger.debug { "could not create a CreateDateSurveyField object from $source due to upperBound failing to convert" } }
+                    ?: return null.also { logger.debug { FailedConversionMessage(source) } }
                 val lowerBound = localDateDtoToLocalDateConverter.convert(source.dateLowerBound)
-                    ?: return doThenNull { logger.debug { "could not create a CreateDateSurveyField object from $source due to upperBound failing to convert" } }
+                    ?: return null.also { logger.debug { FailedConversionMessage(source) } }
                 object : CreateSurveyField.CreateDateSurveyField {
                     override val upperBound = upperBound
                     override val lowerBound = lowerBound

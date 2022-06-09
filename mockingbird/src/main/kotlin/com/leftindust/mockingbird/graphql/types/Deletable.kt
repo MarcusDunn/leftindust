@@ -1,17 +1,88 @@
 package com.leftindust.mockingbird.graphql.types
 
-sealed class Deletable<out T> {
-    class Delete<T> : Deletable<T>()
+import com.leftindust.mockingbird.AddedAllEntityCollectionMessage
+import com.leftindust.mockingbird.ClearedEntityCollectionMessage
+import com.leftindust.mockingbird.MissedCollectionAddNoEntityWithId
+import com.leftindust.mockingbird.NoOpUpdatedEntityFieldMessage
+import com.leftindust.mockingbird.SetEntityFieldMessage
+import com.leftindust.mockingbird.SetToNullEntityFieldMessage
+import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
+import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
+import com.leftindust.mockingbird.persistance.JpaEntity
+import java.util.UUID
+import kotlin.reflect.KMutableProperty0
+import kotlin.reflect.KProperty0
+import mu.KLogger
+
+sealed class Deletable<out T : Any> {
+    class Delete<T : Any> : Deletable<T>()
 
     override fun toString(): String = when (this) {
         is Delete -> "Delete"
         is Updatable -> this.toString()
     }
+
+    inline fun <G : Any> map(transform: (T) -> G): Deletable<G> {
+        return when (this) {
+            is Delete -> delete()
+            is Updatable.Ignore -> ignore()
+            is Updatable.Update -> update(transform(this.value))
+        }
+    }
 }
 
-sealed class Updatable<out T> : Deletable<T>() {
-    class Ignore<T> : Updatable<T>()
-    data class Update<T>(val value: T) : Updatable<T>()
+fun <T : Any> Deletable<T>.applyDeletable(entity: AbstractJpaPersistable, setter: KMutableProperty0<T?>, logger: KLogger) {
+    when (this) {
+        is Deletable.Delete -> {
+            logger.trace { SetToNullEntityFieldMessage(entity, setter) }
+            setter.set(null)
+        }
+        is Updatable.Ignore -> {
+            logger.trace { NoOpUpdatedEntityFieldMessage(entity, setter) }
+        }
+        is Updatable.Update -> {
+            logger.trace { SetEntityFieldMessage(entity, setter, this.value) }
+            setter.set(this.value)
+        }
+    }
+}
+
+fun <T : Any> Updatable<T>.applyUpdatable(entity: AbstractJpaPersistable, setter: KMutableProperty0<T>, logger: KLogger) {
+    when (this) {
+        is Updatable.Ignore -> {
+            logger.trace { NoOpUpdatedEntityFieldMessage(entity, setter) }
+        }
+        is Updatable.Update -> {
+            logger.trace { SetEntityFieldMessage(entity, setter, this.value) }
+            setter.set(this.value)
+        }
+    }
+}
+
+suspend fun <G : JpaEntity, T: AbstractGraphQLDto.GraphQLID<UUID>> Updatable<List<T>>.applyUpdatableGqlId(
+    entity: AbstractJpaPersistable,
+    property: KProperty0<MutableSet<G>>,
+    addToCollection: suspend (T) -> Unit?,
+    logger: KLogger,
+) {
+    when (this) {
+        is Updatable.Ignore -> {
+            logger.trace { NoOpUpdatedEntityFieldMessage(entity, property) }
+        }
+        is Updatable.Update -> {
+            property.getter.call().clear()
+            logger.trace { ClearedEntityCollectionMessage(entity, property) }
+            val (values, notFound) = this.value.map { it to addToCollection(it) }.partition { it.second != null }
+            notFound.forEach { MissedCollectionAddNoEntityWithId(entity, property, it.first.value) }
+            val newElements = values.map { it.second!! }
+            AddedAllEntityCollectionMessage(entity, property, newElements)
+        }
+    }
+}
+
+sealed class Updatable<out T : Any> : Deletable<T>() {
+    class Ignore<T : Any> : Updatable<T>()
+    data class Update<T : Any>(val value: T) : Updatable<T>()
 
     override fun toString() = when (this) {
         is Ignore -> "Ignore"
@@ -20,6 +91,6 @@ sealed class Updatable<out T> : Deletable<T>() {
 }
 
 
-fun <T> update(value: T) = Updatable.Update(value)
-fun <T> delete(@Suppress("UNUSED_PARAMETER") valueType: Class<T>? = null) = Deletable.Delete<T>()
-fun <T> ignore(@Suppress("UNUSED_PARAMETER") valueType: Class<T>? = null) = Updatable.Ignore<T>()
+fun <T : Any> update(value: T) = Updatable.Update(value)
+fun <T : Any> delete(@Suppress("UNUSED_PARAMETER") valueType: Class<T>? = null) = Deletable.Delete<T>()
+fun <T : Any> ignore(@Suppress("UNUSED_PARAMETER") valueType: Class<T>? = null) = Updatable.Ignore<T>()

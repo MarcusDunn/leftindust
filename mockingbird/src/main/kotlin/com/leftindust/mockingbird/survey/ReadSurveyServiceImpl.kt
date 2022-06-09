@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.survey
 
-import com.leftindust.mockingbird.extensions.doThenNull
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
@@ -21,9 +20,9 @@ class ReadSurveyServiceImpl(
         return surveyRepository.findById(surveyId.value).orElse(null)
     }
 
-    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): Flow<Survey>? {
+    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<Survey>? {
         val patient = patientService.getByPatientId(patientId)
-            ?: return doThenNull { logger.debug { "returning null from getByPatientId for $patientId" } }
-        return patient.patientFormEntities.map { it.survey }.asFlow()
+            ?: return null
+        return patient.patientFormEntities.map { it.survey }
     }
 }

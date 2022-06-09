@@ -23,7 +23,7 @@ class DoctorEventsQueryController(
     private val eventToEventDtoConverter: InfallibleConverter<Event, EventDto>,
 ) {
     @SchemaMapping
-    suspend fun events(doctorDto: DoctorDto, @Argument conditions: EventFilterDto): Flow<EventDto> {
+    suspend fun events(doctorDto: DoctorDto, @Argument conditions: EventFilterDto): List<EventDto> {
         val events = readEventsService.getByDoctorId(doctorDto.id)
             ?: throw NullSubQueryException(doctorDto, ReadEventService::getByDoctorId)
         val eventFilter = eventFilterDtoToEventFilter.convert(conditions)
