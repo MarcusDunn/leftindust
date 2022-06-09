@@ -3,8 +3,6 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.survey.SurveyDto
 import graphql.schema.DataFetchingEnvironment
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Controller
 
 @Controller
@@ -25,7 +23,9 @@ class PatientMutation(
         TODO()
     }
 
-    suspend fun assignSurvey(patients: List<PatientDto.PatientDtoId>, survey: SurveyDto.SurveyDtoId): Flow<PatientDto> {
-        return updatePatientService.assignForms(patients, survey).map { patientToPatientDtoConverter.convert(it) }
+    suspend fun assignSurvey(patients: List<PatientDto.PatientDtoId>, survey: SurveyDto.SurveyDtoId): List<PatientDto> {
+        return updatePatientService
+            .assignForms(patients, survey)
+            .map { patientToPatientDtoConverter.convert(it) }
     }
 }

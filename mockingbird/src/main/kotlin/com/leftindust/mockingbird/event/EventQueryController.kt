@@ -11,8 +11,6 @@ import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.visit.ReadVisitService
 import com.leftindust.mockingbird.visit.Visit
 import com.leftindust.mockingbird.visit.VisitDto
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import mu.KotlinLogging
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -26,7 +24,7 @@ class EventQueryController(
     private val logger = KotlinLogging.logger { }
 
     @QueryMapping
-    suspend fun eventsByIds(events: Flow<EventDto.EventDtoId>): Flow<EventDto?> {
+    suspend fun eventsByIds(events: List<EventDto.EventDtoId>): List<EventDto?> {
         return events
             .map { readEventService.getByEventId(it) }
             .map { it?.let { event -> eventToEventDtoConverter.convert(event) } }
@@ -64,7 +62,7 @@ class EventDoctorController(
     private val doctorToDoctorDtoConverter: InfallibleConverter<Doctor, DoctorDto>,
 ) {
     @QueryMapping
-    suspend fun doctors(eventDto: EventDto): Flow<DoctorDto> {
+    suspend fun doctors(eventDto: EventDto): List<DoctorDto> {
         TODO()
     }
 }

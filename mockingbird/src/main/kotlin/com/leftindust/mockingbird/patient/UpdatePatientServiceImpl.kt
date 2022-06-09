@@ -2,7 +2,6 @@ package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.survey.SurveyDto
-import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 
 
@@ -16,7 +15,7 @@ class UpdatePatientServiceImpl : UpdatePatientService {
         TODO("Not yet implemented")
     }
 
-    override suspend fun assignForms(patients: List<PatientDto.PatientDtoId>, survey: SurveyDto.SurveyDtoId): Flow<Patient> {
+    override suspend fun assignForms(patients: List<PatientDto.PatientDtoId>, survey: SurveyDto.SurveyDtoId): List<Patient> {
         TODO("Not yet implemented")
     }
 }

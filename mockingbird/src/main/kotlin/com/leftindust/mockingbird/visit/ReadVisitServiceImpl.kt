@@ -2,7 +2,6 @@ package com.leftindust.mockingbird.visit
 
 import com.leftindust.mockingbird.event.EventDto
 import com.leftindust.mockingbird.patient.PatientDto
-import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,7 +14,7 @@ class ReadVisitServiceImpl : ReadVisitService {
         TODO("Not yet implemented")
     }
 
-    override fun getPatientVisits(pid: PatientDto.PatientDtoId): Flow<Visit> {
+    override fun getPatientVisits(pid: PatientDto.PatientDtoId): List<Visit> {
         TODO("Not yet implemented")
     }
 }

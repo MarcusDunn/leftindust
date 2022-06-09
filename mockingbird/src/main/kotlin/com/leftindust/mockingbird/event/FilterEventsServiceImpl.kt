@@ -1,7 +1,5 @@
 package com.leftindust.mockingbird.event
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import org.springframework.stereotype.Service
 
 @Service
