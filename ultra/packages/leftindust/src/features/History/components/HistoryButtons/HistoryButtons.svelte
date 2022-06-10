@@ -27,7 +27,7 @@
     icon={{ f7: 'chevron_left', color: 'gray' }}
     on:click={() => f7router && goBackInHistory(f7router)}
     disabled={!f7router
-    || $history[f7router.view.name]?.length === 1
+      || $history[f7router.view.name]?.length === 1
       || (!!viewName && $currentHistoryIndexes[viewName] === 1 && $history[f7router.view.name][0].master && window.innerWidth > masterDetailBreakpoint - 131)}
   />
 

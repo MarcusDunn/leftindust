@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.address
 
-import com.leftindust.mockingbird.LogMessage
 import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
@@ -17,22 +16,18 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 class ReadAddressServiceImpl(
     private val readDoctorService: ReadDoctorService,
-    private val readPatientService: ReadPatientService
+    private val readPatientService: ReadPatientService,
 ) : ReadAddressService {
     private val logger = LoggerFactory.getLogger(ReadAddressServiceImpl::class.java)
     override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): Flow<Address>? {
-        val doctor = readDoctorService.getByDoctorId(doctorId) ?: run {
-            logger.trace(LogMessage("Returning null from ${ReadAddressService::getByDoctorId.name}", "No ${Doctor::class.simpleName} with id $doctorId").toString())
-            return null
-        }
+        val doctor = readDoctorService.getByDoctorId(doctorId)
+            ?: return null
         return doctor.addresses.asFlow()
     }
 
     override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): Flow<Address>? {
-        val patient = readPatientService.getByPatientId(patientId) ?: run {
-            logger.trace(LogMessage("Returning null from ${ReadAddressService::getByPatientId.name}", "No ${Patient::class.simpleName} with id $patientId").toString())
-            return null
-        }
-        return patient.addresses.asFlow()
+        val byPatientId = readPatientService.getByPatientId(patientId)
+            ?: return null
+        return byPatientId.addresses.asFlow()
     }
 }

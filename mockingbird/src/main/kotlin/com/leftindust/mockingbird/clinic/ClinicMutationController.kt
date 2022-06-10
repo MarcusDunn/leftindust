@@ -1,36 +1,32 @@
 package com.leftindust.mockingbird.clinic
 
-import com.leftindust.mockingbird.LogMessage
+
 import com.leftindust.mockingbird.InfallibleConverter
-import org.slf4j.LoggerFactory
+import graphql.schema.DataFetchingEnvironment
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.stereotype.Controller
 
 @Controller
 class ClinicMutationController(
-    private val clinicCreationService: ClinicCreationService,
+    private val createClinicService: CreateClinicService,
     private val clinicUpdaterService: UpdateClinicService,
-    private val clinicDtoConverter: InfallibleConverter<Clinic, ClinicDto>,
+    private val clinicToClinicDtoConverter: InfallibleConverter<Clinic, ClinicDto>,
 ) {
-    private val logger = LoggerFactory.getLogger(ClinicMutationController::class.java)
 
     @MutationMapping
-    suspend fun addClinic(@Argument clinic: CreateClinicDto): ClinicDto {
-        when (val result = clinicCreationService.addClinic(clinic)) {
-            is ClinicCreationService.ClinicCreationResult.Failure.DoctorIdsDoNotExist -> throw IllegalArgumentException(result.message)
-            is ClinicCreationService.ClinicCreationResult.Success -> return clinicDtoConverter.convert(result.clinic)
-        }
+    suspend fun addClinic(@Argument clinic: CreateClinicDto, dataFetchingEnvironment: DataFetchingEnvironment): ClinicDto {
+        val newClinic = createClinicService.addClinic(clinic)
+        return clinicToClinicDtoConverter.convert(newClinic)
     }
 
     @MutationMapping
-    suspend fun editClinic(@Argument clinic: ClinicEditDto): ClinicDto? {
-        val editedClinic = clinicUpdaterService.editClinic(clinic)
-        return if (editedClinic != null) {
-            clinicDtoConverter.convert(editedClinic)
-        } else {
-            logger.trace(LogMessage("Returning null from ${ClinicMutationController::editClinic.name}", "${UpdateClinicService::class.simpleName}.${UpdateClinicService::editClinic.name} returned null").toString())
-            null
-        }
+    @Suppress("UNCHECKED_CAST")
+    suspend fun editClinic(@Argument args: Map<String, Any?>): ClinicDto? {
+        val clinic = args["clinic"]
+        require(clinic is Map<*, *>) { "clinic was not map" }
+        val clinicEdit = MapUpdateClinicDto(clinic as Map<String, Any?>)
+        val editedClinic = clinicUpdaterService.editClinic(clinicEdit)
+        return editedClinic?.let { clinicToClinicDtoConverter.convert(it) }
     }
 }

@@ -3,7 +3,6 @@ package com.leftindust.mockingbird.user
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullSubQueryException
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.extensions.doThenNull
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.person.NameInfo
@@ -25,7 +24,7 @@ class UserQueryController(
     @QueryMapping
     suspend fun userByUserUniqueId(@Argument uniqueId: String): MediqUserDto? {
         val mediqUser = readUserService.getByUserUid(uniqueId)
-            ?: return doThenNull { logger.debug { "returning null from userByUserUniqueId for $uniqueId" } }
+            ?: return null
         return mediqUserToMediqUserDtoConverter.convert(mediqUser)
     }
 

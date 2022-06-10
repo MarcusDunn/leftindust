@@ -2,7 +2,6 @@ package com.leftindust.mockingbird.survey
 
 import com.leftindust.mockingbird.FallibleConverter
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.extensions.doThenNull
 import mu.KotlinLogging
 import org.springframework.stereotype.Controller
 
@@ -16,7 +15,7 @@ class SurveyMutationController(
 
     suspend fun addSurvey(survey: CreateSurveyDto): SurveyDto? {
         val createSurvey = createSurveyDtoToCreateSurveyConverter.convert(survey)
-            ?: return doThenNull { logger.debug { "returning null from addSurvey for $survey" } }
+            ?: return null
         val newSurvey = createSurveyService.createSurvey(createSurvey)
         return surveyToSurveyDtoConverter.convert(newSurvey)
     }

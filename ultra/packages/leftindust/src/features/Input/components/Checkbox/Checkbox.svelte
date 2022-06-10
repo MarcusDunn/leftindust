@@ -48,14 +48,14 @@
         {#if multiple}
           <input
             type="checkbox"
-            value={value}
+            {value}
             checked={selected.includes(value)}
             on:click={onCheckboxChange}
           />
         {:else}
           <input
             type="radio"
-            value={value}
+            {value}
             checked={selected.includes(value)}
             on:click={onRadioChange}
           />

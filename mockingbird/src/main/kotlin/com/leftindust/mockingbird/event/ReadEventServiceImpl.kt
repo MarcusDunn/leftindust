@@ -2,13 +2,10 @@ package com.leftindust.mockingbird.event
 
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
-import com.leftindust.mockingbird.extensions.doThenNull
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.visit.ReadVisitService
 import com.leftindust.mockingbird.visit.VisitDto
-import java.time.Period
-import java.time.ZonedDateTime
 import javax.transaction.Transactional
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -26,34 +23,21 @@ class ReadEventServiceImpl(
     private val logger = KotlinLogging.logger { }
 
     override suspend fun getByEventId(eventId: EventDto.EventDtoId): Event? {
-        return eventRepository
-            .findById(eventId.value)
-            .orElse(null)
-            ?: doThenNull { logger.debug { "returning null from getByEventId for $eventId" } }
+        return eventRepository.findById(eventId.value).orElse(null)
     }
 
-    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): Flow<Event>? {
-        return readPatientService
-            .getByPatientId(patientId)
-            ?.events
-            ?.map { it.event }
-            ?.asFlow()
-            ?: doThenNull { logger.debug { "returning null from getByPatientId for $patientId" } }
+    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<Event>? {
+        val patient = readPatientService.getByPatientId(patientId) ?: return null
+        return patient.events.map { it.event }
     }
 
-    override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): Flow<Event>? {
-        return readDoctorService
-            .getByDoctorId(doctorId)
-            ?.events
-            ?.map { it.event }
-            ?.asFlow()
-            ?: doThenNull { logger.debug { "returning null from getByDoctorId for $doctorId" } }
+    override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Event>? {
+        val doctor = readDoctorService.getByDoctorId(doctorId) ?: return null
+        return doctor.events.map { it.event }
     }
 
     override suspend fun getByVisitId(visitId: VisitDto.VisitDtoId): Event? {
-        return readVisitService
-            .getByVisitId(visitId)
-            ?.event
-            ?: doThenNull { logger.debug { "returning null from getByVisitId for $visitId" } }
+        val visit = readVisitService.getByVisitId(visitId) ?: return null
+        return visit.event
     }
 }

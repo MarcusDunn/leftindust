@@ -13,7 +13,7 @@ class SurveySectionQueryController(
     private val surveySectionToSurveySectionDtoConverter: InfallibleConverter<SurveySection, SurveySectionDto>,
 ) {
     @QueryMapping
-    suspend fun sections(surveyDto: SurveyDto): Flow<SurveySectionDto> {
+    suspend fun sections(surveyDto: SurveyDto): List<SurveySectionDto> {
         val surveySectionFlow = readSurveySectionService.getBySurveyId(surveyDto.id)
             ?: throw NullSubQueryException(surveyDto, ReadSurveySectionService::getBySurveyId)
         return surveySectionFlow.map { surveySectionToSurveySectionDtoConverter.convert(it) }

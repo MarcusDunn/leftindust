@@ -16,23 +16,23 @@ class ReadPatientServiceImpl : ReadPatientService {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getByDoctor(doctorId: DoctorDto.DoctorDtoId): Flow<Patient>? {
+    override suspend fun getByDoctor(doctorId: DoctorDto.DoctorDtoId): List<Patient>? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getVisitPatients(visitId: VisitDto.VisitDtoId): Flow<Patient> {
+    override suspend fun getVisitPatients(visitId: VisitDto.VisitDtoId): List<Patient> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getMany(range: Range): Flow<Patient> {
+    override suspend fun getMany(range: Range): List<Patient> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getByEvent(eventId: EventDto.EventDtoId): Flow<Patient>? {
+    override suspend fun getByEvent(eventId: EventDto.EventDtoId): List<Patient>? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun searchByExample(example: Example<Patient>): Flow<Patient> {
+    override suspend fun searchByExample(example: Example<Patient>): List<Patient> {
         TODO("Not yet implemented")
     }
 

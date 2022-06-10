@@ -31,10 +31,10 @@
       if (
         // Check to see if Widgets are of the same comparable type
         (dataType.length === 0
-        || (!widget.type || dataType.some((input) => widget.type?.includes(input))))
-        // Check to see if Widget catagories are the same
-        && (category.length === 0
-        || (!widget.category || category.some((input) => widget.category?.includes(input))))
+          || (!widget.type || dataType.some((input) => widget.type?.includes(input))))
+          // Check to see if Widget catagories are the same
+          && (category.length === 0
+            || (!widget.category || category.some((input) => widget.category?.includes(input))))
       ) {
         return {
           id,

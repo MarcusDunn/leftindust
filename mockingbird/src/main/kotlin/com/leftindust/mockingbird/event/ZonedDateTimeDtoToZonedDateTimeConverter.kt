@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.event
 
-import com.leftindust.mockingbird.LogMessage
 import java.time.ZonedDateTime
 import org.slf4j.LoggerFactory
 import org.springframework.core.convert.converter.Converter
@@ -12,7 +11,9 @@ class ZonedDateTimeDtoToZonedDateTimeConverter : Converter<ZonedDateTimeDto, Zon
 
     override fun convert(source: ZonedDateTimeDto): ZonedDateTime? {
         return runCatching { ZonedDateTime.parse(source.isoDateTimeString) }
-            .onFailure { logger.trace(LogMessage("returning null from ${ZonedDateTimeDtoToZonedDateTimeConverter::class.simpleName}.${ZonedDateTimeDtoToZonedDateTimeConverter::convert.name}", it.message ?: it.toString()).toString()) }
-            .getOrNull()
+            .getOrElse {
+                logger.trace("Returning null", it)
+                null
+            }
     }
 }

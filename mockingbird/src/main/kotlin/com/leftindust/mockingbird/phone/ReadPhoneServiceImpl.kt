@@ -14,7 +14,7 @@ class ReadPhoneServiceImpl : ReadPhoneService {
         TODO("Not yet implemented")
     }
 
-    override fun getByContactId(contactId: ContactDto.Id): Flow<Phone> {
+    override fun getByContactId(contactContactDtoId: ContactDto.ContactDtoId): Flow<Phone> {
         TODO("Not yet implemented")
     }
 

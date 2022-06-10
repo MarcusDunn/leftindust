@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ReadEmailService {
     suspend fun getByEmailId(emailId: EmailDto.Id): Email?
-    suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): Flow<Email>?
-    suspend fun getContactEmails(contactId: ContactDto.Id): Flow<Email>?
-    suspend fun getPatientEmails(patientId: PatientDto.PatientDtoId): Flow<Email>?
+    suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Email>?
+    suspend fun getContactEmails(contactContactDtoId: ContactDto.ContactDtoId): List<Email>?
+    suspend fun getPatientEmails(patientId: PatientDto.PatientDtoId): List<Email>?
 }

@@ -6,7 +6,6 @@ import com.leftindust.mockingbird.contact.ContactDto
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.email.EmailDto
 import com.leftindust.mockingbird.event.EventDto
-import com.leftindust.mockingbird.extensions.doThenNull
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.phone.PhoneDto
 import com.leftindust.mockingbird.survey.SurveyDto
@@ -24,20 +23,17 @@ class PatientQuery(
 ) {
     private val logger = KotlinLogging.logger { }
 
-    suspend fun patientsByRange(range: RangeDto): Flow<PatientDto> {
+    suspend fun patientsByRange(range: RangeDto): List<PatientDto> {
         return readPatientService.getMany(range).map { patientToPatientDtoConverter.convert(it) }
     }
 
-    suspend fun patientsByPatientId(patientIds: Flow<PatientDto.PatientDtoId>): Flow<PatientDto?> {
+    suspend fun patientsByPatientId(patientIds: List<PatientDto.PatientDtoId>): List<PatientDto?> {
         return patientIds
-            .map { it to readPatientService.getByPatientId(it) }
-            .map {
-                it.second?.let { patientToPatientDtoConverter.convert(it) }
-                    ?: doThenNull { logger.debug { "returning a null element from patientsByPatientId for ${it.first}" } }
-            }
+            .map { readPatientService.getByPatientId(it) }
+            .map { it?.let { patient -> patientToPatientDtoConverter.convert(patient) } }
     }
 
-    suspend fun patientsByExample(example: PatientExampleDto): Flow<PatientDto> {
+    suspend fun patientsByExample(example: PatientExampleDto): List<PatientDto> {
         return readPatientService.searchByExample(example).map { patientToPatientDtoConverter.convert(it) }
     }
 

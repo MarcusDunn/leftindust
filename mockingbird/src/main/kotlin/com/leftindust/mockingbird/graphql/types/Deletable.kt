@@ -1,64 +1,96 @@
 package com.leftindust.mockingbird.graphql.types
 
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.core.JsonToken
-import com.fasterxml.jackson.databind.BeanProperty
-import com.fasterxml.jackson.databind.DeserializationContext
-import com.fasterxml.jackson.databind.JavaType
-import com.fasterxml.jackson.databind.JsonDeserializer
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer
+import com.leftindust.mockingbird.AddedAllEntityCollectionMessage
+import com.leftindust.mockingbird.ClearedEntityCollectionMessage
+import com.leftindust.mockingbird.MissedCollectionAddNoEntityWithId
+import com.leftindust.mockingbird.NoOpUpdatedEntityFieldMessage
+import com.leftindust.mockingbird.SetEntityFieldMessage
+import com.leftindust.mockingbird.SetToNullEntityFieldMessage
+import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
+import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
+import com.leftindust.mockingbird.persistance.JpaEntity
+import java.util.UUID
+import kotlin.reflect.KMutableProperty0
+import kotlin.reflect.KProperty0
+import mu.KLogger
 
-@JsonDeserialize(using = Deletable.DeleteableDeserializer::class)
-sealed class Deletable<out T> {
-    class Delete<T> : Deletable<T>()
-
-    class DeleteableDeserializer(
-        private val valueType: JavaType? = null,
-    ) : JsonDeserializer<Deletable<*>>(), ContextualDeserializer {
-        override fun createContextual(ctxt: DeserializationContext, property: BeanProperty): JsonDeserializer<*> =
-            DeleteableDeserializer(property.type.containedType(0))
-
-        override fun deserialize(p: JsonParser, ctxt: DeserializationContext): Deletable<*> =
-            update<Any>(ctxt.readValue(p, valueType))
-
-        override fun getNullValue(ctxt: DeserializationContext): Deletable<*> =
-            if (ctxt.parser.currentToken == JsonToken.VALUE_NULL)
-                delete(valueType!!.rawClass)
-            else
-                ignore(valueType!!.rawClass)
-    }
+sealed class Deletable<out T : Any> {
+    class Delete<T : Any> : Deletable<T>()
 
     override fun toString(): String = when (this) {
         is Delete -> "Delete"
         is Updatable -> this.toString()
     }
+
+    inline fun <G : Any> map(transform: (T) -> G): Deletable<G> {
+        return when (this) {
+            is Delete -> delete()
+            is Updatable.Ignore -> ignore()
+            is Updatable.Update -> update(transform(this.value))
+        }
+    }
 }
 
-@JsonDeserialize(using = Updatable.UpdatableDeserializer::class)
-sealed class Updatable<out T> : Deletable<T>() {
-    class Ignore<T> : Updatable<T>()
-    data class Update<T>(val value: T) : Updatable<T>()
+fun <T : Any> Deletable<T>.applyDeletable(entity: AbstractJpaPersistable, setter: KMutableProperty0<T?>, logger: KLogger) {
+    when (this) {
+        is Deletable.Delete -> {
+            logger.trace { SetToNullEntityFieldMessage(entity, setter) }
+            setter.set(null)
+        }
+        is Updatable.Ignore -> {
+            logger.trace { NoOpUpdatedEntityFieldMessage(entity, setter) }
+        }
+        is Updatable.Update -> {
+            logger.trace { SetEntityFieldMessage(entity, setter, this.value) }
+            setter.set(this.value)
+        }
+    }
+}
+
+fun <T : Any> Updatable<T>.applyUpdatable(entity: AbstractJpaPersistable, setter: KMutableProperty0<T>, logger: KLogger) {
+    when (this) {
+        is Updatable.Ignore -> {
+            logger.trace { NoOpUpdatedEntityFieldMessage(entity, setter) }
+        }
+        is Updatable.Update -> {
+            logger.trace { SetEntityFieldMessage(entity, setter, this.value) }
+            setter.set(this.value)
+        }
+    }
+}
+
+suspend fun <G : JpaEntity, T: AbstractGraphQLDto.GraphQLID<UUID>> Updatable<List<T>>.applyUpdatableGqlId(
+    entity: AbstractJpaPersistable,
+    property: KProperty0<MutableSet<G>>,
+    addToCollection: suspend (T) -> Unit?,
+    logger: KLogger,
+) {
+    when (this) {
+        is Updatable.Ignore -> {
+            logger.trace { NoOpUpdatedEntityFieldMessage(entity, property) }
+        }
+        is Updatable.Update -> {
+            property.getter.call().clear()
+            logger.trace { ClearedEntityCollectionMessage(entity, property) }
+            val (values, notFound) = this.value.map { it to addToCollection(it) }.partition { it.second != null }
+            notFound.forEach { MissedCollectionAddNoEntityWithId(entity, property, it.first.value) }
+            val newElements = values.map { it.second!! }
+            AddedAllEntityCollectionMessage(entity, property, newElements)
+        }
+    }
+}
+
+sealed class Updatable<out T : Any> : Deletable<T>() {
+    class Ignore<T : Any> : Updatable<T>()
+    data class Update<T : Any>(val value: T) : Updatable<T>()
 
     override fun toString() = when (this) {
         is Ignore -> "Ignore"
         is Update -> "Update to $value"
     }
-
-    class UpdatableDeserializer(
-        private val valueType: JavaType? = null,
-    ) : JsonDeserializer<Updatable<*>>(), ContextualDeserializer {
-        override fun createContextual(ctxt: DeserializationContext, property: BeanProperty): JsonDeserializer<*> =
-            UpdatableDeserializer(property.type.containedType(0))
-
-        override fun deserialize(p: JsonParser, ctxt: DeserializationContext): Updatable<*> =
-            update<Any>(ctxt.readValue(p, valueType))
-
-        override fun getNullValue(ctxt: DeserializationContext): Updatable<*> = ignore(valueType!!.rawClass)
-    }
 }
 
 
-private fun <T> update(value: T) = Updatable.Update(value)
-private fun <T> delete(@Suppress("UNUSED_PARAMETER") valueType: Class<T>? = null) = Deletable.Delete<T>()
-private fun <T> ignore(@Suppress("UNUSED_PARAMETER") valueType: Class<T>? = null) = Updatable.Ignore<T>()
+fun <T : Any> update(value: T) = Updatable.Update(value)
+fun <T : Any> delete(@Suppress("UNUSED_PARAMETER") valueType: Class<T>? = null) = Deletable.Delete<T>()
+fun <T : Any> ignore(@Suppress("UNUSED_PARAMETER") valueType: Class<T>? = null) = Updatable.Ignore<T>()

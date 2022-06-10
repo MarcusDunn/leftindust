@@ -1,18 +1,18 @@
 <script lang="ts">
-import {
-  Block,
-  BlockFooter,
-  List,
-  ListInput,
-  Button,
-} from 'framework7-svelte';
+  import {
+    Block,
+    BlockFooter,
+    List,
+    ListInput,
+    Button,
+  } from 'framework7-svelte';
 
-import { _ } from '@/language';
-import { loginForm } from '../..';
+  import { _ } from '@/language';
+  import { loginForm } from '../..';
 
-export let buttonProps: Record<string, unknown> = {};
+  export let buttonProps: Record<string, unknown> = {};
 
-const { form, errors } = loginForm();
+  const { form, errors } = loginForm();
 </script>
 
 <form use:form>
