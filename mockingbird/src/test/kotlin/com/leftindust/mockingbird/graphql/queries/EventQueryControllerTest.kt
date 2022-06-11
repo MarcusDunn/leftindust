@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 internal class EventQueryControllerUnitTest {
     @MockK
     private lateinit var readEventService: ReadEventServiceImpl
+
     private val eventToEventDtoConverter = EventToEventDtoConverter()
 
     @Test
