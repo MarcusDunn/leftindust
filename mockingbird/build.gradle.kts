@@ -3,7 +3,6 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.net.URI
 
 plugins {
     kotlin("jvm") version "1.6.20"
@@ -76,6 +75,7 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(module = "mockito-core")
     }
+    testImplementation("com.h2database", "h2", "2.1.212")
     testImplementation("org.springframework.security", "spring-security-test")
     testImplementation("org.springframework.graphql", "spring-graphql-test")
     testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.2")

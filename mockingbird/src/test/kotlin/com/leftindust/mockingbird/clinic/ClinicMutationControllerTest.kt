@@ -27,9 +27,9 @@ internal class ClinicMutationControllerWebTest(
     @Test
     internal fun `test change clinic name is an accepted query`() {
         val newClinicName = "My Clinic"
-        val dansClinicsId = ClinicMother.dansClinicPersisted.id
+        val dansClinicsId = ClinicMother.dansClinicWithid.id
 
-        coEvery { updateClinicService.editClinic(match { it.cid.value == dansClinicsId }) } returns ClinicMother.dansClinicPersisted.apply { name = newClinicName }
+        coEvery { updateClinicService.editClinic(match { it.cid.value == dansClinicsId }) } returns ClinicMother.dansClinicWithid.apply { name = newClinicName }
         //language=graphql
         val mutation = """mutation { editClinic(clinic: {cid: {value: "$dansClinicsId"}, name: "$newClinicName"}) { name } }"""
         graphQlTester
