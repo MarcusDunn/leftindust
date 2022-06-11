@@ -2,10 +2,6 @@ package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.person.NameInfo
-import com.leftindust.mockingbird.util.AddressMother.jennysHouse
-import com.leftindust.mockingbird.util.EmailMother.jennysEmail
-import com.leftindust.mockingbird.util.PhoneMother.jennysHomePhone
-import com.leftindust.mockingbird.util.PhoneMother.jennysWorkPhone
 import java.time.LocalDate
 import java.time.Month
 import java.util.UUID
@@ -24,9 +20,9 @@ object DoctorMother {
                 lastName = `jenny's last name`,
                 middleName = `jenny's middle name`
             ),
-            addresses = mutableSetOf(jennysHouse),
-            emails = mutableSetOf(jennysEmail),
-            phones = mutableSetOf(jennysHomePhone, jennysWorkPhone),
+            addresses = mutableSetOf(AddressMother.jennysHouse),
+            emails = mutableSetOf(EmailMother.jennysEmail),
+            phones = mutableSetOf(PhoneMother.jennysHomePhone, PhoneMother.jennysWorkPhone),
             user = null,
             events = mutableSetOf(),
             thumbnail = null,
