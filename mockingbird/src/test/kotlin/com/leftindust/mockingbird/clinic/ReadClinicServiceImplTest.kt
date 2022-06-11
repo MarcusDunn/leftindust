@@ -49,14 +49,22 @@ internal class ReadClinicServiceImplUnitTest {
     }
 }
 
+// One could argue that we should be testing ClinicRepository directly, but it is created dynamically by spring we'll consister it an implementation detail
+// of the ReadClinicService. This is up to taste.
+// If we had created methods via https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods
+// we would likely test those in isolation from the services that use them.
 @DataJpaTest
 internal class ReadClinicServiceImplDataTest(
     @Autowired private val testEntityManager: TestEntityManager,
     @Autowired private val clinicRepository: ClinicRepository,
 ) {
+    // create a mock SecurityWebFilterChain in order to not have to deal with security (we can test that separately)
     @MockkBean
     private lateinit var securityWebFilterChain: SecurityWebFilterChain
 
+    // create a mock ReadDoctorService, despite the fact this is an integration test.
+    // this is because we are testing the service layer, and we should (alomost) always
+    // mock out things on the same layer, they are tested in their own tests.
     @MockkBean
     private lateinit var doctorService: ReadDoctorService
 
