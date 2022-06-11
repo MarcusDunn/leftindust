@@ -24,6 +24,6 @@
     {`${doctor.firstName?.charAt(0)}${doctor.lastName?.charAt(0)}`}
   </Boxed>
   <svelte:fragment slot="text">
-    <DoctorTags title={doctor.title} small outline />
+    <DoctorTags {...doctor} small outline />
   </svelte:fragment>
 </Cell>
