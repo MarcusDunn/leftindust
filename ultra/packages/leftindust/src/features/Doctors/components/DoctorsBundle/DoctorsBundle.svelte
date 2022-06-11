@@ -51,15 +51,15 @@ import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceho
         {/each}
       </Cells>
     {:else}
-    <Cells>
-      <DescriptivePlaceholder 
-       title={language.generics.noDoctors} 
-       description={language.descriptions.noDoctors}
-       link = {{
-         label: language.descriptions.learnMoreDoctors
-       }}
-       />
-    </Cells>
+      <Cells>
+        <DescriptivePlaceholder 
+         title={language.generics.noDoctors} 
+         description={language.descriptions.noDoctors}
+         link = {{
+           label: language.descriptions.learnMoreDoctors
+         }}
+         />
+      </Cells>
     {/if}
   </Request>
   <Row slot='controls'>

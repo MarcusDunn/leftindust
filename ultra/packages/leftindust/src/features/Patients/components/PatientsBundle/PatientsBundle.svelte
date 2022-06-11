@@ -37,33 +37,32 @@ import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceho
 >
   <Request {...$request} refetch={request.reexecute} middle>
     {#if patients.length > 0}
-    <Cells>
-      {#each patients as patient}
-        <PatientPinnableCell 
-          {patient}
-          pinned={pinned({
-            id: patient.pid.id,
-            type: patient.__typename,
-          }, data)}
-          on:pin={({ detail }) => pin(detail, {
-            id: patient.pid.id,
-            type: patient.__typename,
-          }, data)}
-        />
+      <Cells>
+        {#each patients as patient}
+          <PatientPinnableCell 
+            {patient}
+            pinned={pinned({
+              id: patient.pid.id,
+              type: patient.__typename,
+            }, data)}
+            on:pin={({ detail }) => pin(detail, {
+              id: patient.pid.id,
+              type: patient.__typename,
+            }, data)}
+          />
         {/each}
-    </Cells>
+      </Cells>
     {:else}
-    <Cells>
-      <DescriptivePlaceholder 
-      title={language.generics.noPatients} 
-      description={language.descriptions.noPatients}
-      link = {{
-        label: language.descriptions.learnMorePatients
-      }}
-      />
-    </Cells>
+      <Cells>
+        <DescriptivePlaceholder 
+        title={language.generics.noPatients} 
+        description={language.descriptions.noPatients}
+        link = {{
+          label: language.descriptions.learnMorePatients
+        }}
+        />
+      </Cells>
     {/if}
-
   </Request>
 <Row slot="controls">
   <Col width="50">
