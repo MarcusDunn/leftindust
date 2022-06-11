@@ -143,6 +143,7 @@ const language: Dictionary = {
     inputIndexed: 'Input {number}',
     viewAll: 'View All',
     newDoctor: 'New Doctor',
+    newPatient: 'New Patient',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',

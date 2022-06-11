@@ -50,8 +50,8 @@
       </Cells>
     {/if}
   </Request>
-  <Row slot="controls">
-    <Col width="50">
+  <Row slot='controls'>
+    <Col width='50'>
       <Button
         class={`${quicklook ? 'disabled' : ''}`}
         color={configuration.color}
@@ -61,7 +61,7 @@
         {$_('generics.newDoctor')}
       </Button>
     </Col>
-    <Col width="50">
+    <Col width='50'>
       <Button
         color={configuration.color}
         outline
