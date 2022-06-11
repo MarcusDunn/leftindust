@@ -45,9 +45,11 @@
     }
   };
 
-  $: recentsRequest.reexecute({
-    dids: ($account.database.recents.Doctor ?? []).map((id) => ({ id })),
-  });
+  $: $recentsRequest = {
+    variables: {
+      dids: ($account.database.recents.Doctor ?? []).map((id) => ({ id })),
+    }, 
+  };
 
   $: doctors = $request.data?.doctors ?? [];
   $: recents = $recentsRequest.data?.doctors ?? [];
