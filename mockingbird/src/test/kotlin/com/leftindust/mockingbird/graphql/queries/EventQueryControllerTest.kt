@@ -19,10 +19,11 @@ internal class EventQueryControllerUnitTest {
     @MockK
     private lateinit var readEventService: ReadEventServiceImpl
     private val eventToEventDtoConverter = EventToEventDtoConverter()
-    private val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
 
     @Test
     internal fun `check if eventIds on eventQueryController returns a list of queried users`() = runTest {
+        val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
+
         val eventIds = listOf(
             EventDto.EventDtoId(UUID.randomUUID()),
             EventDto.EventDtoId(UUID.randomUUID()),
@@ -45,6 +46,8 @@ internal class EventQueryControllerUnitTest {
 
     @Test
     internal fun `check if eventIds returns a null`() = runTest {
+        val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
+
         val eventIds = listOf(
             EventDto.EventDtoId(UUID.randomUUID()),
             EventDto.EventDtoId(UUID.randomUUID()),
@@ -67,6 +70,8 @@ internal class EventQueryControllerUnitTest {
 
     @Test
     internal fun `check if queried eventsIds return null`() = runTest {
+        val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
+
         val eventIds = listOf(
             EventDto.EventDtoId(UUID.randomUUID()),
             EventDto.EventDtoId(UUID.randomUUID()),

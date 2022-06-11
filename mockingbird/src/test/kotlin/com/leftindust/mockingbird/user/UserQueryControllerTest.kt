@@ -20,10 +20,11 @@ internal class UserQueryControllerUnitTest {
     private lateinit var readUserService: ReadUserService
     private val mediqUserToMediqUserDtoConverter = MediqUserToMediqUserDtoConverter(MediqGroupToUserGroupDtoConverter())
 
-    private val userQueryController = UserQueryController(readUserService, mediqUserToMediqUserDtoConverter)
 
     @Test
     internal fun `check returns null if no such user exists`() = runTest {
+        val userQueryController = UserQueryController(readUserService, mediqUserToMediqUserDtoConverter)
+
         // if the user does not exist
         coEvery { readUserService.getByUserUid(any()) } returns null
 
@@ -36,6 +37,8 @@ internal class UserQueryControllerUnitTest {
 
     @Test
     internal fun `check that we return a user with the same id if the user exists`() = runTest {
+         val userQueryController = UserQueryController(readUserService, mediqUserToMediqUserDtoConverter)
+
         // if the user exists
         val mediqUser = MediqUser(
             uniqueId = "hello world",
