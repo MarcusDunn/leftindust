@@ -9,6 +9,7 @@ import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import java.util.UUID
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
@@ -53,6 +54,7 @@ internal class ReadClinicServiceImplUnitTest {
 // of the ReadClinicService. This is up to taste.
 // If we had created methods via https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods
 // we would likely test those in isolation from the services that use them.
+@OptIn(ExperimentalCoroutinesApi::class)
 @DataJpaTest
 internal class ReadClinicServiceImplDataTest(
     @Autowired private val testEntityManager: TestEntityManager,

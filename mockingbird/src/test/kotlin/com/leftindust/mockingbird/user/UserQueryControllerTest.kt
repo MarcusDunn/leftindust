@@ -3,6 +3,7 @@ package com.leftindust.mockingbird.user
 import com.leftindust.mockingbird.person.NameInfo
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
@@ -10,6 +11,7 @@ import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.Matchers.nullValue
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class UserQueryControllerUnitTest {
     private val readUserService = mockk<ReadUserService>()
     private val mediqUserToMediqUserDtoConverter = MediqUserToMediqUserDtoConverter(MediqGroupToUserGroupDtoConverter())
