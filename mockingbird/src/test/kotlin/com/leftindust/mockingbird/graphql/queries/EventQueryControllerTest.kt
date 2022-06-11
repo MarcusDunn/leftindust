@@ -8,14 +8,15 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Test
 import java.util.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class EventQueryControllerUnitTest () {
     private val readEventService = mockk<ReadEventServiceImpl>()
     private val eventToEventDtoConverter = EventToEventDtoConverter()
     private val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
 
     @Test
-    @kotlinx.coroutines.ExperimentalCoroutinesApi
     internal fun `check if eventIds on eventQueryController returns a list of queried users`() = runTest {
         val eventIds = listOf(
             EventDto.EventDtoId(UUID.randomUUID()),
@@ -38,7 +39,6 @@ internal class EventQueryControllerUnitTest () {
     }
 
     @Test
-    @kotlinx.coroutines.ExperimentalCoroutinesApi
     internal fun `check if eventIds returns a null`() = runTest {
         val eventIds = listOf(
             EventDto.EventDtoId(UUID.randomUUID()),
@@ -61,7 +61,6 @@ internal class EventQueryControllerUnitTest () {
     }
 
     @Test
-    @kotlinx.coroutines.ExperimentalCoroutinesApi
     internal fun `check if queried eventsIds return null`() = runTest {
         val eventIds = listOf(
             EventDto.EventDtoId(UUID.randomUUID()),
