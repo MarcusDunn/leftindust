@@ -62,23 +62,31 @@ internal class ReadClinicServiceImplDataTest(
 
     @Test
     internal fun `check returns a clinic when the database has a matching clinic`() = runTest {
+        // set up the test by adding a clinic to the database
         val dansClinic = testEntityManager.persist(ClinicMother.dansClinicWithoutId)
 
+        // create the service under test using the *real* ClinicRepository and a fake ReadDoctorService
         val readClinicService = ReadClinicServiceImpl(clinicRepository, doctorService)
 
+        // run the query using the returned Clinic's id (assigned by the database)
         val returnedClinic = readClinicService.getByClinicId(ClinicDto.ClinicDtoId(dansClinic.id!!))
 
+        // assert that the returned entity is the same one we just persisted.
         assertThat(returnedClinic, equalTo(dansClinic))
     }
 
     @Test
     internal fun `check returns null when the database has no matching clinic`() = runTest {
-        val someNonExistentUUUid = UUID.fromString("d25292ba-ba8e-4098-8295-806712f70bd1")
+        // create a fake UUID we know does not exist in the database
+        val someNonExistentUuid = UUID.fromString("d25292ba-ba8e-4098-8295-806712f70bd1")
 
+        // create the service under test using the *real* ClinicRepository and a fake ReadDoctorService
         val readClinicService = ReadClinicServiceImpl(clinicRepository, doctorService)
 
-        val returnedClinic = readClinicService.getByClinicId(ClinicDto.ClinicDtoId(someNonExistentUUUid))
+        // run the query using the fake UUID
+        val returnedClinic = readClinicService.getByClinicId(ClinicDto.ClinicDtoId(someNonExistentUuid))
 
+        // assert that there is no clinic returned
         assertThat(returnedClinic, nullValue())
     }
 }
