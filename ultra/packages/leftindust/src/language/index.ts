@@ -17,6 +17,8 @@ export type Dictionary = {
     addPatient: string;
     addDoctor: string;
     noRecents: string;
+    noPatients: string;
+    noDoctors: string;
     nda: string;
     copyright: string;
     confidential: string;
@@ -24,6 +26,8 @@ export type Dictionary = {
     noContactInformation: string;
     addPinned: string;
     learnMorePinning: string;
+    learnMorePatients: string;
+    learnMoreDoctors: string;
   };
   errors: {
     connectionError: string;
@@ -127,6 +131,8 @@ export type Dictionary = {
     goodAfternoon: string;
     goodEvening: string;
     noPinned: string;
+    noPatients: string;
+    noDoctors: string;
     allTemplates: string;
     summary: string;
     files: string;

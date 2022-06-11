@@ -8,6 +8,8 @@ const language: Dictionary = {
     addPatient: 'Add a new patient to this clinic',
     addDoctor: 'Add a new doctor to this clinic',
     noRecents: 'No recents found...',
+    noPatients: 'No patients found...',
+    noDoctors: 'No doctors found...',
     nda: `You have access to this software because an authorized employee of leftindust
         gave you explicit permission to use this software. Under no circumstances can you:
         distribute MedIQ, modify or copy the contents of MedIQ, capture or digitally record any contents of MedIQ,
@@ -18,8 +20,10 @@ const language: Dictionary = {
     noContactInformation: 'No contact information found...',
     addPinned: 'Any data that you pin to this file will show up here.',
     learnMorePinning: 'Learn more about pinning...',
+    learnMorePatients: 'Learn more about adding patients...',
+    learnMoreDoctors: 'Learn more about adding doctors...'
   },
-  errors: {
+  errors: { 
     connectionError: 'We\'re having issues connecting to MedIQ. If your clinic is registered to a VPN, ensure you are connected and try again.',
     runtimeError: 'The application has run into an unexpected issue. Click "Reload" to refresh the application, or "Report" for us to take a look.',
     internalError: 'Something went wrong.',
@@ -121,6 +125,8 @@ const language: Dictionary = {
     goodAfternoon: 'Good afternoon, {name}.',
     goodEvening: 'Good evening, {name}.',
     noPinned: 'No items have been pinned',
+    noPatients: 'No patients have been recorded',
+    noDoctors: 'No doctors have been recorded',
     allTemplates: 'All Templates',
     summary: 'Summary',
     files: 'Files',

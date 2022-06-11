@@ -12,6 +12,8 @@
   import Request from '@/features/Server/components/Request/Request.svelte';
   import Cells from '@/features/UI/components/Cells/Cells.svelte';
   import { Row, Col, Button } from 'framework7-svelte';
+  import language from "@/language/locales/en"
+import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
 
   let patients: PatientsFragment[] = [];
 
@@ -50,7 +52,18 @@
         />
         {/each}
     </Cells>
+    {:else}
+    <Cells>
+      <DescriptivePlaceholder 
+      title={language.generics.noPatients} 
+      description={language.descriptions.noPatients}
+      link = {{
+        label: language.descriptions.learnMorePatients
+      }}
+      />
+    </Cells>
     {/if}
+
   </Request>
 <Row slot="controls">
   <Col width="50">
