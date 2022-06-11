@@ -2,6 +2,8 @@ package com.leftindust.mockingbird.graphql.queries
 
 import com.leftindust.mockingbird.event.*
 import io.mockk.coEvery
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
@@ -9,10 +11,13 @@ import org.hamcrest.Matchers
 import org.junit.jupiter.api.Test
 import java.util.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.jupiter.api.extension.ExtendWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class EventQueryControllerUnitTest () {
-    private val readEventService = mockk<ReadEventServiceImpl>()
+@ExtendWith(MockKExtension::class)
+internal class EventQueryControllerUnitTest {
+    @MockK
+    private lateinit var readEventService: ReadEventServiceImpl
     private val eventToEventDtoConverter = EventToEventDtoConverter()
     private val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
 
