@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.graphql.queries
 
+import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.event.*
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -91,5 +92,29 @@ internal class EventQueryControllerUnitTest {
         assertThat( result.first(), Matchers.equalTo(null))
         assertThat(result[1], Matchers.equalTo(null))
         assertThat(result[2], Matchers.equalTo(null))
+    }
+
+    @Test
+    internal fun `check if eventsByDoctorId returns a doctorId`() = runTest {
+        val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
+        val eventsByDoctorId = DoctorDto.DoctorDtoId(UUID.randomUUID())
+
+        val doctorId = mockk<List<Event>>(relaxed = true)
+        coEvery { readEventService.getByDoctorId(eventsByDoctorId) } returns doctorId
+
+        val result = eventQueryController.eventsByDoctorId(eventsByDoctorId)
+        assertThat( result, Matchers.notNullValue())
+    }
+
+    @Test
+    internal fun `check if queried eventsByDoctorId returns null` () = runTest {
+        val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
+        val eventsByDoctorId = DoctorDto.DoctorDtoId(UUID.randomUUID())
+
+        val doctorId = null
+        coEvery { readEventService.getByDoctorId(eventsByDoctorId) } returns doctorId
+
+        val result = eventQueryController.eventsByDoctorId(eventsByDoctorId)
+        assertThat( result, Matchers.equalTo(null))
     }
 }
