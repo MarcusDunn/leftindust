@@ -2,6 +2,7 @@ package com.leftindust.mockingbird.graphql.queries
 
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.event.*
+import com.leftindust.mockingbird.patient.PatientDto
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -64,7 +65,7 @@ internal class EventQueryControllerUnitTest {
         coEvery { readEventService.getByEventId(eventIds[2]) } returns event3
 
         val result = eventQueryController.eventsByIds(eventIds).toList()
-        assertThat( result, Matchers.hasSize(3))
+        assertThat(result, Matchers.hasSize(3))
         assertThat(result.first(), Matchers.notNullValue())
         assertThat(result[1], Matchers.equalTo(null))
         assertThat(result[2], Matchers.notNullValue())
@@ -88,8 +89,8 @@ internal class EventQueryControllerUnitTest {
         coEvery { readEventService.getByEventId(eventIds[2]) } returns event3
 
         val result = eventQueryController.eventsByIds(eventIds).toList()
-        assertThat( result, Matchers.hasSize(3))
-        assertThat( result.first(), Matchers.equalTo(null))
+        assertThat(result, Matchers.hasSize(3))
+        assertThat(result.first(), Matchers.equalTo(null))
         assertThat(result[1], Matchers.equalTo(null))
         assertThat(result[2], Matchers.equalTo(null))
     }
@@ -97,24 +98,48 @@ internal class EventQueryControllerUnitTest {
     @Test
     internal fun `check if eventsByDoctorId returns a doctorId`() = runTest {
         val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
-        val eventsByDoctorId = DoctorDto.DoctorDtoId(UUID.randomUUID())
+        val eventsDoctorId = DoctorDto.DoctorDtoId(UUID.randomUUID())
 
         val doctorId = mockk<List<Event>>(relaxed = true)
-        coEvery { readEventService.getByDoctorId(eventsByDoctorId) } returns doctorId
+        coEvery { readEventService.getByDoctorId(eventsDoctorId) } returns doctorId
 
-        val result = eventQueryController.eventsByDoctorId(eventsByDoctorId)
-        assertThat( result, Matchers.notNullValue())
+        val result = eventQueryController.eventsByDoctorId(eventsDoctorId)
+        assertThat(result, Matchers.notNullValue())
     }
 
     @Test
     internal fun `check if queried eventsByDoctorId returns null` () = runTest {
         val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
-        val eventsByDoctorId = DoctorDto.DoctorDtoId(UUID.randomUUID())
+        val eventsDoctorId = DoctorDto.DoctorDtoId(UUID.randomUUID())
 
         val doctorId = null
-        coEvery { readEventService.getByDoctorId(eventsByDoctorId) } returns doctorId
+        coEvery { readEventService.getByDoctorId(eventsDoctorId) } returns doctorId
 
-        val result = eventQueryController.eventsByDoctorId(eventsByDoctorId)
-        assertThat( result, Matchers.equalTo(null))
+        val result = eventQueryController.eventsByDoctorId(eventsDoctorId)
+        assertThat(result, Matchers.equalTo(null))
+    }
+
+    @Test
+    internal fun `check if queried eventsByPatientId returns patientId` () = runTest {
+        val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
+        val eventsPatientId = PatientDto.PatientDtoId(UUID.randomUUID())
+
+        val patientId = mockk<List<Event>>(relaxed = true)
+        coEvery { readEventService.getByPatientId(eventsPatientId) } returns patientId
+
+        val result = eventQueryController.eventsByPatientId(eventsPatientId)
+        assertThat(result, Matchers.notNullValue())
+    }
+
+    @Test
+    internal fun `check if queried eventsByPatientId returns null` () = runTest {
+        val eventQueryController = EventQueryController(readEventService,eventToEventDtoConverter)
+        val eventsPatientId = PatientDto.PatientDtoId(UUID.randomUUID())
+
+        val patientId = null
+        coEvery { readEventService.getByPatientId(eventsPatientId) } returns patientId
+
+        val result = eventQueryController.eventsByPatientId(eventsPatientId)
+        assertThat(result, Matchers.equalTo(null))
     }
 }
