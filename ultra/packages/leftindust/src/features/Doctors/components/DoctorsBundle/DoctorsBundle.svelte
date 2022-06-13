@@ -50,7 +50,7 @@ import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceho
           />
         {/each}
       </Cells>
-    {:else}
+    {:else if doctors.length === 0 }
       <Cells>
         <DescriptivePlaceholder 
          title={language.generics.noDoctors} 

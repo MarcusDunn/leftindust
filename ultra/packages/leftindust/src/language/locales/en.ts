@@ -23,7 +23,7 @@ const language: Dictionary = {
     learnMorePatients: 'Learn more about adding patients...',
     learnMoreDoctors: 'Learn more about adding doctors...'
   },
-  errors: { 
+  errors: {
     connectionError: 'We\'re having issues connecting to MedIQ. If your clinic is registered to a VPN, ensure you are connected and try again.',
     runtimeError: 'The application has run into an unexpected issue. Click "Reload" to refresh the application, or "Report" for us to take a look.',
     internalError: 'Something went wrong.',
