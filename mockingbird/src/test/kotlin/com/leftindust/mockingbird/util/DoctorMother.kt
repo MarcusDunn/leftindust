@@ -1,6 +1,8 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.doctor.Doctor
+import com.leftindust.mockingbird.doctor.DoctorToDoctorDtoConverter
+import com.leftindust.mockingbird.doctor.LocalDateToLocalDateDtoConverter
 import com.leftindust.mockingbird.person.NameInfo
 import java.time.LocalDate
 import java.time.Month
@@ -34,4 +36,7 @@ object DoctorMother {
 
     val jennyTheDoctorPersisted
         get() = jennyTheDoctorUnpersisted.apply { id = `jenny the doctors id` }
+
+    val jennyTheDoctorDto
+        get() = DoctorToDoctorDtoConverter(LocalDateToLocalDateDtoConverter()).convert(jennyTheDoctorPersisted)
 }

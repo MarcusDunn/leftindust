@@ -14,6 +14,7 @@ import com.leftindust.mockingbird.visit.VisitDto
 import mu.KotlinLogging
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
+import org.springframework.graphql.data.method.annotation.SchemaMapping
 import org.springframework.stereotype.Controller
 
 @Controller
@@ -24,8 +25,8 @@ class EventQueryController(
     private val logger = KotlinLogging.logger { }
 
     @QueryMapping
-    suspend fun eventsByIds(events: List<EventDto.EventDtoId>): List<EventDto?> {
-        return events
+    suspend fun eventsByIds(@Argument eventIds: List<EventDto.EventDtoId>): List<EventDto?> {
+        return eventIds
             .map { readEventService.getByEventId(it) }
             .map { it?.let { event -> eventToEventDtoConverter.convert(event) } }
     }
@@ -61,9 +62,11 @@ class EventDoctorController(
     private val readDoctorService: ReadDoctorService,
     private val doctorToDoctorDtoConverter: InfallibleConverter<Doctor, DoctorDto>,
 ) {
-    @QueryMapping
+    @SchemaMapping
     suspend fun doctors(eventDto: EventDto): List<DoctorDto> {
-        TODO()
+        val doctors = readDoctorService.getByEventId(eventDto.id)
+            ?: throw NullSubQueryException(eventDto, EventDoctorController::doctors)
+        return doctors.map { doctorToDoctorDtoConverter.convert(it) }
     }
 }
 

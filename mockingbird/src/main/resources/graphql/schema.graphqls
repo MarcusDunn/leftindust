@@ -51,9 +51,28 @@ input CreateAddress {
 }
 
 type Query {
+    eventsById(eventIds: [EventIdInput!]): [Event]!
     mockingbirdIsAlive: Boolean!
     clinicByClinicId(clinicId: ClinicIdInput!): Clinic
     userByUserUniqueId(uniqueId: String): MediqUser
+}
+
+type Event {
+    id: EventId # this is provided directly by the event dto
+    iCal: String # this is provided directly by the event dto
+    doctors: [Doctor] # this is provided by EventDoctorController.doctors
+}
+
+type Doctor {
+    id: DoctorId
+}
+
+type EventId {
+    value: UUID
+}
+
+input EventIdInput {
+    value: UUID
 }
 
 type MediqUserId {

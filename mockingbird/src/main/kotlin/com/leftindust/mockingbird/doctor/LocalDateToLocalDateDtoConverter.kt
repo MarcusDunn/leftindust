@@ -6,7 +6,7 @@ import java.time.LocalDate
 import org.springframework.stereotype.Component
 
 @Component
-class LocalDateDtoConverter : InfallibleConverter<LocalDate, LocalDateDto> {
+class LocalDateToLocalDateDtoConverter : InfallibleConverter<LocalDate, LocalDateDto> {
     override fun convert(source: LocalDate): LocalDateDto {
         return LocalDateDto(source.toString())
     }
