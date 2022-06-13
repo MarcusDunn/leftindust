@@ -1,18 +1,14 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
 
-  import {
-    defaultRangeInput,
-    DoctorsQueryDocument,
-    SortableField,
-    type DoctorsFragment,
-  } from '@/api/server';
+  import { defaultRangeInput, DoctorsQueryDocument, type DoctorsFragment } from '@/api/server';
   import { clientsSelected } from '@/features/Clients/store';
 
   import { _ } from '@/language';
   import { operationStore, query } from '@urql/svelte';
   import { account } from '@/features/Account/store';
-  import { updateRecents } from '@/features/Recents';
+  import { sortRecents, updateRecents } from '@/features/Recents';
+  import { getTimestampedValues } from '@/features/Recents';
 
   import { PageContent } from 'framework7-svelte';
   
@@ -34,7 +30,7 @@
   });
 
   const recentsRequest = operationStore(DoctorsQueryDocument, {
-    dids: ($account.database.recents.Doctor ??= []).map((id) => ({ id })),
+    dids: getTimestampedValues($account.database.recents.Doctor ??= []).map((id) => ({ id })),
   });
 
   const navigate = (multiple: boolean) => {
@@ -47,12 +43,17 @@
 
   $: $recentsRequest = {
     variables: {
-      dids: ($account.database.recents.Doctor ?? []).map((id) => ({ id })),
+      dids: getTimestampedValues($account.database.recents.Doctor ?? []).map((id) => ({ id })),
     }, 
   };
 
   $: doctors = $request.data?.doctors ?? [];
-  $: recents = $recentsRequest.data?.doctors ?? [];
+  $: timestampedRecents = $account.database.recents.Doctor ?? {};
+  $: recents = sortRecents(
+    $recentsRequest.data?.doctors ?? [],
+    timestampedRecents,
+    (doctor => doctor.did.id),
+  );
 
   query(request);
   query(recentsRequest);

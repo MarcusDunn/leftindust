@@ -12,7 +12,8 @@
   import { _ } from '@/language';
   import { operationStore, query } from '@urql/svelte';
   import { account } from '@/features/Account/store';
-  import { updateRecents } from '@/features/Recents';
+  import { sortRecents, updateRecents } from '@/features/Recents';
+  import { getTimestampedValues } from '@/features/Recents';
 
   import { PageContent } from 'framework7-svelte';
   
@@ -35,7 +36,7 @@
   });
 
   const recentsRequest = operationStore(PatientsQueryDocument, {
-    pids: ($account.database.recents.Patient ??= []).map((id) => ({ id })),
+    pids: getTimestampedValues($account.database.recents.Patient ??= {}).map(id => ({ id })),
   });
 
   const navigate = (multiple: boolean) => {
@@ -48,12 +49,17 @@
 
   $: $recentsRequest = {
     variables: {
-      pids: ($account.database.recents.Patient ?? []).map((id) => ({ id })),
+      pids: getTimestampedValues($account.database.recents.Patient ?? {}).map(id => ({ id })),
     },
   };
 
   $: patients = $request.data?.patients ?? [];
-  $: recents = $recentsRequest.data?.patients ?? [];
+  $: timestampedRecents = $account.database.recents.Patient ?? {};
+  $: recents = sortRecents(
+    $recentsRequest.data?.patients ?? [],
+    timestampedRecents,
+    (patient => patient.pid.id),
+  );
 
   query(request);
   query(recentsRequest);
