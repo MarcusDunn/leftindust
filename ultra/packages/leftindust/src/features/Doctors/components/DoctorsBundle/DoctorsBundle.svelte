@@ -50,16 +50,14 @@ import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceho
           />
         {/each}
       </Cells>
-    {:else if doctors.length === 0 }
-      <Cells>
-        <DescriptivePlaceholder 
-         title={language.generics.noDoctors} 
-         description={language.descriptions.noDoctors}
-         link = {{
-           label: language.descriptions.learnMoreDoctors
-         }}
-         />
-      </Cells>
+    {:else}
+      <DescriptivePlaceholder 
+       title={language.generics.noDoctors} 
+       description={language.descriptions.noDoctors}
+       link = {{
+         label: language.descriptions.learnMoreDoctors
+       }}
+      />
     {/if}
   </Request>
   <Row slot='controls'>
