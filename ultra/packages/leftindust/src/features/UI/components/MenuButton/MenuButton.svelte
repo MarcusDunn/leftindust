@@ -16,7 +16,7 @@
 <div class={`${disabled ? 'disabled' : ''} ui-menu_button`} on:click>
   <Link
     class={`ui-menu_button-link ${title ? 'ui-menu_button-tall' : ''}`}
-    smartSelect={smartSelect}
+    {smartSelect}
     smartSelectParams={{ openIn: 'popover', closeOnSelect: true, ...smartSelectParams }}
   >
     {#if icon}

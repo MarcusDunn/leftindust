@@ -3,13 +3,11 @@ package com.leftindust.mockingbird.user
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullSubQueryException
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.extensions.doThenNull
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.person.NameInfoDto
 import com.leftindust.mockingbird.person.ReadNameInfoService
-import kotlinx.coroutines.flow.Flow
 import mu.KotlinLogging
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -25,13 +23,13 @@ class UserQueryController(
     @QueryMapping
     suspend fun userByUserUniqueId(@Argument uniqueId: String): MediqUserDto? {
         val mediqUser = readUserService.getByUserUid(uniqueId)
-            ?: return doThenNull { logger.debug { "returning null from userByUserUniqueId for $uniqueId" } }
+            ?: return null
         return mediqUserToMediqUserDtoConverter.convert(mediqUser)
     }
 
-    suspend fun usersByRange(range: RangeDto): Flow<MediqUserDto> = TODO()
+    suspend fun usersByRange(range: RangeDto): List<MediqUserDto> = TODO()
 
-    suspend fun usersByUserId(uniqueIds: List<String>): Flow<MediqUserDto?> = TODO()
+    suspend fun usersByUserId(uniqueIds: List<String>): List<MediqUserDto?> = TODO()
 
     suspend fun isRegistered(): Boolean = TODO()
 

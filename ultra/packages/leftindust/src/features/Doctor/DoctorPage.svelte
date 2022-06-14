@@ -23,8 +23,7 @@
   import Clamp from '../UI/components/Clamp/Clamp.svelte';
   import DoctorTags from './components/DoctorTags/DoctorTags.svelte';
   import EntityTable from '../Entity/components/EntityTable/EntityTable.svelte';
-  import DescriptivePlaceholder
-    from '../App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
+  import DescriptivePlaceholder from '../App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
   import SpecificGrid from '../Widgets/components/Grid/SpecificGrid.svelte';
   import { operationStore, query } from '@urql/svelte';
   import GenericGrid from '../Widgets/components/Grid/GenericGrid.svelte';

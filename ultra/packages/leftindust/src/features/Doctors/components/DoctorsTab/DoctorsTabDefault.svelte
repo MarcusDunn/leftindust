@@ -12,11 +12,9 @@
 
   import { PageContent } from 'framework7-svelte';
   
-  import CollapsableContentPlaceholder
-    from '@/features/UI/components/Collapsable/CollapsableContentPlaceholder.svelte';
+  import CollapsableContentPlaceholder from '@/features/UI/components/Collapsable/CollapsableContentPlaceholder.svelte';
 
-  import MasterListLayout
-    from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
+  import MasterListLayout from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
   import Request from '@/features/Server/components/Request/Request.svelte';
   import DoctorsCells from '../DoctorsCells/DoctorsCells.svelte';
   

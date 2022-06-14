@@ -7,8 +7,7 @@
   import { createEventDispatcher } from 'svelte';
 
   import Cells from '@/features/UI/components/Cells/Cells.svelte';
-  import DoctorSelectableCell  
-    from '@/features/Doctor/components/DoctorCell/DoctorSelectableCell.svelte';
+  import DoctorSelectableCell from '@/features/Doctor/components/DoctorCell/DoctorSelectableCell.svelte';
 
   const dispatch = createEventDispatcher();
 

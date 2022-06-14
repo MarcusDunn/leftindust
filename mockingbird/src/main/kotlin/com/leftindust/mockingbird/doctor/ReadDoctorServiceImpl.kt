@@ -1,17 +1,11 @@
 package com.leftindust.mockingbird.doctor
 
-import com.leftindust.mockingbird.LogMessage
 import com.leftindust.mockingbird.clinic.ClinicDto
-import com.leftindust.mockingbird.event.EventDto
-import com.leftindust.mockingbird.event.ReadEventService
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
-import org.slf4j.LoggerFactory
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
 @Service
@@ -20,21 +14,18 @@ class ReadDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
     private val readPatientService: ReadPatientService,
 ) : ReadDoctorService {
-    private val logger = LoggerFactory.getLogger(ReadDoctorServiceImpl::class.java)
+    private val logger = KotlinLogging.logger { }
 
-    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): Flow<Doctor>? {
-        val patient = readPatientService.getByPatientId(patientId) ?: run {
-            logger.trace(LogMessage("Returning null from ${ReadDoctorService::getByPatientId.name}", "ReadPatientService.getByPatientId returned null for $patientId").toString())
-            return null
-        }
-        return patient.doctors.asFlow().map { it.doctor }
+    override suspend fun getByPatientId(patientDtoId: PatientDto.PatientDtoId): List<Doctor>? {
+        val patient = readPatientService.getByPatientId(patientDtoId) ?: return null
+        return patient.doctors.map { it.doctor }
     }
 
-    override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): Doctor? {
+    override suspend fun getByDoctorId(doctorDtoId: DoctorDto.DoctorDtoId): Doctor? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getByClinicId(clinicId: ClinicDto.ClinicDtoId): Flow<Doctor>? {
+    override suspend fun getByClinicId(clinicDtoId: ClinicDto.ClinicDtoId): List<Doctor>? {
         TODO("Not yet implemented")
     }
 
@@ -42,11 +33,11 @@ class ReadDoctorServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getMany(range: RangeDto): Flow<Doctor> {
+    override suspend fun getMany(range: RangeDto): List<Doctor> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun searchByExample(example: GraphQLDoctorExample): Flow<Doctor> {
+    override suspend fun searchByExample(example: GraphQLDoctorExample): List<Doctor> {
         TODO("Not yet implemented")
     }
 

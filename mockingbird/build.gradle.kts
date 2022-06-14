@@ -3,14 +3,13 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.net.URI
 
 plugins {
-    kotlin("jvm") version "1.6.20"
-    kotlin("kapt") version "1.6.20"
-    kotlin("plugin.spring") version "1.6.20"
-    kotlin("plugin.allopen") version "1.6.20"
-    kotlin("plugin.jpa") version "1.6.20"
+    kotlin("jvm") version "1.7.0"
+    kotlin("kapt") version "1.7.0"
+    kotlin("plugin.spring") version "1.7.0"
+    kotlin("plugin.allopen") version "1.7.0"
+    kotlin("plugin.jpa") version "1.7.0"
     id("org.jetbrains.kotlinx.kover") version "0.5.0"
     id("org.springframework.boot") version "2.7.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
@@ -30,7 +29,7 @@ dependencies {
     implementation("org.springframework.boot", "spring-boot-starter-actuator")
     implementation("org.springframework.boot", "spring-boot-starter-graphql")
     implementation("org.springframework.boot", "spring-boot-starter-oauth2-resource-server")
-
+    annotationProcessor("org.springframework.boot", "spring-boot-configuration-processor")
     // kotlin
     implementation("org.jetbrains.kotlin", "kotlin-reflect")
     implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
@@ -76,10 +75,13 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(module = "mockito-core")
     }
+    testImplementation("com.h2database", "h2", "2.1.212")
     testImplementation("org.springframework.security", "spring-security-test")
     testImplementation("org.springframework.graphql", "spring-graphql-test")
+    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.2")
 
     testImplementation("com.ninja-squad", "springmockk", "3.1.1")
+    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.2")
 }
 
 // liquibase plugin config

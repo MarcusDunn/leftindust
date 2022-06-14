@@ -24,7 +24,7 @@
       on:click={() => tryAgain && tryAgain()}
     >
       {$_('generics.tryAgain')}
-  </Button>
+    </Button>
   {/if}
   {#if reload}
     <Button
@@ -35,7 +35,7 @@
     >
       <Icon f7="arrow_clockwise" />
       {$_('generics.reload')}
-  </Button>
+    </Button>
   {/if}
   {#if report}
     <Button

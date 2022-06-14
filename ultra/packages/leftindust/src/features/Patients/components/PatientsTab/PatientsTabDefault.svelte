@@ -16,12 +16,10 @@
   import { getTimestampedValues } from '@/features/Recents';
 
   import { PageContent } from 'framework7-svelte';
-  
-  import CollapsableContentPlaceholder
-    from '@/features/UI/components/Collapsable/CollapsableContentPlaceholder.svelte';
 
-  import MasterListLayout
-    from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
+  import CollapsableContentPlaceholder from '@/features/UI/components/Collapsable/CollapsableContentPlaceholder.svelte';
+
+  import MasterListLayout from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
   import Request from '@/features/Server/components/Request/Request.svelte';
   import PatientsCells from '../PatientsCells/PatientsCells.svelte';
 
@@ -63,7 +61,6 @@
 
   query(request);
   query(recentsRequest);
-
 </script>
 
 <PageContent style="padding-top: 10px" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}>

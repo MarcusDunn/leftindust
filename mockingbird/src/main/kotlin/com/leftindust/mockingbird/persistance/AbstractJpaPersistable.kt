@@ -7,8 +7,10 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.MappedSuperclass
 
+interface JpaEntity // marker interface for all entities
+
 @MappedSuperclass
-abstract class AbstractJpaPersistable {
+abstract class AbstractJpaPersistable : JpaEntity {
     companion object
 
     @Id

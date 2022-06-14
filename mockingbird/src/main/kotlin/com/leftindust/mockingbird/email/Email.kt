@@ -9,5 +9,5 @@ class Email(
     @Column(nullable = false)
     var type: EmailType,
     @Column(nullable = false)
-    var email: String,
+    var address: String,
 ) : AbstractJpaPersistable()

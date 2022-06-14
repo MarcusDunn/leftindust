@@ -6,6 +6,3 @@ interface InfallibleConverter<T, S: Any> : Converter<T, S> {
     override fun convert(source: T): S
 }
 
-interface FallibleConverter<T, S : Any> : Converter<T, S> {
-    override fun convert(source: T): S?
-}

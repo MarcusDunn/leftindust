@@ -24,7 +24,7 @@
   import Menu from '@/features/UI/components/Menu/Menu.svelte';
 
   import PatientsTab from '@/features/Patients/components/PatientsTab/PatientsTab.svelte';
-import DoctorsTab from '../Doctors/components/DoctorsTab/DoctorsTab.svelte';
+  import DoctorsTab from '../Doctors/components/DoctorsTab/DoctorsTab.svelte';
 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
@@ -34,8 +34,8 @@ import DoctorsTab from '../Doctors/components/DoctorsTab/DoctorsTab.svelte';
 </script>
 
 <Page style="overflow: hidden">
-	<svelte:fragment slot="fixed">
-		<Menu
+  <svelte:fragment slot="fixed">
+    <Menu
       items={[
         {
           title: $_('generics.patient'),
@@ -57,56 +57,56 @@ import DoctorsTab from '../Doctors/components/DoctorsTab/DoctorsTab.svelte';
       bind:instance={createMenuRef}
     />
 	
-		<AppBar>
-			<Searchbar
-				class="color-purple"
-				customSearch
-				inline
-				disableButton={false}
-				placeholder={($clientsSelectedTab === ClientsTab.Patients && $_('generics.patientsSearch')
-					|| $clientsSelectedTab === ClientsTab.Doctors && $_('generics.doctorsSearch')) || ''}
-				bind:value={$clientsSearchQuery}
-			/>
-			<svelte:fragment slot="right">
-				<MenuButton
-					title={$_('generics.filter')}
-					icon={{ f7: 'line_horizontal_3_decrease_circle_fill' }}
-					disabled={$clientsSelectedTab === ClientsTab.Doctors}
-				/>
-				{#if !$wizardOpen}
-					<MenuButton
-						title={$_('generics.create')}
-						icon={{ f7: 'plus_circle_fill', color: 'purple' }}
-						on:click={(event) => { openPopover(createMenuRef, event); }}
-					/>
-				{/if}
-			</svelte:fragment>
-			<svelte:fragment slot="subnavbar">
-				<Segmented strong tag="p">
-					<Button
-						active={$clientsSelectedTab === ClientsTab.Patients}
-						on:click={() => $clientsSelectedTab = ClientsTab.Patients}
-					>
-						<Icon f7="person_2_alt" color="purple"/>
-						{$_('generics.patients')}
-					</Button>
-					<Button
-						active={$clientsSelectedTab === ClientsTab.Doctors}
-						on:click={() => $clientsSelectedTab = ClientsTab.Doctors}
-					>
-						<Icon f7="briefcase_fill" color="blue"/>
-						{$_('generics.doctors')}
-					</Button>
-				</Segmented>
-			</svelte:fragment>
-		</AppBar>
-	</svelte:fragment>
-	<Tabs style="height: 100%">
-		<Tab tabActive={$clientsSelectedTab === ClientsTab.Patients}>
-			<PatientsTab {f7router} {f7route}/>
-		</Tab>
-		<Tab tabActive={$clientsSelectedTab === ClientsTab.Doctors}>
-			<DoctorsTab {f7router} {f7route} />
-		</Tab>
-	</Tabs>
+    <AppBar>
+      <Searchbar
+        class="color-purple"
+        customSearch
+        inline
+        disableButton={false}
+        placeholder={($clientsSelectedTab === ClientsTab.Patients && $_('generics.patientsSearch')
+          || $clientsSelectedTab === ClientsTab.Doctors && $_('generics.doctorsSearch')) || ''}
+        bind:value={$clientsSearchQuery}
+      />
+      <svelte:fragment slot="right">
+        <MenuButton
+          title={$_('generics.filter')}
+          icon={{ f7: 'line_horizontal_3_decrease_circle_fill' }}
+          disabled={$clientsSelectedTab === ClientsTab.Doctors}
+        />
+        {#if !$wizardOpen}
+          <MenuButton
+            title={$_('generics.create')}
+            icon={{ f7: 'plus_circle_fill', color: 'purple' }}
+            on:click={(event) => { openPopover(createMenuRef, event); }}
+          />
+        {/if}
+      </svelte:fragment>
+      <svelte:fragment slot="subnavbar">
+        <Segmented strong tag="p">
+          <Button
+            active={$clientsSelectedTab === ClientsTab.Patients}
+            on:click={() => $clientsSelectedTab = ClientsTab.Patients}
+          >
+            <Icon f7="person_2_alt" color="purple"/>
+            {$_('generics.patients')}
+          </Button>
+          <Button
+            active={$clientsSelectedTab === ClientsTab.Doctors}
+            on:click={() => $clientsSelectedTab = ClientsTab.Doctors}
+          >
+            <Icon f7="briefcase_fill" color="blue"/>
+            {$_('generics.doctors')}
+          </Button>
+        </Segmented>
+      </svelte:fragment>
+    </AppBar>
+  </svelte:fragment>
+  <Tabs style="height: 100%">
+    <Tab tabActive={$clientsSelectedTab === ClientsTab.Patients}>
+      <PatientsTab {f7router} {f7route}/>
+    </Tab>
+    <Tab tabActive={$clientsSelectedTab === ClientsTab.Doctors}>
+      <DoctorsTab {f7router} {f7route} />
+    </Tab>
+  </Tabs>
 </Page>

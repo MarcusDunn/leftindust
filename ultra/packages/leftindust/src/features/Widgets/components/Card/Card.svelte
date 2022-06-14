@@ -29,10 +29,9 @@
 
 <div class="widget-card" out:scale={{ duration: 600, easing: quintOut }}>
   <Block
-    class={
-      `widget-card-container
+    class={`widget-card-container
       ${shadow ? 'elevation-4' : ''}
-   `}
+    `}
     strong
     inset
   > 

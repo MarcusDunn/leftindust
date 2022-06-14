@@ -8,15 +8,26 @@ import com.google.firebase.auth.FirebaseAuth
 import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
+import graphql.ExecutionResult
+import graphql.execution.AbstractAsyncExecutionStrategy
+import graphql.execution.AsyncExecutionStrategy
+import graphql.execution.DataFetcherExceptionHandler
+import graphql.execution.ExecutionContext
+import graphql.execution.ExecutionStrategy
+import graphql.execution.ExecutionStrategyParameters
 import graphql.language.StringValue
 import graphql.schema.Coercing
 import graphql.schema.CoercingSerializeException
 import graphql.schema.GraphQLScalarType
+import graphql.schema.idl.TypeRuntimeWiring
 import java.util.UUID
+import java.util.concurrent.CompletableFuture
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.core.convert.ConversionService
+import org.springframework.core.convert.TypeDescriptor
 import org.springframework.core.io.ClassPathResource
 import org.springframework.graphql.execution.RuntimeWiringConfigurer
 import org.springframework.http.HttpMethod
@@ -70,7 +81,8 @@ class MockingbirdApplication {
                         throw CoercingSerializeException("UUID must be a StringValue")
                     }
                 }
-            }).build()
+            })
+            .build()
         )
     }
 

@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.event
 
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.extensions.doThenNull
 import mu.KotlinLogging
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
@@ -23,8 +22,7 @@ class EventMutationController(
 
     @MutationMapping
     suspend fun editEvent(@Argument event: UpdateEventDto): EventDto? {
-        return updateEventService.updateEvent(event)
-            ?.let { eventToEventDtoConverter.convert(it) }
-            ?: doThenNull { logger.trace { "returning null from editEvent" } }
+        val updateEvent = updateEventService.updateEvent(event) ?: return null
+        return eventToEventDtoConverter.convert(updateEvent)
     }
 }

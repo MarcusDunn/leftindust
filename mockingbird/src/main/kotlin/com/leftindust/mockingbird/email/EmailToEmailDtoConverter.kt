@@ -10,7 +10,7 @@ class EmailToEmailDtoConverter : InfallibleConverter<Email, EmailDto> {
         return EmailDto(
             EmailDto.Id(source.id ?: throw NullEntityIdInConverterException(source)),
             source.type,
-            source.email
+            source.address
         )
     }
 }
