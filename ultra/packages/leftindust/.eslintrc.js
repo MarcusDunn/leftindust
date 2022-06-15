@@ -39,7 +39,13 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
-    'indent': ['error', 2, { 'SwitchCase': 1 }],
+    'indent': [
+      'error',
+      2,
+      {
+        'SwitchCase': 1,
+        ignoreComments: true,
+      }],
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
@@ -47,7 +53,12 @@ module.exports = {
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/unbound-method': 'off',
     '@ota-meshi/svelte/html-quotes': 'error',
-    '@ota-meshi/svelte/indent': 'error',
+    '@ota-meshi/svelte/indent': {
+      "indent": 2,
+      "ignoredNodes": [],
+      "switchCase": 1,
+      "alignAttributesVertically": false
+    },
     '@ota-meshi/svelte/mustache-spacing': 'error',
     '@ota-meshi/svelte/shorthand-attribute': 'error',
     '@ota-meshi/svelte/valid-compile': 'off',

@@ -15,7 +15,6 @@
 
   export let title = '';
   export let placeholder = '';
-
 </script>
 
 {#key options}
