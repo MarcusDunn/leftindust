@@ -52,10 +52,10 @@ import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceho
       </Cells>
     {:else}
       <DescriptivePlaceholder 
-       title={language.generics.noDoctors} 
-       description={language.descriptions.noDoctors}
+       title={$_('generics.noDoctors')}
+       description={$_('descriptions.noDoctors')}
        link = {{
-         label: language.descriptions.learnMoreDoctors
+         label: $_('descriptions.learnMoreDoctors')
        }}
       />
     {/if}
