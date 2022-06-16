@@ -10,6 +10,8 @@
   import Request from '@/features/Server/components/Request/Request.svelte';
   import Cells from '@/features/UI/components/Cells/Cells.svelte';
   import { Row, Col, Button } from 'framework7-svelte';
+  import language from "@/language/locales/en"
+import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
 
   let doctors: DoctorsFragment[] = [];
 
@@ -48,6 +50,14 @@
           />
         {/each}
       </Cells>
+    {:else}
+      <DescriptivePlaceholder 
+       title={$_('generics.noDoctors')}
+       description={$_('descriptions.noDoctors')}
+       link = {{
+         label: $_('descriptions.learnMoreDoctors')
+       }}
+      />
     {/if}
   </Request>
   <Row slot='controls'>
