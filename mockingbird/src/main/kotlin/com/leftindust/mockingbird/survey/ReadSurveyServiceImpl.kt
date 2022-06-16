@@ -3,8 +3,6 @@ package com.leftindust.mockingbird.survey
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 

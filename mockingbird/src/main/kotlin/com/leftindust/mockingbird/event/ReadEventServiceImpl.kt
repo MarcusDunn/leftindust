@@ -7,8 +7,6 @@ import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.visit.ReadVisitService
 import com.leftindust.mockingbird.visit.VisitDto
 import javax.transaction.Transactional
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 

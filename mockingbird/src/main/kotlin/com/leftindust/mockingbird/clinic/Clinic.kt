@@ -20,9 +20,9 @@ private val logger = KotlinLogging.logger { }
 class Clinic(
     @Column(nullable = false)
     var name: String,
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = [CascadeType.PERSIST])
     var address: Address,
-    @OneToMany(mappedBy = "clinic", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "clinic")
     var doctors: MutableSet<ClinicDoctorEntity> = mutableSetOf(),
 ) : AbstractJpaPersistable() {
     fun clearDoctors() {

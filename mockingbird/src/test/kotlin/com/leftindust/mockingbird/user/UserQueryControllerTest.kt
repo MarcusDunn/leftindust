@@ -2,22 +2,29 @@ package com.leftindust.mockingbird.user
 
 import com.leftindust.mockingbird.person.NameInfo
 import io.mockk.coEvery
-import io.mockk.mockk
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.Matchers.nullValue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
+@OptIn(ExperimentalCoroutinesApi::class)
+@ExtendWith(MockKExtension::class)
 internal class UserQueryControllerUnitTest {
-    private val readUserService = mockk<ReadUserService>()
+    @MockK
+    private lateinit var readUserService: ReadUserService
     private val mediqUserToMediqUserDtoConverter = MediqUserToMediqUserDtoConverter(MediqGroupToUserGroupDtoConverter())
 
-    private val userQueryController = UserQueryController(readUserService, mediqUserToMediqUserDtoConverter)
 
     @Test
     internal fun `check returns null if no such user exists`() = runTest {
+        val userQueryController = UserQueryController(readUserService, mediqUserToMediqUserDtoConverter)
+
         // if the user does not exist
         coEvery { readUserService.getByUserUid(any()) } returns null
 
@@ -30,6 +37,8 @@ internal class UserQueryControllerUnitTest {
 
     @Test
     internal fun `check that we return a user with the same id if the user exists`() = runTest {
+         val userQueryController = UserQueryController(readUserService, mediqUserToMediqUserDtoConverter)
+
         // if the user exists
         val mediqUser = MediqUser(
             uniqueId = "hello world",

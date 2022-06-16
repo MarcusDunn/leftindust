@@ -8,8 +8,6 @@ import com.leftindust.mockingbird.event.EventFilter
 import com.leftindust.mockingbird.event.EventFilterDto
 import com.leftindust.mockingbird.event.FilterEventsService
 import com.leftindust.mockingbird.event.ReadEventService
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import org.springframework.core.convert.converter.Converter
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.SchemaMapping

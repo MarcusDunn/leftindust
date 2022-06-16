@@ -5,9 +5,6 @@ import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
@@ -19,16 +16,16 @@ class ReadDoctorServiceImpl(
 ) : ReadDoctorService {
     private val logger = KotlinLogging.logger { }
 
-    override suspend fun getByPatientId(patientDtoId: PatientDto.PatientDtoId): Flow<Doctor>? {
+    override suspend fun getByPatientId(patientDtoId: PatientDto.PatientDtoId): List<Doctor>? {
         val patient = readPatientService.getByPatientId(patientDtoId) ?: return null
-        return patient.doctors.asFlow().map { it.doctor }
+        return patient.doctors.map { it.doctor }
     }
 
     override suspend fun getByDoctorId(doctorDtoId: DoctorDto.DoctorDtoId): Doctor? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getByClinicId(clinicDtoId: ClinicDto.ClinicDtoId): Flow<Doctor>? {
+    override suspend fun getByClinicId(clinicDtoId: ClinicDto.ClinicDtoId): List<Doctor>? {
         TODO("Not yet implemented")
     }
 
@@ -36,11 +33,11 @@ class ReadDoctorServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getMany(range: RangeDto): Flow<Doctor> {
+    override suspend fun getMany(range: RangeDto): List<Doctor> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun searchByExample(example: GraphQLDoctorExample): Flow<Doctor> {
+    override suspend fun searchByExample(example: GraphQLDoctorExample): List<Doctor> {
         TODO("Not yet implemented")
     }
 

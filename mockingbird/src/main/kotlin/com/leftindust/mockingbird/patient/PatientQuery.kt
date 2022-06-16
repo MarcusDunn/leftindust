@@ -11,8 +11,6 @@ import com.leftindust.mockingbird.phone.PhoneDto
 import com.leftindust.mockingbird.survey.SurveyDto
 import com.leftindust.mockingbird.user.MediqUserDto
 import com.leftindust.mockingbird.visit.VisitDto
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import mu.KotlinLogging
 import org.springframework.stereotype.Controller
 

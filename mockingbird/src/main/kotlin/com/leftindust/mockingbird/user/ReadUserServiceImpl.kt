@@ -3,7 +3,6 @@ package com.leftindust.mockingbird.user
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.patient.PatientDto
-import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 
 @Service
@@ -16,7 +15,7 @@ class ReadUserServiceImpl : ReadUserService {
         return null
     }
 
-    override suspend fun getUsers(range: RangeDto): Flow<MediqUser> {
+    override suspend fun getUsers(range: RangeDto): List<MediqUser> {
         TODO("Not yet implemented")
     }
 

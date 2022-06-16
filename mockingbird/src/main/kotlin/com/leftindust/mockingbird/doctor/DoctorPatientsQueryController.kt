@@ -5,8 +5,6 @@ import com.leftindust.mockingbird.NullSubQueryException
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import org.springframework.graphql.data.method.annotation.SchemaMapping
 import org.springframework.stereotype.Controller
 
@@ -17,8 +15,8 @@ class DoctorPatientsQueryController(
 ) {
     @SchemaMapping
     suspend fun patients(doctorDto: DoctorDto): List<PatientDto> {
-        val patientFlow = patientService.getByDoctor(doctorDto.id)
+        val patients = patientService.getByDoctor(doctorDto.id)
             ?: throw NullSubQueryException(doctorDto, ReadPatientService::getByDoctor)
-        return patientFlow.map { patientToPatientDtoConverter.convert(it) }
+        return patients.map { patientToPatientDtoConverter.convert(it) }
     }
 }
