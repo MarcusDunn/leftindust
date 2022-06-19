@@ -26,7 +26,7 @@
   import DescriptivePlaceholder from '../App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
   import SpecificGrid from '../Widgets/components/Grid/SpecificGrid.svelte';
   import { operationStore, query } from '@urql/svelte';
-import GenericGrid from '../Widgets/components/Grid/GenericGrid.svelte';
+  import GenericGrid from '../Widgets/components/Grid/GenericGrid.svelte';
     
   export let f7router: Router.Router;
   export let f7route: Router.Route;
