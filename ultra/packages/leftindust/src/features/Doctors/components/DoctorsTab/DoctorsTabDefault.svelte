@@ -17,7 +17,7 @@
   import MasterListLayout from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
   import Request from '@/features/Server/components/Request/Request.svelte';
   import DoctorsCells from '../DoctorsCells/DoctorsCells.svelte';
-  
+
   export let f7router: Router.Router;
 
   let doctors: DoctorsFragment[];
@@ -58,7 +58,7 @@
 
 </script>
 
-<PageContent style="padding-top: 10px" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}>
+<PageContent style="padding: 10px;overflow-y:auto" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}>
   <MasterListLayout>
     <Request {...$recentsRequest} reexecute={recentsRequest.reexecute} slot="recents">
       {#if recents.length > 0}
