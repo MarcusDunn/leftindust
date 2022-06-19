@@ -22,8 +22,6 @@
   import Request from '@/features/Server/components/Request/Request.svelte';
   import PatientsCells from '../PatientsCells/PatientsCells.svelte';
 
-  import '@/features/UI/components/Scrollbar/Scrollbar.scss'
-
   export let f7router: Router.Router;
 
   let patients: PatientsFragment[];
@@ -57,7 +55,7 @@
   query(recentsRequest);
 </script>
 
-<PageContent class="scrollbarHide" style="padding: 10px;overflow-y:auto" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}> 
+<PageContent style="padding: 10px;overflow-y:auto" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}> 
   <MasterListLayout>
     <Request {...$recentsRequest} reexecute={recentsRequest.reexecute} slot="recents">
       {#if recents.length > 0}
