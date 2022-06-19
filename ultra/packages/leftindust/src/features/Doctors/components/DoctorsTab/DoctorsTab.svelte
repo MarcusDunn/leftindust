@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
+  
   import DoctorsTabDefault from './DoctorsTabDefault.svelte';
   import DoctorsTabSearch from './DoctorsTabSearch.svelte';
   
@@ -11,4 +12,8 @@
 
 </script>
 
-<svelte:component this={$clientsSearchQuery || $doctorsSelectedAttachments.length > 0 ? DoctorsTabSearch : DoctorsTabDefault} {f7router} {f7route} />
+<svelte:component 
+  this={$clientsSearchQuery || $doctorsSelectedAttachments.length > 0 ? DoctorsTabSearch : DoctorsTabDefault} 
+  {f7router} 
+  {f7route} 
+/>

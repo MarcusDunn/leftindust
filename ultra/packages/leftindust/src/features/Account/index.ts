@@ -38,8 +38,9 @@ import deepmerge from 'deepmerge';
 import { _ } from '@/language';
 
 import getNativeAPI from '@/api/bridge';
+import type { TimestampedRecents } from '../Recents';
 
-export type AccountRecentsTemplate = Record<keyof ResolversTypes, string[]>;
+export type AccountRecentsTemplate = Record<keyof ResolversTypes, TimestampedRecents>;
 
 export type AccountLayoutTemplate = {
   pinned: {
