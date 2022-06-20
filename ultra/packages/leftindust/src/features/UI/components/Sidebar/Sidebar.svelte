@@ -15,7 +15,7 @@
   
   import { wizardOpen } from '../../../Wizard/store';
   import { getNativeAPI } from '@/api/bridge';
-  import SidebarToggle from './SideBarToggle.svelte';
+  import SidebarToggle from './SidebarToggle.svelte';
 
   export let items: (SidebarItem | SidebarTitle)[] = [];
 
