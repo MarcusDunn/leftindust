@@ -8239,6 +8239,11 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
+function-junctions@^0.0.16:
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/function-junctions/-/function-junctions-0.0.16.tgz#b8fcb3ac27945cbefdf1f19d728bae381b0b7d1e"
+  integrity sha512-m7j858NruxjwIUqHD2wUrjZiQx1N+J7GRFJL0kmRnsVdZTuU7Ad99aFamsIv/bk1XW/6IjQ6PJUAlXWFc6RdRA==
+
 functional-red-black-tree@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"

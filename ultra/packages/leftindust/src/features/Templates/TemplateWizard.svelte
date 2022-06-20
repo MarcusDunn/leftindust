@@ -13,28 +13,36 @@
   import TemplateCategoryInputs from './components/TemplateInputs/TemplateCategoryInputs.svelte';
   import TemplateSections from './components/TemplateSections/TemplateSections.svelte';
   import TemplateSectionInputs from './components/TemplateSection/TemplateSectionInputs.svelte';
+  import NodesModal from '../Nodes/components/NodesModal/NodesModal.svelte';
+
+  let nodesModalOpen = false;
 </script>
 
 <WizardSplit
   title="New Template"
-  subtitle="Create  a new template"
+  subtitle="Create a new template"
   color="deeppurple"
 >
   <svelte:fragment slot="appbar">
-    <Segmented strong style="width: 200px;">
-      <Button
-        active={$TemplateSelectedTab === 'input'}
-        on:click={() => ($TemplateSelectedTab = 'input')}
+    {#if !nodesModalOpen}
+      <Segmented
+        strong
+        style="width: 200px;"
       >
-        {$_('generics.input')}
-      </Button>
-      <Button
-        active={$TemplateSelectedTab === 'output'}
-        on:click={() => ($TemplateSelectedTab = 'output')}
-      >
-        {$_('generics.output')}
-      </Button>
-    </Segmented>
+        <Button
+          active={$TemplateSelectedTab === 'input'}
+          on:click={() => ($TemplateSelectedTab = 'input')}
+        >
+          {$_('generics.input')}
+        </Button>
+        <Button
+          active={$TemplateSelectedTab === 'output'}
+          on:click={() => ($TemplateSelectedTab = 'output')}
+        >
+          {$_('generics.output')}
+        </Button>
+      </Segmented>
+    {/if}
   </svelte:fragment>
 
   {#if $TemplateInputItems.sections.length > 1}
@@ -45,6 +53,8 @@
     <br />
     <br />
   {/if}
+  <NodesModal bind:open={nodesModalOpen} />
+  <a on:click={() => (nodesModalOpen = true)}>Open Modal</a>
   <Tabs>
     <Tab tabActive={$TemplateSelectedTab === 'input'}>
       <TemplateSections bind:sections={$TemplateInputItems.sections} />
