@@ -20,7 +20,8 @@ export enum TemplateInputType {
   Upload = 'upload',
   SingleSelect = 'single-select',
   MultiSelect = 'multi-select',
-  Title = 'title'
+  Title = 'title',
+  Compute = 'compute'
 }
 
 export enum TemplateCategory {
