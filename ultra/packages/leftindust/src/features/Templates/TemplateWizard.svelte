@@ -6,16 +6,15 @@
     Tab,
   } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
-  import { TemplateInputItems, TemplateSelectedTab } from './store';
+  import { TemplateInputItems, TemplateNodesModalOpen, TemplateSelectedTab } from './store';
+  import { fade } from 'svelte/transition';
 
   import IFrame from '../View/components/IFrame/IFrame.svelte';
   import WizardSplit from '../Wizard/components/WizardSplit/WizardSplit.svelte';
   import TemplateCategoryInputs from './components/TemplateInputs/TemplateCategoryInputs.svelte';
   import TemplateSections from './components/TemplateSections/TemplateSections.svelte';
   import TemplateSectionInputs from './components/TemplateSection/TemplateSectionInputs.svelte';
-  import NodesModal from '../Nodes/components/NodesModal/NodesModal.svelte';
-
-  let nodesModalOpen = false;
+  import TemplateCalculations from './components/TemplateCalculations/TemplateCalculations.svelte';
 </script>
 
 <WizardSplit
@@ -24,24 +23,28 @@
   color="deeppurple"
 >
   <svelte:fragment slot="appbar">
-    {#if !nodesModalOpen}
-      <Segmented
-        strong
-        style="width: 200px;"
-      >
-        <Button
-          active={$TemplateSelectedTab === 'input'}
-          on:click={() => ($TemplateSelectedTab = 'input')}
+    {#if !$TemplateNodesModalOpen}
+      <div transition:fade={{
+        duration: 100,
+      }}>
+        <Segmented
+          strong
+          style="width: 200px;"
         >
-          {$_('generics.input')}
-        </Button>
-        <Button
-          active={$TemplateSelectedTab === 'output'}
-          on:click={() => ($TemplateSelectedTab = 'output')}
-        >
-          {$_('generics.output')}
-        </Button>
-      </Segmented>
+          <Button
+            active={$TemplateSelectedTab === 'input'}
+            on:click={() => ($TemplateSelectedTab = 'input')}
+          >
+            {$_('generics.input')}
+          </Button>
+          <Button
+            active={$TemplateSelectedTab === 'output'}
+            on:click={() => ($TemplateSelectedTab = 'output')}
+          >
+            {$_('generics.output')}
+          </Button>
+        </Segmented>
+      </div>
     {/if}
   </svelte:fragment>
 
@@ -53,11 +56,10 @@
     <br />
     <br />
   {/if}
-  <NodesModal bind:open={nodesModalOpen} />
-  <a on:click={() => (nodesModalOpen = true)}>Open Modal</a>
   <Tabs>
     <Tab tabActive={$TemplateSelectedTab === 'input'}>
       <TemplateSections bind:sections={$TemplateInputItems.sections} />
+      <TemplateCalculations />
     </Tab>
     <Tab tabActive={$TemplateSelectedTab === 'output'}>
       <TemplateCategoryInputs bind:sections={$TemplateInputItems.sections} />

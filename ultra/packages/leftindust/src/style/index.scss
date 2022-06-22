@@ -707,6 +707,25 @@ input:-internal-autofill-selected {
   background-color: var(--f7-page-bg-color) !important;
 }
 
+.function-junctions-node {
+  &.node-transparent {
+    background: transparent;
+    opacity: 1 !important;
+    border: none;
+
+    .function-junctions-node-title  {
+      display: none;
+    }
+  }
+
+  &.node-no-title {
+    opacity: 1 !important;
+    .function-junctions-node-title  {
+      display: none;
+    }
+  }
+}
+
 .dark {
   .no-vibrancy {
     background-color: rgb(44, 44, 46) !important;

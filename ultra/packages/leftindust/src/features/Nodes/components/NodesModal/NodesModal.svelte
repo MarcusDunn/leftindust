@@ -14,12 +14,8 @@
   <div class={`nodes-nodes_modal-controls ${open ? 'nodes-nodes_modal-controls-open' : ''}`}>
     <div class="nodes-nodes_modal-controls-content">
       <MenuButton
-        title="Pointer"
-        icon={{ f7: 'cursor_rays', color: 'blue' }}
-      />
-      <MenuButton
-        title="Select"
-        icon={{ f7: 'crop', color: 'gray' }}
+        title="Create"
+        icon={{ f7: 'plus_circle_fill', color: 'blue' }}
       />
       <div class="flex-grow" />
       <MenuButton

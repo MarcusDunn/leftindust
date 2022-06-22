@@ -4,6 +4,7 @@
   import { _ } from 'svelte-i18n';
   import { TemplateInputType } from '../..';
   import {
+    Button,
     Col,
     Icon,
     ListItem,
@@ -35,6 +36,7 @@
 
   $: multiselect = (type === TemplateInputType.SingleSelect || type === TemplateInputType.MultiSelect);
   $: title = type === TemplateInputType.Title;
+  $: compute = type === TemplateInputType.Compute;
 
   // https://github.com/sveltejs/svelte/issues/5162
   let optionText = $_('generics.options');
@@ -96,7 +98,7 @@
           />
         {/key}
       </Col>
-      <Col width="100" small={(multiselect || title ) ? 100 : 50}>
+      <Col width="100" small={(multiselect || title || compute ) ? 100 : 50}>
         <Input style="width: 100%">
           <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
           <input
@@ -107,7 +109,7 @@
         </Input>
       </Col>
       {#if !multiselect}
-        {#if !title}
+        {#if !title && !compute}
           <Col width="100" small="50">
             <Input style="width: 100%">
               <svelte:fragment slot="title">{$_('generics.placeholder')}</svelte:fragment>
@@ -170,7 +172,12 @@
       {/if}
       <Col width="100">
         <div class="display-flex" style="margin-top: 20px">
-          {#if !title}
+          {#if compute}
+            <div style="width: 100%;margin-top: 10px">
+              <Button color="deeppurple" round outline>Edit Algorithm</Button>
+            </div>
+          {/if}
+          {#if !title && !compute}
             <Input style="width: 100%">
               <ListItem class="aurora" slot="content">
                 <span>{$_('generics.required')}</span>
