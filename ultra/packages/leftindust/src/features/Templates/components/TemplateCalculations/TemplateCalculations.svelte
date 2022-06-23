@@ -1,13 +1,16 @@
 <script lang="ts">
   import AppLauncherApp from '@/features/Apps/components/AppLauncher/AppLauncherApp.svelte';
   import FlowCover from '@/apps/flow/assets/flow.png';
-  import { TemplateDefaultNodes, TemplateInputItems, TemplateNodesModalOpen } from '../../store';
+  import { TemplateDefaultComputation, TemplateInputItems, TemplateNodesModalOpen, TemplateComputations } from '../../store';
   import type { NodeState } from 'function-junctions/types';
 
   import { BlockFooter, Button } from 'framework7-svelte';
   import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
 
   import { _ } from '@/language';
+  import TemplateCalculationInput from './TemplateCalculationInput.svelte';
+
+  let selectedIndex = 0;
 
   $: inputs = $TemplateInputItems.sections.flatMap((section, index) =>
     section.inputs.map((input) => ({
@@ -43,18 +46,49 @@
       };
     });
 
-    $TemplateDefaultNodes = state;
+    $TemplateDefaultComputation = state;
   }
 
-  $: console.log($TemplateDefaultNodes);
+  $: $TemplateComputations = $TemplateComputations.map(({ title, computation }) => ({
+    title: title,
+    computation: {
+      ...computation,
+      nodes: {
+        ...$TemplateDefaultComputation,
+        ...computation.nodes,
+      },
+    },
+  }));
+
+  $: console.log($TemplateDefaultComputation);
 </script>
 
 <br />
 <br />
 <br />
 <br />
-<br />
+{#if $TemplateComputations.length > 0}
+  <NodesModal
+    bind:state={$TemplateComputations[selectedIndex].computation}
+    bind:open={$TemplateNodesModalOpen}
+  />
+{/if}
 
+{#if $TemplateComputations.length > 0}
+  {#each $TemplateComputations as computation, index}
+    <TemplateCalculationInput
+      {index}
+      {selectedIndex}
+      bind:computations={$TemplateComputations}
+      bind:computation
+      bind:modalOpen={$TemplateNodesModalOpen}
+    />
+    <br />
+  {/each}
+  <br />
+  <br />
+  <br />
+{/if}
 <div class="display-flex" style="align-items: center; justify-content: center">
   <AppLauncherApp
     cover={FlowCover}
@@ -64,15 +98,33 @@
   <div style="padding-left: 20px">
     <BlockFooter class="no-margin no-padding">Get the most out of your results by adding a calculated score</BlockFooter>
     <p />
-    <NodesModal bind:open={$TemplateNodesModalOpen} />
     <div>
       <Button
         outline
         round
         color="deeppurple"
         style="width: 100%;margin-right: 0"
-        on:click={() => ($TemplateNodesModalOpen = true)}
-        disabled={Object.keys($TemplateDefaultNodes).length < 1}
+        on:click={() => {
+          $TemplateComputations = [
+            ...$TemplateComputations,
+            {
+              title: '',
+              computation: {
+                position: {
+                  originX: 0,
+                  originY: 0,
+                  translateX: 0,
+                  translateY: 0,
+                  scale: 0,
+                },
+                nodes: $TemplateDefaultComputation,
+              },
+            },
+          ];
+
+          selectedIndex = $TemplateComputations.length - 1;
+        }}
+        disabled={Object.keys($TemplateDefaultComputation).length < 1}
       >
         Add Calculation
       </Button>

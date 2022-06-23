@@ -1,16 +1,18 @@
 <script lang="ts">
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import { Editor } from 'function-junctions';
+  import type { EditorState } from 'function-junctions/types';
 
   import { _ } from '@/language';
 
   import './NodesModal.scss';
 
   export let open = false;
+  export let state: EditorState;
 </script>
 
 <div class={`nodes-nodes_modal ${open ? 'nodes-nodes_modal-open' : ''}`}>
-  <Editor nodes={{}} />
+  <Editor nodes={{}} bind:state />
   <div class={`nodes-nodes_modal-controls ${open ? 'nodes-nodes_modal-controls-open' : ''}`}>
     <div class="nodes-nodes_modal-controls-content">
       <MenuButton

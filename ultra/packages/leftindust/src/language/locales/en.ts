@@ -157,6 +157,7 @@ const language: Dictionary = {
     mcl: 'Eg. mcL',
     text: 'Eg. Text',
     section: 'Eg. Section {number}',
+    computation: 'Eg. Average Calculation',
   },
 };
 

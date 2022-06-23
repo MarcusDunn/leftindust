@@ -1,3 +1,5 @@
+import type { EditorState, NodeState } from 'function-junctions/types';
+
 export enum TemplateInputType {
   Text = 'text',
   Number = 'number',
@@ -46,6 +48,11 @@ export type Template = {
   subtitle?: string;
   sections: TemplateSection[];
 };
+
+export type TemplateComputation = {
+  title: string;
+  computation: EditorState;
+}
 
 export const DefaultTemplate: Template = {
   title: '',
