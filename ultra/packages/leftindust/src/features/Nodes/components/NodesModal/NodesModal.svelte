@@ -1,18 +1,35 @@
 <script lang="ts">
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import { Editor } from 'function-junctions';
-  import type { EditorState } from 'function-junctions/types';
+  import type { EditorState, NodeBlueprint } from 'function-junctions/types';
+  import type { Writable } from 'svelte/store';
+  import type { MenuNodes } from '../..';
 
   import { _ } from '@/language';
+  import { createEventDispatcher } from 'svelte';
 
   import './NodesModal.scss';
 
+  const dispatch = createEventDispatcher();
+
   export let open = false;
+  export let inputs: Record<string, Record<string, Writable<unknown>>> = {};
+  export let outputs: Record<string, Record<string, Writable<unknown>>> = {};
+  export let nodes: Record<string, NodeBlueprint> = {};
   export let state: EditorState;
+
+  export let menuNodes: MenuNodes = [];
+
+  let modalRef;
 </script>
 
 <div class={`nodes-nodes_modal ${open ? 'nodes-nodes_modal-open' : ''}`}>
-  <Editor nodes={{}} bind:state />
+  <Editor
+    {inputs}
+    {outputs}
+    {nodes}
+    bind:state
+  />
   <div class={`nodes-nodes_modal-controls ${open ? 'nodes-nodes_modal-controls-open' : ''}`}>
     <div class="nodes-nodes_modal-controls-content">
       <MenuButton
@@ -23,7 +40,10 @@
       <MenuButton
         title={$_('generics.close')}
         icon={{ f7: 'xmark_circle_fill', color: 'gray' }}
-        on:click={() => (open = false)}
+        on:click={() => {
+          open = false;
+          dispatch('close');
+        }}
       />
     </div>
   </div>

@@ -1,18 +1,46 @@
 <script lang="ts">
   import type { TemplateComputation } from '../..';
   import Input from '@/features/Input/Input.svelte';
+  import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
   import { Button } from 'framework7-svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
+  import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
+  import { TemplateNodesModalOpen } from '../../store';
+  import type { TemplateInput } from '../..';
+  import type { NodeBlueprint } from 'function-junctions/types';
+  import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
 
   export let index: number;
   export let computations: TemplateComputation[];
   export let computation: TemplateComputation;
 
-  export let selectedIndex: number;
-
+  export let inputs: TemplateInput[];
   export let modalOpen = false;
+
+  let nodeInputs: Record<string, Record<string, Writable<unknown>>>;
+
+  inputs.forEach((input) => {
+    nodeInputs = {
+      ...nodeInputs,
+      [input.category ?? '']: {
+        ...(nodeInputs?.[input.category ?? ''] ?? {}),
+        [input.id]: writable(),
+      },
+    };
+  });
+
+  const nodes: Record<string, NodeBlueprint> = {
+    Input: TemplateInputNode,
+  };
 </script>
+
+<NodesModal
+  {nodes}
+  bind:state={computation.computation}
+  bind:open={modalOpen}
+  on:close={() => $TemplateNodesModalOpen = false}
+/>
 
 <div>
   <Input style="width: 100%">
@@ -30,7 +58,7 @@
         round
         outline
         on:click={() => {
-          selectedIndex = index;
+          $TemplateNodesModalOpen = true;
           modalOpen = true;
         }}
       >
@@ -62,10 +90,7 @@
           f7: 'minus_circle_fill',
           color: 'red',
         }}
-        on:click={() => {
-          computations = computations.filter((_, i) => i !== index);
-          selectedIndex = index - 1;
-        }}
+        on:click={() => (computations = computations.filter((_, i) => i !== index))}
       />
     </div>
   </div>

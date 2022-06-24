@@ -1,7 +1,12 @@
 <script lang="ts">
   import type { Writable } from 'svelte/store';
   import type { Editor, OutputSocket, OutputSockets, SocketBlueprint } from 'function-junctions/types';
-
+  import Input from '@/features/Input/Input.svelte';
+  import { _ } from '@/language';
+  import Select from '@/features/Input/components/Select/Select.svelte';
+  import { TemplateInputType } from '@/features/Templates';
+  import { TemplateInputItems } from '@/features/Templates/store';
+  
   export let editor: Editor;
   
   export let outputs: OutputSockets<{
@@ -9,28 +14,29 @@
   }>;
 
   export let store: {
-    id: number;
+    sectionIndex: number;
+    index: number;
+    id: string;
   } = {
-    id: 0,
+    sectionIndex: 0,
+    index: 0,
+    id: '',
   };
 
   const { value: Value } = outputs.Value;
   const { registered } = editor.nodes;
   
-  let name = '';
+  let label = '';
   let type = '';
   let value: Writable<unknown> | undefined;
 
   let sockets: SocketBlueprint[] = [];
 
-  $: name, type, (() => {
-    const store = editor.inputs?.[type]?.[name];
-    value = store;
+  $: type, (() => {
+    value = editor.inputs?.[type]?.value;
   })();
 
-  $: if (value) {
-    $Value = $value;
-  }
+  $: if (value) $Value = $value;
 
   $: Object.keys($registered).forEach((key) => {
     let io = {
@@ -55,11 +61,60 @@
   }
 
   $: if (!type) type = sockets[0].type;
+
+  $: input = $TemplateInputItems.sections[store.sectionIndex].inputs[store.index];
+
+  $: input.type = type as TemplateInputType;
+  $: input.label = label;
 </script>
 
-
-<p />
-<div style="padding: 0 15px">
-  <input type="text" placeholder="Name" bind:value={name} />
+<div>
+  <Select
+    title={$_('generics.type')}
+    placeholder={$_('examples.text')}
+    options={[
+      {
+        text: $_('generics.text'),
+        value: TemplateInputType.Text,
+      },
+      {
+        text: $_('generics.number'),
+        value: TemplateInputType.Number,
+      },
+      {
+        text: $_('generics.date'),
+        value: TemplateInputType.Date,
+      },
+      {
+        text: $_('generics.paragraph'),
+        value: TemplateInputType.Paragraph,
+      },
+      {
+        text: $_('generics.singleSelect'),
+        value: TemplateInputType.SingleSelect,
+      },
+      {
+        text: $_('generics.multiSelect'),
+        value: TemplateInputType.MultiSelect,
+      },
+      {
+        text: $_('generics.upload'),
+        value: TemplateInputType.Upload,
+      },
+      {
+        text: $_('generics.title'),
+        value: TemplateInputType.Title,
+      },
+    ]}
+    bind:value={type}
+  />
+  <p />
+  <Input style="width: 100%">
+    <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
+    <input
+      type="text"
+      bind:value={label}
+      placeholder={$_('examples.totalPlateletCount')}
+    />
+  </Input>
 </div>
-<p />

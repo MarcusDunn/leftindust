@@ -1,20 +1,25 @@
 <script lang="ts">
+  import type { TemplateInput } from '../..';
   import AppLauncherApp from '@/features/Apps/components/AppLauncher/AppLauncherApp.svelte';
   import FlowCover from '@/apps/flow/assets/flow.png';
   import { TemplateDefaultComputation, TemplateInputItems, TemplateNodesModalOpen, TemplateComputations } from '../../store';
   import type { NodeState } from 'function-junctions/types';
 
   import { BlockFooter, Button } from 'framework7-svelte';
-  import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
 
   import { _ } from '@/language';
   import TemplateCalculationInput from './TemplateCalculationInput.svelte';
 
-  let selectedIndex = 0;
+  let inputs: (TemplateInput & {
+    sectionIndex: number;
+    index: number;
+  })[];
 
   $: inputs = $TemplateInputItems.sections.flatMap((section, index) =>
-    section.inputs.map((input) => ({
+    section.inputs.map((input, inputIndex) => ({
       ...input,
+      sectionIndex: index,
+      index: inputIndex,
       label: `${input.label}${
         $TemplateInputItems.sections.length > 1
           // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
@@ -31,10 +36,12 @@
       state = {
         ...state,
         [input.id]: {
-          type: 'input',
+          type: 'template-input',
           x: index * 200,
           y: 0,
           store: {
+            sectionIndex: input.sectionIndex,
+            index: input.index,
             id: input.id,
           },
           outputs: {
@@ -50,7 +57,7 @@
   }
 
   $: $TemplateComputations = $TemplateComputations.map(({ title, computation }) => ({
-    title: title,
+    title,
     computation: {
       ...computation,
       nodes: {
@@ -67,21 +74,14 @@
 <br />
 <br />
 <br />
-{#if $TemplateComputations.length > 0}
-  <NodesModal
-    bind:state={$TemplateComputations[selectedIndex].computation}
-    bind:open={$TemplateNodesModalOpen}
-  />
-{/if}
 
 {#if $TemplateComputations.length > 0}
   {#each $TemplateComputations as computation, index}
     <TemplateCalculationInput
       {index}
-      {selectedIndex}
+      {inputs}
       bind:computations={$TemplateComputations}
       bind:computation
-      bind:modalOpen={$TemplateNodesModalOpen}
     />
     <br />
   {/each}
@@ -121,8 +121,6 @@
               },
             },
           ];
-
-          selectedIndex = $TemplateComputations.length - 1;
         }}
         disabled={Object.keys($TemplateDefaultComputation).length < 1}
       >
