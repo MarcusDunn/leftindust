@@ -1,7 +1,7 @@
 <script lang="ts">
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import { Editor } from 'function-junctions';
-  import type { EditorState, NodeBlueprint } from 'function-junctions/types';
+  import type { Editor as EditorType, EditorState, NodeBlueprint } from 'function-junctions/types';
   import type { Writable } from 'svelte/store';
   import type { MenuNodes } from '../..';
 
@@ -18,9 +18,11 @@
   export let nodes: Record<string, NodeBlueprint> = {};
   export let state: EditorState;
 
+  let editor: EditorType;
+
   export let menuNodes: MenuNodes = [];
 
-  let modalRef;
+  console.log(state);
 </script>
 
 <div class={`nodes-nodes_modal ${open ? 'nodes-nodes_modal-open' : ''}`}>
@@ -29,6 +31,7 @@
     {outputs}
     {nodes}
     bind:state
+    bind:instance={editor}
   />
   <div class={`nodes-nodes_modal-controls ${open ? 'nodes-nodes_modal-controls-open' : ''}`}>
     <div class="nodes-nodes_modal-controls-content">

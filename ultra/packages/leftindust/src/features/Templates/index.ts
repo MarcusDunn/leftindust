@@ -1,4 +1,8 @@
-import type { EditorState, NodeState } from 'function-junctions/types';
+import type { EditorState, SocketBlueprint } from 'function-junctions/types';
+import arraySocket from '../Socket/components/ArraySocket';
+import dateSocket from '../Socket/components/DateSocket';
+import numberSocket from '../Socket/components/NumberSocket';
+import textSocket from '../Socket/components/TextSocket';
 
 export enum TemplateInputType {
   Text = 'text',
@@ -8,8 +12,7 @@ export enum TemplateInputType {
   Upload = 'upload',
   SingleSelect = 'single-select',
   MultiSelect = 'multi-select',
-  Title = 'title',
-  Compute = 'compute'
+  Title = 'title'
 }
 
 export enum TemplateCategory {
@@ -49,16 +52,31 @@ export type Template = {
   sections: TemplateSection[];
 };
 
-export type TemplateComputation = {
-  title: string;
+export type TemplateCalculation = {
+  label: string;
+  type: TemplateInputType;
   computation: EditorState;
 }
 
-export const DefaultTemplate: Template = {
+export type TemplateCalculationSockets = {
+  number: SocketBlueprint;
+  text: SocketBlueprint;
+  date: SocketBlueprint;
+  array: SocketBlueprint;
+}
+
+export const defaultTemplate: Template = {
   title: '',
   sections: [{
     title: '',
     inputs: [],
     id: 0,
   }],
+};
+
+export const templateCalculationSockets: TemplateCalculationSockets = {
+  number: numberSocket,
+  text: textSocket,
+  date: dateSocket,
+  array: arraySocket,
 };

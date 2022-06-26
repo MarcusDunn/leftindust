@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { Writable } from 'svelte/store';
-  import type { Editor, OutputSocket, OutputSockets, SocketBlueprint } from 'function-junctions/types';
+  import type { Editor, OutputSocket, OutputSockets } from 'function-junctions/types';
   import Input from '@/features/Input/Input.svelte';
   import { _ } from '@/language';
   import Select from '@/features/Input/components/Select/Select.svelte';
-  import { TemplateInputType } from '@/features/Templates';
+  import { templateCalculationSockets, TemplateInputType } from '@/features/Templates';
   import { TemplateInputItems } from '@/features/Templates/store';
   
   export let editor: Editor;
@@ -24,51 +24,60 @@
   };
 
   const { value: Value } = outputs.Value;
-  const { registered } = editor.nodes;
   
-  let label = '';
-  let type = '';
   let value: Writable<unknown> | undefined;
+    
+  const getSocketType = () => {
+    let type: 'text' | 'number' | 'date' | 'array';
+    const inputType = $TemplateInputItems.sections[store.sectionIndex].inputs[store.index].type;
 
-  let sockets: SocketBlueprint[] = [];
+    switch (inputType) {
+      case TemplateInputType.Text:
+      case TemplateInputType.Title:
+      case TemplateInputType.Paragraph:
+        type = 'text';
+        break;
+      case TemplateInputType.Number:
+        type = 'number';
+        break;
+      case TemplateInputType.Date:
+        type = 'date';
+        break;
+      case TemplateInputType.SingleSelect:
+      case TemplateInputType.MultiSelect:
+        type = 'array';
+        break;
+    }
 
-  $: type, (() => {
-    value = editor.inputs?.[type]?.value;
+    // TS being weird
+    // @ts-expect-error
+    return type;
+  };
+
+  $: $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type, (() => {
+    value = editor.inputs?.[store.id]?.value;
   })();
 
   $: if (value) $Value = $value;
 
-  $: Object.keys($registered).forEach((key) => {
-    let io = {
-      ...$registered[key].inputs,
-      ...$registered[key].outputs,
-    };
+  $:  $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type, (() => {
+    const type = getSocketType();
 
-    sockets = [
-      ...sockets,
-      ...Object.keys(io).map((key) => io[key]),
-    ].filter((socket, index, self) =>
-      index === self.findIndex((t) => (
-        t.type === socket.type
-      )),
-    ).filter((socket) => !!socket.type);
-  });
+    if (type) {
+      const socket = templateCalculationSockets[type];
+  
+      if (socket) {
+        outputs.Value.type = type;
+        outputs.Value.disabled = !value;
+        outputs.Value.color = socket.color;
+      }
+    }
+  })();
 
-  $: {
-    outputs.Value.type = type;
-    outputs.Value.disabled = !value;
-    outputs.Value.color = sockets.filter((socket) => socket.type === type)?.[0]?.color;
-  }
-
-  $: if (!type) type = sockets[0].type;
-
-  $: input = $TemplateInputItems.sections[store.sectionIndex].inputs[store.index];
-
-  $: input.type = type as TemplateInputType;
-  $: input.label = label;
+  $: $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type, getSocketType();
 </script>
 
-<div>
+<div style="min-width: 430px">
   <Select
     title={$_('generics.type')}
     placeholder={$_('examples.text')}
@@ -106,14 +115,14 @@
         value: TemplateInputType.Title,
       },
     ]}
-    bind:value={type}
+    bind:value={$TemplateInputItems.sections[store.sectionIndex].inputs[store.index].type}
   />
   <p />
   <Input style="width: 100%">
     <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
     <input
       type="text"
-      bind:value={label}
+      bind:value={$TemplateInputItems.sections[store.sectionIndex].inputs[store.index].label}
       placeholder={$_('examples.totalPlateletCount')}
     />
   </Input>

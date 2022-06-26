@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { TemplateComputation } from '../..';
+  import { TemplateInputType, type TemplateCalculation } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
@@ -9,11 +9,12 @@
   import { TemplateNodesModalOpen } from '../../store';
   import type { TemplateInput } from '../..';
   import type { NodeBlueprint } from 'function-junctions/types';
+  import Select from '@/features/Input/components/Select/Select.svelte';
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
 
   export let index: number;
-  export let computations: TemplateComputation[];
-  export let computation: TemplateComputation;
+  export let computations: TemplateCalculation[];
+  export let computation: TemplateCalculation;
 
   export let inputs: TemplateInput[];
   export let modalOpen = false;
@@ -31,7 +32,7 @@
   });
 
   const nodes: Record<string, NodeBlueprint> = {
-    Input: TemplateInputNode,
+    'template-input': TemplateInputNode,
   };
 </script>
 
@@ -43,11 +44,51 @@
 />
 
 <div>
+  <Select
+    title={$_('generics.type')}
+    placeholder={$_('examples.text')}
+    options={[
+      {
+        text: $_('generics.text'),
+        value: TemplateInputType.Text,
+      },
+      {
+        text: $_('generics.number'),
+        value: TemplateInputType.Number,
+      },
+      {
+        text: $_('generics.date'),
+        value: TemplateInputType.Date,
+      },
+      {
+        text: $_('generics.paragraph'),
+        value: TemplateInputType.Paragraph,
+      },
+      {
+        text: $_('generics.singleSelect'),
+        value: TemplateInputType.SingleSelect,
+      },
+      {
+        text: $_('generics.multiSelect'),
+        value: TemplateInputType.MultiSelect,
+      },
+      {
+        text: $_('generics.upload'),
+        value: TemplateInputType.Upload,
+      },
+      {
+        text: $_('generics.title'),
+        value: TemplateInputType.Title,
+      },
+    ]}
+    bind:value={computation.type}
+  />
+  <p />
   <Input style="width: 100%">
     <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
     <input
       type="text"
-      bind:value={computation.title}
+      bind:value={computation.label}
       placeholder={$_('examples.computation')}
     />
   </Input>
@@ -62,7 +103,7 @@
           modalOpen = true;
         }}
       >
-        Edit Algorithm
+        Edit Calculation
       </Button>
     </div>
     <div class="flex-grow" />
@@ -77,7 +118,8 @@
           computations = [
             ...computations.slice(0, index),
             {
-              title: computation.title,
+              label: computation.label,
+              type: computation.type,
               computation: computation.computation,
             },
             ...computations.slice(index),

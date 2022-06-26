@@ -29,7 +29,6 @@
   placeholder,
   uploadAccept,
   uploadMultiple,
-  required,
 }}
   {#if type === TemplateInputType.Title}
     <h4 style="padding-top: 20px">{label}</h4>

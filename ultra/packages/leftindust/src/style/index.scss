@@ -709,9 +709,10 @@ input:-internal-autofill-selected {
 
 .function-junctions-node {
   &.node-transparent {
-    background: transparent;
+    background: transparent !important;
     opacity: 1 !important;
-    border: none;
+    border: none !important;
+    box-shadow: none !important;
 
     .function-junctions-node-title  {
       display: none;

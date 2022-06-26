@@ -36,7 +36,7 @@
 
   $: multiselect = (type === TemplateInputType.SingleSelect || type === TemplateInputType.MultiSelect);
   $: title = type === TemplateInputType.Title;
-  $: compute = type === TemplateInputType.Compute;
+  $: compute = false;
 
   // https://github.com/sveltejs/svelte/issues/5162
   let optionText = $_('generics.options');

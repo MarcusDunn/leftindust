@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { TemplateInput } from '../..';
+  import { type TemplateInput, TemplateInputType } from '../..';
   import AppLauncherApp from '@/features/Apps/components/AppLauncher/AppLauncherApp.svelte';
   import FlowCover from '@/apps/flow/assets/flow.png';
-  import { TemplateDefaultComputation, TemplateInputItems, TemplateNodesModalOpen, TemplateComputations } from '../../store';
+  import { TemplateDefaultComputation, TemplateInputItems, TemplateCalculations } from '../../store';
   import type { NodeState } from 'function-junctions/types';
 
   import { BlockFooter, Button } from 'framework7-svelte';
@@ -32,13 +32,15 @@
   $: {
     let state: Record<string, NodeState> = {};
 
+    const length = inputs.length - 1;
+    
     inputs.forEach((input, index) => {
       state = {
         ...state,
         [input.id]: {
           type: 'template-input',
-          x: index * 200,
-          y: 0,
+          x: 75,
+          y: (index * 230) + 100,
           store: {
             sectionIndex: input.sectionIndex,
             index: input.index,
@@ -56,8 +58,9 @@
     $TemplateDefaultComputation = state;
   }
 
-  $: $TemplateComputations = $TemplateComputations.map(({ title, computation }) => ({
-    title,
+  $: $TemplateCalculations = $TemplateCalculations.map(({ label, type, computation }) => ({
+    label,
+    type,
     computation: {
       ...computation,
       nodes: {
@@ -66,8 +69,6 @@
       },
     },
   }));
-
-  $: console.log($TemplateDefaultComputation);
 </script>
 
 <br />
@@ -75,12 +76,12 @@
 <br />
 <br />
 
-{#if $TemplateComputations.length > 0}
-  {#each $TemplateComputations as computation, index}
+{#if $TemplateCalculations.length > 0}
+  {#each $TemplateCalculations as computation, index}
     <TemplateCalculationInput
       {index}
       {inputs}
-      bind:computations={$TemplateComputations}
+      bind:computations={$TemplateCalculations}
       bind:computation
     />
     <br />
@@ -105,17 +106,18 @@
         color="deeppurple"
         style="width: 100%;margin-right: 0"
         on:click={() => {
-          $TemplateComputations = [
-            ...$TemplateComputations,
+          $TemplateCalculations = [
+            ...$TemplateCalculations,
             {
-              title: '',
+              label: '',
+              type: TemplateInputType.Text,
               computation: {
                 position: {
                   originX: 0,
                   originY: 0,
                   translateX: 0,
                   translateY: 0,
-                  scale: 0,
+                  scale: 1,
                 },
                 nodes: $TemplateDefaultComputation,
               },
