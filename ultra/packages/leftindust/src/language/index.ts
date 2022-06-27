@@ -163,7 +163,7 @@ export type Dictionary = {
     mcl: string;
     text: string;
     section: string;
-    computation: string;
+    calculation: string;
   };
 }
 

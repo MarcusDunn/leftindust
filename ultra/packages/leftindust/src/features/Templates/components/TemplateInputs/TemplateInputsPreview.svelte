@@ -25,6 +25,7 @@
 {#each inputs as {
   type,
   label,
+  value,
   options,
   placeholder,
   uploadAccept,
@@ -36,13 +37,15 @@
     <div style="margin-bottom: 20px;">
       {#if type === TemplateInputType.Text || type === TemplateInputType.Number}
         <Input title={label} clear>
-          <input type="text" {placeholder} />
+          <input type="text" {placeholder} bind:value />
         </Input>
       {:else if type === TemplateInputType.Date}
-        <Date title={label} {placeholder} />
+        {#if typeof value === 'number' || typeof value === 'undefined'}
+          <Date title={label} {placeholder} bind:value />
+        {/if}
       {:else if type === TemplateInputType.Paragraph}
         <Input title={label} clear>
-          <textarea {placeholder} />
+          <textarea {placeholder} bind:value />
         </Input>
       {:else if type === TemplateInputType.Upload}
         <Add title={label} placeholder={placeholder || getUploadLabel(uploadAccept, uploadMultiple)} />

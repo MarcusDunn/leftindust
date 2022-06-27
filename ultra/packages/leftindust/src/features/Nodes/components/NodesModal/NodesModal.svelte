@@ -13,16 +13,14 @@
   const dispatch = createEventDispatcher();
 
   export let open = false;
-  export let inputs: Record<string, Record<string, Writable<unknown>>> = {};
-  export let outputs: Record<string, Record<string, Writable<unknown>>> = {};
+  export let inputs: Record<string, { type: string; value: Writable<unknown> }> = {};
+  export let outputs: Record<string, { type: string; value: Writable<unknown> }> = {};
   export let nodes: Record<string, NodeBlueprint> = {};
   export let state: EditorState;
 
   let editor: EditorType;
 
   export let menuNodes: MenuNodes = [];
-
-  console.log(state);
 </script>
 
 <div class={`nodes-nodes_modal ${open ? 'nodes-nodes_modal-open' : ''}`}>

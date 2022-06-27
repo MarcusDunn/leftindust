@@ -27,7 +27,7 @@ export enum TemplateInputUploadType {
   Documents = '.txt,.pdf,.rtf,.doc,.docx'
 }
 
-export type TemplateInput = {
+export type TemplateInput<T = unknown> = {
   id: number;
   type: TemplateInputType;
   label: string;
@@ -37,6 +37,7 @@ export type TemplateInput = {
   category?: TemplateCategory;
   uploadMultiple?: boolean;
   uploadAccept?: TemplateInputUploadType;
+  value?: T;
 }
 
 export type TemplateSection = {
@@ -55,7 +56,7 @@ export type Template = {
 export type TemplateCalculation = {
   label: string;
   type: TemplateInputType;
-  computation: EditorState;
+  calculation: EditorState;
 }
 
 export type TemplateCalculationSockets = {
@@ -79,4 +80,30 @@ export const templateCalculationSockets: TemplateCalculationSockets = {
   text: textSocket,
   date: dateSocket,
   array: arraySocket,
+};
+
+export const getTemplateSocketType = (inputType: TemplateInputType) => {
+  let type: 'text' | 'number' | 'date' | 'array';
+
+  switch (inputType) {
+    case TemplateInputType.Text:
+    case TemplateInputType.Title:
+    case TemplateInputType.Paragraph:
+      type = 'text';
+      break;
+    case TemplateInputType.Number:
+      type = 'number';
+      break;
+    case TemplateInputType.Date:
+      type = 'date';
+      break;
+    case TemplateInputType.SingleSelect:
+    case TemplateInputType.MultiSelect:
+      type = 'array';
+      break;
+  }
+
+  // TS being weird
+  // @ts-expect-error
+  return type;
 };

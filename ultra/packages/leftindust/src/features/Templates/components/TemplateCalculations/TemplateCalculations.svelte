@@ -31,8 +31,6 @@
 
   $: {
     let state: Record<string, NodeState> = {};
-
-    const length = inputs.length - 1;
     
     inputs.forEach((input, index) => {
       state = {
@@ -58,17 +56,19 @@
     $TemplateDefaultComputation = state;
   }
 
-  $: $TemplateCalculations = $TemplateCalculations.map(({ label, type, computation }) => ({
+  $: $TemplateCalculations = $TemplateCalculations.map(({ label, type, calculation }) => ({
     label,
     type,
-    computation: {
-      ...computation,
+    calculation: {
+      ...calculation,
       nodes: {
         ...$TemplateDefaultComputation,
-        ...computation.nodes,
+        ...calculation.nodes,
       },
     },
   }));
+
+  $: console.log($TemplateDefaultComputation);
 </script>
 
 <br />
@@ -77,12 +77,12 @@
 <br />
 
 {#if $TemplateCalculations.length > 0}
-  {#each $TemplateCalculations as computation, index}
+  {#each $TemplateCalculations as calculation, index}
     <TemplateCalculationInput
       {index}
       {inputs}
       bind:computations={$TemplateCalculations}
-      bind:computation
+      bind:calculation
     />
     <br />
   {/each}
@@ -111,7 +111,7 @@
             {
               label: '',
               type: TemplateInputType.Text,
-              computation: {
+              calculation: {
                 position: {
                   originX: 0,
                   originY: 0,

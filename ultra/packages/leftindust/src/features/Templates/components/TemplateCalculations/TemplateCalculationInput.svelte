@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { TemplateInputType, type TemplateCalculation } from '../..';
+  import { getTemplateSocketType, TemplateInputType, type TemplateCalculation } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
   import { Button } from 'framework7-svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
-  import { TemplateNodesModalOpen } from '../../store';
+  import { TemplateDefaultComputation, TemplateNodesModalOpen } from '../../store';
   import type { TemplateInput } from '../..';
   import type { NodeBlueprint } from 'function-junctions/types';
   import Select from '@/features/Input/components/Select/Select.svelte';
@@ -14,19 +14,21 @@
 
   export let index: number;
   export let computations: TemplateCalculation[];
-  export let computation: TemplateCalculation;
+  export let calculation: TemplateCalculation;
 
   export let inputs: TemplateInput[];
   export let modalOpen = false;
 
-  let nodeInputs: Record<string, Record<string, Writable<unknown>>>;
+  let nodeInputs: Record<string, { type: string; value: Writable<unknown> }> = {};
 
   inputs.forEach((input) => {
+    const type = getTemplateSocketType(input.type);
+    
     nodeInputs = {
       ...nodeInputs,
-      [input.category ?? '']: {
-        ...(nodeInputs?.[input.category ?? ''] ?? {}),
-        [input.id]: writable(),
+      [input.id]: {
+        type,
+        value: writable(),
       },
     };
   });
@@ -34,11 +36,18 @@
   const nodes: Record<string, NodeBlueprint> = {
     'template-input': TemplateInputNode,
   };
+
+  $: $TemplateDefaultComputation;
+
+  $: inputs.forEach((input) => {
+    nodeInputs[input.id].value.set(input.value);
+  });
 </script>
 
 <NodesModal
   {nodes}
-  bind:state={computation.computation}
+  inputs={nodeInputs}
+  bind:state={calculation.calculation}
   bind:open={modalOpen}
   on:close={() => $TemplateNodesModalOpen = false}
 />
@@ -81,15 +90,15 @@
         value: TemplateInputType.Title,
       },
     ]}
-    bind:value={computation.type}
+    bind:value={calculation.type}
   />
   <p />
   <Input style="width: 100%">
     <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
     <input
       type="text"
-      bind:value={computation.label}
-      placeholder={$_('examples.computation')}
+      bind:value={calculation.label}
+      placeholder={$_('examples.calculation')}
     />
   </Input>
   <div class="display-flex" style="margin-top: 20px">
@@ -118,9 +127,9 @@
           computations = [
             ...computations.slice(0, index),
             {
-              label: computation.label,
-              type: computation.type,
-              computation: computation.computation,
+              label: calculation.label,
+              type: calculation.type,
+              calculation: calculation.calculation,
             },
             ...computations.slice(index),
           ];

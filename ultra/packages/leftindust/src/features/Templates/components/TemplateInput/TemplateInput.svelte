@@ -218,7 +218,9 @@
                 f7: 'minus_circle_fill',
                 color: 'red',
               }}
-              on:click={() => (inputs = inputs.filter((_, i) => i !== index))}
+              on:click={() => {
+                inputs = inputs.filter((_, i) => i !== index);
+              }}
             />
           </div>
         </div>

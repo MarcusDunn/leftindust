@@ -4,7 +4,7 @@
   import Input from '@/features/Input/Input.svelte';
   import { _ } from '@/language';
   import Select from '@/features/Input/components/Select/Select.svelte';
-  import { templateCalculationSockets, TemplateInputType } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets, TemplateInputType } from '@/features/Templates';
   import { TemplateInputItems } from '@/features/Templates/store';
   
   export let editor: Editor;
@@ -26,33 +26,6 @@
   const { value: Value } = outputs.Value;
   
   let value: Writable<unknown> | undefined;
-    
-  const getSocketType = () => {
-    let type: 'text' | 'number' | 'date' | 'array';
-    const inputType = $TemplateInputItems.sections[store.sectionIndex].inputs[store.index].type;
-
-    switch (inputType) {
-      case TemplateInputType.Text:
-      case TemplateInputType.Title:
-      case TemplateInputType.Paragraph:
-        type = 'text';
-        break;
-      case TemplateInputType.Number:
-        type = 'number';
-        break;
-      case TemplateInputType.Date:
-        type = 'date';
-        break;
-      case TemplateInputType.SingleSelect:
-      case TemplateInputType.MultiSelect:
-        type = 'array';
-        break;
-    }
-
-    // TS being weird
-    // @ts-expect-error
-    return type;
-  };
 
   $: $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type, (() => {
     value = editor.inputs?.[store.id]?.value;
@@ -61,7 +34,7 @@
   $: if (value) $Value = $value;
 
   $:  $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type, (() => {
-    const type = getSocketType();
+    const type = getTemplateSocketType($TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type);
 
     if (type) {
       const socket = templateCalculationSockets[type];
@@ -74,7 +47,7 @@
     }
   })();
 
-  $: $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type, getSocketType();
+  $: getTemplateSocketType($TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type);
 </script>
 
 <div style="min-width: 430px">
