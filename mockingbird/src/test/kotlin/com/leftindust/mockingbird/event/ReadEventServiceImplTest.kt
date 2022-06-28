@@ -17,6 +17,7 @@ import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.nullValue
 import org.junit.jupiter.api.Test
@@ -88,16 +89,16 @@ internal class ReadEventServiceImplUnitTest {
         }
 
     // Could not run the test properly -> My assumption is that VisitMother Event( visit = null) is causing this
-    /*@Test
+    @Test
     internal fun `check getByVisitId returns a visitId's event when visit exists`() = runTest {
         val jennyDoctorVisit = VisitMother.jennyVisitPersisted
-        coEvery { readVisitService.getByVisitId(VisitDto.VisitDtoId(jennyDoctorVisit.id)) } returns jennyDoctorVisit
+        coEvery { readVisitService.getByVisitId(VisitDto.VisitDtoId(jennyDoctorVisit.id!!)) } returns jennyDoctorVisit
         val readEventServiceImpl =
             ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
-        val events = readEventServiceImpl.getByVisitId(VisitDto.VisitDtoId(jennyDoctorVisit))
+        val events = readEventServiceImpl.getByVisitId(VisitDto.VisitDtoId(jennyDoctorVisit.id!!))
 
         assertThat(events, equalTo(jennyDoctorVisit.event))
-    }*/
+    }
 
     @Test
     internal fun `check getByVisitId returns null when no matching visit corresponding to an event exists`() = runTest {
@@ -131,19 +132,20 @@ internal class ReadEventServiceImplDataTest(
 
     @Test
     internal fun `check returns an event when queried with an id from the database with the matching Id`() = runTest {
-        val jennyDoctorAppointment = testEntityManager.persist(EventMother.jennyAppointmentUnpersisted)
+        val jennyDoctorAppointmentId = testEntityManager.persistAndGetId(EventMother.jennyAppointmentUnpersisted, UUID::class.java)
         val readEventServiceImpl =
             ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
-        val returnedEvent = readEventServiceImpl.getByEventId(EventDto.EventDtoId(jennyDoctorAppointment.id!!))
-        assertThat(returnedEvent, equalTo(jennyDoctorAppointment))
+        val returnedEvent = readEventServiceImpl.getByEventId(EventDto.EventDtoId(jennyDoctorAppointmentId!!))
+        assertThat(returnedEvent, Matchers.notNullValue())
+        assertThat(returnedEvent!!.id, equalTo(jennyDoctorAppointmentId))
     }
 
-    /*@Test
+    @Test
     internal fun `check returns null when the database has no matching Id corresponding to an event`() = runTest {
         val someNonExistentUuid = UUID.fromString("235b4875-92d4-4553-8852-eb8f4b3a887d")
         val readEventServiceImpl =
             ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
         val returnedEvent = readEventServiceImpl.getByEventId(EventDto.EventDtoId(someNonExistentUuid))
         assertThat(returnedEvent, nullValue())
-    }*/
+    }
 }
