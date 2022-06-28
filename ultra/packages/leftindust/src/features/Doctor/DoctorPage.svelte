@@ -175,11 +175,11 @@
           <Tabs>
             <Tab tabActive={tab === DoctorTab.Contacts}>
               <GenericGrid 
-              props={{ id:'Doctor', data, quicklook }}
-              type={WidgetType.Bundle}
-              dataType={['Doctor']}
-              category={[WidgetCategory.Contact]}
-              store
+                props={{ id:'Doctor', data, quicklook }}
+                type={WidgetType.Bundle}
+                dataType={['Doctor']}
+                category={[WidgetCategory.Contact]}
+                store
               />
             </Tab>
           </Tabs>
