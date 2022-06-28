@@ -1,47 +1,37 @@
 <script lang="ts">
-  import { getTemplateSocketType, TemplateInputType, type TemplateCalculation } from '../..';
+  import { TemplateInputType, type TemplateCalculation } from '../..';
   import Input from '@/features/Input/Input.svelte';
-  import { writable, type Writable } from 'svelte/store';
+  import type { Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
   import { Button } from 'framework7-svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
-  import { TemplateDefaultComputation, TemplateNodesModalOpen } from '../../store';
+  import { TemplateNodesModalOpen } from '../../store';
   import type { TemplateInput } from '../..';
-  import type { NodeBlueprint } from 'function-junctions/types';
+  import type { Editor, NodeBlueprint } from 'function-junctions/types';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
 
   export let index: number;
-  export let computations: TemplateCalculation[];
+  export let calculations: TemplateCalculation[];
   export let calculation: TemplateCalculation;
 
   export let inputs: TemplateInput[];
   export let modalOpen = false;
 
-  let nodeInputs: Record<string, { type: string; value: Writable<unknown> }> = {};
+  export let nodeInputs: Record<string, { type: string; value: Writable<unknown> }>;
 
-  inputs.forEach((input) => {
-    const type = getTemplateSocketType(input.type);
-    
-    nodeInputs = {
-      ...nodeInputs,
-      [input.id]: {
-        type,
-        value: writable(),
-      },
-    };
-  });
+  let editor: Editor;
 
   const nodes: Record<string, NodeBlueprint> = {
     'template-input': TemplateInputNode,
   };
 
-  $: $TemplateDefaultComputation;
-
   $: inputs.forEach((input) => {
-    nodeInputs[input.id].value.set(input.value);
+    nodeInputs[input.id].value.update(() => input.value);
   });
+
+  $: console.log(calculation.calculation.nodes);
 </script>
 
 <NodesModal
@@ -50,6 +40,7 @@
   bind:state={calculation.calculation}
   bind:open={modalOpen}
   on:close={() => $TemplateNodesModalOpen = false}
+  bind:editor={editor}
 />
 
 <div>
@@ -124,14 +115,14 @@
           color: 'gray',
         }}
         on:click={() => {
-          computations = [
-            ...computations.slice(0, index),
+          calculations = [
+            ...calculations.slice(0, index),
             {
               label: calculation.label,
               type: calculation.type,
               calculation: calculation.calculation,
             },
-            ...computations.slice(index),
+            ...calculations.slice(index),
           ];
         }}
       />
@@ -141,7 +132,7 @@
           f7: 'minus_circle_fill',
           color: 'red',
         }}
-        on:click={() => (computations = computations.filter((_, i) => i !== index))}
+        on:click={() => (calculations = calculations.filter((_, i) => i !== index))}
       />
     </div>
   </div>

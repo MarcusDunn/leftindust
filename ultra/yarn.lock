@@ -8239,10 +8239,10 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-function-junctions@^0.0.19:
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/function-junctions/-/function-junctions-0.0.19.tgz#26363371d34d2ace2e73b43522037fad7ce4a54f"
-  integrity sha512-olMHvUo9UdGtki2hUtg4WOduXeb/8TsvVVqcUfR9UUtYDYW+RoVYbYLrx0qoYv5l6m6ChDju2Aau0Adj77cE2g==
+function-junctions@^0.0.21:
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/function-junctions/-/function-junctions-0.0.21.tgz#31f154013b464a6666c61a4f8e038f56df4d2735"
+  integrity sha512-GeKaqH7kOtiDnGB6tPznBJ7sICUhWNCGO8dda5A6dz3XuYCycEwCKDlwq41fnIoLIqqxwEP2+6tOfH+J4xhTbQ==
 
 functional-red-black-tree@^1.0.1:
   version "1.0.1"

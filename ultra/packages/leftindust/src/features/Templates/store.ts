@@ -12,5 +12,5 @@ export const TemplateInputUniqueIndex = writable(0);
 
 export const TemplateNodesModalOpen = writable(false);
 
-export const TemplateDefaultComputation = writable<Record<string, NodeState>>({});
+export const TemplateDefaultCalculation = writable<Record<string, NodeState>>({});
 export const TemplateCalculations = writable<TemplateCalculation[]>([]);

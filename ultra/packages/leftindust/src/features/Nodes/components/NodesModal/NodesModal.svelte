@@ -18,7 +18,7 @@
   export let nodes: Record<string, NodeBlueprint> = {};
   export let state: EditorState;
 
-  let editor: EditorType;
+  export let editor: EditorType | undefined = undefined;
 
   export let menuNodes: MenuNodes = [];
 </script>

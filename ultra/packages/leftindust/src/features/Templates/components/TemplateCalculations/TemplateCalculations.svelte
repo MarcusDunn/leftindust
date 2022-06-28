@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { type TemplateInput, TemplateInputType } from '../..';
+  import { type TemplateInput, TemplateInputType, getTemplateSocketType } from '../..';
   import AppLauncherApp from '@/features/Apps/components/AppLauncher/AppLauncherApp.svelte';
   import FlowCover from '@/apps/flow/assets/flow.png';
-  import { TemplateDefaultComputation, TemplateInputItems, TemplateCalculations } from '../../store';
+  import { TemplateDefaultCalculation, TemplateInputItems, TemplateCalculations } from '../../store';
   import type { NodeState } from 'function-junctions/types';
+  import { writable, type Writable } from 'svelte/store';
 
   import { BlockFooter, Button } from 'framework7-svelte';
 
@@ -14,6 +15,8 @@
     sectionIndex: number;
     index: number;
   })[];
+
+  let nodeInputs: Record<string, { type: string; value: Writable<unknown> }> = {};
 
   $: inputs = $TemplateInputItems.sections.flatMap((section, index) =>
     section.inputs.map((input, inputIndex) => ({
@@ -29,6 +32,23 @@
     })),
   );
 
+  $: {
+    nodeInputs = {};
+
+    inputs.forEach((input) => {
+      const type = getTemplateSocketType(input.type);
+      
+      nodeInputs = {
+        ...nodeInputs,
+        [input.id]: {
+          type,
+          value: nodeInputs[input.id]?.value ?? writable(),
+        },
+      };
+    });
+  }
+
+  // Updates default state
   $: {
     let state: Record<string, NodeState> = {};
     
@@ -53,22 +73,42 @@
       };
     });
 
-    $TemplateDefaultComputation = state;
+    $TemplateDefaultCalculation = state;
   }
 
-  $: $TemplateCalculations = $TemplateCalculations.map(({ label, type, calculation }) => ({
-    label,
-    type,
-    calculation: {
-      ...calculation,
-      nodes: {
-        ...$TemplateDefaultComputation,
-        ...calculation.nodes,
-      },
-    },
-  }));
+  // Updates state of all components when inputs change
+  $: {
+    $TemplateCalculations = $TemplateCalculations.map((calculation) => {
+      let newCalculationNodes: Record<string, NodeState> = {};
 
-  $: console.log($TemplateDefaultComputation);
+      inputs.forEach((input) => {
+        const node = newCalculationNodes[input.id] ?? $TemplateDefaultCalculation[input.id];
+
+        newCalculationNodes = {
+          ...newCalculationNodes,
+          [input.id]: {
+            type: node.type,
+            x: node.x,
+            y: node.y,
+            store: {
+              ...node.store,
+              sectionIndex: input.sectionIndex,
+              index: input.index,
+              id: input.id,
+            },
+          },
+        };
+      });
+
+      return {
+        ...calculation,
+        calculation: {
+          ...calculation.calculation,
+          nodes: newCalculationNodes,
+        },
+      };
+    });
+  }
 </script>
 
 <br />
@@ -81,7 +121,8 @@
     <TemplateCalculationInput
       {index}
       {inputs}
-      bind:computations={$TemplateCalculations}
+      {nodeInputs}
+      bind:calculations={$TemplateCalculations}
       bind:calculation
     />
     <br />
@@ -119,12 +160,12 @@
                   translateY: 0,
                   scale: 1,
                 },
-                nodes: $TemplateDefaultComputation,
+                nodes: $TemplateDefaultCalculation,
               },
             },
           ];
         }}
-        disabled={Object.keys($TemplateDefaultComputation).length < 1}
+        disabled={Object.keys($TemplateDefaultCalculation).length < 1}
       >
         Add Calculation
       </Button>
