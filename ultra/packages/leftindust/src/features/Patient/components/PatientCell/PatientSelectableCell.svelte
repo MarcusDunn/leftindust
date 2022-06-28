@@ -31,9 +31,7 @@
 
     $selected = click(event, { selectable, multiselect: multiselect ? { selected: $selected, reference } : undefined });
 
-    void tick().then(() => {
-      dispatch('selected');
-    });
+    dispatch('selected');
   }}
 >
   <Boxed slot="media" color="gray" fill round>
