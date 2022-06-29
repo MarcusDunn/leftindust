@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TemplateInputType, type TemplateCalculation } from '../..';
+  import { TemplateInputType, type TemplateCalculationWithInstance } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import type { Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
@@ -13,8 +13,8 @@
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
 
   export let index: number;
-  export let calculations: TemplateCalculation[];
-  export let calculation: TemplateCalculation;
+  export let calculations: TemplateCalculationWithInstance[];
+  export let calculation: TemplateCalculationWithInstance;
 
   export let inputs: TemplateInput[];
   export let modalOpen = false;
@@ -27,11 +27,7 @@
     'template-input': TemplateInputNode,
   };
 
-  $: inputs.forEach((input) => {
-    nodeInputs[input.id].value.update(() => input.value);
-  });
-
-  $: console.log(calculation.calculation.nodes);
+  $: calculation.editor = editor;
 </script>
 
 <NodesModal

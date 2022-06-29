@@ -46,6 +46,10 @@
         },
       };
     });
+
+    inputs.forEach((input) => {
+      nodeInputs[input.id].value.update(() => input.value);
+    });
   }
 
   // Updates default state
@@ -74,40 +78,6 @@
     });
 
     $TemplateDefaultCalculation = state;
-  }
-
-  // Updates state of all components when inputs change
-  $: {
-    $TemplateCalculations = $TemplateCalculations.map((calculation) => {
-      let newCalculationNodes: Record<string, NodeState> = {};
-
-      inputs.forEach((input) => {
-        const node = newCalculationNodes[input.id] ?? $TemplateDefaultCalculation[input.id];
-
-        newCalculationNodes = {
-          ...newCalculationNodes,
-          [input.id]: {
-            type: node.type,
-            x: node.x,
-            y: node.y,
-            store: {
-              ...node.store,
-              sectionIndex: input.sectionIndex,
-              index: input.index,
-              id: input.id,
-            },
-          },
-        };
-      });
-
-      return {
-        ...calculation,
-        calculation: {
-          ...calculation.calculation,
-          nodes: newCalculationNodes,
-        },
-      };
-    });
   }
 </script>
 

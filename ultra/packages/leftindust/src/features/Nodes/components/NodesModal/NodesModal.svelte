@@ -21,6 +21,8 @@
   export let editor: EditorType | undefined = undefined;
 
   export let menuNodes: MenuNodes = [];
+
+  $: console.log(inputs);
 </script>
 
 <div class={`nodes-nodes_modal ${open ? 'nodes-nodes_modal-open' : ''}`}>

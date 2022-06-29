@@ -1,4 +1,4 @@
-import type { Template, TemplateCalculation } from '.';
+import type { Template, TemplateCalculationWithInstance } from '.';
 import type { NodeState } from 'function-junctions/types';
 import { defaultTemplate } from '.';
 import { writable } from 'svelte/store';
@@ -13,4 +13,4 @@ export const TemplateInputUniqueIndex = writable(0);
 export const TemplateNodesModalOpen = writable(false);
 
 export const TemplateDefaultCalculation = writable<Record<string, NodeState>>({});
-export const TemplateCalculations = writable<TemplateCalculation[]>([]);
+export const TemplateCalculations = writable<TemplateCalculationWithInstance[]>([]);

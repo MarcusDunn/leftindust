@@ -1,3 +1,4 @@
+import type { Editor } from 'function-junctions/types';
 import type { EditorState, SocketBlueprint } from 'function-junctions/types';
 import arraySocket from '../Socket/components/ArraySocket';
 import dateSocket from '../Socket/components/DateSocket';
@@ -57,6 +58,10 @@ export type TemplateCalculation = {
   label: string;
   type: TemplateInputType;
   calculation: EditorState;
+}
+
+export type TemplateCalculationWithInstance = TemplateCalculation & {
+  editor?: Editor;
 }
 
 export type TemplateCalculationSockets = {

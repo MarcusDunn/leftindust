@@ -34,6 +34,9 @@
 
   export let dragger: ((event: Event) => void)| undefined = undefined;
 
+  export let addNodeToComputations: (input: TemplateInput, index: number) => void;
+  export let deleteNodeFromComputation: (id: string) => void;
+
   $: multiselect = (type === TemplateInputType.SingleSelect || type === TemplateInputType.MultiSelect);
   $: title = type === TemplateInputType.Title;
   $: compute = false;
@@ -209,6 +212,7 @@
                   },
                   ...inputs.slice(index),
                 ];
+                addNodeToComputations(inputs[inputs.length - 1], inputs.length - 1);
                 globalIndex += 1;
               }}
             />
@@ -219,6 +223,7 @@
                 color: 'red',
               }}
               on:click={() => {
+                deleteNodeFromComputation(inputs[index].id.toString());
                 inputs = inputs.filter((_, i) => i !== index);
               }}
             />

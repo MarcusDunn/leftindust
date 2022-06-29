@@ -28,6 +28,7 @@
   let value: Writable<unknown> | undefined;
 
   $: $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type, (() => {
+    console.log(editor.inputs);
     value = editor.inputs?.[store.id]?.value;
   })();
 
