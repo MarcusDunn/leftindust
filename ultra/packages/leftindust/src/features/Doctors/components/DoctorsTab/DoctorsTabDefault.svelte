@@ -1,18 +1,14 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
 
-  import {
-    defaultRangeInput,
-    DoctorsQueryDocument,
-    SortableField,
-    type DoctorsFragment,
-  } from '@/api/server';
+  import { defaultRangeInput, DoctorsQueryDocument, type DoctorsFragment } from '@/api/server';
   import { clientsSelected } from '@/features/Clients/store';
 
   import { _ } from '@/language';
   import { operationStore, query } from '@urql/svelte';
   import { account } from '@/features/Account/store';
-  import { updateRecents } from '@/features/Recents';
+  import { sortRecents, updateRecents } from '@/features/Recents';
+  import { getTimestampedValues } from '@/features/Recents';
 
   import { PageContent } from 'framework7-svelte';
   
@@ -21,7 +17,7 @@
   import MasterListLayout from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
   import Request from '@/features/Server/components/Request/Request.svelte';
   import DoctorsCells from '../DoctorsCells/DoctorsCells.svelte';
-  
+
   export let f7router: Router.Router;
 
   let doctors: DoctorsFragment[];
@@ -32,7 +28,7 @@
   });
 
   const recentsRequest = operationStore(DoctorsQueryDocument, {
-    dids: ($account.database.recents.Doctor ??= []).map((id) => ({ id })),
+    dids: getTimestampedValues($account.database.recents.Doctor ??= []).map((id) => ({ id })),
   });
 
   const navigate = (multiple: boolean) => {
@@ -43,19 +39,26 @@
     }
   };
 
-  $: recentsRequest.reexecute({
-    dids: ($account.database.recents.Doctor ?? []).map((id) => ({ id })),
-  });
+  $: $recentsRequest = {
+    variables: {
+      dids: getTimestampedValues($account.database.recents.Doctor ?? []).map((id) => ({ id })),
+    }, 
+  };
 
   $: doctors = $request.data?.doctors ?? [];
-  $: recents = $recentsRequest.data?.doctors ?? [];
+  $: timestampedRecents = $account.database.recents.Doctor ?? {};
+  $: recents = sortRecents(
+    $recentsRequest.data?.doctors ?? [],
+    timestampedRecents,
+    (doctor => doctor.did.id),
+  );
 
   query(request);
   query(recentsRequest);
 
 </script>
 
-<PageContent style="padding-top: 10px" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}>
+<PageContent style="padding: 10px;overflow-y:auto" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}>
   <MasterListLayout>
     <Request {...$recentsRequest} reexecute={recentsRequest.reexecute} slot="recents">
       {#if recents.length > 0}
