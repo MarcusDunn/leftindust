@@ -1,11 +1,13 @@
 <script lang="ts">
   import Select from '@/features/Input/components/Select/Select.svelte';
   
-  import type { Editor,  InputSocket, InputSockets, SocketBlueprint } from 'function-junctions/types';
+  import type { Editor,  InputSocket, InputSockets } from 'function-junctions/types';
   import type { Writable } from 'svelte/store';
 
-  import { TemplateInputType } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets, TemplateInputType } from '@/features/Templates';
   import { _ } from '@/language';
+  import { TemplateCalculations } from '@/features/Templates/store';
+  import Input from '@/features/Input/Input.svelte';
 
   export let editor: Editor;
   
@@ -14,87 +16,83 @@
   }>;
 
   const { value: Value } = inputs.Value;
-  const { registered } = editor.nodes;
-  
-  let name = '';
-  let type = '';
+  let value: Writable<unknown> | undefined;
 
-  let store: Writable<unknown> | undefined;
-  
-  let sockets: SocketBlueprint[] = [];
+  export let store: {
+    index: number;
+  } = {
+    index: 0,
+  };
 
-  $: name, type, (() => {
-    if (store && Value) $store = $Value;
+  $: value = editor.outputs?.Value?.value;
+
+  $: $TemplateCalculations[store.index].type, (() => {
+    if (value && Value) $value = $Value;
   })();
 
-  $: store = editor.outputs?.[name]?.value;
+  $:  $TemplateCalculations[store.index], (() => {
+    const type = getTemplateSocketType($TemplateCalculations[store.index].type);
 
-  $: Object.keys($registered).forEach((key) => {
-    let io = {
-      ...$registered[key].inputs,
-      ...$registered[key].outputs,
-    };
-
-    sockets = [
-      ...sockets,
-      ...Object.keys(io).map((key) => io[key]),
-    ].filter((socket, index, self) =>
-      index === self.findIndex((t) => (
-        t.type === socket.type
-      )),
-    ).filter((socket) => !!socket.type);
-  });
-
-  $: {
-    inputs.Value.type = type;
-    inputs.Value.disabled = !store;
-    inputs.Value.color = sockets.filter((socket) => socket.type === type)?.[0]?.color;
-  }
-
-  $: if (!type) type = sockets[0].type;
+    if (type) {
+      const socket = templateCalculationSockets[type];
+  
+      if (socket) {
+        inputs.Value.type = type;
+        inputs.Value.disabled = !value;
+        inputs.Value.color = socket.color;
+      }
+    }
+  })();
 </script>
 
-<Select
-  title={$_('generics.type')}
-  placeholder={$_('examples.text')}
-  options={[
-    {
-      text: $_('generics.text'),
-      value: TemplateInputType.Text,
-    },
-    {
-      text: $_('generics.number'),
-      value: TemplateInputType.Number,
-    },
-    {
-      text: $_('generics.date'),
-      value: TemplateInputType.Date,
-    },
-    {
-      text: $_('generics.paragraph'),
-      value: TemplateInputType.Paragraph,
-    },
-    {
-      text: $_('generics.singleSelect'),
-      value: TemplateInputType.SingleSelect,
-    },
-    {
-      text: $_('generics.multiSelect'),
-      value: TemplateInputType.MultiSelect,
-    },
-    {
-      text: $_('generics.upload'),
-      value: TemplateInputType.Upload,
-    },
-    {
-      text: $_('generics.title'),
-      value: TemplateInputType.Title,
-    },
-  ]}
-  bind:value={type}
-/>
-<p />
-<div style="padding: 0 15px">
-  <input type="text" placeholder="Name" bind:value={name} />
+<div style="min-width: 430px">
+  <Select
+    title={$_('generics.type')}
+    placeholder={$_('examples.text')}
+    options={[
+      {
+        text: $_('generics.text'),
+        value: TemplateInputType.Text,
+      },
+      {
+        text: $_('generics.number'),
+        value: TemplateInputType.Number,
+      },
+      {
+        text: $_('generics.date'),
+        value: TemplateInputType.Date,
+      },
+      {
+        text: $_('generics.paragraph'),
+        value: TemplateInputType.Paragraph,
+      },
+      {
+        text: $_('generics.singleSelect'),
+        value: TemplateInputType.SingleSelect,
+      },
+      {
+        text: $_('generics.multiSelect'),
+        value: TemplateInputType.MultiSelect,
+      },
+      {
+        text: $_('generics.upload'),
+        value: TemplateInputType.Upload,
+      },
+      {
+        text: $_('generics.title'),
+        value: TemplateInputType.Title,
+      },
+    ]}
+    bind:value={$TemplateCalculations[store.index].type}
+  />
+  <p />
+  <Input style="width: 100%">
+    <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
+    <input
+      type="text"
+      bind:value={$TemplateCalculations[store.index].label}
+      placeholder={$_('examples.calculation')}
+    />
+  </Input>
+  <br />
 </div>
-<p />

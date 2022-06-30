@@ -1,7 +1,7 @@
 <script lang="ts">
   import { TemplateInputType, type TemplateCalculationWithInstance } from '../..';
   import Input from '@/features/Input/Input.svelte';
-  import type { Writable } from 'svelte/store';
+  import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
   import { Button } from 'framework7-svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
@@ -11,28 +11,40 @@
   import type { Editor, NodeBlueprint } from 'function-junctions/types';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
+  import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
   export let calculation: TemplateCalculationWithInstance;
 
-  export let inputs: TemplateInput[];
   export let modalOpen = false;
 
   export let nodeInputs: Record<string, { type: string; value: Writable<unknown> }>;
+  
+  let nodeOutputs = {
+    Value: {
+      type: '',
+      value: writable(),
+    },
+  };
+
+  const { value } = nodeOutputs.Value;
 
   let editor: Editor;
 
   const nodes: Record<string, NodeBlueprint> = {
-    'template-input': TemplateInputNode,
+    'input': TemplateInputNode,
+    'output': TemplateOutputNode,
   };
 
   $: calculation.editor = editor;
+  $: console.log($value);
 </script>
 
 <NodesModal
   {nodes}
   inputs={nodeInputs}
+  outputs={nodeOutputs}
   bind:state={calculation.calculation}
   bind:open={modalOpen}
   on:close={() => $TemplateNodesModalOpen = false}

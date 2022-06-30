@@ -22,7 +22,7 @@
 
   export let menuNodes: MenuNodes = [];
 
-  $: console.log(inputs);
+  $: console.log(state);
 </script>
 
 <div class={`nodes-nodes_modal ${open ? 'nodes-nodes_modal-open' : ''}`}>

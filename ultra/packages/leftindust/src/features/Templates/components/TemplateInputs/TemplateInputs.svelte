@@ -42,15 +42,15 @@
   const addNodeToComputations = (input: TemplateInputT, index: number) => {
     $TemplateCalculations.forEach((calculation) => {
       calculation.editor?.addNode(
-        'template-input',
+        'input',
         {
           x: 75,
           y: ((inputs.length - 1) * 230) + 100,
         },
         {
-          id: input.id.toString(),
+          id: `i_${input.id}`,
           blueprint: {
-            type: 'template-input',
+            type: 'input',
             x: 75,
             y: ((inputs.length - 1) * 230) + 100,
             store: {
@@ -66,7 +66,8 @@
 
   const deleteNodeFromComputation = (id: string) => {
     $TemplateCalculations.forEach((calculation) => {
-      calculation.editor?.deleteNode(id);
+      console.log(`i_${id}`);
+      calculation.editor?.deleteNode(`i_${id}`);
     });
   };
 </script>

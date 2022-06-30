@@ -28,7 +28,6 @@
   let value: Writable<unknown> | undefined;
 
   $: $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type, (() => {
-    console.log(editor.inputs);
     value = editor.inputs?.[store.id]?.value;
   })();
 
@@ -47,57 +46,57 @@
       }
     }
   })();
-
-  $: getTemplateSocketType($TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type);
 </script>
 
-<div style="min-width: 430px">
-  <Select
-    title={$_('generics.type')}
-    placeholder={$_('examples.text')}
-    options={[
-      {
-        text: $_('generics.text'),
-        value: TemplateInputType.Text,
-      },
-      {
-        text: $_('generics.number'),
-        value: TemplateInputType.Number,
-      },
-      {
-        text: $_('generics.date'),
-        value: TemplateInputType.Date,
-      },
-      {
-        text: $_('generics.paragraph'),
-        value: TemplateInputType.Paragraph,
-      },
-      {
-        text: $_('generics.singleSelect'),
-        value: TemplateInputType.SingleSelect,
-      },
-      {
-        text: $_('generics.multiSelect'),
-        value: TemplateInputType.MultiSelect,
-      },
-      {
-        text: $_('generics.upload'),
-        value: TemplateInputType.Upload,
-      },
-      {
-        text: $_('generics.title'),
-        value: TemplateInputType.Title,
-      },
-    ]}
-    bind:value={$TemplateInputItems.sections[store.sectionIndex].inputs[store.index].type}
-  />
-  <p />
-  <Input style="width: 100%">
-    <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
-    <input
-      type="text"
-      bind:value={$TemplateInputItems.sections[store.sectionIndex].inputs[store.index].label}
-      placeholder={$_('examples.totalPlateletCount')}
+{#if $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]}
+  <div style="min-width: 430px">
+    <Select
+      title={$_('generics.type')}
+      placeholder={$_('examples.text')}
+      options={[
+        {
+          text: $_('generics.text'),
+          value: TemplateInputType.Text,
+        },
+        {
+          text: $_('generics.number'),
+          value: TemplateInputType.Number,
+        },
+        {
+          text: $_('generics.date'),
+          value: TemplateInputType.Date,
+        },
+        {
+          text: $_('generics.paragraph'),
+          value: TemplateInputType.Paragraph,
+        },
+        {
+          text: $_('generics.singleSelect'),
+          value: TemplateInputType.SingleSelect,
+        },
+        {
+          text: $_('generics.multiSelect'),
+          value: TemplateInputType.MultiSelect,
+        },
+        {
+          text: $_('generics.upload'),
+          value: TemplateInputType.Upload,
+        },
+        {
+          text: $_('generics.title'),
+          value: TemplateInputType.Title,
+        },
+      ]}
+      bind:value={$TemplateInputItems.sections[store.sectionIndex].inputs[store.index].type}
     />
-  </Input>
-</div>
+    <p />
+    <Input style="width: 100%">
+      <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
+      <input
+        type="text"
+        bind:value={$TemplateInputItems.sections[store.sectionIndex].inputs[store.index].label}
+        placeholder={$_('examples.totalPlateletCount')}
+      />
+    </Input>
+  </div>
+{/if}

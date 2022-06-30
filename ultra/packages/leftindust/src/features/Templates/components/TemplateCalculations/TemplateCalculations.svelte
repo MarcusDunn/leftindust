@@ -59,8 +59,8 @@
     inputs.forEach((input, index) => {
       state = {
         ...state,
-        [input.id]: {
-          type: 'template-input',
+        [`i_${input.id}`]: {
+          type: 'input',
           x: 75,
           y: (index * 230) + 100,
           store: {
@@ -71,6 +71,7 @@
           outputs: {
             Value: {
               type: input.type,
+              value: '',
             },
           },
         },
@@ -90,7 +91,6 @@
   {#each $TemplateCalculations as calculation, index}
     <TemplateCalculationInput
       {index}
-      {inputs}
       {nodeInputs}
       bind:calculations={$TemplateCalculations}
       bind:calculation
@@ -130,7 +130,17 @@
                   translateY: 0,
                   scale: 1,
                 },
-                nodes: $TemplateDefaultCalculation,
+                nodes: {
+                  ...$TemplateDefaultCalculation,
+                  [`o_${0}`]: {
+                    type: 'output',
+                    x: window.innerWidth - 360,
+                    y: 100,
+                    store: {
+                      index: $TemplateCalculations.length,
+                    },
+                  },
+                },
               },
             },
           ];
