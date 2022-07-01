@@ -185,6 +185,21 @@
           </Tabs>
         </Block>
       </Tab>
+      <Tab tabActive={layout === Layout.Stacked && tab !== DoctorTab.Overview}>
+        <Block style="margin-left: 25px;margin-right: 25px">
+          <Tabs>
+            <Tab tabActive={tab === DoctorTab.Contacts}>
+              <GenericGrid 
+                props={{ id:'Doctor', data, quicklook }}
+                type={WidgetType.Stack}
+                dataType={['Doctor']}
+                category={[WidgetCategory.Contact]}
+                store
+              />
+            </Tab>
+          </Tabs>
+        </Block>
+      </Tab>
     </Tabs>
   </Request>
 </Page>

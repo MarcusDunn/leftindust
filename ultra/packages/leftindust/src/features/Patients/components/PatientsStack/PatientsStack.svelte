@@ -62,26 +62,23 @@
       />
     {/if}
   </Request>
-  <Row slot="controls">
-    <Col width="50">
-      <Button
-        class={`${quicklook ? 'disabled' : ''}`}
-        color={configuration.color}
-        fill
-        round
-      >
-        {$_('generics.newPatient')}
-      </Button>
-    </Col>
-    <Col width="50">
-      <Button 
-        color={configuration.color}
-        outline
-        round
-        disabled={patients?.length === 0}
-      >
-        {$_('generics.viewAll')}
-      </Button>
-    </Col>
-  </Row>
+  <div slot="controls" class="display-flex widget-stack-header-buttons">
+    <Button
+      class={`${quicklook ? 'disabled' : ''} widget-stack-header-button`}
+      color={configuration.color}
+      fill
+      round
+    >
+    {$_('generics.newPatient')}
+    </Button>
+    <Button
+      class={`widget-stack-header-button`}
+      color={configuration.color}
+      outline
+      round
+      disabled={patients?.length === 0}
+    >
+    {$_('generics.viewAll')}
+    </Button>
+  </div>
 </Stack>

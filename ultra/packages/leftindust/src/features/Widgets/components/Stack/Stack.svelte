@@ -1,36 +1,48 @@
 <script lang="ts">
-  import { Block } from 'framework7-svelte';
-
-  export let title: string;
-  export let color: string;
+  import type { Framework7Icon } from '@/features/UI';
+  import { account } from '@/features/Account/store';
 
   import './Stack.scss';
 
+  import { Block, Icon} from 'framework7-svelte';
+
+  export let title: string;
+  export let icon: Framework7Icon | undefined = undefined;
+  export let color: string;
+
   export let dragger: (() => void) = () => undefined;
-
   export let fill = false;
-
+  export let shadow = false;
+  
   let optionsOpen = false;
 
 </script>
 
-<Block
-  class={`widget-stack
-    ${optionsOpen ? 'widget-stack-options-open' : ''}
-    ${fill ? 'widget-stack-fill' : ''}
-  `}
->
-  <div class="widget-stack-inner">
-    <h4 class="widget-stack-title" on:pointerdown={dragger}>
-      {title}
-      <span class="flex-grow" />
-      <slot name="controls" />
-    </h4>
-    <div class="widget-stack-content">
-      <slot />
+{#key $account}
+  <Block
+    class={`widget-stack
+      ${optionsOpen ? 'widget-stack-options-open' : ''}
+      ${shadow ? 'elevation-4' : ''}
+    `}
+    strong
+    inset
+  >
+    <div class="widget-stack-inner">
+      <div class="widget-stack-header">
+        <h4 class= {`widget-stack-title text-color-${color}`} on:pointerdown={dragger}>
+          {#if icon}
+            <Icon {...icon} />
+          {/if}
+          {title}
+        </h4>
+        <span class="flex-grow" /> 
+        <div>
+          <slot name="controls" />
+        </div>
+      </div>  
+      <div class="widget-stack-content">
+        <slot />
+      </div>
     </div>
-    <div class="widget-stack-options">
-      <slot name="options" />
-    </div>
-  </div>
-</Block>
+  </Block>
+{/key}

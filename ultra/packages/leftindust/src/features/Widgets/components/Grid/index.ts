@@ -133,8 +133,8 @@ export const WidgetGridSizes: Record<string, Dimensions> = {
     h: 1,
   },
   stack: {
-    w: 1,
-    h: 4,
+    w: 2,
+    h: 3,
   },
   card: {
     w: 1,
