@@ -12,6 +12,7 @@
   import Select from '@/features/Input/components/Select/Select.svelte';
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
+  import type { MenuNodes } from '@/features/Nodes';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -37,12 +38,23 @@
     'output': TemplateOutputNode,
   };
 
+  const menuNodes: MenuNodes = [{
+    title: 'Mathematics',
+    description: 'Tools to preform basic arithmetic calculations',
+    color: 'pink',
+    icon: {
+      f7: 'sum',
+    },
+    nodes: [],
+  }];
+
   $: calculation.editor = editor;
   $: console.log($value);
 </script>
 
 <NodesModal
   {nodes}
+  {menuNodes}
   inputs={nodeInputs}
   outputs={nodeOutputs}
   bind:state={calculation.calculation}

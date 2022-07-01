@@ -7,6 +7,8 @@
 
   import { _ } from '@/language';
   import { createEventDispatcher } from 'svelte';
+  import NodesSelectorModal from '../NodesSelectorModal/NodesSelectorModal.svelte';
+  import type { Popover } from 'framework7/types';
 
   import './NodesModal.scss';
 
@@ -22,10 +24,14 @@
 
   export let menuNodes: MenuNodes = [];
 
-  $: console.log(state);
+  let modal: Popover.Popover;
 </script>
 
 <div class={`nodes-nodes_modal ${open ? 'nodes-nodes_modal-open' : ''}`}>
+  <NodesSelectorModal
+    {menuNodes}
+    bind:instance={modal}
+  />
   <Editor
     {inputs}
     {outputs}
@@ -38,6 +44,7 @@
       <MenuButton
         title="Create"
         icon={{ f7: 'plus_circle_fill', color: 'blue' }}
+        on:click={(event) => (modal.open(event.currentTarget, true))}
       />
       <div class="flex-grow" />
       <MenuButton
