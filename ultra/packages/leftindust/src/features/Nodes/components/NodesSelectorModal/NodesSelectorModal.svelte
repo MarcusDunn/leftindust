@@ -9,7 +9,8 @@
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import { _ } from '@/language';
   import NodesSelectorModalPage from './NodesSelectorModalPage.svelte';
-  import { onMount } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
+  import { temporarySelectedNode } from './store';
 
   export let menuNodes: MenuNodes;
   export let instance: PopoverType.Popover | undefined = undefined;
@@ -17,9 +18,13 @@
   let viewRef: View;
   let view: ViewType.View;
 
+  const dispatch = createEventDispatcher();
+
   onMount(() => {
     view = (<{ instance: () => ViewType.View }>(<unknown>viewRef)).instance();
   });
+
+  $: if ($temporarySelectedNode.length > 0) dispatch('add', $temporarySelectedNode);
 </script>
 
 <Popover style="width: 750px; height: 350px" bind:instance>

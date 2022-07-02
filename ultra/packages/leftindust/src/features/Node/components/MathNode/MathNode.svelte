@@ -31,18 +31,23 @@
   const getValue = () => {
     const { type } = store;
 
+    // @ts-expect-error
+    const left = parseInt($LHS, 10);
+    // @ts-expect-error
+    const right = parseInt($RHS, 10);
+
     switch (type) {
       case 'addition':
-        $output = $LHS + $RHS;
+        $output = left + right;
         break;
       case 'subtraction':
-        $output = $LHS - $RHS;
+        $output = left - right;
         break;
       case 'multiplication':
-        $output = $LHS * $RHS;
+        $output = left * right;
         break;
       case 'division':
-        $output = $LHS / $RHS;
+        $output = left / right;
         break;
     }
   };
@@ -50,12 +55,13 @@
   $: inputs, store, getValue();
 </script>
 
-<h1 style="text-align: center">{$output}</h1>
+<h1 class="no-margin" style="text-align: center">{$output}</h1>
 <List class="no-margin" noHairlines>
   <ListInput
     label="Type"
     type="select"
     bind:value={store.type}
+    style="margin-right: 20px"
   >
     <i class="icon demo-list-icon" slot="media" />
     <option value="addition">Addition</option>

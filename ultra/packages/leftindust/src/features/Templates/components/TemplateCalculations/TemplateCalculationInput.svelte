@@ -7,11 +7,11 @@
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
   import { TemplateNodesModalOpen } from '../../store';
-  import type { TemplateInput } from '../..';
   import type { Editor, NodeBlueprint } from 'function-junctions/types';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
+  import MathNode from '@/features/Node/components/MathNode';
   import type { MenuNodes } from '@/features/Nodes';
 
   export let index: number;
@@ -34,8 +34,9 @@
   let editor: Editor;
 
   const nodes: Record<string, NodeBlueprint> = {
-    'input': TemplateInputNode,
-    'output': TemplateOutputNode,
+    input: TemplateInputNode,
+    output: TemplateOutputNode,
+    Math: MathNode,
   };
 
   const menuNodes: MenuNodes = [{
@@ -45,7 +46,11 @@
     icon: {
       f7: 'sum',
     },
-    nodes: [],
+    nodes: [{
+      title: 'Math',
+      description: 'Addition, subtraction, multiplication, and division',
+      blueprint: MathNode,
+    }],
   }];
 
   $: calculation.editor = editor;

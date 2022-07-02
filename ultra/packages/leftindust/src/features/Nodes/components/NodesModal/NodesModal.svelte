@@ -3,7 +3,7 @@
   import { Editor } from 'function-junctions';
   import type { Editor as EditorType, EditorState, NodeBlueprint } from 'function-junctions/types';
   import type { Writable } from 'svelte/store';
-  import type { MenuNodes } from '../..';
+  import type { MenuNode, MenuNodes } from '../..';
 
   import { _ } from '@/language';
   import { createEventDispatcher } from 'svelte';
@@ -25,12 +25,21 @@
   export let menuNodes: MenuNodes = [];
 
   let modal: Popover.Popover;
+
+  const onAdd = (nodes: MenuNode[]) => nodes.forEach((node) => editor?.addNode(node.title, {
+    x: (window.innerWidth / 2) - 100,
+    y: (window.innerHeight / 2) - 100,
+  }));
 </script>
 
 <div class={`nodes-nodes_modal ${open ? 'nodes-nodes_modal-open' : ''}`}>
   <NodesSelectorModal
     {menuNodes}
     bind:instance={modal}
+    on:add={({ detail }) => {
+      onAdd(detail);
+      modal.close();
+    }}
   />
   <Editor
     {inputs}
