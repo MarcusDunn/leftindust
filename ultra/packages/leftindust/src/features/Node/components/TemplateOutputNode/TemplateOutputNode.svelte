@@ -15,22 +15,32 @@
     Value: InputSocket<unknown>;
   }>;
 
-  const { value: Value } = inputs.Value;
+  const { value: Value, connection } = inputs.Value;
   let value: Writable<unknown> | undefined;
-
+    
   export let store: {
     index: number;
   } = {
     index: 0,
   };
+    
+  let prevType = $TemplateCalculations[store.index].type;
 
+  const reevaluateConnections = () => {
+    if ($TemplateCalculations[store.index].type !== prevType) {
+      $connection = undefined;
+
+      prevType = $TemplateCalculations[store.index].type;
+    }
+  };
+    
   $: value = editor.outputs?.Value?.value;
 
   $: $TemplateCalculations[store.index].type, (() => {
     if (value && Value) $value = $Value;
   })();
 
-  $:  $TemplateCalculations[store.index], (() => {
+  $: $TemplateCalculations[store.index], (() => {
     const type = getTemplateSocketType($TemplateCalculations[store.index].type);
 
     if (type) {
@@ -43,6 +53,8 @@
       }
     }
   })();
+
+  $: $TemplateCalculations, reevaluateConnections();
 </script>
 
 <div style="min-width: 430px">

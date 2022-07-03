@@ -57,6 +57,7 @@ export type Template = {
 export type TemplateCalculation = {
   label: string;
   type: TemplateInputType;
+  showOnComplete: boolean;
   calculation: EditorState;
 }
 

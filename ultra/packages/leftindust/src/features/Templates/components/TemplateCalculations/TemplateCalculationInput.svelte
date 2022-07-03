@@ -3,7 +3,7 @@
   import Input from '@/features/Input/Input.svelte';
   import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
-  import { Button } from 'framework7-svelte';
+  import { Button, Col, ListItem, Row, Toggle } from 'framework7-svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
   import { TemplateNodesModalOpen } from '../../store';
@@ -117,7 +117,16 @@
       placeholder={$_('examples.calculation')}
     />
   </Input>
-  <div class="display-flex" style="margin-top: 20px">
+  <Input style="width: 100%;margin-top: 30px">
+    <ListItem class="aurora" slot="content">
+      <span>Show on Complete</span>
+      <Toggle
+        color="deeppurple"
+        bind:checked={calculation.showOnComplete}
+      />
+    </ListItem>
+  </Input>
+  <div class="display-flex" style="margin-top: 35px">
     <div style="width: 100%;margin-top: 11px">
       <Button
         color="deeppurple"
@@ -145,6 +154,7 @@
             {
               label: calculation.label,
               type: calculation.type,
+              showOnComplete: false,
               calculation: calculation.calculation,
             },
             ...calculations.slice(index),

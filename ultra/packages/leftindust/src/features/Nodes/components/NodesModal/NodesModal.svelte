@@ -30,6 +30,10 @@
     x: (window.innerWidth / 2) - 100,
     y: (window.innerHeight / 2) - 100,
   }));
+
+  // The type of event.currentTarget is incompatible with f7's popover type which is wrong
+  // @ts-expect-error
+  const openModal = (event: MouseEvent) => (modal.open(event.currentTarget, true));
 </script>
 
 <div class={`nodes-nodes_modal ${open ? 'nodes-nodes_modal-open' : ''}`}>
@@ -53,7 +57,7 @@
       <MenuButton
         title="Create"
         icon={{ f7: 'plus_circle_fill', color: 'blue' }}
-        on:click={(event) => (modal.open(event.currentTarget, true))}
+        on:click={openModal}
       />
       <div class="flex-grow" />
       <MenuButton

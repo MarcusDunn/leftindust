@@ -11,6 +11,7 @@
   import NodesSelectorModalPage from './NodesSelectorModalPage.svelte';
   import { createEventDispatcher, onMount } from 'svelte';
   import { temporarySelectedNode } from './store';
+  import { isDarkMode } from '@/features/UI/store';
 
   export let menuNodes: MenuNodes;
   export let instance: PopoverType.Popover | undefined = undefined;
@@ -38,6 +39,7 @@
     }))}
     bind:this={viewRef}
     style="height: 350px"
+    class={`${$isDarkMode ? 'function-junctions-appearance-dark' : ''}`}
   >
     <Page>
       <Appbar slot="fixed">

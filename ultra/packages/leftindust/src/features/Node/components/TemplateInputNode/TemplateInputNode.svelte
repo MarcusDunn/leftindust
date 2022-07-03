@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Writable } from 'svelte/store';
-  import type { Editor, OutputSocket, OutputSockets } from 'function-junctions/types';
+  import { get, type Writable } from 'svelte/store';
+  import type { Editor, Node, OutputSocket, OutputSockets } from 'function-junctions/types';
   import Input from '@/features/Input/Input.svelte';
   import { _ } from '@/language';
   import Select from '@/features/Input/components/Select/Select.svelte';
@@ -8,6 +8,7 @@
   import { TemplateInputItems } from '@/features/Templates/store';
   
   export let editor: Editor;
+  export let id: string;
   
   export let outputs: OutputSockets<{
     Value: OutputSocket<unknown>;
@@ -23,17 +24,45 @@
     id: '',
   };
 
+  const { current: nodes } = editor.nodes;
+
   const { value: Value } = outputs.Value;
   
   let value: Writable<unknown> | undefined;
+  let prevType = $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type;
 
-  $: $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type, (() => {
+  const reevaluateConnections = () => {
+    if ($TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type !== prevType) {
+      editor.nodes.current.update(() => Object.keys($nodes).reduce((newNodes: Record<string, Node>, key) => {
+        const oldNode = $nodes[key];
+        const inputs = oldNode.inputs;
+  
+        if (inputs) {
+          Object.keys(inputs).forEach((inputKey) => {
+            const connection = get(inputs[inputKey].connection);
+  
+            if (connection?.connectedSocketId && connection?.connectedNodeId === id) {
+              inputs[inputKey].connection.update(() => undefined);
+            }
+          });
+        }
+  
+        newNodes[key] = oldNode;
+  
+        return newNodes;
+      }, {}));
+      
+      prevType = $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type;
+    }
+  };
+
+  $: $TemplateInputItems, (() => {
     value = editor.inputs?.[store.id]?.value;
   })();
 
   $: if (value) $Value = $value;
 
-  $:  $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type, (() => {
+  $: $TemplateInputItems, (() => {
     const type = getTemplateSocketType($TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type);
 
     if (type) {
@@ -46,6 +75,8 @@
       }
     }
   })();
+
+  $: $TemplateInputItems, reevaluateConnections();
 </script>
 
 {#if $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]}
