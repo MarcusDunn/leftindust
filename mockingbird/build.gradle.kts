@@ -65,7 +65,7 @@ dependencies {
     // liquibase runtime dependencies
     liquibaseRuntime("org.postgresql", "postgresql")
     liquibaseRuntime("org.liquibase", "liquibase-core")
-    liquibaseRuntime("org.liquibase.ext", "liquibase-hibernate5")
+    liquibaseRuntime("org.liquibase.ext", "liquibase-hibernate5", "4.12.0")
     liquibaseRuntime("org.springframework.boot", "spring-boot-starter-data-jpa")
     liquibaseRuntime("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
     liquibaseRuntime(sourceSets.main.get().output)
@@ -84,20 +84,14 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.2")
 }
 
-// liquibase plugin config
 liquibase {
     activities.register("main") {
         arguments = mapOf(
             "logLevel" to "info",
-            "changeLogFile" to "dbchangelog.xml",
+            "changeLogFile" to "src/main/resources/dbchangelog.xml",
             "url" to "jdbc:postgresql://127.0.0.1:5432/mediq",
             "username" to "mediq",
             "password" to "mediq",
-            "referenceDriver" to "liquibase.ext.hibernate.database.connection.HibernateDriver",
-            "referenceUrl" to "hibernate:spring:com.leftindust.mockingbird.dao.entity?" +
-                    "dialect=org.hibernate.dialect.PostgreSQLDialect&" +
-                    "hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&" +
-                    "hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
         )
     }
     runList = "main"
