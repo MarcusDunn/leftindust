@@ -11,6 +11,8 @@ const node: NodeBlueprint<never, {
   },
   component: TemplateInputNode,
   className: 'node-transparent',
+  cloneable: false,
+  deletable: false,
 };
 
 export default node;
