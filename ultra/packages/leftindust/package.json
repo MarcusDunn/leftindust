@@ -33,7 +33,7 @@
     "framework7": "^7.0.1",
     "framework7-icons": "^5.0.5",
     "framework7-svelte": "^7.0.1",
-    "function-junctions": "^0.0.22",
+    "function-junctions": "^0.0.24",
     "graphql": "^15.7.2",
     "sanitize-html": "^2.7.0",
     "svelte-dnd-action": "^0.9.17",

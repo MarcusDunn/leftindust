@@ -122,6 +122,7 @@
             {
               label: '',
               type: TemplateInputType.Text,
+              showOnComplete: false,
               calculation: {
                 position: {
                   originX: 0,
