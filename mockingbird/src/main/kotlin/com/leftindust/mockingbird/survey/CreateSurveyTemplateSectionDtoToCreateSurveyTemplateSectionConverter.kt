@@ -1,0 +1,33 @@
+package com.leftindust.mockingbird.survey
+
+import com.leftindust.mockingbird.FailedConversionMessage.Companion.FailedConversionMessage
+import com.leftindust.mockingbird.FallibleConverter
+import mu.KotlinLogging
+import org.springframework.stereotype.Component
+
+@Component
+class CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter(
+    private val createSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConverter: FallibleConverter<CreateSurveyTemplateSectionInputDto, CreateSurveyTemplateSectionInput>
+) : FallibleConverter<CreateSurveyTemplateSectionDto, CreateSurveyTemplateSection> {
+    private val logger = KotlinLogging.logger { }
+
+    override fun convert(source: CreateSurveyTemplateSectionDto): CreateSurveyTemplateSection? {
+        return CreateSurveyTemplateSectionImpl(
+            id = source.id,
+            title = source.title,
+            subtitle = source.subtitle,
+            inputs = source.inputs.map {
+                createSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConverter.convert(
+                    it
+                ) ?: return null.also { logger.trace { FailedConversionMessage(source) } }
+            },
+        )
+    }
+
+    private data class CreateSurveyTemplateSectionImpl(
+        override val id: Int,
+        override val title: String,
+        override val subtitle: String?,
+        override val inputs: List<CreateSurveyTemplateSectionInput>
+    ) : CreateSurveyTemplateSection
+}
