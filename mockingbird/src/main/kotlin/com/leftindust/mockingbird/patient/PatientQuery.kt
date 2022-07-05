@@ -44,8 +44,6 @@ class PatientQuery(
 
     suspend fun events(): List<EventDto> = TODO()
 
-    suspend fun assignedSurveys(): List<SurveyDto> = TODO()
-
     suspend fun phones(): List<PhoneDto> = TODO()
 
     suspend fun emails(): List<EmailDto> = TODO()

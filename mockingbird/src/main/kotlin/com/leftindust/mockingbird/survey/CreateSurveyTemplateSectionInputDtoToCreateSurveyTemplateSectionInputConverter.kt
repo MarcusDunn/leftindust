@@ -10,7 +10,6 @@ class CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConve
     override fun convert(source: CreateSurveyTemplateSectionInputDto): CreateSurveyTemplateSectionInput? {
 
         return CreateSurveyTemplateSectionInputRestrictionImpl(
-            id = source.id,
             label = source.label,
             required = source.required,
             restriction = when (source.type) {
@@ -48,7 +47,6 @@ class CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConve
         CreateSurveyTemplateSectionInputRestriction.Upload {}
 
     data class CreateSurveyTemplateSectionInputRestrictionImpl(
-        override val id: Int,
         override val label: String,
         override val required: Boolean,
         override val restriction: CreateSurveyTemplateSectionInputRestriction

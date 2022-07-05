@@ -13,7 +13,6 @@ class CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter(
 
     override fun convert(source: CreateSurveyTemplateSectionDto): CreateSurveyTemplateSection? {
         return CreateSurveyTemplateSectionImpl(
-            id = source.id,
             title = source.title,
             subtitle = source.subtitle,
             inputs = source.inputs.map {
@@ -25,7 +24,6 @@ class CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter(
     }
 
     private data class CreateSurveyTemplateSectionImpl(
-        override val id: Int,
         override val title: String,
         override val subtitle: String?,
         override val inputs: List<CreateSurveyTemplateSectionInput>

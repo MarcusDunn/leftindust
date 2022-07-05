@@ -21,10 +21,4 @@ class PatientMutation(
     ): PatientDto {
         TODO()
     }
-
-    suspend fun assignSurvey(patients: List<PatientDto.PatientDtoId>, survey: SurveyDto.SurveyDtoId): List<PatientDto> {
-        return updatePatientService
-            .assignForms(patients, survey)
-            .map { patientToPatientDtoConverter.convert(it) }
-    }
 }

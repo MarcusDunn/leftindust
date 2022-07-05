@@ -9,7 +9,7 @@ class CreateSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConvert
     override fun convert(source: CreateSurveyTemplateCalculationDto): CreateSurveyTemplateCalculation {
         return CreateSurveyTemplateCalculationImpl(
             label = source.label,
-            type = source.type,
+            type = source.inputType,
             showOnComplete = source.showOnComplete,
             calculation = source.calculation,
         )

@@ -40,8 +40,6 @@ class Patient(
     var contacts: MutableSet<Contact>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
     var doctors: MutableSet<DoctorPatientEntity>,
-    @OneToMany(mappedBy = "patient", orphanRemoval = true)
-    var patientFormEntities: MutableCollection<PatientSurveyEntity>,
 ) : AbstractJpaPersistable() {
     fun addEvent(event: Event) {
         val patientEvent = PatientEventEntity(this, event)

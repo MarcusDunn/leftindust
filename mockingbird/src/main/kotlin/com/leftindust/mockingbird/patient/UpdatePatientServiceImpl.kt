@@ -13,8 +13,4 @@ class UpdatePatientServiceImpl : UpdatePatientService {
     override suspend fun update(patientInput: UpdatePatientDto): Patient {
         TODO("Not yet implemented")
     }
-
-    override suspend fun assignForms(patients: List<PatientDto.PatientDtoId>, survey: SurveyDto.SurveyDtoId): List<Patient> {
-        TODO("Not yet implemented")
-    }
 }
