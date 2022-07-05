@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(
     private val createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter: FallibleConverter<CreateSurveyTemplateSectionDto, CreateSurveyTemplateSection>,
-    private val createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculation: InfallibleConverter<CreateSurveyTemplateCalculationDto, CreateSurveyTemplateCalculation>
+    private val createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter: InfallibleConverter<CreateSurveyTemplateCalculationDto, CreateSurveyTemplateCalculation>
 ) :
     FallibleConverter<CreateSurveyTemplateDto, CreateSurveyTemplate> {
     private val logger = KotlinLogging.logger { }
@@ -19,7 +19,7 @@ class CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(
             title = source.title,
             subtitle = source.subtitle,
             sections = source.sections.map { createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter.convert(it)  ?: return null.also { logger.trace { FailedConversionMessage(source) } } },
-            calculations = source.calculations.map { createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculation.convert(it) },
+            calculations = source.calculations.map { createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter.convert(it) },
         )
     }
 
