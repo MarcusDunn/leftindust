@@ -5,7 +5,6 @@ import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.Email
 import com.leftindust.mockingbird.event.Event
-import com.leftindust.mockingbird.survey.PatientSurveyEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.person.*
 import com.leftindust.mockingbird.phone.Phone

@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.survey.SurveyDto
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.stereotype.Controller
 

@@ -1,5 +1,7 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet author="marcus (generated)" id="1656393684355-1">
         <createTable tableName="patient_emails">
             <column name="patient_id" type="UUID">
@@ -160,46 +162,59 @@
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-16">
-        <addUniqueConstraint columnNames="emails_id" constraintName="uk_26c0d0w2ym4w79tkea6j0fqp9" tableName="patient_emails"/>
+        <addUniqueConstraint columnNames="emails_id" constraintName="uk_26c0d0w2ym4w79tkea6j0fqp9"
+                             tableName="patient_emails"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-17">
-        <addUniqueConstraint columnNames="contacts_id" constraintName="uk_2f3jhr1xiu45rpkwr6vig0i8n" tableName="patient_contacts"/>
+        <addUniqueConstraint columnNames="contacts_id" constraintName="uk_2f3jhr1xiu45rpkwr6vig0i8n"
+                             tableName="patient_contacts"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-18">
-        <addUniqueConstraint columnNames="phones_id" constraintName="uk_2m7tctxj82u57rq1kudc3j35q" tableName="doctor_phones"/>
+        <addUniqueConstraint columnNames="phones_id" constraintName="uk_2m7tctxj82u57rq1kudc3j35q"
+                             tableName="doctor_phones"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-19">
-        <addUniqueConstraint columnNames="name_info_id" constraintName="uk_86yxpbprph5888ac7ad5646x3" tableName="doctor"/>
+        <addUniqueConstraint columnNames="name_info_id" constraintName="uk_86yxpbprph5888ac7ad5646x3"
+                             tableName="doctor"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-20">
-        <addUniqueConstraint columnNames="addresses_id" constraintName="uk_9ndsh82vhmjlqakp0x7bnpbgm" tableName="doctor_addresses"/>
+        <addUniqueConstraint columnNames="addresses_id" constraintName="uk_9ndsh82vhmjlqakp0x7bnpbgm"
+                             tableName="doctor_addresses"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-21">
-        <addUniqueConstraint columnNames="emails_id" constraintName="uk_a042t6vbl47n09mkqy34xfb0l" tableName="doctor_emails"/>
+        <addUniqueConstraint columnNames="emails_id" constraintName="uk_a042t6vbl47n09mkqy34xfb0l"
+                             tableName="doctor_emails"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-22">
-        <addUniqueConstraint columnNames="survey_id" constraintName="uk_aeu04ukdmfpa6ab17e3uweuyl" tableName="patient_survey_entity"/>
+        <addUniqueConstraint columnNames="survey_id" constraintName="uk_aeu04ukdmfpa6ab17e3uweuyl"
+                             tableName="patient_survey_entity"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-23">
-        <addUniqueConstraint columnNames="phones_id" constraintName="uk_dduqasi07hatptd27y9k9ttn2" tableName="patient_phones"/>
+        <addUniqueConstraint columnNames="phones_id" constraintName="uk_dduqasi07hatptd27y9k9ttn2"
+                             tableName="patient_phones"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-24">
-        <addUniqueConstraint columnNames="email_id" constraintName="uk_iarmsp0o5pw64ns9nitrnpyc1" tableName="contact_email"/>
+        <addUniqueConstraint columnNames="email_id" constraintName="uk_iarmsp0o5pw64ns9nitrnpyc1"
+                             tableName="contact_email"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-25">
         <addUniqueConstraint columnNames="address_id" constraintName="uk_imva8qqw5em37r5hx6hdkgbmo" tableName="clinic"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-26">
-        <addUniqueConstraint columnNames="sections_id" constraintName="uk_jissqvn2e6t3r0o61nmc8iadb" tableName="survey_sections"/>
+        <addUniqueConstraint columnNames="sections_id" constraintName="uk_jissqvn2e6t3r0o61nmc8iadb"
+                             tableName="survey_sections"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-27">
-        <addUniqueConstraint columnNames="fields_id" constraintName="uk_n8ehddghb34autbqk7evig7u0" tableName="survey_section_fields"/>
+        <addUniqueConstraint columnNames="fields_id" constraintName="uk_n8ehddghb34autbqk7evig7u0"
+                             tableName="survey_section_fields"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-28">
-        <addUniqueConstraint columnNames="phone_id" constraintName="uk_s1cdk53r0kwqxrm18a705lsap" tableName="contact_phone"/>
+        <addUniqueConstraint columnNames="phone_id" constraintName="uk_s1cdk53r0kwqxrm18a705lsap"
+                             tableName="contact_phone"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-29">
-        <addUniqueConstraint columnNames="addresses_id" constraintName="uk_t17nugb8ef0anw2nfvh1o5t8o" tableName="patient_addresses"/>
+        <addUniqueConstraint columnNames="addresses_id" constraintName="uk_t17nugb8ef0anw2nfvh1o5t8o"
+                             tableName="patient_addresses"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-30">
         <addUniqueConstraint columnNames="event_id" constraintName="ukaa78b2vvqk0c58q12xkxq8thx" tableName="visit"/>
@@ -446,147 +461,288 @@
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-51">
-        <addPrimaryKey columnNames="doctor_id, clinic_id" constraintName="clinic_doctor_entity_pkey" tableName="clinic_doctor_entity"/>
+        <addPrimaryKey columnNames="doctor_id, clinic_id" constraintName="clinic_doctor_entity_pkey"
+                       tableName="clinic_doctor_entity"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-52">
-        <addPrimaryKey columnNames="patient_id, event_id" constraintName="patient_event_entity_pkey" tableName="patient_event_entity"/>
+        <addPrimaryKey columnNames="patient_id, event_id" constraintName="patient_event_entity_pkey"
+                       tableName="patient_event_entity"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-53">
-        <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="clinic" constraintName="fk15djxm3mj8bmp7mv7gdm6m1du" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="address" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="clinic"
+                                 constraintName="fk15djxm3mj8bmp7mv7gdm6m1du" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="address" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-54">
-        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_patient_entity" constraintName="fk18v7239gve00xmdop1yairtag" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_patient_entity"
+                                 constraintName="fk18v7239gve00xmdop1yairtag" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-55">
-        <addForeignKeyConstraint baseColumnNames="emails_id" baseTableName="doctor_emails" constraintName="fk2e9upbtevqfyt8q1bhgg64apk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="email" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="emails_id" baseTableName="doctor_emails"
+                                 constraintName="fk2e9upbtevqfyt8q1bhgg64apk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="email" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-56">
-        <addForeignKeyConstraint baseColumnNames="user_unique_id" baseTableName="patient" constraintName="fk2h7kl90cvyp0y27sop7go0xhk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="unique_id" referencedTableName="mediq_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_unique_id" baseTableName="patient"
+                                 constraintName="fk2h7kl90cvyp0y27sop7go0xhk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="unique_id" referencedTableName="mediq_user" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-57">
-        <addForeignKeyConstraint baseColumnNames="email_id" baseTableName="contact_email" constraintName="fk2wlgsyv59totqq1ghc75yvwmc" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="email" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="email_id" baseTableName="contact_email"
+                                 constraintName="fk2wlgsyv59totqq1ghc75yvwmc" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="email" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-58">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="contact" constraintName="fk2ygsb9t4baokpt9iqb5b9pdcc" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="contact"
+                                 constraintName="fk2ygsb9t4baokpt9iqb5b9pdcc" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-59">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="doctor_patient_entity" constraintName="fk36x0s1who3cshueydp1pyla4j" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="doctor_patient_entity"
+                                 constraintName="fk36x0s1who3cshueydp1pyla4j" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-60">
-        <addForeignKeyConstraint baseColumnNames="survey_field_entity_id" baseTableName="survey_field_entity_multi_select_possibilities" constraintName="fk4rkn7hblaanqejv83bq811a74" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="survey_field_entity" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="survey_field_entity_id"
+                                 baseTableName="survey_field_entity_multi_select_possibilities"
+                                 constraintName="fk4rkn7hblaanqejv83bq811a74" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_field_entity" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-61">
-        <addForeignKeyConstraint baseColumnNames="survey_id" baseTableName="survey_sections" constraintName="fk5fn0qrcv2dlayxmdhwvan1vlg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="survey" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="survey_id" baseTableName="survey_sections"
+                                 constraintName="fk5fn0qrcv2dlayxmdhwvan1vlg" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-62">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_contacts" constraintName="fk62hfbm0jp9wxco1ml37l2snl" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_contacts"
+                                 constraintName="fk62hfbm0jp9wxco1ml37l2snl" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-63">
-        <addForeignKeyConstraint baseColumnNames="name_info_id" baseTableName="patient" constraintName="fk7o051o7jeffmkglcq8ql2pusp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="name_info" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="name_info_id" baseTableName="patient"
+                                 constraintName="fk7o051o7jeffmkglcq8ql2pusp" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="name_info" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-64">
-        <addForeignKeyConstraint baseColumnNames="addresses_id" baseTableName="doctor_addresses" constraintName="fk7qwjv92nrhxmuk3e8xotjmy22" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="address" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="addresses_id" baseTableName="doctor_addresses"
+                                 constraintName="fk7qwjv92nrhxmuk3e8xotjmy22" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="address" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-65">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_event_entity" constraintName="fk7tht6a0qkgspidmdykpkg1klk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_event_entity"
+                                 constraintName="fk7tht6a0qkgspidmdykpkg1klk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-66">
-        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="doctor_event_entity" constraintName="fk7w5a9k3asbce89yf0tymhfme0" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="event" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="doctor_event_entity"
+                                 constraintName="fk7w5a9k3asbce89yf0tymhfme0" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="event" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-67">
-        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_addresses" constraintName="fk8g6cnyfr6xp6shupww7xy5nqt" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_addresses"
+                                 constraintName="fk8g6cnyfr6xp6shupww7xy5nqt" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-68">
-        <addForeignKeyConstraint baseColumnNames="contacts_id" baseTableName="patient_contacts" constraintName="fk987c6tue0bs67yh1xo3gbev4l" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contact" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="contacts_id" baseTableName="patient_contacts"
+                                 constraintName="fk987c6tue0bs67yh1xo3gbev4l" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="contact" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-69">
-        <addForeignKeyConstraint baseColumnNames="survey_section_id" baseTableName="survey_section_fields" constraintName="fk9rfmjv872a23vd9bcphpcc43g" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="survey_section" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="survey_section_id" baseTableName="survey_section_fields"
+                                 constraintName="fk9rfmjv872a23vd9bcphpcc43g" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_section" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-70">
-        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="patient_event_entity" constraintName="fkahisv2vpr7gjseupi05e932ng" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="event" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="patient_event_entity"
+                                 constraintName="fkahisv2vpr7gjseupi05e932ng" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="event" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-71">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_survey_entity" constraintName="fkasxig5ww4jxghlafveexvvo9e" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_survey_entity"
+                                 constraintName="fkasxig5ww4jxghlafveexvvo9e" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-72">
-        <addForeignKeyConstraint baseColumnNames="clinic_id" baseTableName="clinic_doctor_entity" constraintName="fkb7yj78vpbwconuhn97pqnf96e" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="clinic" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="clinic_id" baseTableName="clinic_doctor_entity"
+                                 constraintName="fkb7yj78vpbwconuhn97pqnf96e" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="clinic" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-73">
-        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="clinic_doctor_entity" constraintName="fkbc651mcukrn4y7ni86qw03tks" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="clinic_doctor_entity"
+                                 constraintName="fkbc651mcukrn4y7ni86qw03tks" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-74">
-        <addForeignKeyConstraint baseColumnNames="visit_id" baseTableName="visit_icds" constraintName="fke0592r7i7n8c62qxkefm1ayrw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="visit" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="visit_id" baseTableName="visit_icds"
+                                 constraintName="fke0592r7i7n8c62qxkefm1ayrw" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="visit" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-75">
-        <addForeignKeyConstraint baseColumnNames="name_info_id" baseTableName="doctor" constraintName="fkf6k6oe3l8fjge6x9x47djwo1p" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="name_info" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="name_info_id" baseTableName="doctor"
+                                 constraintName="fkf6k6oe3l8fjge6x9x47djwo1p" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="name_info" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-76">
-        <addForeignKeyConstraint baseColumnNames="name_info_id" baseTableName="contact" constraintName="fkfqe08txe7xx016vommoew1lmc" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="name_info" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="name_info_id" baseTableName="contact"
+                                 constraintName="fkfqe08txe7xx016vommoew1lmc" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="name_info" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-77">
-        <addForeignKeyConstraint baseColumnNames="emails_id" baseTableName="patient_emails" constraintName="fkgp89r2an9uly1oswgivnku63j" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="email" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="emails_id" baseTableName="patient_emails"
+                                 constraintName="fkgp89r2an9uly1oswgivnku63j" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="email" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-78">
-        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_event_entity" constraintName="fkhpbf6hkfbxgcknjxa7rjpj75e" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_event_entity"
+                                 constraintName="fkhpbf6hkfbxgcknjxa7rjpj75e" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-79">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="survey_response" constraintName="fki9e97k3nsiw027v0gmca5b93n" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="survey_response"
+                                 constraintName="fki9e97k3nsiw027v0gmca5b93n" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-80">
-        <addForeignKeyConstraint baseColumnNames="user_unique_id" baseTableName="doctor" constraintName="fkjaf1ma8gyilhcttweyw6951bx" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="unique_id" referencedTableName="mediq_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_unique_id" baseTableName="doctor"
+                                 constraintName="fkjaf1ma8gyilhcttweyw6951bx" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="unique_id" referencedTableName="mediq_user" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-81">
-        <addForeignKeyConstraint baseColumnNames="name_info_id" baseTableName="mediq_user" constraintName="fkjh63v3p54suwqkuk79ynjj507" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="name_info" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="name_info_id" baseTableName="mediq_user"
+                                 constraintName="fkjh63v3p54suwqkuk79ynjj507" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="name_info" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-82">
-        <addForeignKeyConstraint baseColumnNames="contact_id" baseTableName="contact_email" constraintName="fkjhb6oolv2p95xsci34vuoiq00" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contact" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="contact_id" baseTableName="contact_email"
+                                 constraintName="fkjhb6oolv2p95xsci34vuoiq00" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="contact" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-83">
-        <addForeignKeyConstraint baseColumnNames="contact_id" baseTableName="contact_phone" constraintName="fkjlssyu3cvwtmtimsa8vx9nh5" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contact" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="contact_id" baseTableName="contact_phone"
+                                 constraintName="fkjlssyu3cvwtmtimsa8vx9nh5" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="contact" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-84">
-        <addForeignKeyConstraint baseColumnNames="addresses_id" baseTableName="patient_addresses" constraintName="fkjv6bes562cestniy5vlrgafj5" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="address" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="addresses_id" baseTableName="patient_addresses"
+                                 constraintName="fkjv6bes562cestniy5vlrgafj5" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="address" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-85">
-        <addForeignKeyConstraint baseColumnNames="survey_id" baseTableName="patient_survey_entity" constraintName="fkjve69gu0xc1uobqueu43rh0w9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="survey" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="survey_id" baseTableName="patient_survey_entity"
+                                 constraintName="fkjve69gu0xc1uobqueu43rh0w9" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-86">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_addresses" constraintName="fkjwtcw03e0n2uo8jnes9ve3rco" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_addresses"
+                                 constraintName="fkjwtcw03e0n2uo8jnes9ve3rco" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-87">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_emails" constraintName="fklxdruj5i3nxrwydpj750exk4x" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_emails"
+                                 constraintName="fklxdruj5i3nxrwydpj750exk4x" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-88">
-        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="mediq_user" constraintName="fknjj016wpsoo9mxhdj8qs418ch" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="mediq_group" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="mediq_user"
+                                 constraintName="fknjj016wpsoo9mxhdj8qs418ch" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="mediq_group" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-89">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="mediq_record" constraintName="fkoegm7gi1uldmqj394e8jac5wn" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="mediq_record"
+                                 constraintName="fkoegm7gi1uldmqj394e8jac5wn" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-90">
-        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="visit" constraintName="fkom1f1n6vcem0rnyhg8bfw1h8s" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="event" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="visit"
+                                 constraintName="fkom1f1n6vcem0rnyhg8bfw1h8s" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="event" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-91">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_phones" constraintName="fkp7tduairw51evt15f71fo6on6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_phones"
+                                 constraintName="fkp7tduairw51evt15f71fo6on6" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-92">
-        <addForeignKeyConstraint baseColumnNames="phones_id" baseTableName="patient_phones" constraintName="fkqk7yerv2b69ouy96go8ekf1we" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="phone" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="phones_id" baseTableName="patient_phones"
+                                 constraintName="fkqk7yerv2b69ouy96go8ekf1we" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="phone" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-93">
-        <addForeignKeyConstraint baseColumnNames="phones_id" baseTableName="doctor_phones" constraintName="fks0l29345wohswxx8iy61huilc" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="phone" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="phones_id" baseTableName="doctor_phones"
+                                 constraintName="fks0l29345wohswxx8iy61huilc" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="phone" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-94">
-        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_emails" constraintName="fks5thvuujrajjv2qvtorbmdn3o" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_emails"
+                                 constraintName="fks5thvuujrajjv2qvtorbmdn3o" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-95">
-        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_phones" constraintName="fksdupbwqgkealyqg29ogt0aql0" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_phones"
+                                 constraintName="fksdupbwqgkealyqg29ogt0aql0" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-96">
-        <addForeignKeyConstraint baseColumnNames="sections_id" baseTableName="survey_sections" constraintName="fksohi6ctkf83kytdtf9pxwdptv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="survey_section" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="sections_id" baseTableName="survey_sections"
+                                 constraintName="fksohi6ctkf83kytdtf9pxwdptv" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_section" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-97">
-        <addForeignKeyConstraint baseColumnNames="phone_id" baseTableName="contact_phone" constraintName="fkx53scd5icnx21bo4djd63ilx" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="phone" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="phone_id" baseTableName="contact_phone"
+                                 constraintName="fkx53scd5icnx21bo4djd63ilx" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="phone" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-98">
-        <addForeignKeyConstraint baseColumnNames="fields_id" baseTableName="survey_section_fields" constraintName="fkyq26eu6naaqf41hao0luctsm" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="survey_field_entity" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="fields_id" baseTableName="survey_section_fields"
+                                 constraintName="fkyq26eu6naaqf41hao0luctsm" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_field_entity" validate="true"/>
     </changeSet>
 </databaseChangeLog>

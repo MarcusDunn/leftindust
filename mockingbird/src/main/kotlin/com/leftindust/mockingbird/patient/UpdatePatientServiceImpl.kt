@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.survey.SurveyDto
 import org.springframework.stereotype.Service
 
 

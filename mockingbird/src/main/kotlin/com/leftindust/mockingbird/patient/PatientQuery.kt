@@ -8,7 +8,6 @@ import com.leftindust.mockingbird.email.EmailDto
 import com.leftindust.mockingbird.event.EventDto
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.phone.PhoneDto
-import com.leftindust.mockingbird.survey.SurveyDto
 import com.leftindust.mockingbird.user.MediqUserDto
 import com.leftindust.mockingbird.visit.VisitDto
 import mu.KotlinLogging
