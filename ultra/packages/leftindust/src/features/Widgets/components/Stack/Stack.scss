@@ -7,7 +7,7 @@ $transform: .35s;
     transition: transform $transform ease-in-out;
 
     .widget-stack-inner {
-      .widget-stack-header{
+      .widget-stack-header {
         display: flex;
 
         h4 {
@@ -20,14 +20,23 @@ $transform: .35s;
             margin-right: 5px;
           }
         }
-
       }
-      .widget-stack-header-button{
+      .widget-stack-header-button {
         display: flex;
-        width: 150px;
+        width: 150px; 
       }
-      .widget-stack-header-buttons{
+      .widget-stack-header-buttons {
         gap: 10px;
+      }
+    }
+  }
+
+  .dark {
+    .widget-stack {
+      background: rgb(33, 33, 33);
+      
+      &:not(.elevation-4) {
+        background: rgb(36, 36, 36) !important;
       }
     }
   }

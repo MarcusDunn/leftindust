@@ -25,7 +25,7 @@
     
   $: if ($request.data?.doctors[0]) doctors = $request.data?.doctors;
 </script>
-  
+
 <Stack
   title={$_('generics.doctors')}
   icon={configuration.icon}

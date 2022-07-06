@@ -5,6 +5,7 @@
   import './Stack.scss';
 
   import { Block, Icon} from 'framework7-svelte';
+  import Card from '../Card/Card.svelte';
 
   export let title: string;
   export let icon: Framework7Icon | undefined = undefined;
@@ -41,7 +42,11 @@
         </div>
       </div>  
       <div class="widget-stack-content">
-        <slot />
+        <!-- <slot /> replace with Cards component (4 per stack) -->
+        <Card title="Doctors"></Card>
+        <Card title="Doctors"></Card>
+        <Card title="Doctors"></Card>
+        <Card title="Doctors"></Card>
       </div>
     </div>
   </Block>
