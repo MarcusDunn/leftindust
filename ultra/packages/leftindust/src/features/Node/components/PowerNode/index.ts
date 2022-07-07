@@ -1,7 +1,7 @@
 import type { NodeBlueprint, SocketBlueprint } from 'function-junctions/types';
 import PowerNode from './PowerNode.svelte';
 
-import numberSocket from '@/features/Socket/components/NumberSocket';
+import numberSocket, { type NumberSocket } from '@/features/Socket/components/NumberSocket';
 
 const defaultPowerSocket: NumberSocket = {
   ...numberSocket,

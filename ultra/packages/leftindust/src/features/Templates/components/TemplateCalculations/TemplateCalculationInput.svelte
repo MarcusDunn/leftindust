@@ -3,7 +3,7 @@
   import Input from '@/features/Input/Input.svelte';
   import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
-  import { Button, Col, ListItem, Row, Toggle } from 'framework7-svelte';
+  import { Button, ListItem, Toggle } from 'framework7-svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
   import { TemplateNodesModalOpen } from '../../store';
