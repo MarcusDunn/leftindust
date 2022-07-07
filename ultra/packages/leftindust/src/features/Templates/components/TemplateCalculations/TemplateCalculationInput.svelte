@@ -13,6 +13,7 @@
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
   import type { MenuNodes } from '@/features/Nodes';
+  import TrigNode from '@/features/Node/components/TrigNode';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -37,6 +38,7 @@
     input: TemplateInputNode,
     output: TemplateOutputNode,
     Math: MathNode,
+    Trigonometry: TrigNode,
   };
 
   const menuNodes: MenuNodes = [{
@@ -50,6 +52,10 @@
       title: 'Math',
       description: 'Addition, subtraction, multiplication, and division',
       blueprint: MathNode,
+    }, {
+      title: 'Trigonometry',
+      description: 'Sine, cosine, and tangent',
+      blueprint: TrigNode,
     }],
   }];
 
