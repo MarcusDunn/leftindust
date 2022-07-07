@@ -20,7 +20,7 @@ internal class HealthCheckQueryControllerUnitTest {
 }
 
 @GraphQlTest(controllers = [HealthCheckQueryController::class])
-internal class HealthCheckQueryControllerWebTestTest(
+internal class HealthCheckQueryControllerWebTest(
     @Autowired private val graphqlTester: GraphQlTester,
 ) {
     @MockkBean

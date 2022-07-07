@@ -5,7 +5,6 @@ import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.Email
 import com.leftindust.mockingbird.event.Event
-import com.leftindust.mockingbird.survey.PatientSurveyEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.person.*
 import com.leftindust.mockingbird.phone.Phone
@@ -41,8 +40,6 @@ class Patient(
     var contacts: MutableSet<Contact>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
     var doctors: MutableSet<DoctorPatientEntity>,
-    @OneToMany(mappedBy = "patient", orphanRemoval = true)
-    var patientFormEntities: MutableCollection<PatientSurveyEntity>,
 ) : AbstractJpaPersistable() {
     fun addEvent(event: Event) {
         val patientEvent = PatientEventEntity(this, event)
