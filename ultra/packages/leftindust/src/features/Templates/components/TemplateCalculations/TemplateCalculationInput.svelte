@@ -12,6 +12,7 @@
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
+  import LogNode from '@/features/Node/components/LogNode';
   import type { MenuNodes } from '@/features/Nodes';
 
   export let index: number;
@@ -37,6 +38,7 @@
     input: TemplateInputNode,
     output: TemplateOutputNode,
     Math: MathNode,
+    Logarithm: LogNode,
   };
 
   const menuNodes: MenuNodes = [{
@@ -50,6 +52,10 @@
       title: 'Math',
       description: 'Addition, subtraction, multiplication, and division',
       blueprint: MathNode,
+    }, {
+      title: 'Logarithm',
+      description: 'Logarithms',
+      blueprint: LogNode,
     }],
   }];
 
