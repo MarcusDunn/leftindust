@@ -13,4 +13,3 @@ class SurveyTemplateSectionEntity(
     @OneToMany(cascade = [CascadeType.ALL])
     val inputs: MutableSet<CreateSurveyTemplateSectionInputEntity>
 ): AbstractJpaPersistable()
-

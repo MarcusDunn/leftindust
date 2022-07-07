@@ -2,7 +2,6 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
-
     <changeSet author="marcus (generated)" id="1656393684355-1">
         <createTable tableName="patient_emails">
             <column name="patient_id" type="UUID">
@@ -21,10 +20,6 @@
             <column name="contacts_id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="patient_contacts_pkey"/>
             </column>
-            </column>
-            <column name="contacts_id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="patient_contacts_pkey"/>
-            </column>
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-3">
@@ -38,12 +33,24 @@
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-4">
+        <createTable tableName="survey_template_entity_calculations">
+            <column name="survey_template_entity_id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="survey_template_entity_calculations_pkey"/>
+            </column>
+            <column name="calculations_id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="survey_template_entity_calculations_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-5">
         <createTable tableName="doctor">
             <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="doctor_pkey"/>
             </column>
             <column name="date_of_birth" type="date"/>
-            <column name="thumbnail" type="BLOB"/>
+            <column name="thumbnail" type="blob"/>
             <column name="title" type="VARCHAR(255)"/>
             <column name="name_info_id" type="UUID">
                 <constraints nullable="false"/>
@@ -51,7 +58,7 @@
             <column name="user_unique_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-5">
+    <changeSet author="marcus (generated)" id="1656393684355-6">
         <createTable tableName="doctor_addresses">
             <column name="doctor_id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="doctor_addresses_pkey"/>
@@ -61,23 +68,13 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-6">
+    <changeSet author="marcus (generated)" id="1656393684355-7">
         <createTable tableName="doctor_emails">
             <column name="doctor_id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="doctor_emails_pkey"/>
             </column>
             <column name="emails_id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="doctor_emails_pkey"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-7">
-        <createTable tableName="patient_survey_entity">
-            <column name="survey_id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="patient_survey_entity_pkey"/>
-            </column>
-            <column name="patient_id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="patient_survey_entity_pkey"/>
             </column>
         </createTable>
     </changeSet>
@@ -92,6 +89,28 @@
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-9">
+        <createTable tableName="survey_template_section_entity_inputs">
+            <column name="survey_template_section_entity_id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="survey_template_section_entity_inputs_pkey"/>
+            </column>
+            <column name="inputs_id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="survey_template_section_entity_inputs_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-10">
+        <createTable tableName="survey_template_entity_sections">
+            <column name="survey_template_entity_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_template_entity_sections_pkey"/>
+            </column>
+            <column name="sections_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_template_entity_sections_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-11">
         <createTable tableName="contact_email">
             <column name="contact_id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="contact_email_pkey"/>
@@ -101,7 +120,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-10">
+    <changeSet author="marcus (generated)" id="1656393684355-12">
         <createTable tableName="clinic">
             <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="clinic_pkey"/>
@@ -111,26 +130,6 @@
             </column>
             <column name="address_id" type="UUID">
                 <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-11">
-        <createTable tableName="survey_sections">
-            <column name="survey_id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_sections_pkey"/>
-            </column>
-            <column name="sections_id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_sections_pkey"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-12">
-        <createTable tableName="survey_section_fields">
-            <column name="survey_section_id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_section_fields_pkey"/>
-            </column>
-            <column name="fields_id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_section_fields_pkey"/>
             </column>
         </createTable>
     </changeSet>
@@ -179,39 +178,39 @@
                              tableName="doctor_phones"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-19">
+        <addUniqueConstraint columnNames="calculations_id" constraintName="uk_50bmvug1jkcgwvbe418nfm8m3"
+                             tableName="survey_template_entity_calculations"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-20">
         <addUniqueConstraint columnNames="name_info_id" constraintName="uk_86yxpbprph5888ac7ad5646x3"
                              tableName="doctor"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-20">
+    <changeSet author="marcus (generated)" id="1656393684355-21">
         <addUniqueConstraint columnNames="addresses_id" constraintName="uk_9ndsh82vhmjlqakp0x7bnpbgm"
                              tableName="doctor_addresses"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-21">
+    <changeSet author="marcus (generated)" id="1656393684355-22">
         <addUniqueConstraint columnNames="emails_id" constraintName="uk_a042t6vbl47n09mkqy34xfb0l"
                              tableName="doctor_emails"/>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-22">
-        <addUniqueConstraint columnNames="survey_id" constraintName="uk_aeu04ukdmfpa6ab17e3uweuyl"
-                             tableName="patient_survey_entity"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-23">
         <addUniqueConstraint columnNames="phones_id" constraintName="uk_dduqasi07hatptd27y9k9ttn2"
                              tableName="patient_phones"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-24">
+        <addUniqueConstraint columnNames="inputs_id" constraintName="uk_emkkw89g9ca8s9uhn9evgip5a"
+                             tableName="survey_template_section_entity_inputs"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-25">
+        <addUniqueConstraint columnNames="sections_id" constraintName="uk_eqk05yy1qgwlpvswupfqekgyy"
+                             tableName="survey_template_entity_sections"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-26">
         <addUniqueConstraint columnNames="email_id" constraintName="uk_iarmsp0o5pw64ns9nitrnpyc1"
                              tableName="contact_email"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-25">
-        <addUniqueConstraint columnNames="address_id" constraintName="uk_imva8qqw5em37r5hx6hdkgbmo" tableName="clinic"/>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-26">
-        <addUniqueConstraint columnNames="sections_id" constraintName="uk_jissqvn2e6t3r0o61nmc8iadb"
-                             tableName="survey_sections"/>
-    </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-27">
-        <addUniqueConstraint columnNames="fields_id" constraintName="uk_n8ehddghb34autbqk7evig7u0"
-                             tableName="survey_section_fields"/>
+        <addUniqueConstraint columnNames="address_id" constraintName="uk_imva8qqw5em37r5hx6hdkgbmo" tableName="clinic"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-28">
         <addUniqueConstraint columnNames="phone_id" constraintName="uk_s1cdk53r0kwqxrm18a705lsap"
@@ -266,6 +265,31 @@
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-34">
+        <createTable tableName="create_survey_template_section_input_entity">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="create_survey_template_section_input_entity_pkey"/>
+            </column>
+            <column name="category" type="INTEGER"/>
+            <column name="label" type="VARCHAR(255)"/>
+            <column name="placeholder" type="VARCHAR(255)"/>
+            <column name="required" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="INTEGER"/>
+            <column name="upload_accept" type="INTEGER"/>
+            <column name="upload_multiple" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-35">
+        <createTable tableName="create_survey_template_section_input_entity_options">
+            <column name="create_survey_template_section_input_entity_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="options" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-36">
         <createTable tableName="doctor_event_entity">
             <column name="event_id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="doctor_event_entity_pkey"/>
@@ -275,7 +299,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-35">
+    <changeSet author="marcus (generated)" id="1656393684355-37">
         <createTable tableName="doctor_patient_entity">
             <column name="patient_id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="doctor_patient_entity_pkey"/>
@@ -285,7 +309,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-36">
+    <changeSet author="marcus (generated)" id="1656393684355-38">
         <createTable tableName="email">
             <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="email_pkey"/>
@@ -298,7 +322,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-37">
+    <changeSet author="marcus (generated)" id="1656393684355-39">
         <createTable tableName="event">
             <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="event_pkey"/>
@@ -306,7 +330,7 @@
             <column name="ical" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-38">
+    <changeSet author="marcus (generated)" id="1656393684355-40">
         <createTable tableName="mediq_group">
             <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="mediq_group_pkey"/>
@@ -316,24 +340,20 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-39">
+    <changeSet author="marcus (generated)" id="1656393684355-41">
         <createTable tableName="mediq_record">
             <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="mediq_record_pkey"/>
             </column>
-            <column name="creation_date" type="TIMESTAMP WITHOUT TIME ZONE">
-                <constraints nullable="false"/>
-            </column>
+            <column name="creation_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="json_blob" type="VARCHAR(10000)">
                 <constraints nullable="false"/>
             </column>
-            <column name="type" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="type" type="VARCHAR(255)"/>
             <column name="patient_id" type="UUID"/>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-40">
+    <changeSet author="marcus (generated)" id="1656393684355-42">
         <createTable tableName="mediq_user">
             <column name="unique_id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="mediq_user_pkey"/>
@@ -342,7 +362,7 @@
             <column name="name_info_id" type="UUID"/>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-41">
+    <changeSet author="marcus (generated)" id="1656393684355-43">
         <createTable tableName="name_info">
             <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="name_info_pkey"/>
@@ -356,7 +376,7 @@
             <column name="middle_name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-42">
+    <changeSet author="marcus (generated)" id="1656393684355-44">
         <createTable tableName="patient">
             <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="patient_pkey"/>
@@ -372,12 +392,12 @@
             <column name="sex" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="thumbnail" type="BLOB"/>
+            <column name="thumbnail" type="blob"/>
             <column name="name_info_id" type="UUID"/>
             <column name="user_unique_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-43">
+    <changeSet author="marcus (generated)" id="1656393684355-45">
         <createTable tableName="patient_event_entity">
             <column name="event_id" type="UUID">
                 <constraints nullable="false"/>
@@ -387,7 +407,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-44">
+    <changeSet author="marcus (generated)" id="1656393684355-46">
         <createTable tableName="phone">
             <column name="id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="phone_pkey"/>
@@ -400,62 +420,42 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-45">
-        <createTable tableName="survey">
-            <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_pkey"/>
-            </column>
-            <column name="name" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-46">
-        <createTable tableName="survey_field_entity">
-            <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_field_entity_pkey"/>
-            </column>
-            <column name="date_lower_bound" type="date"/>
-            <column name="date_upper_bound" type="date"/>
-            <column name="float_lower_bound" type="FLOAT4"/>
-            <column name="float_upper_bound" type="FLOAT4"/>
-            <column name="int_lower_bound" type="INTEGER"/>
-            <column name="int_upper_bound" type="INTEGER"/>
-            <column name="json_meta_data" type="VARCHAR(255)"/>
-            <column name="number" type="INTEGER">
-                <constraints nullable="false"/>
-            </column>
-            <column name="survey_field_type" type="VARCHAR(255)"/>
-            <column name="text_regex" type="VARCHAR(255)"/>
-            <column name="title" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-47">
-        <createTable tableName="survey_field_entity_multi_select_possibilities">
-            <column name="survey_field_entity_id" type="UUID">
+        <createTable tableName="survey_template_calculation_entity">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="survey_template_calculation_entity_pkey"/>
+            </column>
+            <column name="calculation" type="VARCHAR(255)"/>
+            <column name="index" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="multi_select_possibilities" type="VARCHAR(255)"/>
+            <column name="input_type" type="INTEGER"/>
+            <column name="label" type="VARCHAR(255)"/>
+            <column name="show_on_complete" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-48">
-        <createTable tableName="survey_response">
+        <createTable tableName="survey_template_entity">
             <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_response_pkey"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_template_entity_pkey"/>
             </column>
-            <column name="data_json" type="VARCHAR(50000)"/>
-            <column name="patient_id" type="UUID"/>
+            <column name="subtitle" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-49">
-        <createTable tableName="survey_section">
+        <createTable tableName="survey_template_section_entity">
             <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_section_pkey"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_template_section_entity_pkey"/>
             </column>
-            <column name="description" type="VARCHAR(50000)"/>
-            <column name="name" type="VARCHAR(255)"/>
-            <column name="number" type="INTEGER">
+            <column name="index" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="name" type="VARCHAR(255)"/>
+            <column name="subtitle" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-50">
@@ -463,9 +463,7 @@
             <column name="visit_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
-            <column name="survey_field_type" type="VARCHAR(255)"/>
-            <column name="text_regex" type="VARCHAR(255)"/>
-            <column name="title" type="VARCHAR(255)"/>
+            <column name="icds" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-51">
@@ -513,23 +511,25 @@
                                  referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-59">
+        <addForeignKeyConstraint baseColumnNames="create_survey_template_section_input_entity_id"
+                                 baseTableName="create_survey_template_section_input_entity_options"
+                                 constraintName="fk33j86o8ugqdkv7fkg7jg6fxng" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="create_survey_template_section_input_entity" validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-60">
         <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="doctor_patient_entity"
                                  constraintName="fk36x0s1who3cshueydp1pyla4j" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-60">
-        <addForeignKeyConstraint baseColumnNames="survey_field_entity_id"
-                                 baseTableName="survey_field_entity_multi_select_possibilities"
-                                 constraintName="fk4rkn7hblaanqejv83bq811a74" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="survey_field_entity" validate="true"/>
-    </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-61">
-        <addForeignKeyConstraint baseColumnNames="survey_id" baseTableName="survey_sections"
-                                 constraintName="fk5fn0qrcv2dlayxmdhwvan1vlg" deferrable="false"
+        <addForeignKeyConstraint baseColumnNames="inputs_id" baseTableName="survey_template_section_entity_inputs"
+                                 constraintName="fk3bxh7unowe21dhvrpdx28xmgd" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="survey" validate="true"/>
+                                 referencedColumnNames="id"
+                                 referencedTableName="create_survey_template_section_input_entity" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-62">
         <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_contacts"
@@ -538,58 +538,61 @@
                                  referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-63">
+        <addForeignKeyConstraint baseColumnNames="calculations_id" baseTableName="survey_template_entity_calculations"
+                                 constraintName="fk6iwms82oort7ob64rdvvdcmc0" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_template_calculation_entity"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-64">
+        <addForeignKeyConstraint baseColumnNames="survey_template_section_entity_id"
+                                 baseTableName="survey_template_section_entity_inputs"
+                                 constraintName="fk6k08jybvxadym84budekx36iu" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_template_section_entity"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-65">
         <addForeignKeyConstraint baseColumnNames="name_info_id" baseTableName="patient"
                                  constraintName="fk7o051o7jeffmkglcq8ql2pusp" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="name_info" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-64">
+    <changeSet author="marcus (generated)" id="1656393684355-66">
         <addForeignKeyConstraint baseColumnNames="addresses_id" baseTableName="doctor_addresses"
                                  constraintName="fk7qwjv92nrhxmuk3e8xotjmy22" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="address" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-65">
+    <changeSet author="marcus (generated)" id="1656393684355-67">
         <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_event_entity"
                                  constraintName="fk7tht6a0qkgspidmdykpkg1klk" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-66">
+    <changeSet author="marcus (generated)" id="1656393684355-68">
         <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="doctor_event_entity"
                                  constraintName="fk7w5a9k3asbce89yf0tymhfme0" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="event" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-67">
+    <changeSet author="marcus (generated)" id="1656393684355-69">
         <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="doctor_addresses"
                                  constraintName="fk8g6cnyfr6xp6shupww7xy5nqt" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-68">
+    <changeSet author="marcus (generated)" id="1656393684355-70">
         <addForeignKeyConstraint baseColumnNames="contacts_id" baseTableName="patient_contacts"
                                  constraintName="fk987c6tue0bs67yh1xo3gbev4l" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="contact" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-69">
-        <addForeignKeyConstraint baseColumnNames="survey_section_id" baseTableName="survey_section_fields"
-                                 constraintName="fk9rfmjv872a23vd9bcphpcc43g" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="survey_section" validate="true"/>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-70">
+    <changeSet author="marcus (generated)" id="1656393684355-71">
         <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="patient_event_entity"
                                  constraintName="fkahisv2vpr7gjseupi05e932ng" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="event" validate="true"/>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-71">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_survey_entity"
-                                 constraintName="fkasxig5ww4jxghlafveexvvo9e" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-72">
         <addForeignKeyConstraint baseColumnNames="clinic_id" baseTableName="clinic_doctor_entity"
@@ -634,88 +637,92 @@
                                  referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-79">
-        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="survey_response"
-                                 constraintName="fki9e97k3nsiw027v0gmca5b93n" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="patient" validate="true"/>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-80">
         <addForeignKeyConstraint baseColumnNames="user_unique_id" baseTableName="doctor"
                                  constraintName="fkjaf1ma8gyilhcttweyw6951bx" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="unique_id" referencedTableName="mediq_user" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-81">
+    <changeSet author="marcus (generated)" id="1656393684355-80">
         <addForeignKeyConstraint baseColumnNames="name_info_id" baseTableName="mediq_user"
                                  constraintName="fkjh63v3p54suwqkuk79ynjj507" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="name_info" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-82">
+    <changeSet author="marcus (generated)" id="1656393684355-81">
         <addForeignKeyConstraint baseColumnNames="contact_id" baseTableName="contact_email"
                                  constraintName="fkjhb6oolv2p95xsci34vuoiq00" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="contact" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-83">
+    <changeSet author="marcus (generated)" id="1656393684355-82">
         <addForeignKeyConstraint baseColumnNames="contact_id" baseTableName="contact_phone"
                                  constraintName="fkjlssyu3cvwtmtimsa8vx9nh5" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="contact" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-84">
+    <changeSet author="marcus (generated)" id="1656393684355-83">
         <addForeignKeyConstraint baseColumnNames="addresses_id" baseTableName="patient_addresses"
                                  constraintName="fkjv6bes562cestniy5vlrgafj5" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="address" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-85">
-        <addForeignKeyConstraint baseColumnNames="survey_id" baseTableName="patient_survey_entity"
-                                 constraintName="fkjve69gu0xc1uobqueu43rh0w9" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="survey" validate="true"/>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-86">
+    <changeSet author="marcus (generated)" id="1656393684355-84">
         <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_addresses"
                                  constraintName="fkjwtcw03e0n2uo8jnes9ve3rco" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-87">
+    <changeSet author="marcus (generated)" id="1656393684355-85">
         <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_emails"
                                  constraintName="fklxdruj5i3nxrwydpj750exk4x" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-88">
+    <changeSet author="marcus (generated)" id="1656393684355-86">
         <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="mediq_user"
                                  constraintName="fknjj016wpsoo9mxhdj8qs418ch" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="mediq_group" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-89">
+    <changeSet author="marcus (generated)" id="1656393684355-87">
         <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="mediq_record"
                                  constraintName="fkoegm7gi1uldmqj394e8jac5wn" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-90">
+    <changeSet author="marcus (generated)" id="1656393684355-88">
         <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="visit"
                                  constraintName="fkom1f1n6vcem0rnyhg8bfw1h8s" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="event" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-91">
+    <changeSet author="marcus (generated)" id="1656393684355-89">
         <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_phones"
                                  constraintName="fkp7tduairw51evt15f71fo6on6" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="patient" validate="true"/>
     </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-92">
+    <changeSet author="marcus (generated)" id="1656393684355-90">
+        <addForeignKeyConstraint baseColumnNames="survey_template_entity_id"
+                                 baseTableName="survey_template_entity_calculations"
+                                 constraintName="fkq7yeusuy5jk67sru8p12wl36x" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_template_entity"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-91">
         <addForeignKeyConstraint baseColumnNames="phones_id" baseTableName="patient_phones"
                                  constraintName="fkqk7yerv2b69ouy96go8ekf1we" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="phone" validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1656393684355-92">
+        <addForeignKeyConstraint baseColumnNames="survey_template_entity_id"
+                                 baseTableName="survey_template_entity_sections"
+                                 constraintName="fkrvkltdsxbtnv8olbjdxmxcd0m" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_template_entity"
+                                 validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-93">
         <addForeignKeyConstraint baseColumnNames="phones_id" baseTableName="doctor_phones"
@@ -736,21 +743,16 @@
                                  referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-96">
-        <addForeignKeyConstraint baseColumnNames="sections_id" baseTableName="survey_sections"
-                                 constraintName="fksohi6ctkf83kytdtf9pxwdptv" deferrable="false"
+        <addForeignKeyConstraint baseColumnNames="sections_id" baseTableName="survey_template_entity_sections"
+                                 constraintName="fksyeh14qo8wocgdgsmckn89hm7" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="survey_section" validate="true"/>
+                                 referencedColumnNames="id" referencedTableName="survey_template_section_entity"
+                                 validate="true"/>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-97">
         <addForeignKeyConstraint baseColumnNames="phone_id" baseTableName="contact_phone"
                                  constraintName="fkx53scd5icnx21bo4djd63ilx" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="phone" validate="true"/>
-    </changeSet>
-    <changeSet author="marcus (generated)" id="1656393684355-98">
-        <addForeignKeyConstraint baseColumnNames="fields_id" baseTableName="survey_section_fields"
-                                 constraintName="fkyq26eu6naaqf41hao0luctsm" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="survey_field_entity" validate="true"/>
     </changeSet>
 </databaseChangeLog>
