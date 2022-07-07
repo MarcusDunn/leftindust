@@ -24,8 +24,6 @@
 
   let inverse = false;
 
-  $: console.log(inverse);
-
   const getValue = () => {
     const { type } = store;
     
