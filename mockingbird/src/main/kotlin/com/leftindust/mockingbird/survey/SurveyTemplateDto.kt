@@ -3,5 +3,7 @@ package com.leftindust.mockingbird.survey
 import java.util.UUID
 
 data class SurveyTemplateDto(
-    val id: UUID
+    val id: UUID,
+    val title: String,
+    val subtitle: String?,
 )
