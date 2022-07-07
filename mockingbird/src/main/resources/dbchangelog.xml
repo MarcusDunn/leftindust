@@ -2,6 +2,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
     <changeSet author="marcus (generated)" id="1656393684355-1">
         <createTable tableName="patient_emails">
             <column name="patient_id" type="UUID">
@@ -16,6 +17,10 @@
         <createTable tableName="patient_contacts">
             <column name="patient_id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="patient_contacts_pkey"/>
+            </column>
+            <column name="contacts_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="patient_contacts_pkey"/>
+            </column>
             </column>
             <column name="contacts_id" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="patient_contacts_pkey"/>
@@ -450,6 +455,7 @@
             <column name="number" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
+            <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-50">
@@ -457,7 +463,9 @@
             <column name="visit_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
-            <column name="icds" type="VARCHAR(255)"/>
+            <column name="survey_field_type" type="VARCHAR(255)"/>
+            <column name="text_regex" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="marcus (generated)" id="1656393684355-51">

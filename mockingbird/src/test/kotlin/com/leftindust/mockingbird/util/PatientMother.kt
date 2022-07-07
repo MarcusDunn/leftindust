@@ -1,6 +1,11 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.patient.Patient
+import com.leftindust.mockingbird.contact.Contact
+import com.leftindust.mockingbird.doctor.Doctor
+import com.leftindust.mockingbird.patient.Patient
+import com.leftindust.mockingbird.patient.Patient_.ethnicity
+import com.leftindust.mockingbird.patient.Patient_.insuranceNumber
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.person.Sex
 import java.time.LocalDate
