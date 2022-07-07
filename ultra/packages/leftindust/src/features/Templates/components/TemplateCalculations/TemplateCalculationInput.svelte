@@ -12,6 +12,7 @@
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
+  import PowerNode from '@/features/Node/components/PowerNode';
   import type { MenuNodes } from '@/features/Nodes';
 
   export let index: number;
@@ -37,6 +38,7 @@
     input: TemplateInputNode,
     output: TemplateOutputNode,
     Math: MathNode,
+    Power: PowerNode
   };
 
   const menuNodes: MenuNodes = [{
@@ -50,6 +52,10 @@
       title: 'Math',
       description: 'Addition, subtraction, multiplication, and division',
       blueprint: MathNode,
+    }, {
+      title: 'Power',
+      description: 'Powers and roots',
+      blueprint: PowerNode,
     }],
   }];
 
