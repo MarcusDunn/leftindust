@@ -51,9 +51,9 @@
     bind:value={store.type}
   >
     <i class="icon demo-list-icon" slot="media" />
-    <option value="sin">Sine</option>
-    <option value="cos">Cosine</option>
-    <option value="tan">Tangent</option>
+    <option value="sin">Sine{inverse ? '-1' : ''}</option>
+    <option value="cos">Cosine{inverse ? '-1' : ''}</option>
+    <option value="tan">Tangent{inverse ? '-1' : ''}</option>
   </ListInput>
 </List>
 <div class="display-flex">
