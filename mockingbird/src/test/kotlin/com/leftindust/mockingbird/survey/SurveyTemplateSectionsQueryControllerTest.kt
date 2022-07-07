@@ -1,22 +1,19 @@
 package com.leftindust.mockingbird.survey
 
+import com.leftindust.mockingbird.util.SurveyTemplateMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.test.context.ActiveProfiles
 import java.util.UUID
 
-internal class SurveyTemplateMutationControllerUnitTest {
-
-}
-
-@GraphQlTest(controllers = [SurveyTemplateMutationController::class])
-internal class SurveyTemplateMutationControllerWebTest(
+@GraphQlTest(controllers = [SurveyTemplateMutationController::class, SurveyTemplateSectionsQueryController::class])
+internal class SurveyTemplateSectionsQueryControllerTest(
     @Autowired private val graphQlTester: GraphQlTester,
 ) {
     @MockkBean
@@ -25,8 +22,11 @@ internal class SurveyTemplateMutationControllerWebTest(
     @MockkBean
     private lateinit var createSurveyTemplateService: CreateSurveyTemplateService
 
+    @MockkBean
+    private lateinit var readSurveyTemplateService: ReadSurveyTemplateService
+
     @Test
-    internal fun `check can get sections after adding the smallest valid mutation`() {
+    internal fun `check accepts the smallest valid mutation`() {
         val mutation = """mutation { addSurveyTemplate(surveyTemplate: { 
             |    title: "COOS knee survey"
             |    sections: [{
@@ -40,20 +40,20 @@ internal class SurveyTemplateMutationControllerWebTest(
             |    }]
             |}) {
             |  id { value }
+            |  sections { id { value } }
             | } }""".trimMargin()
 
-        val generatedUuid = UUID.fromString("61adf575-b7ec-4554-bdca-d35d73a4a869")
-        coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns mockk(relaxed = true) {
-            every { id } returns generatedUuid
-        }
+        val surveyTemplate = SurveyTemplateMother.`koos knee survey template`
+        coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns surveyTemplate
+        coEvery { readSurveyTemplateService.getSurveySections(SurveyTemplateDto.SurveyTemplateDtoId(surveyTemplate.id)) } returns SurveyTemplateMother.`koos knee survey template sections`
 
         graphQlTester
             .document(mutation)
             .execute()
             .errors()
             .verify()
-            .path("addSurveyTemplate.id.value")
-            .entity(UUID::class.java)
-            .isEqualTo(generatedUuid)
+            .path("addSurveyTemplate.sections[*].id.value")
+            .entity(object : ParameterizedTypeReference<List<UUID>>() {})
+            .isEqualTo(SurveyTemplateMother.`koos knee survey template entity persisted`.sections.map { it.id})
     }
 }

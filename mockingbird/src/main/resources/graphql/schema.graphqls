@@ -6,7 +6,11 @@ schema {
 type Mutation {
     addClinic(clinic: CreateClinic!): Clinic!
     editClinic(clinic: EditClinic!): Clinic
-    addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate
+    addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate!
+}
+
+type SurveyTemplateId {
+    value: UUID!
 }
 
 input EditClinic {
@@ -112,11 +116,22 @@ enum SurveyTemplateCategory {
 }
 
 type SurveyTemplate {
-    id: UUID
+    id: SurveyTemplateId!
+    sections: [SurveyTemplateSection!]!
+}
+
+type SurveyTemplateSection {
+    id: SurveyTemplateSectionId!
+    title: String!
+    subtitle: String
+}
+
+type SurveyTemplateSectionId {
+    value: UUID!
 }
 
 type MediqUserId {
-    value: UUID
+    value: UUID!
 }
 
 type MediqGroupId {
@@ -147,16 +162,16 @@ type NameInfo {
 }
 
 type ClinicId {
-    value: UUID
+    value: UUID!
 }
 
 input ClinicIdInput {
-    value: UUID
+    value: UUID!
 }
 
 type Clinic {
-    id: ClinicId
-    name: String
+    id: ClinicId!
+    name: String!
 }
 
 scalar UUID
