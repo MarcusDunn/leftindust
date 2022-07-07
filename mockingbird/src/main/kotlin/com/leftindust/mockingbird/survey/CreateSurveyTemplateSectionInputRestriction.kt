@@ -12,7 +12,8 @@ sealed interface CreateSurveyTemplateSectionInputRestriction {
     }
 
     interface Upload : CreateSurveyTemplateSectionInputRestriction {
-        val uploadType: TemplateInputUploadType
+        val uploadMultiple: Boolean
+        val uploadAccept: TemplateInputUploadType
     }
 
     interface SingleSelect : CreateSurveyTemplateSectionInputRestriction {
