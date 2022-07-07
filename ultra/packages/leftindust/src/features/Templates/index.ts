@@ -1,9 +1,13 @@
 import type { Editor } from 'function-junctions/types';
 import type { EditorState, SocketBlueprint } from 'function-junctions/types';
+import { get } from 'svelte/store';
 import arraySocket from '../Socket/components/ArraySocket';
 import dateSocket from '../Socket/components/DateSocket';
 import numberSocket from '../Socket/components/NumberSocket';
 import textSocket from '../Socket/components/TextSocket';
+import { _ } from '@/language';
+
+const language = get(_);
 
 export enum TemplateInputType {
   Text = 'text',
@@ -113,3 +117,38 @@ export const getTemplateSocketType = (inputType: TemplateInputType) => {
   // @ts-expect-error
   return type;
 };
+
+export const templateInputSelectOptions = [
+  {
+    text: language('generics.text'),
+    value: TemplateInputType.Text,
+  },
+  {
+    text: language('generics.number'),
+    value: TemplateInputType.Number,
+  },
+  {
+    text: language('generics.date'),
+    value: TemplateInputType.Date,
+  },
+  {
+    text: language('generics.paragraph'),
+    value: TemplateInputType.Paragraph,
+  },
+  {
+    text: language('generics.singleSelect'),
+    value: TemplateInputType.SingleSelect,
+  },
+  {
+    text: language('generics.multiSelect'),
+    value: TemplateInputType.MultiSelect,
+  },
+  {
+    text: language('generics.upload'),
+    value: TemplateInputType.Upload,
+  },
+  {
+    text: language('generics.title'),
+    value: TemplateInputType.Title,
+  },
+];

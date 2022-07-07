@@ -4,7 +4,7 @@
   import Input from '@/features/Input/Input.svelte';
   import { _ } from '@/language';
   import Select from '@/features/Input/components/Select/Select.svelte';
-  import { getTemplateSocketType, templateCalculationSockets, TemplateInputType } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, TemplateInputType } from '@/features/Templates';
   import { TemplateInputItems } from '@/features/Templates/store';
   
   export let editor: Editor;
@@ -84,40 +84,7 @@
     <Select
       title={$_('generics.type')}
       placeholder={$_('examples.text')}
-      options={[
-        {
-          text: $_('generics.text'),
-          value: TemplateInputType.Text,
-        },
-        {
-          text: $_('generics.number'),
-          value: TemplateInputType.Number,
-        },
-        {
-          text: $_('generics.date'),
-          value: TemplateInputType.Date,
-        },
-        {
-          text: $_('generics.paragraph'),
-          value: TemplateInputType.Paragraph,
-        },
-        {
-          text: $_('generics.singleSelect'),
-          value: TemplateInputType.SingleSelect,
-        },
-        {
-          text: $_('generics.multiSelect'),
-          value: TemplateInputType.MultiSelect,
-        },
-        {
-          text: $_('generics.upload'),
-          value: TemplateInputType.Upload,
-        },
-        {
-          text: $_('generics.title'),
-          value: TemplateInputType.Title,
-        },
-      ]}
+      options={templateInputSelectOptions}
       bind:value={$TemplateInputItems.sections[store.sectionIndex].inputs[store.index].type}
     />
     <p />

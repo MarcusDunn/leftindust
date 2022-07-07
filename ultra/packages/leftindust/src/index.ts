@@ -18,4 +18,4 @@ const f7params: Framework7Parameters = {
   id: 'com.leftindust.leftindust',
 };
 
-initMain(App, f7params);
+initMain(App, f7params, () => import('./routes'));
