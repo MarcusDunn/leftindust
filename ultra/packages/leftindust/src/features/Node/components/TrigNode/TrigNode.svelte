@@ -5,7 +5,7 @@
     OutputSocket,
     OutputSockets,
   } from 'function-junctions/types';
-  import { List, ListInput } from 'framework7-svelte';
+  import { Button, List, ListInput } from 'framework7-svelte';
 
   export let inputs: InputSockets<{
     OPERAND: InputSocket<number>;
@@ -22,23 +22,27 @@
   const { value: OPERAND } = inputs.OPERAND;
   const { value: output } = outputs.Number;
 
+  let inverse = false;
+
+  $: console.log(inverse);
+
   const getValue = () => {
     const { type } = store;
-
+    
     switch (type) {
       case 'sin':
-        $output = Math.sin($OPERAND);
+        $output = inverse ? Math.asin($OPERAND) : Math.sin($OPERAND);
         break;
       case 'cos':
-        $output = Math.cos($OPERAND);
+        $output = inverse ? Math.acos($OPERAND) : Math.cos($OPERAND);
         break;
       case 'tan':
-        $output = Math.tan($OPERAND);
+        $output = inverse ? Math.atan($OPERAND) : Math.tan($OPERAND);
         break;
     }
   };
 
-  $: inputs, store, getValue();
+  $: inputs, store, inverse, getValue();
 </script>
 
 <h1 style="text-align: center">{$output}</h1>
@@ -54,3 +58,16 @@
     <option value="tan">Tangent</option>
   </ListInput>
 </List>
+<div class="display-flex">
+  <Button
+    fill={!inverse}
+    outline={inverse}
+    round
+    color="deeppurple"
+    style="width: 80%; margin: 1rem auto"
+    on:click={() => inverse = !inverse}
+  >
+    Inverse
+  </Button>
+</div>
+
