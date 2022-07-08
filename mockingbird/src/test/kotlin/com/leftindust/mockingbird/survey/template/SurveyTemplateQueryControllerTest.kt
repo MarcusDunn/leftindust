@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.survey.template
 
+import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.util.SurveyTemplateMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -9,6 +10,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasSize
+import org.hamcrest.Matchers.nullValue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,6 +42,28 @@ internal class SurveyTemplateQueryControllerUnitTest {
         val result = surveyTemplateQueryController.surveyTemplateBySurveyTemplateId(surveyTemplateDtoId)
 
         assertThat(result, equalTo(SurveyTemplateMother.`koos knee survey template dto`))
+    }
+
+    @Test
+    internal fun `check getSurveyTemplateBySurveyId returns null if no such SurveyTemplateId`() = runTest {
+        val surveyTemplateQueryController = SurveyTemplateQueryController(readSurveyTemplateService, surveyTemplateToSurveyTemplateDtoConverter)
+        val nonExistentId = SurveyTemplateDto.SurveyTemplateDtoId(UUID.fromString("75868a7e-3e95-4018-9564-d28660211b21"))
+        coEvery { readSurveyTemplateService.getSurveyTemplateBySurveyId(nonExistentId) } returns null
+
+        val result = surveyTemplateQueryController.surveyTemplateBySurveyTemplateId(nonExistentId)
+
+        assertThat(result, nullValue())
+    }
+
+    @Test
+    internal fun `check can get surveyTemplateDto by range`() = runTest {
+        val surveyTemplateQueryController = SurveyTemplateQueryController(readSurveyTemplateService, surveyTemplateToSurveyTemplateDtoConverter)
+        val rangeDto = RangeDto(0, 10)
+        coEvery { readSurveyTemplateService.getSurveyTemplateByRange(rangeDto) } returns List(rangeDto.size) { SurveyTemplateMother.`koos knee survey template` }
+
+        val result = surveyTemplateQueryController.surveyTemplateByRange(rangeDto)
+
+        assertThat(result, hasSize(equalTo(rangeDto.size)))
     }
 }
 
@@ -85,5 +110,27 @@ internal class SurveyTemplateQueryControllerWebTest(
             .path("surveyTemplateBySurveyTemplateId.sections[*].title")
             .entity(object : ParameterizedTypeReference<List<String>>() {})
             .isEqualTo(surveyTemplateEntity.sections.map { it.title })
+    }
+
+    @Test
+    internal fun `check can query by range`() {
+        val surveyTemplateEntity = SurveyTemplateMother.`koos knee survey template entity persisted`
+        coEvery { readSurveyTemplateService.getSurveyTemplateByRange(RangeDto(0, 10)) } returns List(10) { SurveyTemplateMother.`koos knee survey template` }
+
+        val query = """
+            query { 
+                surveyTemplateByRange(range: {from: 0, to: 10}) {
+                    id { value }
+                } 
+            }
+            """
+
+        graphqlTester.document(query)
+            .execute()
+            .errors()
+            .verify()
+            .path("surveyTemplateByRange[*].id.value")
+            .entity(object : ParameterizedTypeReference<List<UUID>>() {})
+            .isEqualTo(List(10) { surveyTemplateEntity.id!! })
     }
 }

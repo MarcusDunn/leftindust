@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.survey.template
 
 import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
@@ -19,5 +20,11 @@ class SurveyTemplateQueryController(
         } else {
             null
         }
+    }
+
+    @QueryMapping
+    suspend fun surveyTemplateByRange(@Argument range: RangeDto): List<SurveyTemplateDto> {
+        val surveyTemplates = readSurveyTemplateService.getSurveyTemplateByRange(range)
+        return surveyTemplates.map { surveyTemplateToSurveyTemplateDtoConverter.convert(it) }
     }
 }

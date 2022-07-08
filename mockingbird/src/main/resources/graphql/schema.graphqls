@@ -60,6 +60,12 @@ type Query {
     clinicByClinicId(clinicId: ClinicIdInput!): Clinic
     userByUserUniqueId(uniqueId: String): MediqUser
     surveyTemplateBySurveyTemplateId(surveyTemplateId: SurveyTemplateIdInput): SurveyTemplate
+    surveyTemplateByRange(range: Range): [SurveyTemplate!]!
+}
+
+input Range {
+    from: Int
+    to: Int
 }
 
 input SurveyTemplateIdInput {
