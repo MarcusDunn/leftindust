@@ -46,9 +46,7 @@
   on:finalize={handleFinalize}
 >
   {#each sections as section, index (section.id)}
-    <div
-      animate:flip={{ duration: flipDurationMs }}
-    >
+    <div animate:flip={{ duration: flipDurationMs }}>
       <TemplateSection
         dragger={sections.length > 1 ? startDrag : undefined}
         {index}
