@@ -15,6 +15,9 @@
   import language from '@/language/locales/en';
   import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
   
+  import GenericGrid from '../../../Widgets/components/Grid/GenericGrid.svelte';
+  import { WidgetCategory, WidgetType } from '../../../Widgets';
+
   let patients: PatientsFragment[] = [];
   
   const { data, dragger, quicklook } = $$props as StackProps;
@@ -26,6 +29,10 @@
   query(request);
   
   $: if ($request.data?.patients[0]) patients = $request.data?.patients;
+
+  //data = Doctors, should be patients
+  $: console.log($request.data?.patients[0])
+  $: console.log(data)
 </script>
   
 <Stack
@@ -37,21 +44,14 @@
 >
   <Request {...$request} refetch={request.reexecute} middle>
     {#if patients.length > 0}
-      <Cells>
-        {#each patients as patient}
-          <PatientPinnableCell 
-            {patient}
-            pinned={pinned({
-              id: patient.pid.id,
-              type: patient.__typename,
-            }, data)}
-            on:pin={({ detail }) => pin(detail, {
-              id: patient.pid.id,
-              type: patient.__typename,
-            }, data)}
-          />
-        {/each}
-      </Cells>
+      <GenericGrid 
+        props={{ id:'Patient', data, quicklook }}
+        type={WidgetType.Card}
+        dataType={['Patient']}
+        category={[WidgetCategory.Document]}
+        store
+        fixed
+      />
     {:else}
       <DescriptivePlaceholder 
         title={$_('generics.noPatients')} 

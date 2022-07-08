@@ -23,7 +23,6 @@
   <Block
     class={`widget-stack
       ${optionsOpen ? 'widget-stack-options-open' : ''}
-      ${shadow ? 'elevation-4' : ''}
     `}
     strong
     inset
@@ -42,11 +41,7 @@
         </div>
       </div>  
       <div class="widget-stack-content">
-        <!-- <slot /> replace with Cards component (4 per stack) -->
-        <Card title="Doctors"></Card>
-        <Card title="Doctors"></Card>
-        <Card title="Doctors"></Card>
-        <Card title="Doctors"></Card>
+        <slot />
       </div>
     </div>
   </Block>

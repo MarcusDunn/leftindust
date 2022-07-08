@@ -80,12 +80,12 @@ const Widgets: Widgets = {
   },
   card: {
     patient: {
-      type: ['Patient'],
+      type: ['Doctor'],
       component: PatientCard,
       category: [WidgetCategory.Document],
     },
     doctor: {
-      type: ['Doctor'],
+      type: ['Patient'],
       component: DoctorCard,
       category: [WidgetCategory.Document],
     },
