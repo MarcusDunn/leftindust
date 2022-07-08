@@ -13,6 +13,7 @@
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
   import TemplateInputsNode from '@/features/Node/components/TemplateInputsNode';
+  import AverageNode from '@/features/Node/components/AverageNode';
   import type { MenuNodes } from '@/features/Nodes';
 
   export let index: number;
@@ -39,6 +40,7 @@
     output: TemplateOutputNode,
     Group: TemplateInputsNode,
     Math: MathNode,
+    Average: AverageNode,
   };
 
   const menuNodes: MenuNodes = [
@@ -62,11 +64,18 @@
       icon: {
         f7: 'function',
       },
-      nodes: [{
-        title: 'Math',
-        description: 'Addition, subtraction, multiplication, and division',
-        blueprint: MathNode,
-      }],
+      nodes: [
+        {
+          title: 'Math',
+          description: 'Addition, subtraction, multiplication, and division',
+          blueprint: MathNode,
+        },
+        {
+          title: 'Average',
+          description: 'Calculate the average of a set of numbers',
+          blueprint: AverageNode,
+        },
+      ],
     }];
 
   $: calculation.editor = editor;

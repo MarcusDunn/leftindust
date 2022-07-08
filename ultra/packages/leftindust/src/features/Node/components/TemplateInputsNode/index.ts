@@ -2,17 +2,15 @@ import type { NodeBlueprint, SocketBlueprint } from 'function-junctions/types';
 import TemplateInputsNode from './TemplateInputsNode.svelte';
 
 const node: NodeBlueprint<never, {
-  Value: SocketBlueprint<unknown>,
+  Values: SocketBlueprint<unknown>,
 }> = {
   outputs: {
-    Value: {
+    Values: {
       type: '',
     },
   },
   component: TemplateInputsNode,
   className: 'node-transparent',
-  cloneable: false,
-  deletable: false,
 };
 
 export default node;

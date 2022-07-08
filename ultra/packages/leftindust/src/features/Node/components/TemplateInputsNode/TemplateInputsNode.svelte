@@ -10,15 +10,16 @@
   import { get } from 'svelte/store';
 
   export let outputs: OutputSockets<{
-    Value: OutputSocket<unknown[]>;
+    Values: OutputSocket<unknown[]>;
   }>;
 
   export let editor: Editor;
   
-  const { value: Value } = outputs.Value;
+  const { value: Values } = outputs.Values;
 
-  let prevType = TemplateInputType.Text;
-
+  let rerenderSmartSelect = false;
+  let smartSelectOpen = false;
+  
   export let store: {
     type: TemplateInputType;
     ids: string[];
@@ -26,6 +27,8 @@
     type: TemplateInputType.Text,
     ids: [],
   };
+
+  let prevType = store.type;
 
   $: inputs = $TemplateInputItems.sections.flatMap((section, index) =>
     section.inputs.map((input, inputIndex) => ({
@@ -41,7 +44,7 @@
     })),
   ).filter((input) => input.type === store.type);
 
-  $: $Value = store.ids.map(
+  $: $Values = store.ids.map(
     (id) => editor.inputs?.[id]?.value ? get(editor.inputs[id].value) : undefined,
   ).filter((value) => value !== undefined);
 
@@ -53,13 +56,18 @@
     if (prevType !== store.type) store.ids = [];
   
     if (socket) {
-      outputs.Value.type = type;
-      outputs.Value.disabled = !Value;
-      outputs.Value.color = socket.color;
+      outputs.Values.type = type;
+      outputs.Values.disabled = !Values;
+      outputs.Values.color = socket.color;
     }
 
     prevType = store.type;
   }
+
+  // Rerendering bug with key to preserve smartSelect instance when open
+  $: inputs, (() => {
+    if (!smartSelectOpen) rerenderSmartSelect =  !rerenderSmartSelect;
+  })();
 </script>
 
 <div style="min-width: 430px">
@@ -71,13 +79,17 @@
   />
   <p />
   <Input title="Inputs" disabled={inputs.length < 1}>
-    {#key inputs}
+    {#key rerenderSmartSelect}
       <ListItem
         class="input-select"
         smartSelect
         smartSelectParams={{
           openIn: 'popover',
           closeOnSelect: true,
+          on: {
+            open: () => (smartSelectOpen = true),
+            close: () => (smartSelectOpen = false),
+          },
         }}
         title=""
         slot="content"

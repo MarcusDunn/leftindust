@@ -734,3 +734,11 @@ input:-internal-autofill-selected {
     background-color: rgb(44, 44, 46) !important;
   }
 }
+
+.function-junctions-node-content {
+  .list {
+    ul {
+      background: transparent;
+    }
+  }
+}
