@@ -1,5 +1,10 @@
 package com.leftindust.mockingbird.survey
 
+import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateService
+import com.leftindust.mockingbird.survey.template.ReadSurveyTemplateService
+import com.leftindust.mockingbird.survey.template.SurveyTemplateDto
+import com.leftindust.mockingbird.survey.template.SurveyTemplateMutationController
+import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionsQueryController
 import com.leftindust.mockingbird.util.SurveyTemplateMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -9,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
-import org.springframework.test.context.ActiveProfiles
 import java.util.UUID
 
 @GraphQlTest(controllers = [SurveyTemplateMutationController::class, SurveyTemplateSectionsQueryController::class])

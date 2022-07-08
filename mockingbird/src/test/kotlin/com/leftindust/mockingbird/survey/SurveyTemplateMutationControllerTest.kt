@@ -1,5 +1,7 @@
 package com.leftindust.mockingbird.survey
 
+import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateService
+import com.leftindust.mockingbird.survey.template.SurveyTemplateMutationController
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import io.mockk.every
