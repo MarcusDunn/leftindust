@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.survey.SurveyDto
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.stereotype.Controller
 
@@ -21,11 +20,5 @@ class PatientMutation(
         dataFetchingEnvironment: DataFetchingEnvironment,
     ): PatientDto {
         TODO()
-    }
-
-    suspend fun assignSurvey(patients: List<PatientDto.PatientDtoId>, survey: SurveyDto.SurveyDtoId): List<PatientDto> {
-        return updatePatientService
-            .assignForms(patients, survey)
-            .map { patientToPatientDtoConverter.convert(it) }
     }
 }

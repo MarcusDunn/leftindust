@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.survey.SurveyDto
 import org.springframework.stereotype.Service
 
 
@@ -12,10 +11,6 @@ class UpdatePatientServiceImpl : UpdatePatientService {
     }
 
     override suspend fun update(patientInput: UpdatePatientDto): Patient {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun assignForms(patients: List<PatientDto.PatientDtoId>, survey: SurveyDto.SurveyDtoId): List<Patient> {
         TODO("Not yet implemented")
     }
 }
