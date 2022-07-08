@@ -7,7 +7,7 @@ import javax.persistence.OneToMany
 
 @Entity
 class SurveyTemplateEntity(
-    val title: String,
+    var title: String,
     val subtitle: String?,
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     val sections: MutableSet<SurveyTemplateSectionEntity>,

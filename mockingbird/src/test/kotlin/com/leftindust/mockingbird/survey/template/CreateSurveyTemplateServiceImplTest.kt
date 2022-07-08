@@ -1,8 +1,5 @@
 package com.leftindust.mockingbird.survey.template
 
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateServiceImpl
-import com.leftindust.mockingbird.survey.template.SurveyTemplateEntityToSurveyTemplateConverter
-import com.leftindust.mockingbird.survey.template.SurveyTemplateRepository
 import com.leftindust.mockingbird.util.SurveyTemplateMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
@@ -24,32 +21,32 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class CreateSurveyTemplateServiceImplUnitTest {
     @MockK
-    private lateinit var surveyTemplateRepository: SurveyTemplateRepository
+    private lateinit var surveyTemplateEntityRepository: SurveyTemplateEntityRepository
 
     private val surveyTemplateEntityToSurveyTemplateConverter = SurveyTemplateEntityToSurveyTemplateConverter()
 
     @Test
     internal fun `check saves a new entity`() = runTest {
-        every { surveyTemplateRepository.save(any()) } returns SurveyTemplateMother.`koos knee survey template entity persisted`
-        val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, surveyTemplateEntityToSurveyTemplateConverter)
+        every { surveyTemplateEntityRepository.save(any()) } returns SurveyTemplateMother.`koos knee survey template entity persisted`
+        val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateEntityRepository, surveyTemplateEntityToSurveyTemplateConverter)
         createSurveyTemplateServiceImpl.createSurveyTemplate(SurveyTemplateMother.`create koos knee survey template`)
-        verify(exactly = 1) { surveyTemplateRepository.save(any()) }
+        verify(exactly = 1) { surveyTemplateEntityRepository.save(any()) }
     }
 }
 
 @DataJpaTest
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class CreateSurveyTemplateServiceImplDatabaseTest(
-    @Autowired private val surveyTemplateRepository: SurveyTemplateRepository,
+    @Autowired private val surveyTemplateEntityRepository: SurveyTemplateEntityRepository,
 ) {
     @MockkBean
     private lateinit var serverHttpSecurity: SecurityWebFilterChain
 
-    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, SurveyTemplateEntityToSurveyTemplateConverter())
+    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateEntityRepository, SurveyTemplateEntityToSurveyTemplateConverter())
 
     @Test
     internal fun `check persists a new surveyTemplate`() = runTest {
         val createSurveyTemplate = createSurveyTemplateServiceImpl.createSurveyTemplate(SurveyTemplateMother.`create koos knee survey template`)
-        assertThat(surveyTemplateRepository.findByIdOrNull(createSurveyTemplate.id), notNullValue())
+        assertThat(surveyTemplateEntityRepository.findByIdOrNull(createSurveyTemplate.id), notNullValue())
     }
 }

@@ -7,7 +7,7 @@ import javax.transaction.Transactional
 @Service
 @Transactional
 class CreateSurveyTemplateServiceImpl(
-    private val surveyTemplateRepository: SurveyTemplateRepository,
+    private val surveyTemplateEntityRepository: SurveyTemplateEntityRepository,
     private val surveyTemplateEntityToSurveyTemplateConverter: InfallibleConverter<SurveyTemplateEntity, SurveyTemplate>,
 ) : CreateSurveyTemplateService {
     override suspend fun createSurveyTemplate(surveyTemplate: CreateSurveyTemplate): SurveyTemplate {
@@ -23,7 +23,7 @@ class CreateSurveyTemplateServiceImpl(
                 )
             }.toMutableSet(),
         )
-        val surveyTemplateEntity = surveyTemplateRepository.save(newSurveyTemplate)
+        val surveyTemplateEntity = surveyTemplateEntityRepository.save(newSurveyTemplate)
         return surveyTemplateEntityToSurveyTemplateConverter.convert(surveyTemplateEntity)
     }
 
