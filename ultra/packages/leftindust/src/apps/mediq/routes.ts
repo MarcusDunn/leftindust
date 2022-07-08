@@ -17,6 +17,7 @@ import MedIQLoginPage from '@/features/Account/MedIQLoginPage.svelte';
 import SettingsPage from '@/features/Settings/SettingsPage.svelte';
 
 import LifecycleErrorPage from '@/features/Errors/LifecycleErrorPage.svelte';
+import type { Route } from '@/features/View';
 
 export type Path =
   | '/dashboard/'
@@ -32,16 +33,7 @@ export type Path =
   | '/errors/lifecycle/'
   | '(.*)';
 
-export interface Route {
-  path: Path;
-  component: typeof SvelteComponentDev;
-  routes?: Array<Route>;
-  detailRoutes?: Array<Route>;
-
-  [key: string]: unknown;
-}
-
-const routes: Route[] = [
+const routes: Route<Path>[] = [
   {
     path: '/dashboard/',
     component: DashboardPage,

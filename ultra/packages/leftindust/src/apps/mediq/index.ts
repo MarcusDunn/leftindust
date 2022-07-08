@@ -8,7 +8,6 @@ import 'framework7/css/bundle';
 import 'svelte';
 
 import App from './App.svelte';
-import routes from './routes';
 import { initMain } from '@/features/App';
 
 const f7params: Framework7Parameters = {
@@ -16,7 +15,6 @@ const f7params: Framework7Parameters = {
   autoDarkMode: true,
   name: 'MedIQ',
   id: 'com.leftindust.mediq',
-  routes,
 };
 
-initMain(App, f7params);
+initMain(App, f7params, () => import('./routes'));

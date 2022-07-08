@@ -28,8 +28,6 @@
       }
     }, true);
   };
-
-  $: console.log($TemplateInputItems);
 </script>
 
 <div

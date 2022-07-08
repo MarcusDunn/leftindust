@@ -313,8 +313,10 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
   ul {
     margin-left: 20px;
 
-    .item-inner {
-      padding-right: 0 !important;
+    .item-input {
+      .item-inner {
+        padding-right: 0 !important;
+      }
     }
   }
 
@@ -705,6 +707,26 @@ input:-internal-autofill-selected {
 
 .no-vibrancy {
   background-color: var(--f7-page-bg-color) !important;
+}
+
+.function-junctions-node {
+  &.node-transparent {
+    background: transparent !important;
+    opacity: 1 !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    .function-junctions-node-title  {
+      display: none;
+    }
+  }
+
+  &.node-no-title {
+    opacity: 1 !important;
+    .function-junctions-node-title  {
+      display: none;
+    }
+  }
 }
 
 .dark {

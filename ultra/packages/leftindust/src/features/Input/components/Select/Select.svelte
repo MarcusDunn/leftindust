@@ -20,27 +20,29 @@
 
 {#key options}
   <div class={`${disabled ? 'disabled' : ''}`}>
-    <Input {title}>
-      <ListItem
-        class="input-select"
-        smartSelect
-        smartSelectParams={{
-          openIn: 'popover',
-          closeOnSelect: true,
-        }}
-        title=""
-        slot="content"
-        {placeholder}
-      >
-        <select
-          bind:value
-          on:change={() => dispatch('change', value)}
+    {#key value}
+      <Input {title}>
+        <ListItem
+          class="input-select"
+          smartSelect
+          smartSelectParams={{
+            openIn: 'popover',
+            closeOnSelect: true,
+          }}
+          title=""
+          slot="content"
+          {placeholder}
         >
-          {#each options as option}
-            <option value={option.value}>{option.text}</option>
-          {/each}
-        </select>
-      </ListItem>
-    </Input>
+          <select
+            bind:value
+            on:change={() => dispatch('change', value)}
+          >
+            {#each options as option}
+              <option value={option.value}>{option.text}</option>
+            {/each}
+          </select>
+        </ListItem>
+      </Input>
+    {/key}
   </div>
 {/key}
