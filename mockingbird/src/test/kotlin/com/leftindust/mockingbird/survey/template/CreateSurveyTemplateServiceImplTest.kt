@@ -1,4 +1,4 @@
-package com.leftindust.mockingbird.survey
+package com.leftindust.mockingbird.survey.template
 
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateServiceImpl
 import com.leftindust.mockingbird.survey.template.SurveyTemplateEntityToSurveyTemplateConverter

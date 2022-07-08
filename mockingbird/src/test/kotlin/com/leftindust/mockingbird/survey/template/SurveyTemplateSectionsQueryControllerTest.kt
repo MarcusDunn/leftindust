@@ -1,10 +1,5 @@
-package com.leftindust.mockingbird.survey
+package com.leftindust.mockingbird.survey.template
 
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateService
-import com.leftindust.mockingbird.survey.template.ReadSurveyTemplateService
-import com.leftindust.mockingbird.survey.template.SurveyTemplateDto
-import com.leftindust.mockingbird.survey.template.SurveyTemplateMutationController
-import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionsQueryController
 import com.leftindust.mockingbird.util.SurveyTemplateMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -27,7 +22,7 @@ internal class SurveyTemplateSectionsQueryControllerTest(
     private lateinit var createSurveyTemplateService: CreateSurveyTemplateService
 
     @MockkBean
-    private lateinit var readSurveyTemplateService: ReadSurveyTemplateService
+    private lateinit var readSurveyTemplateSectionService: ReadSurveyTemplateSectionService
 
     @Test
     internal fun `check accepts the smallest valid mutation`() {
@@ -49,7 +44,7 @@ internal class SurveyTemplateSectionsQueryControllerTest(
 
         val surveyTemplate = SurveyTemplateMother.`koos knee survey template`
         coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns surveyTemplate
-        coEvery { readSurveyTemplateService.getSurveySections(SurveyTemplateDto.SurveyTemplateDtoId(surveyTemplate.id)) } returns SurveyTemplateMother.`koos knee survey template sections`
+        coEvery { readSurveyTemplateSectionService.getSurveyTemplateSectionsBySurveyTemplateId(SurveyTemplateDto.SurveyTemplateDtoId(surveyTemplate.id)) } returns SurveyTemplateMother.`koos knee survey template sections`
 
         graphQlTester
             .document(mutation)

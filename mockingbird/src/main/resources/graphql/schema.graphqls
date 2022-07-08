@@ -59,6 +59,11 @@ type Query {
     mockingbirdIsAlive: Boolean!
     clinicByClinicId(clinicId: ClinicIdInput!): Clinic
     userByUserUniqueId(uniqueId: String): MediqUser
+    surveyTemplateBySurveyTemplateId(surveyTemplateId: SurveyTemplateIdInput): SurveyTemplate
+}
+
+input SurveyTemplateIdInput {
+    value: UUID
 }
 
 input CreateSurveyTemplate {
