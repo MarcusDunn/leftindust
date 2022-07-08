@@ -5,7 +5,7 @@ export type DateSocket = SocketBlueprint<Date>;
 const socket: DateSocket = {
   type: 'date',
   defaultValue: new Date(),
-  color: '#009688',
+  color: 'rgb(0, 199, 190)',
 };
 
 export default socket;
