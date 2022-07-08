@@ -8,7 +8,6 @@ import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -29,17 +28,18 @@ internal class SurveyTemplateQueryControllerUnitTest {
 
     @Test
     internal fun `check can get a surveyTemplateDto by id`() = runTest {
-            val surveyTemplateQueryController = SurveyTemplateQueryController(readSurveyTemplateService, surveyTemplateToSurveyTemplateDtoConverter)
-            val surveyTemplateEntity = SurveyTemplateMother.`koos knee survey template entity persisted`
-            val surveyTemplateDtoId = SurveyTemplateDto.SurveyTemplateDtoId(
-                surveyTemplateEntity.id!!
-            )
-            coEvery { readSurveyTemplateService.getSurveyTemplateBySurveyId(surveyTemplateDtoId) } returns SurveyTemplateMother.`koos knee survey template`
+        val surveyTemplateQueryController =
+            SurveyTemplateQueryController(readSurveyTemplateService, surveyTemplateToSurveyTemplateDtoConverter)
+        val surveyTemplateEntity = SurveyTemplateMother.`koos knee survey template entity persisted`
+        val surveyTemplateDtoId = SurveyTemplateDto.SurveyTemplateDtoId(
+            surveyTemplateEntity.id!!
+        )
+        coEvery { readSurveyTemplateService.getSurveyTemplateBySurveyId(surveyTemplateDtoId) } returns SurveyTemplateMother.`koos knee survey template`
 
-            val result = surveyTemplateQueryController.surveyTemplateBySurveyTemplateId(surveyTemplateDtoId)
+        val result = surveyTemplateQueryController.surveyTemplateBySurveyTemplateId(surveyTemplateDtoId)
 
-            assertThat(result, equalTo(SurveyTemplateMother.`koos knee survey template dto`))
-        }
+        assertThat(result, equalTo(SurveyTemplateMother.`koos knee survey template dto`))
+    }
 }
 
 @GraphQlTest(controllers = [SurveyTemplateQueryController::class, SurveyTemplateSectionsQueryController::class])
@@ -83,7 +83,7 @@ internal class SurveyTemplateQueryControllerWebTest(
             .entity(UUID::class.java)
             .isEqualTo(surveyTemplateEntity.id!!)
             .path("surveyTemplateBySurveyTemplateId.sections[*].title")
-            .entity(object: ParameterizedTypeReference<List<String>>() {})
+            .entity(object : ParameterizedTypeReference<List<String>>() {})
             .isEqualTo(surveyTemplateEntity.sections.map { it.title })
     }
 }
