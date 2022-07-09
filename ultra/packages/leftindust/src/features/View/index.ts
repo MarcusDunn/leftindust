@@ -2,8 +2,8 @@ import type { SvelteComponentDev } from 'svelte/internal';
 import type { Popover as PopoverType, Popup as PopupType } from 'framework7/types';
 import { f7 } from 'framework7-svelte';
 
-export interface Route {
-  path: string;
+export interface Route<T extends string = string> {
+  path: T;
   component: typeof SvelteComponentDev;
   routes?: Array<Route>;
   detailRoutes?: Array<Route>;

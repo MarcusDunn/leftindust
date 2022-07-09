@@ -1,9 +1,10 @@
 <script lang="ts">
-  import type { TemplateInput } from '../..';
+  import { templateInputSelectOptions, type TemplateInput } from '../..';
   import { TemplateInputUploadType } from '../..';
   import { _ } from 'svelte-i18n';
   import { TemplateInputType } from '../..';
   import {
+    Button,
     Col,
     Icon,
     ListItem,
@@ -16,7 +17,8 @@
   import './TemplateInput.scss';
   import TemplateInputSelect from './TemplateInputSelect.svelte';
   import Add from '@/features/Input/components/Add/Add.svelte';
-
+  import { TemplateCalculations } from '../../store';
+  
   export let inputs: TemplateInput[];
   export let index: number;
   export let globalIndex: number;
@@ -33,12 +35,15 @@
 
   export let dragger: ((event: Event) => void)| undefined = undefined;
 
+  export let addNodeToComputations: (input: TemplateInput, index: number) => void;
+  export let deleteNodeFromComputation: (id: string) => void;
+
   $: multiselect = (type === TemplateInputType.SingleSelect || type === TemplateInputType.MultiSelect);
   $: title = type === TemplateInputType.Title;
+  $: compute = false;
 
   // https://github.com/sveltejs/svelte/issues/5162
   let optionText = $_('generics.options');
-  
 </script>
 
 <div class="templates-template_input">
@@ -58,45 +63,12 @@
           <Select
             title={$_('generics.type')}
             placeholder={$_('examples.text')}
-            options={[
-              {
-                text: $_('generics.text'),
-                value: TemplateInputType.Text,
-              },
-              {
-                text: $_('generics.number'),
-                value: TemplateInputType.Number,
-              },
-              {
-                text: $_('generics.date'),
-                value: TemplateInputType.Date,
-              },
-              {
-                text: $_('generics.paragraph'),
-                value: TemplateInputType.Paragraph,
-              },
-              {
-                text: $_('generics.singleSelect'),
-                value: TemplateInputType.SingleSelect,
-              },
-              {
-                text: $_('generics.multiSelect'),
-                value: TemplateInputType.MultiSelect,
-              },
-              {
-                text: $_('generics.upload'),
-                value: TemplateInputType.Upload,
-              },
-              {
-                text: $_('generics.title'),
-                value: TemplateInputType.Title,
-              },
-            ]}
+            options={templateInputSelectOptions}
             bind:value={type}
           />
         {/key}
       </Col>
-      <Col width="100" small={(multiselect || title ) ? 100 : 50}>
+      <Col width="100" small={(multiselect || title || compute ) ? 100 : 50}>
         <Input style="width: 100%">
           <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
           <input
@@ -107,7 +79,7 @@
         </Input>
       </Col>
       {#if !multiselect}
-        {#if !title}
+        {#if !title && !compute}
           <Col width="100" small="50">
             <Input style="width: 100%">
               <svelte:fragment slot="title">{$_('generics.placeholder')}</svelte:fragment>
@@ -170,7 +142,12 @@
       {/if}
       <Col width="100">
         <div class="display-flex" style="margin-top: 20px">
-          {#if !title}
+          {#if compute}
+            <div style="width: 100%;margin-top: 10px">
+              <Button color="deeppurple" round outline>Edit Algorithm</Button>
+            </div>
+          {/if}
+          {#if !title && !compute}
             <Input style="width: 100%">
               <ListItem class="aurora" slot="content">
                 <span>{$_('generics.required')}</span>
@@ -202,6 +179,7 @@
                   },
                   ...inputs.slice(index),
                 ];
+                addNodeToComputations(inputs[inputs.length - 1], inputs.length - 1);
                 globalIndex += 1;
               }}
             />
@@ -211,7 +189,11 @@
                 f7: 'minus_circle_fill',
                 color: 'red',
               }}
-              on:click={() => (inputs = inputs.filter((_, i) => i !== index))}
+              disabled={$TemplateCalculations.length > 0 && inputs.length === 1}
+              on:click={() => {
+                deleteNodeFromComputation(inputs[index].id.toString());
+                inputs = inputs.filter((_, i) => i !== index);
+              }}
             />
           </div>
         </div>

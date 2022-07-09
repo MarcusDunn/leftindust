@@ -10,7 +10,7 @@
   export let subtitle: string | undefined = undefined;
   export let inputs: TemplateInput[] | undefined = undefined;
 
-  export let index: number | undefined = undefined;
+  export let index = 0;
 </script>
 
 <Input
@@ -39,5 +39,5 @@
 {#if inputs}
   <br />
   <br />
-  <TemplateInputs bind:inputs={inputs} bind:globalIndex={$TemplateInputUniqueIndex} />
+  <TemplateInputs bind:inputs={inputs} bind:globalIndex={$TemplateInputUniqueIndex} sectionIndex={index} />
 {/if}

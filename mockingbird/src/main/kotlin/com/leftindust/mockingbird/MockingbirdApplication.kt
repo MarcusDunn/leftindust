@@ -8,26 +8,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
-import graphql.ExecutionResult
-import graphql.execution.AbstractAsyncExecutionStrategy
-import graphql.execution.AsyncExecutionStrategy
-import graphql.execution.DataFetcherExceptionHandler
-import graphql.execution.ExecutionContext
-import graphql.execution.ExecutionStrategy
-import graphql.execution.ExecutionStrategyParameters
 import graphql.language.StringValue
 import graphql.schema.Coercing
 import graphql.schema.CoercingSerializeException
 import graphql.schema.GraphQLScalarType
-import graphql.schema.idl.TypeRuntimeWiring
-import java.util.UUID
-import java.util.concurrent.CompletableFuture
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.core.convert.ConversionService
-import org.springframework.core.convert.TypeDescriptor
 import org.springframework.core.io.ClassPathResource
 import org.springframework.graphql.execution.RuntimeWiringConfigurer
 import org.springframework.http.HttpMethod
@@ -40,50 +28,98 @@ import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
+import java.util.Base64
+import java.util.UUID
 
 
 @SpringBootApplication
 @EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class)
 class MockingbirdApplication {
     @Bean
-    fun runtimeWiringConfigurer() = RuntimeWiringConfigurer { builder ->
-        builder.scalar(GraphQLScalarType.newScalar()
-            .name("UUID")
-            .coercing(object : Coercing<Any, Any> {
-                override fun serialize(dataFetcherResult: Any): Any {
-                    try {
-                        return UUID.fromString(dataFetcherResult.toString())
-                    } catch (e: Exception) {
-                        throw CoercingSerializeException(e)
-                    }
-                }
+    fun runtimeWiringConfigurer(): RuntimeWiringConfigurer = RuntimeWiringConfigurer { builder ->
+        builder
+            .scalar(
+                GraphQLScalarType.newScalar()
+                    .name("UUID")
+                    .coercing(object : Coercing<UUID, String> {
+                        override fun serialize(dataFetcherResult: Any): String {
+                            return try {
+                                if (dataFetcherResult is UUID) {
+                                    dataFetcherResult.toString()
+                                } else {
+                                    throw CoercingSerializeException("UUID must be a UUID, instead was $dataFetcherResult")
+                                }
+                            } catch (e: Exception) {
+                                throw CoercingSerializeException(e)
+                            }
+                        }
 
-                override fun parseValue(input: Any): Any {
-                    if (input is String) {
+                        override fun parseValue(input: Any): UUID {
+                            if (input is String) {
+                                try {
+                                    return UUID.fromString(input)
+                                } catch (e: Exception) {
+                                    throw CoercingSerializeException(e)
+                                }
+                            } else {
+                                throw CoercingSerializeException("UUID must be a string, instead was $input")
+                            }
+                        }
+
+                        override fun parseLiteral(input: Any): UUID {
+                            if (input is StringValue) {
+                                try {
+                                    return UUID.fromString(input.value)
+                                } catch (e: Exception) {
+                                    throw CoercingSerializeException(e)
+                                }
+                            } else {
+                                throw CoercingSerializeException("UUID must be a StringValue, instead was $input")
+                            }
+                        }
+                    })
+                    .build()
+            )
+            .scalar(GraphQLScalarType
+                .newScalar()
+                .name("Base64")
+                .coercing(object : Coercing<ByteArray, String> {
+                    override fun serialize(dataFetcherResult: Any): String {
                         try {
-                            return UUID.fromString(input)
+                            return if (dataFetcherResult is ByteArray) {
+                                Base64.getEncoder().encodeToString(dataFetcherResult)
+                            } else {
+                                throw CoercingSerializeException("Base64 must be a ByteArray, instead was $dataFetcherResult")
+                            }
                         } catch (e: Exception) {
                             throw CoercingSerializeException(e)
                         }
-                    } else {
-                        throw CoercingSerializeException("UUID must be a string")
                     }
-                }
 
-                override fun parseLiteral(input: Any): Any {
-                    if (input is StringValue) {
+                    override fun parseValue(input: Any): ByteArray {
                         try {
-                            return UUID.fromString(input.value)
+                            return if (input is String) {
+                                Base64.getDecoder().decode(input)
+                            } else {
+                                throw CoercingSerializeException("Base64 must be a String, instead was $input")
+                            }
                         } catch (e: Exception) {
                             throw CoercingSerializeException(e)
                         }
-                    } else {
-                        throw CoercingSerializeException("UUID must be a StringValue")
                     }
-                }
-            })
-            .build()
-        )
+
+                    override fun parseLiteral(input: Any): ByteArray {
+                        try {
+                            return if (input is StringValue) {
+                                Base64.getDecoder().decode(input.value)
+                            } else {
+                                throw CoercingSerializeException("Base64 must be a StringValue, instead was $input")
+                            }
+                        } catch (e: Exception) {
+                            throw CoercingSerializeException(e)
+                        }
+                    }
+                }).build())
     }
 
     @Bean
@@ -126,11 +162,12 @@ class MockingbirdApplication {
     }
 
     @Bean
-    fun httpSecurity(@Suppress("SpringJavaInjectionPointsAutowiringInspection") http: ServerHttpSecurity): SecurityWebFilterChain = http
-        .csrf { it.disable() }
-        .authorizeExchange { it.anyExchange().permitAll() }
-        .oauth2ResourceServer(OAuth2ResourceServerSpec::jwt)
-        .build()
+    fun httpSecurity(@Suppress("SpringJavaInjectionPointsAutowiringInspection") http: ServerHttpSecurity): SecurityWebFilterChain =
+        http
+            .csrf { it.disable() }
+            .authorizeExchange { it.anyExchange().permitAll() }
+            .oauth2ResourceServer(OAuth2ResourceServerSpec::jwt)
+            .build()
 }
 
 /**
