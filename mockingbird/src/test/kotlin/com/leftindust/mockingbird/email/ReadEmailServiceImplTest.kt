@@ -110,17 +110,17 @@ internal class ReadEmailServiceImplDataTest(
     @MockkBean
     private lateinit var readContactService: ReadContactService
 
-    /*@Test
+    @Test
     internal fun `check returns an email address when queried with an Id from the database with matching Id`() = runTest {
         val jennyEmailAddressId =
-            testEntityManager.persistAndGetId(PatientMother.jennyThePatientUnpersisted.emails, UUID::class.java)
+            testEntityManager.persistAndGetId(EmailMother.jennysEmail, UUID::class.java)
         val readEmailServiceImpl =
             ReadEmailServiceImpl(emailRepository, readDoctorService, readPatientService, readContactService)
         val returnedEmail = readEmailServiceImpl.getByEmailId(EmailDto.Id(jennyEmailAddressId!!))
 
         assertThat(returnedEmail, Matchers.notNullValue())
         assertThat(returnedEmail!!.id, equalTo(jennyEmailAddressId))
-    }*/
+    }
 
     @Test
     internal fun `check returns null when the database has no matching Id corresponding to an email address`() =
