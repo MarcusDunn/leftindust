@@ -38,7 +38,6 @@ object PatientMother {
             insuranceNumber = null,
             contacts = mutableSetOf(),
             doctors = mutableSetOf(),
-            patientFormEntities = mutableSetOf(),
         )
 
     val jennyThePatientPersisted
