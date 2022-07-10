@@ -88,7 +88,6 @@ internal class ReadEventServiceImplUnitTest {
             assertThat(events, nullValue())
         }
 
-    // Could not run the test properly -> My assumption is that VisitMother Event( visit = null) is causing this
     @Test
     internal fun `check getByVisitId returns a visitId's event when visit exists`() = runTest {
         val jennyDoctorVisit = VisitMother.jennyVisitPersisted
@@ -136,6 +135,7 @@ internal class ReadEventServiceImplDataTest(
         val readEventServiceImpl =
             ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
         val returnedEvent = readEventServiceImpl.getByEventId(EventDto.EventDtoId(jennyDoctorAppointmentId!!))
+
         assertThat(returnedEvent, Matchers.notNullValue())
         assertThat(returnedEvent!!.id, equalTo(jennyDoctorAppointmentId))
     }
@@ -146,6 +146,7 @@ internal class ReadEventServiceImplDataTest(
         val readEventServiceImpl =
             ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
         val returnedEvent = readEventServiceImpl.getByEventId(EventDto.EventDtoId(someNonExistentUuid))
+
         assertThat(returnedEvent, nullValue())
     }
 }
