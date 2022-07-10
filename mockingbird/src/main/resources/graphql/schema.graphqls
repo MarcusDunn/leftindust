@@ -6,6 +6,7 @@ schema {
 type Mutation {
     addClinic(clinic: CreateClinic!): Clinic!
     editClinic(clinic: EditClinic!): Clinic
+    addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate
 }
 
 input EditClinic {
@@ -56,6 +57,64 @@ type Query {
     userByUserUniqueId(uniqueId: String): MediqUser
 }
 
+input CreateSurveyTemplate {
+    title: String!
+    subtitle: String
+    sections: [CreateSurveyTemplateSection!]!
+    calculations: [CreateSurveyTemplateCalculation!]! = []
+}
+
+input CreateSurveyTemplateCalculation {
+    label: String!,
+    inputType: SurveyTemplateInputType,
+    showOnComplete: Boolean!,
+    calculation: String!,
+}
+
+enum SurveyTemplateInputType {
+    Text
+    Number
+    Date
+    Paragraph
+    Upload
+    SingleSelect
+    MultiSelect
+    Title
+}
+
+input CreateSurveyTemplateSection {
+    title: String!,
+    subtitle: String,
+    inputs: [CreateSurveyTemplateSectionInput!]!,
+}
+
+input CreateSurveyTemplateSectionInput {
+    type: SurveyTemplateInputType!,
+    label: String!,
+    options: [String!],
+    placeholder: String,
+    required: Boolean!,
+    category: SurveyTemplateCategory!,
+    uploadMultiple: Boolean,
+    uploadAccept: TemplateInputUploadType,
+}
+
+enum TemplateInputUploadType {
+    All
+    Images
+    Documents
+}
+
+enum SurveyTemplateCategory {
+    Date
+    Title
+    Body
+}
+
+type SurveyTemplate {
+    id: UUID
+}
+
 type MediqUserId {
     value: UUID
 }
@@ -101,3 +160,4 @@ type Clinic {
 }
 
 scalar UUID
+scalar Base64

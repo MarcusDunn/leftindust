@@ -13,12 +13,10 @@ import javax.persistence.ManyToOne
 
 @Entity
 class MediqRecord(
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne
     var patient: Patient,
-    @Column(nullable = false)
     val creationDate: Timestamp,
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     val type: RecordType,
     @Column(length = 10_000, nullable = false)
     val jsonBlob: String,
