@@ -5,7 +5,7 @@ import numberSocket, { type NumberSocket } from '@/features/Socket/components/Nu
 
 const defaultBaseSocket: NumberSocket = {
   ...numberSocket,
-  defaultValue: 4,
+  defaultValue: 10,
 }
 
 const node: NodeBlueprint<
