@@ -41,5 +41,5 @@
 
 <h1 class="no-margin" style="text-align: center">{$output}</h1>
 <List class="no-margin" noHairlines>
-  <option value="log" style="padding: 5px 0; text-align:center">Logarithm</option>
+  <option value="log" style="padding: 5px 0; text-align:center; background-color: transparent">Logarithm</option>
 </List>
