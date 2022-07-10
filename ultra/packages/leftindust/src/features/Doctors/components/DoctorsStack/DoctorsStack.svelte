@@ -18,9 +18,8 @@
   let doctors: DoctorsFragment[] = [];
 
   const { data, dragger, quicklook } = $$props as StackProps;
-
   const request = operationStore(DoctorsQueryDocument, {
-    dids: { id: data.id },
+    pid: { id: data.id },
   });
   
   query(request);
@@ -41,14 +40,16 @@
 >
   <Request {...$request} refetch={request.reexecute} middle>
     {#if doctors.length > 0}
-      <GenericGrid 
-        props={{ id:'Doctor', data, quicklook }}
-        type={WidgetType.Card}
-        dataType={['Doctor']}
-        category={[WidgetCategory.Document]}
-        store
-        fixed
-      />
+      {#each doctors as doctor}
+        <GenericGrid 
+          props={{ id:'Doctor', data, quicklook }}
+          type={WidgetType.Card}
+          dataType={['Doctor']}
+          category={[WidgetCategory.Document]}
+          store
+          fixed
+        />
+      {/each}
     {:else}
       <DescriptivePlaceholder 
         title={$_('generics.noDoctors')}

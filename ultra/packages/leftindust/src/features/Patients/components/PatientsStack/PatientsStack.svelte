@@ -44,14 +44,16 @@
 >
   <Request {...$request} refetch={request.reexecute} middle>
     {#if patients.length > 0}
-      <GenericGrid 
-        props={{ id:'Patient', data, quicklook }}
-        type={WidgetType.Card}
-        dataType={['Patient']}
-        category={[WidgetCategory.Document]}
-        store
-        fixed
-      />
+      {#each patients as patient}
+        <GenericGrid 
+          props={{ id:'Patient', data, quicklook }}
+          type={WidgetType.Card}
+          dataType={['Patient']}
+          category={[WidgetCategory.Document]}
+          store
+          fixed
+        />
+      {/each}
     {:else}
       <DescriptivePlaceholder 
         title={$_('generics.noPatients')} 
