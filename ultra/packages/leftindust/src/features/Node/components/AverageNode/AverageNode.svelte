@@ -22,7 +22,7 @@
     let value = 0;
 
     $Numbers.forEach((number) => {
-      value = value + parseInt(number, 10);
+      value = value + number;
     });
 
     return value / $Numbers.length;

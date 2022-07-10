@@ -7,6 +7,7 @@
   import { writable, type Writable } from 'svelte/store';
 
   import { BlockFooter, Button } from 'framework7-svelte';
+  import { get } from 'svelte/store';
 
   import { _ } from '@/language';
   import TemplateCalculationInput from './TemplateCalculationInput.svelte';

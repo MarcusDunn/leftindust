@@ -23,18 +23,16 @@
     type: 'addition',
   };
 
-  const { value: LHS } = inputs.LHS;
-  const { value: RHS } = inputs.RHS;
+  const { value: LHS, connection: LHSConnection } = inputs.LHS;
+  const { value: RHS, connection: RHSConnection } = inputs.RHS;
   
   const { value: output } = outputs.Number;
 
   const getValue = () => {
     const { type } = store;
 
-    // @ts-expect-error
-    const left = parseInt($LHS, 10);
-    // @ts-expect-error
-    const right = parseInt($RHS, 10);
+    const left = $LHS;
+    const right = $RHS;
 
     switch (type) {
       case 'addition':
@@ -53,6 +51,18 @@
   };
 
   $: inputs, store, getValue();
+  $: console.log({
+    LHS: {
+      input: inputs.LHS,
+      value: $LHS,
+      connection: $LHSConnection,
+    },
+    RHS: {
+      input: inputs.RHS,
+      value: $RHS,
+      connection: $RHSConnection,
+    },
+  });
 </script>
 
 <h1 class="no-margin" style="text-align: center">{$output}</h1>

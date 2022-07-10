@@ -20,6 +20,17 @@
       })(),
     },
   });
+
+  $: inputs = inputs.map((input) => {
+    let value = input.value;
+    if (input.type === TemplateInputType.Text && typeof value === 'number') value = value.toString();
+    if (input.type === TemplateInputType.Number && typeof value === 'string') value = parseInt(value, 10);
+
+    return {
+      ...input,
+      value,
+    };
+  });
 </script>
 
 {#each inputs as {
@@ -35,9 +46,13 @@
     <h4 style="padding-top: 20px">{label}</h4>
   {:else}
     <div style="margin-bottom: 20px;">
-      {#if type === TemplateInputType.Text || type === TemplateInputType.Number}
+      {#if type === TemplateInputType.Text}
         <Input title={label} clear>
           <input type="text" {placeholder} bind:value />
+        </Input>
+      {:else if type === TemplateInputType.Number}
+        <Input title={label} clear>
+          <input type="number" {placeholder} bind:value />
         </Input>
       {:else if type === TemplateInputType.Date}
         {#if typeof value === 'number' || typeof value === 'undefined'}

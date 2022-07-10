@@ -742,3 +742,11 @@ input:-internal-autofill-selected {
     }
   }
 }
+
+.smart-select-popover {
+  li:first-child {
+    &.disabled {
+      display: none;
+    }
+  }
+}

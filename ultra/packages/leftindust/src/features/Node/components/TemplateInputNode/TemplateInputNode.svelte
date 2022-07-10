@@ -28,7 +28,6 @@
 
   const { value: Value } = outputs.Value;
   
-  let value: Writable<unknown> | undefined;
   let prevType = $TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type;
 
   const reevaluateConnections = () => {
@@ -56,11 +55,7 @@
     }
   };
 
-  $: $TemplateInputItems, (() => {
-    value = editor.inputs?.[store.id]?.value;
-  })();
-
-  $: if (value) $Value = $value;
+  $: if (editor.inputs?.[store.id]?.value) $Value = get(editor.inputs?.[store.id]?.value);
 
   $: $TemplateInputItems, (() => {
     const type = getTemplateSocketType($TemplateInputItems.sections[store.sectionIndex].inputs[store.index]?.type);
@@ -70,7 +65,7 @@
   
       if (socket) {
         outputs.Value.type = type;
-        outputs.Value.disabled = !value;
+        outputs.Value.disabled = !$Value;
         outputs.Value.color = socket.color;
       }
     }

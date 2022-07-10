@@ -10,6 +10,7 @@
   import type { Editor, NodeBlueprint } from 'function-junctions/types';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
+  import TemplateInputNewNode from '@/features/Node/components/TemplateInputNewNode';
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
   import TemplateInputsNode from '@/features/Node/components/TemplateInputsNode';
@@ -39,6 +40,7 @@
     input: TemplateInputNode,
     output: TemplateOutputNode,
     Group: TemplateInputsNode,
+    N_Input: TemplateInputNewNode,
     Math: MathNode,
     Average: AverageNode,
   };
@@ -51,11 +53,18 @@
       icon: {
         f7: 'skew',
       },
-      nodes: [{
-        title: 'Group',
-        description: 'Group multiple inputs together',
-        blueprint: TemplateInputsNode,
-      }],
+      nodes: [
+        {
+          title: 'N_Input',
+          description: 'Connect the inputs from your form',
+          blueprint: TemplateInputsNode,
+        },
+        {
+          title: 'Group',
+          description: 'Group multiple inputs together',
+          blueprint: TemplateInputsNode,
+        },
+      ],
     },
     {
       title: 'Mathematics',
