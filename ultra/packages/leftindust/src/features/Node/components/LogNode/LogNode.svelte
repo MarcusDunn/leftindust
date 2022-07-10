@@ -5,7 +5,7 @@
     OutputSocket,
     OutputSockets,
   } from 'function-junctions/types';
-  import { List, ListInput } from 'framework7-svelte';
+  import { List } from 'framework7-svelte';
 
   export let inputs: InputSockets<{
     BASE: InputSocket<number>;
