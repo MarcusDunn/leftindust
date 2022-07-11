@@ -12,9 +12,12 @@
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
+  import PowerNode from '@/features/Node/components/PowerNode';
+  import LogNode from '@/features/Node/components/LogNode';
   import TemplateInputsNode from '@/features/Node/components/TemplateInputsNode';
   import type { MenuNodes } from '@/features/Nodes';
   import ConditionalNode from '@/features/Node/components/ConditionalNode';
+  import TrigNode from '@/features/Node/components/TrigNode';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -41,6 +44,9 @@
     Group: TemplateInputsNode,
     Math: MathNode,
     Condition: ConditionalNode,
+    Power: PowerNode,
+    Logarithm: LogNode,
+    Trigonometry: TrigNode,
   };
 
   const menuNodes: MenuNodes = [
@@ -72,6 +78,18 @@
         title: 'Condition',
         description: 'Equals, not equals, greater than, less than',
         blueprint: ConditionalNode,
+      }, {
+        title: 'Logarithm',
+        description: 'Logarithms',
+        blueprint: LogNode,
+      }, {
+        title: 'Power',
+        description: 'Powers and roots',
+        blueprint: PowerNode,
+      }, {
+        title: 'Trigonometry',
+        description: 'Sine, cosine, and tangent',
+        blueprint: TrigNode,
       }],
     }];
 
