@@ -26,13 +26,18 @@
 
   const getValue = () => {
     const { type } = store;
+
+    // @ts-expect-error
+    const base = parseInt($BASE, 10);
+    // @ts-expect-error
+    const power = parseInt($POWER, 10);
     
     switch (type) {
       case 'power':
-        $output = Math.pow($BASE, $POWER);
+        $output = Math.pow(base, power);
         break;
       case 'root':
-        $output = $POWER === 2 ? Math.sqrt($BASE) : Math.pow($BASE, 1 / $POWER);
+        $output = power === 2 ? Math.sqrt(base) : Math.pow(base, 1 / power);
         break;
     }
   };
