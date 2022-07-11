@@ -6,6 +6,7 @@
     OutputSockets,
   } from 'function-junctions/types';
   import { List, ListInput } from 'framework7-svelte';
+  import { nRoot } from '../..';
 
   export let inputs: InputSockets<{
     BASE: InputSocket<number>;
@@ -37,7 +38,7 @@
         $output = Math.pow(base, power);
         break;
       case 'root':
-        $output = power === 2 ? Math.sqrt(base) : Math.pow(base, 1 / power);
+        $output = nRoot(base, power);
         break;
     }
   };

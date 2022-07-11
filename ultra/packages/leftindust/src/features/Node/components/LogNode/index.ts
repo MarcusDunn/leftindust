@@ -2,10 +2,11 @@ import type { NodeBlueprint, SocketBlueprint } from 'function-junctions/types';
 import LogNode from './LogNode.svelte';
 
 import numberSocket, { type NumberSocket } from '@/features/Socket/components/NumberSocket';
+import { DEFAULT_LOG_BASE } from '../..';
 
 const defaultBaseSocket: NumberSocket = {
   ...numberSocket,
-  defaultValue: 10,
+  defaultValue: DEFAULT_LOG_BASE,
 }
 
 const node: NodeBlueprint<

@@ -49,49 +49,48 @@
     Trigonometry: TrigNode,
   };
 
-  const menuNodes: MenuNodes = [
-    {
-      title: 'I/O',
-      description: 'Tools to handle inputs and outputs',
-      color: 'deeppurple',
-      icon: {
-        f7: 'skew',
-      },
-      nodes: [{
-        title: 'Group',
-        description: 'Group multiple inputs together',
-        blueprint: TemplateInputsNode,
-      }],
+  const menuNodes: MenuNodes = [{
+    title: 'I/O',
+    description: 'Tools to handle inputs and outputs',
+    color: 'deeppurple',
+    icon: {
+      f7: 'skew',
     },
-    {
-      title: 'Mathematics',
-      description: 'Tools to preform basic arithmetic calculations',
-      color: 'pink',
-      icon: {
-        f7: 'function',
-      },
-      nodes: [{
-        title: 'Math',
-        description: 'Addition, subtraction, multiplication, and division',
-        blueprint: MathNode,
-      }, {
-        title: 'Condition',
-        description: 'Equals, not equals, greater than, less than',
-        blueprint: ConditionalNode,
-      }, {
-        title: 'Logarithm',
-        description: 'Logarithms',
-        blueprint: LogNode,
-      }, {
-        title: 'Power',
-        description: 'Powers and roots',
-        blueprint: PowerNode,
-      }, {
-        title: 'Trigonometry',
-        description: 'Sine, cosine, and tangent',
-        blueprint: TrigNode,
-      }],
-    }];
+    nodes: [{
+      title: 'Group',
+      description: 'Group multiple inputs together',
+      blueprint: TemplateInputsNode,
+    }],
+  },
+  {
+    title: 'Mathematics',
+    description: 'Tools to preform basic arithmetic calculations',
+    color: 'pink',
+    icon: {
+      f7: 'function',
+    },
+    nodes: [{
+      title: 'Math',
+      description: 'Addition, subtraction, multiplication, and division',
+      blueprint: MathNode,
+    }, {
+      title: 'Condition',
+      description: 'Equals, not equals, greater than, less than',
+      blueprint: ConditionalNode,
+    }, {
+      title: 'Logarithm',
+      description: 'Logarithms',
+      blueprint: LogNode,
+    }, {
+      title: 'Power',
+      description: 'Powers and roots',
+      blueprint: PowerNode,
+    }, {
+      title: 'Trigonometry',
+      description: 'Sine, cosine, and tangent',
+      blueprint: TrigNode,
+    }],
+  }];
 
   $: calculation.editor = editor;
   $: console.log($value);

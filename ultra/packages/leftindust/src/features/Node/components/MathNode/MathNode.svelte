@@ -17,15 +17,12 @@
     Number: OutputSocket<number>;
   }>;
 
-  export let store: {
-    type: 'addition' | 'subtraction' | 'multiplication' | 'division'
-  } = {
-    type: 'addition',
-  };
+  type OperationType = 'addition' | 'subtraction' | 'multiplication' | 'division';
+  type OperationStore = { type: OperationType };
+  export let store: OperationStore = { type: 'addition' };
 
   const { value: LHS } = inputs.LHS;
   const { value: RHS } = inputs.RHS;
-  
   const { value: output } = outputs.Number;
 
   const getValue = () => {

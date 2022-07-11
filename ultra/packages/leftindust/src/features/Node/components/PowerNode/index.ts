@@ -2,10 +2,11 @@ import type { NodeBlueprint, SocketBlueprint } from 'function-junctions/types';
 import PowerNode from './PowerNode.svelte';
 
 import numberSocket, { type NumberSocket } from '@/features/Socket/components/NumberSocket';
+import { DEFAULT_ROOT_DEGREE } from '../..';
 
 const defaultPowerSocket: NumberSocket = {
   ...numberSocket,
-  defaultValue: 2,
+  defaultValue: DEFAULT_ROOT_DEGREE,
 }
 
 const node: NodeBlueprint<
