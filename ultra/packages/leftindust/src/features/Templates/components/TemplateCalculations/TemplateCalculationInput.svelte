@@ -16,6 +16,7 @@
   import LogNode from '@/features/Node/components/LogNode';
   import TemplateInputsNode from '@/features/Node/components/TemplateInputsNode';
   import type { MenuNodes } from '@/features/Nodes';
+  import ConditionalNode from '@/features/Node/components/ConditionalNode';
   import TrigNode from '@/features/Node/components/TrigNode';
 
   export let index: number;
@@ -42,6 +43,7 @@
     output: TemplateOutputNode,
     Group: TemplateInputsNode,
     Math: MathNode,
+    Condition: ConditionalNode,
     Power: PowerNode,
     Logarithm: LogNode,
     Trigonometry: TrigNode,
@@ -72,6 +74,10 @@
         title: 'Math',
         description: 'Addition, subtraction, multiplication, and division',
         blueprint: MathNode,
+      }, {
+        title: 'Condition',
+        description: 'Equals, not equals, greater than, less than',
+        blueprint: ConditionalNode,
       }, {
         title: 'Logarithm',
         description: 'Logarithms',
