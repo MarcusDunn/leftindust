@@ -8,7 +8,6 @@ import com.leftindust.mockingbird.email.EmailDto
 import com.leftindust.mockingbird.event.EventDto
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.phone.PhoneDto
-import com.leftindust.mockingbird.survey.SurveyDto
 import com.leftindust.mockingbird.user.MediqUserDto
 import com.leftindust.mockingbird.visit.VisitDto
 import mu.KotlinLogging
@@ -44,8 +43,6 @@ class PatientQuery(
     suspend fun user(): MediqUserDto? = TODO()
 
     suspend fun events(): List<EventDto> = TODO()
-
-    suspend fun assignedSurveys(): List<SurveyDto> = TODO()
 
     suspend fun phones(): List<PhoneDto> = TODO()
 

@@ -313,8 +313,10 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
   ul {
     margin-left: 20px;
 
-    .item-inner {
-      padding-right: 0 !important;
+    .item-input {
+      .item-inner {
+        padding-right: 0 !important;
+      }
     }
   }
 

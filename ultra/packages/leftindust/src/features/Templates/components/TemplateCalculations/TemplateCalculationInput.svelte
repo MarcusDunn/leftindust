@@ -13,6 +13,8 @@
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
   import PowerNode from '@/features/Node/components/PowerNode';
+  import LogNode from '@/features/Node/components/LogNode';
+  import TemplateInputsNode from '@/features/Node/components/TemplateInputsNode';
   import type { MenuNodes } from '@/features/Nodes';
 
   export let index: number;
@@ -37,27 +39,47 @@
   const nodes: Record<string, NodeBlueprint> = {
     input: TemplateInputNode,
     output: TemplateOutputNode,
+    Group: TemplateInputsNode,
     Math: MathNode,
-    Power: PowerNode
+    Power: PowerNode,
+    Logarithm: LogNode,
   };
 
-  const menuNodes: MenuNodes = [{
-    title: 'Mathematics',
-    description: 'Tools to preform basic arithmetic calculations',
-    color: 'pink',
-    icon: {
-      f7: 'sum',
+  const menuNodes: MenuNodes = [
+    {
+      title: 'I/O',
+      description: 'Tools to handle inputs and outputs',
+      color: 'deeppurple',
+      icon: {
+        f7: 'skew',
+      },
+      nodes: [{
+        title: 'Group',
+        description: 'Group multiple inputs together',
+        blueprint: TemplateInputsNode,
+      }],
     },
-    nodes: [{
-      title: 'Math',
-      description: 'Addition, subtraction, multiplication, and division',
-      blueprint: MathNode,
-    }, {
-      title: 'Power',
-      description: 'Powers and roots',
-      blueprint: PowerNode,
-    }],
-  }];
+    {
+      title: 'Mathematics',
+      description: 'Tools to preform basic arithmetic calculations',
+      color: 'pink',
+      icon: {
+        f7: 'function',
+      },
+      nodes: [{
+        title: 'Math',
+        description: 'Addition, subtraction, multiplication, and division',
+        blueprint: MathNode,
+      }, {
+        title: 'Logarithm',
+        description: 'Logarithms',
+        blueprint: LogNode,
+      }, {
+        title: 'Power',
+        description: 'Powers and roots',
+        blueprint: PowerNode,
+      }],
+    }];
 
   $: calculation.editor = editor;
   $: console.log($value);
