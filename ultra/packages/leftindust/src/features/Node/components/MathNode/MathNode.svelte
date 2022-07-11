@@ -51,18 +51,6 @@
   };
 
   $: inputs, store, getValue();
-  $: console.log({
-    LHS: {
-      input: inputs.LHS,
-      value: $LHS,
-      connection: $LHSConnection,
-    },
-    RHS: {
-      input: inputs.RHS,
-      value: $RHS,
-      connection: $RHSConnection,
-    },
-  });
 </script>
 
 <h1 class="no-margin" style="text-align: center">{$output}</h1>

@@ -10,7 +10,6 @@
   import type { Editor, NodeBlueprint } from 'function-junctions/types';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
-  import TemplateInputNewNode from '@/features/Node/components/TemplateInputNewNode';
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
   import TemplateInputsNode from '@/features/Node/components/TemplateInputsNode';
@@ -37,10 +36,9 @@
   let editor: Editor;
 
   const nodes: Record<string, NodeBlueprint> = {
-    input: TemplateInputNode,
     output: TemplateOutputNode,
     Group: TemplateInputsNode,
-    N_Input: TemplateInputNewNode,
+    Input: TemplateInputNode,
     Math: MathNode,
     Average: AverageNode,
   };
@@ -55,9 +53,9 @@
       },
       nodes: [
         {
-          title: 'N_Input',
+          title: 'Input',
           description: 'Connect the inputs from your form',
-          blueprint: TemplateInputsNode,
+          blueprint: TemplateInputNode,
         },
         {
           title: 'Group',

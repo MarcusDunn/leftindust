@@ -34,8 +34,6 @@
   // The type of event.currentTarget is incompatible with f7's popover type which is wrong
   // @ts-expect-error
   const openModal = (event: MouseEvent) => (modal.open(event.currentTarget, true));
-
-  $: console.log(state);
 </script>
 
 <div class={`nodes-nodes_modal ${open ? 'nodes-nodes_modal-open' : ''}`}>
