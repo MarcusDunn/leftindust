@@ -6,6 +6,7 @@
     OutputSockets,
   } from 'function-junctions/types';
   import { List } from 'framework7-svelte';
+import { log } from '../..';
 
   export let inputs: InputSockets<{
     BASE: InputSocket<number>;
@@ -19,26 +20,14 @@
   const { value: BASE } = inputs.BASE;
   const { value: VALUE } = inputs.VALUE;
   const { value: output } = outputs.Number;
-
-  const BASE10 = 10;
-  const BASE2 = 2;
+  
   const getValue = () => {
     // @ts-expect-error
     const value = parseInt($VALUE, 10);
     // @ts-expect-error
     const base = parseInt($BASE, 10);
-    
-    switch (base) {
-      case BASE10:
-        $output = Math.log10(value);
-        break;
-      case BASE2:
-        $output = Math.log2(value);
-        break;
-      default:
-        $output = Math.log(value) / Math.log(base);
-        break;
-    }
+
+    $output = log(value, base);
   };
 
   $: inputs, getValue();
