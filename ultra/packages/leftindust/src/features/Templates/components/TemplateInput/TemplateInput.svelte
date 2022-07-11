@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { TemplateInput } from '../..';
+  import { templateInputSelectOptions, type TemplateInput } from '../..';
   import { TemplateInputUploadType } from '../..';
   import { _ } from 'svelte-i18n';
   import { TemplateInputType } from '../..';
@@ -44,7 +44,6 @@
 
   // https://github.com/sveltejs/svelte/issues/5162
   let optionText = $_('generics.options');
-  
 </script>
 
 <div class="templates-template_input">
@@ -64,40 +63,7 @@
           <Select
             title={$_('generics.type')}
             placeholder={$_('examples.text')}
-            options={[
-              {
-                text: $_('generics.text'),
-                value: TemplateInputType.Text,
-              },
-              {
-                text: $_('generics.number'),
-                value: TemplateInputType.Number,
-              },
-              {
-                text: $_('generics.date'),
-                value: TemplateInputType.Date,
-              },
-              {
-                text: $_('generics.paragraph'),
-                value: TemplateInputType.Paragraph,
-              },
-              {
-                text: $_('generics.singleSelect'),
-                value: TemplateInputType.SingleSelect,
-              },
-              {
-                text: $_('generics.multiSelect'),
-                value: TemplateInputType.MultiSelect,
-              },
-              {
-                text: $_('generics.upload'),
-                value: TemplateInputType.Upload,
-              },
-              {
-                text: $_('generics.title'),
-                value: TemplateInputType.Title,
-              },
-            ]}
+            options={templateInputSelectOptions}
             bind:value={type}
           />
         {/key}

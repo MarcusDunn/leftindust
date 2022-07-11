@@ -24,7 +24,7 @@
   </Appbar>
   <Block class="no-margin-top">
     <br />
-    <Row>
+    <Row class="no-gutter">
       {#each nodes as node}
         <Col
           class="display-flex"

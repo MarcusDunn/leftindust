@@ -3,7 +3,7 @@
   import Input from '@/features/Input/Input.svelte';
   import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
-  import { Button, Col, ListItem, Row, Toggle } from 'framework7-svelte';
+  import { Button, ListItem, Toggle } from 'framework7-svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
   import { TemplateNodesModalOpen } from '../../store';
@@ -12,6 +12,9 @@
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
+  import PowerNode from '@/features/Node/components/PowerNode';
+  import LogNode from '@/features/Node/components/LogNode';
+  import TemplateInputsNode from '@/features/Node/components/TemplateInputsNode';
   import type { MenuNodes } from '@/features/Nodes';
   import TrigNode from '@/features/Node/components/TrigNode';
 
@@ -37,27 +40,52 @@
   const nodes: Record<string, NodeBlueprint> = {
     input: TemplateInputNode,
     output: TemplateOutputNode,
+    Group: TemplateInputsNode,
     Math: MathNode,
+    Power: PowerNode,
+    Logarithm: LogNode,
     Trigonometry: TrigNode,
   };
 
-  const menuNodes: MenuNodes = [{
-    title: 'Mathematics',
-    description: 'Tools to preform basic arithmetic calculations',
-    color: 'pink',
-    icon: {
-      f7: 'sum',
+  const menuNodes: MenuNodes = [
+    {
+      title: 'I/O',
+      description: 'Tools to handle inputs and outputs',
+      color: 'deeppurple',
+      icon: {
+        f7: 'skew',
+      },
+      nodes: [{
+        title: 'Group',
+        description: 'Group multiple inputs together',
+        blueprint: TemplateInputsNode,
+      }],
     },
-    nodes: [{
-      title: 'Math',
-      description: 'Addition, subtraction, multiplication, and division',
-      blueprint: MathNode,
-    }, {
-      title: 'Trigonometry',
-      description: 'Sine, cosine, and tangent',
-      blueprint: TrigNode,
-    }],
-  }];
+    {
+      title: 'Mathematics',
+      description: 'Tools to preform basic arithmetic calculations',
+      color: 'pink',
+      icon: {
+        f7: 'function',
+      },
+      nodes: [{
+        title: 'Math',
+        description: 'Addition, subtraction, multiplication, and division',
+        blueprint: MathNode,
+      }, {
+        title: 'Logarithm',
+        description: 'Logarithms',
+        blueprint: LogNode,
+      }, {
+        title: 'Power',
+        description: 'Powers and roots',
+        blueprint: PowerNode,
+      }, {
+        title: 'Trigonometry',
+        description: 'Sine, cosine, and tangent',
+        blueprint: TrigNode,
+      }],
+    }];
 
   $: calculation.editor = editor;
   $: console.log($value);

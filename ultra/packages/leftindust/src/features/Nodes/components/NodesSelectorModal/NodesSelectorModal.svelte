@@ -51,7 +51,7 @@
       </Appbar>
       <Block class="no-margin-top">
         <p />
-        <Row>
+        <Row class="no-gutter">
           {#each menuNodes as section, index}
             <Col width={50} xlarge={33}>
               <List class="no-margin" mediaList inset>

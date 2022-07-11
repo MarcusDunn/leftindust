@@ -1,9 +1,16 @@
 import type { Editor } from 'function-junctions/types';
 import type { EditorState, SocketBlueprint } from 'function-junctions/types';
-import arraySocket from '../Socket/components/ArraySocket';
+import { get } from 'svelte/store';
 import dateSocket from '../Socket/components/DateSocket';
 import numberSocket from '../Socket/components/NumberSocket';
 import textSocket from '../Socket/components/TextSocket';
+import numberArraySocket from '../Socket/components/NumberArraySocket';
+import textArraySocket from '../Socket/components/TextArraySocket';
+import dateArraySocket from '../Socket/components/DateArraySocket';
+import twoDimensionalTextArraySocket from '../Socket/components/2DTextArraySocket';
+import { _ } from '@/language';
+
+const language = get(_);
 
 export enum TemplateInputType {
   Text = 'text',
@@ -69,7 +76,10 @@ export type TemplateCalculationSockets = {
   number: SocketBlueprint;
   text: SocketBlueprint;
   date: SocketBlueprint;
-  array: SocketBlueprint;
+  number_array: SocketBlueprint;
+  text_array: SocketBlueprint;
+  date_array: SocketBlueprint;
+  text_array_array: SocketBlueprint;
 }
 
 export const defaultTemplate: Template = {
@@ -85,16 +95,20 @@ export const templateCalculationSockets: TemplateCalculationSockets = {
   number: numberSocket,
   text: textSocket,
   date: dateSocket,
-  array: arraySocket,
+  number_array: numberArraySocket,
+  text_array: textArraySocket,
+  date_array: dateArraySocket,
+  text_array_array: twoDimensionalTextArraySocket,
 };
 
 export const getTemplateSocketType = (inputType: TemplateInputType) => {
-  let type: 'text' | 'number' | 'date' | 'array';
+  let type: 'text' | 'number' | 'date' | 'text_array';
 
   switch (inputType) {
     case TemplateInputType.Text:
     case TemplateInputType.Title:
     case TemplateInputType.Paragraph:
+    case TemplateInputType.SingleSelect:
       type = 'text';
       break;
     case TemplateInputType.Number:
@@ -103,9 +117,8 @@ export const getTemplateSocketType = (inputType: TemplateInputType) => {
     case TemplateInputType.Date:
       type = 'date';
       break;
-    case TemplateInputType.SingleSelect:
     case TemplateInputType.MultiSelect:
-      type = 'array';
+      type = 'text_array';
       break;
   }
 
@@ -113,3 +126,38 @@ export const getTemplateSocketType = (inputType: TemplateInputType) => {
   // @ts-expect-error
   return type;
 };
+
+export const templateInputSelectOptions = [
+  {
+    text: language('generics.text'),
+    value: TemplateInputType.Text,
+  },
+  {
+    text: language('generics.number'),
+    value: TemplateInputType.Number,
+  },
+  {
+    text: language('generics.date'),
+    value: TemplateInputType.Date,
+  },
+  {
+    text: language('generics.paragraph'),
+    value: TemplateInputType.Paragraph,
+  },
+  {
+    text: language('generics.singleSelect'),
+    value: TemplateInputType.SingleSelect,
+  },
+  {
+    text: language('generics.multiSelect'),
+    value: TemplateInputType.MultiSelect,
+  },
+  {
+    text: language('generics.upload'),
+    value: TemplateInputType.Upload,
+  },
+  {
+    text: language('generics.title'),
+    value: TemplateInputType.Title,
+  },
+];
