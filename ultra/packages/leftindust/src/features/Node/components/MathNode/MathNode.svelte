@@ -23,8 +23,8 @@
     type: 'addition',
   };
 
-  const { value: LHS, connection: LHSConnection } = inputs.LHS;
-  const { value: RHS, connection: RHSConnection } = inputs.RHS;
+  const { value: LHS } = inputs.LHS;
+  const { value: RHS } = inputs.RHS;
   
   const { value: output } = outputs.Number;
 
