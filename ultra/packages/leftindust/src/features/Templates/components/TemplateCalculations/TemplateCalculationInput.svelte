@@ -16,6 +16,7 @@
   import LogNode from '@/features/Node/components/LogNode';
   import TemplateInputsNode from '@/features/Node/components/TemplateInputsNode';
   import type { MenuNodes } from '@/features/Nodes';
+  import TrigNode from '@/features/Node/components/TrigNode';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -43,6 +44,7 @@
     Math: MathNode,
     Power: PowerNode,
     Logarithm: LogNode,
+    Trigonometry: TrigNode,
   };
 
   const menuNodes: MenuNodes = [
@@ -78,6 +80,10 @@
         title: 'Power',
         description: 'Powers and roots',
         blueprint: PowerNode,
+      }, {
+        title: 'Trigonometry',
+        description: 'Sine, cosine, and tangent',
+        blueprint: TrigNode,
       }],
     }];
 
