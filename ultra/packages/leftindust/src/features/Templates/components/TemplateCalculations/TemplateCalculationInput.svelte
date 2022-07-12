@@ -18,6 +18,7 @@
   import type { MenuNodes } from '@/features/Nodes';
   import ConditionalNode from '@/features/Node/components/ConditionalNode';
   import TrigNode from '@/features/Node/components/TrigNode';
+  import JoinNode from '@/features/Node/components/JoinNode';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -89,6 +90,19 @@
       title: 'Trigonometry',
       description: 'Sine, cosine, and tangent',
       blueprint: TrigNode,
+    }],
+  },
+  {
+    title: 'Text',
+    description: 'Tools to work with text',
+    color: 'green',
+    icon: {
+      f7: 'skew',
+    },
+    nodes: [{
+      title: 'Join',
+      description: 'Join text together',
+      blueprint: JoinNode,
     }],
   }];
 

@@ -3,14 +3,10 @@ import MathNode from './MathNode.svelte';
 
 import numberSocket from '@/features/Socket/components/NumberSocket';
 
-const node: NodeBlueprint<{
-  LHS: SocketBlueprint<number>
-  RHS: SocketBlueprint<number>
-},
-  {
-    Number: SocketBlueprint<number>
-  }
-  > = {
+const node: NodeBlueprint<
+  { LHS: SocketBlueprint<number>, RHS: SocketBlueprint<number> },
+  { Number: SocketBlueprint<number> }
+> = {
     inputs: {
       LHS: numberSocket,
       RHS: numberSocket,
