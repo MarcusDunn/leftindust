@@ -17,7 +17,6 @@
   import './TemplateInput.scss';
   import TemplateInputSelect from './TemplateInputSelect.svelte';
   import Add from '@/features/Input/components/Add/Add.svelte';
-  import { TemplateCalculations } from '../../store';
   
   export let inputs: TemplateInput[];
   export let index: number;
@@ -185,7 +184,6 @@
                 f7: 'minus_circle_fill',
                 color: 'red',
               }}
-              disabled={$TemplateCalculations.length > 0 && inputs.length === 1}
               on:click={() => {
                 inputs = inputs.filter((_, i) => i !== index);
               }}
