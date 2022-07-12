@@ -46,6 +46,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/restrict-plus-operands': 'off',
     '@ota-meshi/svelte/html-quotes': 'error',
     '@ota-meshi/svelte/indent': 'error',
     '@ota-meshi/svelte/mustache-spacing': 'error',

@@ -17,7 +17,6 @@
   import './TemplateInput.scss';
   import TemplateInputSelect from './TemplateInputSelect.svelte';
   import Add from '@/features/Input/components/Add/Add.svelte';
-  import { TemplateCalculations } from '../../store';
   
   export let inputs: TemplateInput[];
   export let index: number;
@@ -34,9 +33,6 @@
   export let options: string[] = [''];
 
   export let dragger: ((event: Event) => void)| undefined = undefined;
-
-  export let addNodeToComputations: (input: TemplateInput, index: number) => void;
-  export let deleteNodeFromComputation: (id: string) => void;
 
   $: multiselect = (type === TemplateInputType.SingleSelect || type === TemplateInputType.MultiSelect);
   $: title = type === TemplateInputType.Title;
@@ -179,7 +175,6 @@
                   },
                   ...inputs.slice(index),
                 ];
-                addNodeToComputations(inputs[inputs.length - 1], inputs.length - 1);
                 globalIndex += 1;
               }}
             />
@@ -189,9 +184,7 @@
                 f7: 'minus_circle_fill',
                 color: 'red',
               }}
-              disabled={$TemplateCalculations.length > 0 && inputs.length === 1}
               on:click={() => {
-                deleteNodeFromComputation(inputs[index].id.toString());
                 inputs = inputs.filter((_, i) => i !== index);
               }}
             />

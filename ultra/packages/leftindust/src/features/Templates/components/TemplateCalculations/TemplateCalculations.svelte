@@ -2,8 +2,7 @@
   import { type TemplateInput, TemplateInputType, getTemplateSocketType } from '../..';
   import AppLauncherApp from '@/features/Apps/components/AppLauncher/AppLauncherApp.svelte';
   import FlowCover from '@/apps/flow/assets/flow.png';
-  import { TemplateDefaultCalculation, TemplateInputItems, TemplateCalculations } from '../../store';
-  import type { NodeState } from 'function-junctions/types';
+  import { TemplateInputItems, TemplateCalculations } from '../../store';
   import { writable, type Writable } from 'svelte/store';
 
   import { BlockFooter, Button } from 'framework7-svelte';
@@ -50,35 +49,6 @@
     inputs.forEach((input) => {
       nodeInputs[input.id].value.update(() => input.value);
     });
-  }
-
-  // Updates default state
-  $: {
-    let state: Record<string, NodeState> = {};
-    
-    inputs.forEach((input, index) => {
-      state = {
-        ...state,
-        [`i_${input.id}`]: {
-          type: 'input',
-          x: 75,
-          y: (index * 230) + 100,
-          store: {
-            sectionIndex: input.sectionIndex,
-            index: input.index,
-            id: input.id,
-          },
-          outputs: {
-            Value: {
-              type: input.type,
-              value: '',
-            },
-          },
-        },
-      };
-    });
-
-    $TemplateDefaultCalculation = state;
   }
 </script>
 
@@ -132,8 +102,7 @@
                   scale: 1,
                 },
                 nodes: {
-                  ...$TemplateDefaultCalculation,
-                  [`o_${0}`]: {
+                  '0': {
                     type: 'output',
                     x: window.innerWidth - 360,
                     y: 100,
@@ -146,7 +115,6 @@
             },
           ];
         }}
-        disabled={Object.keys($TemplateDefaultCalculation).length < 1}
       >
         Add Calculation
       </Button>

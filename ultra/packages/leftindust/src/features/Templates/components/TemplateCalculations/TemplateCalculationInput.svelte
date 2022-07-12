@@ -13,6 +13,10 @@
   import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
   import TemplateInputsNode from '@/features/Node/components/TemplateInputsNode';
+  import AverageNode from '@/features/Node/components/AverageNode';
+  import NumberNode from '@/features/Node/components/NumberNode';
+  import TextNode from '@/features/Node/components/TextNode';
+  import DateNode from '@/features/Node/components/DateNode';
   import type { MenuNodes } from '@/features/Nodes';
 
   export let index: number;
@@ -35,10 +39,14 @@
   let editor: Editor;
 
   const nodes: Record<string, NodeBlueprint> = {
-    input: TemplateInputNode,
     output: TemplateOutputNode,
     Group: TemplateInputsNode,
+    Input: TemplateInputNode,
     Math: MathNode,
+    Number: NumberNode,
+    Text: TextNode,
+    Date: DateNode,
+    Average: AverageNode,
   };
 
   const menuNodes: MenuNodes = [
@@ -49,25 +57,75 @@
       icon: {
         f7: 'skew',
       },
-      nodes: [{
-        title: 'Group',
-        description: 'Group multiple inputs together',
-        blueprint: TemplateInputsNode,
-      }],
+      nodes: [
+        {
+          title: 'Input',
+          description: 'Connect the inputs from your form',
+          blueprint: TemplateInputNode,
+        },
+        {
+          title: 'Group',
+          description: 'Group multiple inputs together',
+          blueprint: TemplateInputsNode,
+        },
+      ],
     },
     {
-      title: 'Mathematics',
+      title: 'Numbers',
       description: 'Tools to preform basic arithmetic calculations',
-      color: 'pink',
+      color: 'blue',
       icon: {
-        f7: 'function',
+        f7: 'sum',
       },
-      nodes: [{
-        title: 'Math',
-        description: 'Addition, subtraction, multiplication, and division',
-        blueprint: MathNode,
-      }],
-    }];
+      nodes: [
+        {
+          title: 'Number',
+          description: 'Basic number input',
+          blueprint: NumberNode,
+        },
+        {
+          title: 'Math',
+          description: 'Addition, subtraction, multiplication, and division',
+          blueprint: MathNode,
+        },
+        {
+          title: 'Average',
+          description: 'Calculate the average of a set of numbers',
+          blueprint: AverageNode,
+        },
+      ],
+    },
+    {
+      title: 'Text',
+      description: 'Tools to preform text operations',
+      color: 'orange',
+      icon: {
+        f7: 'textformat',
+      },
+      nodes: [
+        {
+          title: 'Text',
+          description: 'Basic text input',
+          blueprint: TextNode,
+        },
+      ],
+    },
+    {
+      title: 'Date',
+      description: 'Tools to preform operations with dates and times',
+      color: 'teal',
+      icon: {
+        f7: 'clock_fill',
+      },
+      nodes: [
+        {
+          title: 'Date',
+          description: 'Basic date input',
+          blueprint: DateNode,
+        },
+      ],
+    },
+  ];
 
   $: calculation.editor = editor;
   $: console.log($value);

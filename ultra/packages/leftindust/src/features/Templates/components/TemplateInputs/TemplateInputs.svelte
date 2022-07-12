@@ -6,9 +6,7 @@
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import TemplateInput from '../TemplateInput/TemplateInput.svelte';
-  import { TemplateCalculations } from '../../store';
-	
-  export let sectionIndex: number;
+  
   export let inputs: TemplateInputT[] = [];
   export let globalIndex = 0;
 			
@@ -38,38 +36,6 @@
     e.preventDefault();
     dragDisabled = false;
   };
-
-  const addNodeToComputations = (input: TemplateInputT, index: number) => {
-    $TemplateCalculations.forEach((calculation) => {
-      calculation.editor?.addNode(
-        'input',
-        {
-          x: 75,
-          y: ((inputs.length - 1) * 230) + 100,
-        },
-        {
-          id: `i_${input.id}`,
-          blueprint: {
-            type: 'input',
-            x: 75,
-            y: ((inputs.length - 1) * 230) + 100,
-            store: {
-              sectionIndex,
-              index: index,
-              id: input.id,
-            },
-          },
-        },
-      );
-    });
-  };
-
-  const deleteNodeFromComputation = (id: string) => {
-    $TemplateCalculations.forEach((calculation) => {
-      console.log(`i_${id}`);
-      calculation.editor?.deleteNode(`i_${id}`);
-    });
-  };
 </script>
 
 {#if inputs.length > 0}
@@ -86,8 +52,6 @@
         <TemplateInput
           {index}
           dragger={startDrag}
-          {addNodeToComputations}
-          {deleteNodeFromComputation}
           bind:globalIndex
           bind:inputs
           bind:type={input.type}
@@ -123,7 +87,6 @@
             uploadMultiple: true,
           },
         ];
-        addNodeToComputations(inputs[inputs.length - 1], inputs.length - 1);
         globalIndex += 1;
       }}
     >

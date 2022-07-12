@@ -1,15 +1,14 @@
 import type { NodeBlueprint, SocketBlueprint } from 'function-junctions/types';
-import TemplateInputNode from './TemplateInputNode.svelte';
+import NumberNode from './NumberNode.svelte';
+import numberSocket from '@/features/Socket/components/NumberSocket';
 
 const node: NodeBlueprint<never, {
   Value: SocketBlueprint<unknown>,
 }> = {
   outputs: {
-    Value: {
-      type: '',
-    },
+    Value: numberSocket,
   },
-  component: TemplateInputNode,
+  component: NumberNode,
   className: 'node-transparent',
 };
 
