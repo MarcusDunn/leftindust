@@ -1,0 +1,22 @@
+package com.leftindust.mockingbird.survey
+
+import com.leftindust.mockingbird.clinic.ClinicDto
+import com.leftindust.mockingbird.graphql.types.input.RangeDto
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.patient.ReadPatientService
+import javax.transaction.Transactional
+import mu.KotlinLogging
+import org.springframework.stereotype.Service
+
+@Service
+@Transactional
+class ReadSurveyTemplateServiceImpl(
+    val surveyTemplateRepository: SurveyTemplateRepository,
+    val readPatientService: ReadPatientService,
+) : ReadSurveyTemplateService {
+    private val logger = KotlinLogging.logger { }
+
+    override suspend fun getByTemplateSurveyId(templateSurveyId: SurveyTemplateDto.Id): SurveyTemplateEntity? {
+        return surveyTemplateRepository.findById(templateSurveyId.value).orElse(null)
+    }
+}
