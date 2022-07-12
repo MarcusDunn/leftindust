@@ -6,6 +6,7 @@ import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
 import mu.KotlinLogging
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,6 +18,6 @@ class ReadSurveyTemplateServiceImpl(
     private val logger = KotlinLogging.logger { }
 
     override suspend fun getByTemplateSurveyId(templateSurveyId: SurveyTemplateDto.Id): SurveyTemplateEntity? {
-        return surveyTemplateRepository.findById(templateSurveyId.value).orElse(null)
+        return surveyTemplateRepository.findByIdOrNull(templateSurveyId.value)
     }
 }
