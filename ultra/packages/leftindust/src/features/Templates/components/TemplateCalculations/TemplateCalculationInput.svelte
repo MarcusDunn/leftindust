@@ -48,6 +48,7 @@
     Power: PowerNode,
     Logarithm: LogNode,
     Trigonometry: TrigNode,
+    Join: JoinNode,
   };
 
   const menuNodes: MenuNodes = [{
