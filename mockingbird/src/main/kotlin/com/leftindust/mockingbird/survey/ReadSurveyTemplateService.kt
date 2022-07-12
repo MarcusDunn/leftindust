@@ -5,8 +5,7 @@ import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.patient.PatientDto
 import org.springframework.security.access.prepost.PreAuthorize
 
-@PreAuthorize("hasAuthority('READ_Doctor')")
+@PreAuthorize("hasAuthority('READ_SURVEY_TEMPLATE')")
 interface ReadSurveyTemplateService {
     suspend fun getByTemplateSurveyId(templateSurveyId: SurveyTemplateDto.Id): SurveyTemplateEntity?
-    // we should be using SurveyTemplate class but that class only has an UUID.
 }
