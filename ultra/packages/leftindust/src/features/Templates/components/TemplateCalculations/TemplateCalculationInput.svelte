@@ -46,7 +46,7 @@
     output: TemplateOutputNode,
     Group: TemplateInputsNode,
     Input: TemplateInputNode,
-    Arithmatic: MathNode,
+    Arithmetic: MathNode,
     Number: NumberNode,
     Text: TextNode,
     Date: DateNode,
