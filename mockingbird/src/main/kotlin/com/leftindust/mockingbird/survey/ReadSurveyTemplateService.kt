@@ -7,5 +7,5 @@ import org.springframework.security.access.prepost.PreAuthorize
 
 @PreAuthorize("hasAuthority('READ_SURVEY_TEMPLATE')")
 interface ReadSurveyTemplateService {
-    suspend fun getByTemplateSurveyId(templateSurveyId: SurveyTemplateDto.Id): SurveyTemplateEntity?
+    suspend fun getByTemplateSurveyId(templateSurveyId: SurveyTemplateDto.Id): SurveyTemplate?
 }
