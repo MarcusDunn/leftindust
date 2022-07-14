@@ -17,7 +17,7 @@ class ReadSurveyTemplateServiceImpl(
 ) : ReadSurveyTemplateService {
     private val logger = KotlinLogging.logger { }
 
-    override suspend fun getByTemplateSurveyId(templateSurveyId: SurveyTemplateDto.Id): SurveyTemplateEntity? {
+    override suspend fun getByTemplateSurveyId(templateSurveyId: SurveyTemplateDto.Id): SurveyTemplate? {
         return surveyTemplateRepository.findByIdOrNull(templateSurveyId.value)
     }
 }
