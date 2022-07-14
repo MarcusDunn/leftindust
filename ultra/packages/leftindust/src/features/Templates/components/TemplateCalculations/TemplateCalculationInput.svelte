@@ -18,6 +18,10 @@
   import TextNode from '@/features/Node/components/TextNode';
   import DateNode from '@/features/Node/components/DateNode';
   import type { MenuNodes } from '@/features/Nodes';
+  import PowerNode from '@/features/Node/components/PowerNode';
+  import LogNode from '@/features/Node/components/LogNode';
+  import ConditionalNode from '@/features/Node/components/ConditionalNode';
+  import TrigNode from '@/features/Node/components/TrigNode';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -42,11 +46,15 @@
     output: TemplateOutputNode,
     Group: TemplateInputsNode,
     Input: TemplateInputNode,
-    Math: MathNode,
+    Arithmatic: MathNode,
     Number: NumberNode,
     Text: TextNode,
     Date: DateNode,
     Average: AverageNode,
+    Condition: ConditionalNode,
+    Power: PowerNode,
+    Logarithm: LogNode,
+    Trigonometry: TrigNode,
   };
 
   const menuNodes: MenuNodes = [
@@ -84,7 +92,7 @@
           blueprint: NumberNode,
         },
         {
-          title: 'Math',
+          title: 'Arithmetic',
           description: 'Addition, subtraction, multiplication, and division',
           blueprint: MathNode,
         },
@@ -92,6 +100,21 @@
           title: 'Average',
           description: 'Calculate the average of a set of numbers',
           blueprint: AverageNode,
+        },
+        {
+          title: 'Logarithm',
+          description: 'Logarithms',
+          blueprint: LogNode,
+        },
+        {
+          title: 'Power',
+          description: 'Powers and roots',
+          blueprint: PowerNode,
+        },
+        {
+          title: 'Trigonometry',
+          description: 'Sine, cosine, and tangent',
+          blueprint: TrigNode,
         },
       ],
     },
@@ -122,6 +145,21 @@
           title: 'Date',
           description: 'Basic date input',
           blueprint: DateNode,
+        },
+      ],
+    },
+    {
+      title: 'Boolean',
+      description: 'Tools to preform operations with bianary values',
+      color: 'primary',
+      icon: {
+        f7: 'equal_circle_fill',
+      },
+      nodes: [
+        {
+          title: 'Condition',
+          description: 'Equals, not equals, greater than, less than',
+          blueprint: ConditionalNode,
         },
       ],
     },

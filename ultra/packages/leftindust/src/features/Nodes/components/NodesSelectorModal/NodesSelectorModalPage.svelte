@@ -37,6 +37,8 @@
           <BlockFooter class="text-align-center two-line-word-clamp" style="margin-top: 5px">
             {node.description}
           </BlockFooter>
+          <br />
+          <br />
         </Col>
       {/each}
     </Row>
