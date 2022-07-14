@@ -31,10 +31,8 @@
   const getValue = () => {
     const { type } = store;
 
-    // @ts-expect-error
-    const left = parseInt($LHS, 10);
-    // @ts-expect-error
-    const right = parseInt($RHS, 10);
+    const left = $LHS;
+    const right = $RHS;
 
     switch (type) {
       case 'addition':

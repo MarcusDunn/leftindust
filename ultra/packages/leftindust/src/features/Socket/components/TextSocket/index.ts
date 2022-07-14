@@ -1,10 +1,10 @@
 import type { SocketBlueprint } from 'function-junctions/types';
 
-export type TextSocket = SocketBlueprint<number>;
+export type TextSocket = SocketBlueprint<string>;
 
 const socket: TextSocket = {
   type: 'text',
-  defaultValue: 0,
+  defaultValue: '',
   color: '#ff9500',
 };
 

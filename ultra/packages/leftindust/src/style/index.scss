@@ -734,3 +734,31 @@ input:-internal-autofill-selected {
     background-color: rgb(44, 44, 46) !important;
   }
 }
+
+.function-junctions-node-content {
+  .list {
+    ul {
+      background: transparent;
+    }
+  }
+}
+
+.smart-select-popover {
+  li:first-child {
+    &.disabled {
+      display: none;
+    }
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

@@ -7,7 +7,8 @@
   z-index: 100000;
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(0);
-  transition: backdrop-filter 300ms ease-in 300ms, opacity 300ms ease-in 300ms;
+  -webkit-backdrop-filter: blur(0);
+  transition: -webkit-backdrop-filter 300ms ease-out 0s, backdrop-filter 300ms ease-in 300ms, opacity 300ms ease-in 300ms;
   
   pointer-events: none;
   opacity: 0;
@@ -15,8 +16,9 @@
   &.nodes-nodes_modal-open {
     pointer-events: all;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     opacity: 1;
-    transition: backdrop-filter 300ms ease-out 0s, opacity 300ms ease-out 0s;
+    transition: -webkit-backdrop-filter 300ms ease-out 0s, backdrop-filter 300ms ease-out 0s, opacity 300ms ease-out 0s;
   }
 
   .function-junctions-editor {
@@ -44,6 +46,7 @@
 
       .nodes-nodes_modal-controls-content {
         backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
       }
     }
 
@@ -54,12 +57,14 @@
       border-radius: 40px;
       background: rgba(255, 255, 255, 0.4);
       backdrop-filter: blur(0);
+      -webkit-backdrop-filter: blur(0);
 
-      transition: backdrop-filter 300ms ease-in-out;
+      transition: -webkit-backdrop-filter 300ms ease-in-out, backdrop-filter 300ms ease-in-out;
 
       height: 70px;
       width: 500px;
       padding: 0 25px;
+      margin: 0 25px;
 
       z-index: 10;
 
@@ -77,6 +82,14 @@
         background: rgb(42, 42, 42);
         box-shadow: none;
       }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .nodes-nodes_modal {
+    .nodes-nodes_modal-controls {
+      bottom: 30px;
     }
   }
 }
