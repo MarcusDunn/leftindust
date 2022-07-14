@@ -48,20 +48,26 @@
     {/if}
   </svelte:fragment>
 
-  {#if $TemplateInputItems.sections.length > 1}
-    <TemplateSectionInputs
-      bind:title={$TemplateInputItems.title}
-      bind:subtitle={$TemplateInputItems.subtitle}
-    />
-    <br />
-    <br />
-  {/if}
   <Tabs>
     <Tab tabActive={$TemplateSelectedTab === 'input'}>
+      {#if $TemplateInputItems.sections.length > 1}
+        <TemplateSectionInputs
+          bind:title={$TemplateInputItems.title}
+          bind:subtitle={$TemplateInputItems.subtitle}
+        />
+        <br />
+        <br />
+      {/if}
       <TemplateSections bind:sections={$TemplateInputItems.sections} />
       <TemplateCalculations />
     </Tab>
     <Tab tabActive={$TemplateSelectedTab === 'output'}>
+      <TemplateSectionInputs
+        bind:title={$TemplateInputItems.title}
+        bind:subtitle={$TemplateInputItems.subtitle}
+      />
+      <br />
+      <br />
       <TemplateCategoryInputs bind:sections={$TemplateInputItems.sections} />
     </Tab>
   </Tabs>

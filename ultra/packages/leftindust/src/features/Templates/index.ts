@@ -9,6 +9,9 @@ import textArraySocket from '../Socket/components/TextArraySocket';
 import dateArraySocket from '../Socket/components/DateArraySocket';
 import twoDimensionalTextArraySocket from '../Socket/components/2DTextArraySocket';
 import { _ } from '@/language';
+import * as yup from 'yup';
+import { createForm } from 'felte';
+import { validator } from '@felte/validator-yup';
 
 const language = get(_);
 
@@ -161,3 +164,10 @@ export const templateInputSelectOptions = [
     value: TemplateInputType.Title,
   },
 ];
+
+export const templateForm = () => {
+  const schema = yup.object({
+    email: yup.string().required(),
+    password: yup.string().required(),
+  });
+};

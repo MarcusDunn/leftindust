@@ -10,7 +10,7 @@
   export let subtitle: string | undefined = undefined;
   export let inputs: TemplateInput[] | undefined = undefined;
 
-  export let index = 0;
+  export let index: number | undefined = undefined;
 </script>
 
 <Input
@@ -21,8 +21,6 @@
   <input
     type="text"
     placeholder={typeof index === 'number' ?
-      // eslint has a brain tumor
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
       $_('generics.sectionIndexed', { values: { number: index + 1 } })
       : 'Eg. Blood Sample'}
     bind:value={title}
@@ -39,5 +37,5 @@
 {#if inputs}
   <br />
   <br />
-  <TemplateInputs bind:inputs={inputs} bind:globalIndex={$TemplateInputUniqueIndex} sectionIndex={index} />
+  <TemplateInputs bind:inputs={inputs} bind:globalIndex={$TemplateInputUniqueIndex} />
 {/if}
