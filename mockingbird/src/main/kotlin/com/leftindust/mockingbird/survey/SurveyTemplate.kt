@@ -1,11 +1,14 @@
 package com.leftindust.mockingbird.survey
 
-import java.util.UUID
+import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
+import javax.persistence.CascadeType
+import javax.persistence.OneToMany
 
-interface SurveyTemplate {
-    val id: UUID
-    val title: String
-    val subtitle: String?
-    val sections: List<CreateSurveyTemplateSection>
-    val calculations: List<CreateSurveyTemplateCalculation>
-}
+class SurveyTemplate (
+    val title: String,
+    val subtitle: String?,
+    @OneToMany
+    val sections: MutableSet<CreateSurveyTemplateSection>,
+    @OneToMany
+    val calculations: MutableSet<CreateSurveyTemplateCalculation>,
+): AbstractJpaPersistable();
