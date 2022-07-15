@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { templateInputSelectOptions, type TemplateInput } from '../..';
+  import { templateForm, templateInputSelectOptions, type TemplateInput } from '../..';
   import { TemplateInputUploadType } from '../..';
   import { _ } from 'svelte-i18n';
   import { TemplateInputType } from '../..';
@@ -21,6 +21,7 @@
   export let inputs: TemplateInput[];
   export let index: number;
   export let globalIndex: number;
+  export let sectionIndex: number;
   
   export let type: TemplateInputType = TemplateInputType.Text;
   export let label = '';
@@ -33,6 +34,9 @@
   export let options: string[] = [''];
 
   export let dragger: ((event: Event) => void)| undefined = undefined;
+
+  const error = templateForm().errors;
+  export let errors: typeof error;
 
   $: multiselect = (type === TemplateInputType.SingleSelect || type === TemplateInputType.MultiSelect);
   $: title = type === TemplateInputType.Title;
@@ -60,29 +64,38 @@
             title={$_('generics.type')}
             placeholder={$_('examples.text')}
             options={templateInputSelectOptions}
+            name={`sections.${sectionIndex}.inputs.${index}.type`}
             bind:value={type}
           />
         {/key}
       </Col>
       <Col width="100" small={(multiselect || title || compute ) ? 100 : 50}>
-        <Input style="width: 100%">
+        <Input
+          style="width: 100%"
+          error={$errors?.sections?.[sectionIndex]?.inputs?.[index]?.label}
+        >
           <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
           <input
             type="text"
             bind:value={label}
             placeholder={$_('examples.totalPlateletCount')}
+            name={`sections.${sectionIndex}.inputs.${index}.label`}
           />
         </Input>
       </Col>
       {#if !multiselect}
         {#if !title && !compute}
           <Col width="100" small="50">
-            <Input style="width: 100%">
+            <Input
+              style="width: 100%"
+              error={$errors?.sections?.[sectionIndex]?.inputs?.[index]?.placeholder}
+            >
               <svelte:fragment slot="title">{$_('generics.placeholder')}</svelte:fragment>
               <input
                 type="text"
                 bind:value={placeholder}
                 placeholder={$_('examples.mcl')}
+                name={`sections.${sectionIndex}.inputs.${index}.placeholder`}
               />
             </Input>
           </Col>

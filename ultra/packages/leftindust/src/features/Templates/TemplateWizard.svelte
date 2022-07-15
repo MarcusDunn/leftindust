@@ -6,7 +6,7 @@
     Tab,
   } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
-  import { TemplateInputItems, TemplateNodesModalOpen, TemplateSelectedTab } from './store';
+  import { TemplateInputItems, TemplateNodesModalOpen, TemplateSelectedTab, TemplateCalculations as TemplateCalculationsStore } from './store';
   import { fade } from 'svelte/transition';
 
   import IFrame from '../View/components/IFrame/IFrame.svelte';
@@ -15,6 +15,9 @@
   import TemplateSections from './components/TemplateSections/TemplateSections.svelte';
   import TemplateSectionInputs from './components/TemplateSection/TemplateSectionInputs.svelte';
   import TemplateCalculations from './components/TemplateCalculations/TemplateCalculations.svelte';
+  import { templateForm } from '.';
+
+  const { form, errors } = templateForm();
 </script>
 
 <WizardSplit
@@ -48,29 +51,33 @@
     {/if}
   </svelte:fragment>
 
-  <Tabs>
-    <Tab tabActive={$TemplateSelectedTab === 'input'}>
-      {#if $TemplateInputItems.sections.length > 1}
+  <form use:form>
+    <Tabs>
+      <Tab tabActive={$TemplateSelectedTab === 'input'}>
+        {#if $TemplateInputItems.sections.length > 1}
+          <TemplateSectionInputs
+            bind:title={$TemplateInputItems.title}
+            bind:subtitle={$TemplateInputItems.subtitle}
+            {errors}
+          />
+          <br />
+          <br />
+        {/if}
+        <TemplateSections bind:sections={$TemplateInputItems.sections} {errors} />
+        <TemplateCalculations bind:calculations={$TemplateCalculationsStore} />
+      </Tab>
+      <Tab tabActive={$TemplateSelectedTab === 'output'}>
         <TemplateSectionInputs
           bind:title={$TemplateInputItems.title}
           bind:subtitle={$TemplateInputItems.subtitle}
+          {errors}
         />
         <br />
         <br />
-      {/if}
-      <TemplateSections bind:sections={$TemplateInputItems.sections} />
-      <TemplateCalculations />
-    </Tab>
-    <Tab tabActive={$TemplateSelectedTab === 'output'}>
-      <TemplateSectionInputs
-        bind:title={$TemplateInputItems.title}
-        bind:subtitle={$TemplateInputItems.subtitle}
-      />
-      <br />
-      <br />
-      <TemplateCategoryInputs bind:sections={$TemplateInputItems.sections} />
-    </Tab>
-  </Tabs>
+        <TemplateCategoryInputs bind:sections={$TemplateInputItems.sections} />
+      </Tab>
+    </Tabs>
+  </form>
   <br />
   <svelte:fragment slot="detail">
     <IFrame

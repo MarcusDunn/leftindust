@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { TemplateSection } from '../..';
+  import { templateForm, type TemplateSection } from '../..';
   import Section from '@/features/UI/components/Section/Section.svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
 
@@ -14,6 +14,9 @@
   export let index: number;
   export let section: TemplateSection;
   export let sections: TemplateSection[];
+
+  const error = templateForm().errors;
+  export let errors: typeof error;
 
   export let globalIndex: number;
 
@@ -54,6 +57,7 @@
           bind:subtitle={section.subtitle}
           bind:inputs={section.inputs}
           {index}
+          {errors}
         />
       </Section>
     {/if}
@@ -68,6 +72,7 @@
         bind:title={$TemplateInputItems.title}
         bind:subtitle={$TemplateInputItems.subtitle}
         bind:inputs={section.inputs}
+        {errors}
       />
     </div>
   </div>

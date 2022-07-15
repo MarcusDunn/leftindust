@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { DndEvent } from 'svelte-dnd-action';
-  import type { TemplateSection as TemplateSectionT } from '../..';
+  import { templateForm, type TemplateSection as TemplateSectionT } from '../..';
   import TemplateSection from '../TemplateSection/TemplateSection.svelte';
   import { dndzone, SOURCES, TRIGGERS	} from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
@@ -38,6 +38,9 @@
     e.preventDefault();
     dragDisabled = false;
   };
+
+  const error = templateForm().errors;
+  export let errors: typeof error;
 </script>
 
 <section
@@ -53,6 +56,7 @@
         bind:sections
         bind:globalIndex
         bind:section
+        {errors}
       />
     </div>
   {/each}

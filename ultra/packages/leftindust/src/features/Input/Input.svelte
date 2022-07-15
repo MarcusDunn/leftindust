@@ -3,6 +3,7 @@
   import MenuButton from '../UI/components/MenuButton/MenuButton.svelte';
 
   import './Input.scss';
+  import InputError from './InputError.svelte';
 
   export let title = '';
 
@@ -12,6 +13,8 @@
   export let disabled = false;
 
   export let style = '';
+
+  export let error: string[] | string | null | undefined = undefined;
 </script>
  
 <div
@@ -62,3 +65,13 @@
     {/if}
   </ul>
 </div>
+
+{#if error}
+  {#if Array.isArray(error)}
+    {#each error as e}
+      <InputError message={e} />
+    {/each}
+  {:else}
+    <InputError message={error} />
+  {/if}
+{/if}

@@ -16,6 +16,8 @@
   export let title = '';
   export let placeholder = '';
 
+  export let name: string | undefined = undefined;
+
 </script>
 
 {#key options}
@@ -32,6 +34,7 @@
           title=""
           slot="content"
           {placeholder}
+          {name}
         >
           <select
             bind:value

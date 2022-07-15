@@ -155,10 +155,12 @@ export const templateInputSelectOptions = [
     text: language('generics.multiSelect'),
     value: TemplateInputType.MultiSelect,
   },
+  /*
   {
     text: language('generics.upload'),
     value: TemplateInputType.Upload,
   },
+  */
   {
     text: language('generics.title'),
     value: TemplateInputType.Title,
@@ -167,7 +169,38 @@ export const templateInputSelectOptions = [
 
 export const templateForm = () => {
   const schema = yup.object({
-    email: yup.string().required(),
-    password: yup.string().required(),
+    title: yup.string().required(),
+    subtitle: yup.string(),
+    sections: yup.array().of(yup.object({
+      id: yup.number().required(),
+      title: yup.string().required().min(0),
+      subtitle: yup.string(),
+      inputs: yup.array().of(yup.object({
+        id: yup.number().required(),
+        type: yup.string().required(),
+        label: yup.string().required(),
+        options: yup.array().of(yup.string().required()),
+        placeholder: yup.string(),
+        required: yup.boolean(),
+        category: yup.string(),
+        uploadMultiple: yup.boolean(),
+        uploadAccept: yup.string(),
+      })).required(),
+    })).required(),
+    calculations: yup.array().of(yup.object({
+      label: yup.string().required(),
+      type: yup.string().required(),
+      showOnComplete: yup.boolean().required(),
+      calculation: yup.string().required(),
+    })).required(),
+  });
+
+  return createForm<yup.InferType<typeof schema>>({
+    onSubmit: (form) => {
+      console.log(form);
+    },
+    extend: [
+      validator({ schema }),
+    ],
   });
 };
