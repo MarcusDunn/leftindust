@@ -18,6 +18,12 @@
   import GenericGrid from '../../../Widgets/components/Grid/GenericGrid.svelte';
   import { WidgetCategory, WidgetType } from '../../../Widgets';
 
+  import SpecificGrid from '../../../Widgets/components/Grid/SpecificGrid.svelte';
+  import { account } from '../../../Account/store';
+
+  import type { DoctorsFragment } from '@/api/server';
+  let doctor: DoctorsFragment | undefined;
+
   let patients: PatientsFragment[] = [];
   
   const { data, dragger, quicklook } = $$props as StackProps;
@@ -29,10 +35,6 @@
   query(request);
   
   $: if ($request.data?.patients[0]) patients = $request.data?.patients;
-
-  //data = Doctors, should be patients
-  $: console.log($request.data?.patients[0])
-  $: console.log(data)
 </script>
   
 <Stack
@@ -44,16 +46,17 @@
 >
   <Request {...$request} refetch={request.reexecute} middle>
     {#if patients.length > 0}
-      {#each patients as patient}
-        <GenericGrid 
-          props={{ id:'Patient', data, quicklook }}
-          type={WidgetType.Card}
-          dataType={['Patient']}
-          category={[WidgetCategory.Document]}
-          store
-          fixed
-        />
-      {/each}
+      <SpecificGrid
+        props={patients.map(({ pid }) => ({
+          id: 'Patient',
+          data: {
+            type: 'Patient',
+            id: pid.id,
+          },
+          quicklook,
+        }))}
+        type={WidgetType.Card}
+      />
     {:else}
       <DescriptivePlaceholder 
         title={$_('generics.noPatients')} 
@@ -71,16 +74,16 @@
       fill
       round
     >
-    {$_('generics.newPatient')}
+      {$_('generics.newPatient')}
     </Button>
     <Button
-      class={`widget-stack-header-button`}
+      class={'widget-stack-header-button'}
       color={configuration.color}
       outline
       round
       disabled={patients?.length === 0}
     >
-    {$_('generics.viewAll')}
+      {$_('generics.viewAll')}
     </Button>
   </div>
 </Stack>

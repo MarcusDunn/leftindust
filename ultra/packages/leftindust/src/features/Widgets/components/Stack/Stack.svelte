@@ -4,7 +4,7 @@
 
   import './Stack.scss';
 
-  import { Block, Icon} from 'framework7-svelte';
+  import { Block, Icon } from 'framework7-svelte';
   import Card from '../Card/Card.svelte';
 
   export let title: string;

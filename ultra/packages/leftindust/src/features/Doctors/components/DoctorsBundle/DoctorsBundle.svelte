@@ -10,8 +10,8 @@
   import Request from '@/features/Server/components/Request/Request.svelte';
   import Cells from '@/features/UI/components/Cells/Cells.svelte';
   import { Row, Col, Button } from 'framework7-svelte';
-  import language from "@/language/locales/en"
-import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
+  import language from '@/language/locales/en';
+  import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
 
   let doctors: DoctorsFragment[] = [];
 
@@ -52,16 +52,16 @@ import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceho
       </Cells>
     {:else}
       <DescriptivePlaceholder 
-       title={$_('generics.noDoctors')}
-       description={$_('descriptions.noDoctors')}
-       link = {{
-         label: $_('descriptions.learnMoreDoctors')
-       }}
+        title={$_('generics.noDoctors')}
+        description={$_('descriptions.noDoctors')}
+        link = {{
+          label: $_('descriptions.learnMoreDoctors'),
+        }}
       />
     {/if}
   </Request>
-  <Row slot='controls'>
-    <Col width='50'>
+  <Row slot="controls">
+    <Col width="50">
       <Button
         class={`${quicklook ? 'disabled' : ''}`}
         color={configuration.color}
@@ -71,7 +71,7 @@ import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceho
         {$_('generics.newDoctor')}
       </Button>
     </Col>
-    <Col width='50'>
+    <Col width="50">
       <Button
         color={configuration.color}
         outline
