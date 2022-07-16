@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type TemplateInput, TemplateInputType, getTemplateSocketType, type TemplateCalculationWithInstance } from '../..';
+  import { type TemplateInput, TemplateInputType, getTemplateSocketType, type TemplateCalculationWithInstance, templateForm } from '../..';
   import AppLauncherApp from '@/features/Apps/components/AppLauncher/AppLauncherApp.svelte';
   import FlowCover from '@/apps/flow/assets/flow.png';
   import { TemplateInputItems } from '../../store';
@@ -11,6 +11,9 @@
   import TemplateCalculationInput from './TemplateCalculationInput.svelte';
 
   export let calculations: TemplateCalculationWithInstance[];
+
+  const error = templateForm().errors;
+  export let errors: typeof error;
 
   let inputs: (TemplateInput & {
     sectionIndex: number;
@@ -64,6 +67,7 @@
     <TemplateCalculationInput
       {index}
       {nodeInputs}
+      {errors}
       bind:calculations={calculations}
       bind:calculation
     />

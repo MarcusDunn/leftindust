@@ -64,7 +64,7 @@
           <br />
         {/if}
         <TemplateSections bind:sections={$TemplateInputItems.sections} {errors} />
-        <TemplateCalculations bind:calculations={$TemplateCalculationsStore} />
+        <TemplateCalculations bind:calculations={$TemplateCalculationsStore} {errors} />
       </Tab>
       <Tab tabActive={$TemplateSelectedTab === 'output'}>
         <TemplateSectionInputs

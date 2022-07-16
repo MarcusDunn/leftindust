@@ -101,9 +101,16 @@
           </Col>
         {/if}
       {:else}
-        {#each options as _, index}
+        {#each options as _, optionsIndex}
           <Col width="100">
-            <TemplateInputSelect {index} title={index === 0 ? optionText : undefined} bind:options />
+            <TemplateInputSelect
+              index={optionsIndex}
+              inputIndex={index}
+              {sectionIndex}
+              {errors}
+              title={optionsIndex === 0 ? optionText : undefined}
+              bind:options
+            />
           </Col>
         {/each}
         <Col width="100" style="margin-top: 10px">
@@ -163,6 +170,7 @@
                 <Toggle
                   color="deeppurple"
                   bind:checked={required}
+                  name={`sections.${sectionIndex}.inputs.${index}.required`}
                 />
               </ListItem>
             </Input>

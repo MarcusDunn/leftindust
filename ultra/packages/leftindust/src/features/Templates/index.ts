@@ -173,7 +173,7 @@ export const templateForm = () => {
     subtitle: yup.string(),
     sections: yup.array().of(yup.object({
       id: yup.number().required(),
-      title: yup.string().required().min(0),
+      title: yup.string().required(),
       subtitle: yup.string(),
       inputs: yup.array().of(yup.object({
         id: yup.number().required(),
