@@ -1,6 +1,5 @@
 <script lang="ts">
-  import  { templateForm, type TemplateInput } from '../..';
-  import { TemplateInputUniqueIndex } from '../../store';
+  import type { templateForm, TemplateInput } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import TemplateInputs from '../TemplateInputs/TemplateInputs.svelte';
 
@@ -10,10 +9,12 @@
   export let subtitle: string | undefined = undefined;
   export let inputs: TemplateInput[] | undefined = undefined;
 
+  export let globalIndex: number | undefined = undefined;
+
   export let index: number | undefined = undefined;
 
-  const error = templateForm().errors;
-  export let errors: typeof error;
+  export let errors: ReturnType<typeof templateForm>['errors'];
+  export let data: ReturnType<typeof templateForm>['data'];
 </script>
 
 <Input
@@ -45,13 +46,14 @@
   />
 </Input>
 
-{#if inputs}
+{#if inputs && globalIndex}
   <br />
   <br />
   <TemplateInputs
     bind:inputs={inputs}
-    bind:globalIndex={$TemplateInputUniqueIndex}
+    bind:globalIndex
     {errors}
+    {data}
     sectionIndex={index}
   />
 {/if}

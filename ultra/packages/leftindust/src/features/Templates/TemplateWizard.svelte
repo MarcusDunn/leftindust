@@ -17,19 +17,18 @@
   import TemplateCalculations from './components/TemplateCalculations/TemplateCalculations.svelte';
   import { templateForm } from '.';
 
-  const { form, errors } = templateForm();
+  const { form, errors, data, handleSubmit } = templateForm();
 </script>
 
 <WizardSplit
   title="New Template"
   subtitle="Create a new template"
   color="deeppurple"
+  on:submit={handleSubmit}
 >
   <svelte:fragment slot="appbar">
     {#if !$TemplateNodesModalOpen}
-      <div transition:fade={{
-        duration: 100,
-      }}>
+      <div transition:fade={{ duration: 100 }}>
         <Segmented
           strong
           style="width: 200px;"
@@ -59,18 +58,28 @@
             bind:title={$TemplateInputItems.title}
             bind:subtitle={$TemplateInputItems.subtitle}
             {errors}
+            {data}
           />
           <br />
           <br />
         {/if}
-        <TemplateSections bind:sections={$TemplateInputItems.sections} {errors} />
-        <TemplateCalculations bind:calculations={$TemplateCalculationsStore} {errors} />
+        <TemplateSections
+          bind:sections={$TemplateInputItems.sections}
+          {errors}
+          {data}
+        />
+        <TemplateCalculations
+          bind:calculations={$TemplateCalculationsStore}
+          {errors}
+          {data}
+        />
       </Tab>
       <Tab tabActive={$TemplateSelectedTab === 'output'}>
         <TemplateSectionInputs
           bind:title={$TemplateInputItems.title}
           bind:subtitle={$TemplateInputItems.subtitle}
           {errors}
+          {data}
         />
         <br />
         <br />

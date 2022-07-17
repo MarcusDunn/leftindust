@@ -6,12 +6,11 @@
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   
   import { _ } from 'svelte-i18n';
-  import { templateForm } from '../..';
+  import type { templateForm } from '../..';
 
   import './TemplateInputSelect.scss';
 
-  const error = templateForm().errors;
-  export let errors: typeof error;
+  export let errors: ReturnType<typeof templateForm>['errors'];
 
   export let index: number;
   export let inputIndex: number;
@@ -20,7 +19,6 @@
   export let options: string[];
 
   export let title: string | undefined = undefined;
-  $: console.log($errors?.sections?.[sectionIndex]?.inputs?.[inputIndex]?.options);
 </script>
 
 

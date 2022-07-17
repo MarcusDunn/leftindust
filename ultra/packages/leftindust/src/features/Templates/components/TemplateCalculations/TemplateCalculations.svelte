@@ -11,9 +11,9 @@
   import TemplateCalculationInput from './TemplateCalculationInput.svelte';
 
   export let calculations: TemplateCalculationWithInstance[];
-
-  const error = templateForm().errors;
-  export let errors: typeof error;
+  
+  export let data: ReturnType<typeof templateForm>['data'];
+  export let errors: ReturnType<typeof templateForm>['errors'];
 
   let inputs: (TemplateInput & {
     sectionIndex: number;
@@ -68,6 +68,7 @@
       {index}
       {nodeInputs}
       {errors}
+      {data}
       bind:calculations={calculations}
       bind:calculation
     />

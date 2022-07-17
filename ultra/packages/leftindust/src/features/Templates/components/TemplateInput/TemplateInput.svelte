@@ -22,6 +22,7 @@
   export let index: number;
   export let globalIndex: number;
   export let sectionIndex: number;
+  export let id: number;
   
   export let type: TemplateInputType = TemplateInputType.Text;
   export let label = '';
@@ -35,8 +36,11 @@
 
   export let dragger: ((event: Event) => void)| undefined = undefined;
 
-  const error = templateForm().errors;
-  export let errors: typeof error;
+  export let errors: ReturnType<typeof templateForm>['errors'];
+  export let data: ReturnType<typeof templateForm>['data'];
+
+  $: if ($data?.sections?.[sectionIndex]?.inputs?.[index] && typeof $data?.sections?.[sectionIndex]?.inputs?.[index].id === 'undefined')
+    $data.sections[sectionIndex].inputs[index].id = id;
 
   $: multiselect = (type === TemplateInputType.SingleSelect || type === TemplateInputType.MultiSelect);
   $: title = type === TemplateInputType.Title;

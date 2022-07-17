@@ -27,29 +27,33 @@
   let prevType = $TemplateCalculations[store.index].type;
 
   const reevaluateConnections = () => {
-    if ($TemplateCalculations[store.index].type !== prevType) {
-      $connection = undefined;
-
-      prevType = $TemplateCalculations[store.index].type;
+    if ($TemplateCalculations[store.index]?.type) {
+      if ($TemplateCalculations[store.index].type !== prevType) {
+        $connection = undefined;
+  
+        prevType = $TemplateCalculations[store.index].type;
+      }
     }
   };
     
   $: value = editor.outputs?.Value?.value;
 
-  $: $TemplateCalculations[store.index].type, (() => {
+  $: $TemplateCalculations[store.index]?.type, (() => {
     if (value && Value) $value = $Value;
   })();
 
   $: $TemplateCalculations[store.index], (() => {
-    const type = getTemplateSocketType($TemplateCalculations[store.index].type);
-
-    if (type) {
-      const socket = templateCalculationSockets[type];
+    if ($TemplateCalculations[store.index]?.type) {
+      const type = getTemplateSocketType($TemplateCalculations[store.index].type);
   
-      if (socket) {
-        inputs.Value.type = type;
-        inputs.Value.disabled = !value;
-        inputs.Value.color = socket.color;
+      if (type) {
+        const socket = templateCalculationSockets[type];
+    
+        if (socket) {
+          inputs.Value.type = type;
+          inputs.Value.disabled = !value;
+          inputs.Value.color = socket.color;
+        }
       }
     }
   })();
@@ -57,54 +61,56 @@
   $: $TemplateCalculations, reevaluateConnections();
 </script>
 
-<div style="min-width: 430px">
-  <Select
-    title={$_('generics.type')}
-    placeholder={$_('examples.text')}
-    options={[
-      {
-        text: $_('generics.text'),
-        value: TemplateInputType.Text,
-      },
-      {
-        text: $_('generics.number'),
-        value: TemplateInputType.Number,
-      },
-      {
-        text: $_('generics.date'),
-        value: TemplateInputType.Date,
-      },
-      {
-        text: $_('generics.paragraph'),
-        value: TemplateInputType.Paragraph,
-      },
-      {
-        text: $_('generics.singleSelect'),
-        value: TemplateInputType.SingleSelect,
-      },
-      {
-        text: $_('generics.multiSelect'),
-        value: TemplateInputType.MultiSelect,
-      },
-      {
-        text: $_('generics.upload'),
-        value: TemplateInputType.Upload,
-      },
-      {
-        text: $_('generics.title'),
-        value: TemplateInputType.Title,
-      },
-    ]}
-    bind:value={$TemplateCalculations[store.index].type}
-  />
-  <p />
-  <Input style="width: 100%">
-    <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
-    <input
-      type="text"
-      bind:value={$TemplateCalculations[store.index].label}
-      placeholder={$_('examples.calculation')}
+{#if $TemplateCalculations[store.index]}
+  <div style="min-width: 430px">
+    <Select
+      title={$_('generics.type')}
+      placeholder={$_('examples.text')}
+      options={[
+        {
+          text: $_('generics.text'),
+          value: TemplateInputType.Text,
+        },
+        {
+          text: $_('generics.number'),
+          value: TemplateInputType.Number,
+        },
+        {
+          text: $_('generics.date'),
+          value: TemplateInputType.Date,
+        },
+        {
+          text: $_('generics.paragraph'),
+          value: TemplateInputType.Paragraph,
+        },
+        {
+          text: $_('generics.singleSelect'),
+          value: TemplateInputType.SingleSelect,
+        },
+        {
+          text: $_('generics.multiSelect'),
+          value: TemplateInputType.MultiSelect,
+        },
+        {
+          text: $_('generics.upload'),
+          value: TemplateInputType.Upload,
+        },
+        {
+          text: $_('generics.title'),
+          value: TemplateInputType.Title,
+        },
+      ]}
+      bind:value={$TemplateCalculations[store.index].type}
     />
-  </Input>
-  <br />
-</div>
+    <p />
+    <Input style="width: 100%">
+      <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
+      <input
+        type="text"
+        bind:value={$TemplateCalculations[store.index].label}
+        placeholder={$_('examples.calculation')}
+      />
+    </Input>
+    <br />
+  </div>
+{/if}

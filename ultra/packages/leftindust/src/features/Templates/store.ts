@@ -7,8 +7,6 @@ export const TemplateInputItems = writable<Template>(JSON.parse(JSON.stringify(d
 export const TemplateSelectedTab = writable<'input' | 'output'>('input');
 export const TemplateIndex = writable(0);
 
-export const TemplateInputUniqueIndex = writable(0);
-
 export const TemplateNodesModalOpen = writable(false);
 
 export const TemplateCalculations = writable<TemplateCalculationWithInstance[]>([]);

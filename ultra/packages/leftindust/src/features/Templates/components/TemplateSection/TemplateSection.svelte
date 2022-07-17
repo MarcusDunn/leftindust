@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { templateForm, type TemplateSection } from '../..';
+  import type { templateForm, TemplateSection } from '../..';
   import Section from '@/features/UI/components/Section/Section.svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
 
@@ -15,8 +15,8 @@
   export let section: TemplateSection;
   export let sections: TemplateSection[];
 
-  const error = templateForm().errors;
-  export let errors: typeof error;
+  export let errors: ReturnType<typeof templateForm>['errors'];
+  export let data: ReturnType<typeof templateForm>['data'];
 
   export let globalIndex: number;
 
@@ -31,6 +31,9 @@
       }
     }, true);
   };
+
+  $: if ($data?.sections?.[index] && typeof $data?.sections?.[index]?.id === 'undefined')
+    $data.sections[index].id = section.id;
 </script>
 
 <div
@@ -56,8 +59,10 @@
           bind:title={section.title}
           bind:subtitle={section.subtitle}
           bind:inputs={section.inputs}
+          bind:globalIndex
           {index}
           {errors}
+          {data}
         />
       </Section>
     {/if}
@@ -72,7 +77,9 @@
         bind:title={$TemplateInputItems.title}
         bind:subtitle={$TemplateInputItems.subtitle}
         bind:inputs={section.inputs}
+        bind:globalIndex
         {errors}
+        {data}
       />
     </div>
   </div>
@@ -90,7 +97,14 @@
       on:click={() => {
         sections = [
           ...sections.slice(0, index),
-          { ...sections[index], id: globalIndex },
+          {
+            ...sections[index],
+            id: globalIndex,
+            inputs: section.inputs.map((input) => {
+              globalIndex += 1;
+              return { ...input, id: globalIndex };
+            }),
+          },
           ...sections.slice(index),
         ];
 

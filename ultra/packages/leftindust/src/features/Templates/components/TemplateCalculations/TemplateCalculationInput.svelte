@@ -27,8 +27,8 @@
 
   export let nodeInputs: Record<string, { type: string; value: Writable<unknown> }>;
 
-  const error = templateForm().errors;
-  export let errors: typeof error;
+  export let errors: ReturnType<typeof templateForm>['errors'];
+  export let data: ReturnType<typeof templateForm>['data'];
   
   let nodeOutputs = {
     Value: {
@@ -132,6 +132,9 @@
 
   $: calculation.editor = editor;
   $: console.log($value);
+
+  $: if ($data?.calculations?.[index] && $data.calculations[index].calculation !== JSON.stringify(calculation.calculation))
+    $data.calculations[index].calculation = JSON.stringify(calculation.calculation);
 </script>
 
 <NodesModal

@@ -22,6 +22,7 @@
       fill
       round
       on:click={() => tryAgain && tryAgain()}
+      style="margin-right: 5px"
     >
       {$_('generics.tryAgain')}
     </Button>
@@ -32,6 +33,7 @@
       fill
       round
       on:click={() => reload && reload()}
+      style="margin-right: 5px"
     >
       <Icon f7="arrow_clockwise" />
       {$_('generics.reload')}

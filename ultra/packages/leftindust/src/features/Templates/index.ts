@@ -179,7 +179,7 @@ export const templateForm = () => {
         id: yup.number().required(),
         type: yup.string().required(),
         label: yup.string().required(),
-        options: yup.array().of(yup.string().required()),
+        options: yup.array().of(yup.string()),
         placeholder: yup.string(),
         required: yup.boolean(),
         category: yup.string(),

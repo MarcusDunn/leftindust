@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { DndEvent } from 'svelte-dnd-action';
-  import { templateForm, type TemplateInput as TemplateInputT } from '../../';
+  import type { templateForm, TemplateInput as TemplateInputT } from '../../';
   import { TemplateInputType, TemplateInputUploadType } from '../../';
   import { dndzone, SOURCES, TRIGGERS	} from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
@@ -38,8 +38,8 @@
     dragDisabled = false;
   };
 
-  const error = templateForm().errors;
-  export let errors: typeof error;
+  export let errors: ReturnType<typeof templateForm>['errors'];
+  export let data: ReturnType<typeof templateForm>['data'];
 </script>
 
 {#if inputs.length > 0}
@@ -58,9 +58,11 @@
           {sectionIndex}
           dragger={startDrag}
           {errors}
+          {data}
           bind:globalIndex
           bind:inputs
           bind:type={input.type}
+          bind:id={input.id}
           bind:label={input.label}
           bind:options={input.options}
           bind:placeholder={input.placeholder}

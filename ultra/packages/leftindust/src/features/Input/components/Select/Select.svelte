@@ -34,11 +34,11 @@
           title=""
           slot="content"
           {placeholder}
-          {name}
         >
           <select
             bind:value
             on:change={() => dispatch('change', value)}
+            {name}
           >
             {#each options as option}
               <option value={option.value}>{option.text}</option>

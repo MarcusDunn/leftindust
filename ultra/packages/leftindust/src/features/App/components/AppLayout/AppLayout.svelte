@@ -69,7 +69,12 @@
     <View url="/account/login/" />
   </LoginScreen>
   
-  <Popup id={AppPopups.Error} closeByBackdropClick={false}>
+  <Popup
+    style="z-index: 100000000000000"
+    id={AppPopups.Error}
+    closeByBackdropClick={false}
+    tabletFullscreen
+  >
     <View url={AppRootRoutes.LifeCycleError} iosSwipeBack={false} />
   </Popup>
 
