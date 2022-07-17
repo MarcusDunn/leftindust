@@ -171,11 +171,11 @@ export const templateForm = () => {
   const schema = yup.object({
     title: yup.string().required(),
     subtitle: yup.string(),
-    sections: yup.array().of(yup.object({
+    sections: yup.array(yup.object({
       id: yup.number().required(),
       title: yup.string().required(),
       subtitle: yup.string(),
-      inputs: yup.array().of(yup.object({
+      inputs: yup.array(yup.object({
         id: yup.number().required(),
         type: yup.string().required(),
         label: yup.string().required(),
@@ -187,15 +187,16 @@ export const templateForm = () => {
         uploadAccept: yup.string(),
       })).required(),
     })).required(),
-    calculations: yup.array().of(yup.object({
+    calculations: yup.array(yup.object({
       label: yup.string().required(),
       type: yup.string().required(),
       showOnComplete: yup.boolean().required(),
       calculation: yup.string().required(),
-    })).required(),
+    })),
   });
 
   return createForm<yup.InferType<typeof schema>>({
+    initialValues: defaultTemplate,
     onSubmit: (form) => {
       console.log(form);
     },

@@ -17,14 +17,16 @@
   import TemplateCalculations from './components/TemplateCalculations/TemplateCalculations.svelte';
   import { templateForm } from '.';
 
-  const { form, errors, data, handleSubmit } = templateForm();
+  const { form, errors, data } = templateForm();
+
+  let ref: HTMLFormElement;
 </script>
 
 <WizardSplit
   title="New Template"
   subtitle="Create a new template"
   color="deeppurple"
-  on:submit={handleSubmit}
+  on:submit={() => ref?.requestSubmit()}
 >
   <svelte:fragment slot="appbar">
     {#if !$TemplateNodesModalOpen}
@@ -50,7 +52,7 @@
     {/if}
   </svelte:fragment>
 
-  <form use:form>
+  <form use:form bind:this={ref}>
     <Tabs>
       <Tab tabActive={$TemplateSelectedTab === 'input'}>
         {#if $TemplateInputItems.sections.length > 1}

@@ -6,6 +6,7 @@
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
+  import { TemplateInputItems } from '../../store';
 
   const flipDurationMs = 200;
   let dragDisabled = true;
@@ -41,6 +42,22 @@
 
   export let errors: ReturnType<typeof templateForm>['errors'];
   export let data: ReturnType<typeof templateForm>['data'];
+      
+  // When the section length is one, the default title needs to be set to the section title
+  // because the section title is not editable, and yup will not validate it if its empty
+  let singleSectionSwitched = false;
+  $: if ($data?.sections?.[0]) {
+    if (
+      sections.length === 1
+        && $data.sections[0].title !== $TemplateInputItems.title
+    ) {
+      $data.sections[0].title = $TemplateInputItems.title;
+      singleSectionSwitched = true;
+    } else if (sections.length > 1 && singleSectionSwitched) {
+      $data.sections[0].title = '';
+      singleSectionSwitched = false;
+    }
+  }
 </script>
 
 <section

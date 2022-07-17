@@ -192,7 +192,9 @@
   <p />
   <Input
     style="width: 100%"
-    error={$errors?.calculations?.[index]?.label}
+    error={// https://github.com/pablo-abc/felte/issues/162
+      // @ts-expect-error
+      $errors?.calculations?.[index]?.label}
   >
     <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
     <input
