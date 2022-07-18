@@ -5,8 +5,9 @@
     OutputSocket,
     OutputSockets,
   } from 'function-junctions/types';
-  import { List, ListInput } from 'framework7-svelte';
-  import { nRoot } from '../..';
+  import { Button, List, ListInput } from 'framework7-svelte';
+  import { invPower, nRoot } from '../..';
+  import { flip } from 'svelte/animate';
 
   export let inputs: InputSockets<{
     BASE: InputSocket<number>;
@@ -25,25 +26,22 @@
   const { value: POWER } = inputs.POWER;
   const { value: output } = outputs.Number;
 
+  let pwrFlip = false;
+
   const getValue = () => {
     const { type } = store;
-
-    // @ts-expect-error
-    const base = parseInt($BASE, 10);
-    // @ts-expect-error
-    const power = parseInt($POWER, 10);
     
     switch (type) {
       case 'power':
-        $output = Math.pow(base, power);
+        $output = invPower($BASE, $POWER, pwrFlip);
         break;
       case 'root':
-        $output = nRoot(base, power);
+        $output = nRoot($BASE, $POWER, pwrFlip);
         break;
     }
   };
 
-  $: inputs, store, getValue();
+  $: inputs, store, getValue(), pwrFlip;
 </script>
 
 <h1 class="no-margin" style="text-align: center">{$output}</h1>
@@ -54,7 +52,19 @@
     bind:value={store.type}
   >
     <i class="icon demo-list-icon" slot="media" />
-    <option value="power">Power</option>
-    <option value="root">Root</option>
+    <option value="power">{pwrFlip ? '1/' : ''}Power</option>
+    <option value="root">{pwrFlip ? '1/' : ''}Root</option>
   </ListInput>
 </List>
+<div class="display-flex">
+  <Button
+    fill={!pwrFlip}
+    outline={pwrFlip}
+    round
+    color="black"
+    style="width: 80%; margin: 1rem auto"
+    on:click={() => pwrFlip = !pwrFlip}
+  >
+    Flip
+  </Button>
+</div>

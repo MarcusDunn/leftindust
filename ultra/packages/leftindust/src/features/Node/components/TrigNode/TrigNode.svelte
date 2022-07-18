@@ -61,7 +61,7 @@
     fill={!inverse}
     outline={inverse}
     round
-    color="deeppurple"
+    color="black"
     style="width: 80%; margin: 1rem auto"
     on:click={() => inverse = !inverse}
   >
