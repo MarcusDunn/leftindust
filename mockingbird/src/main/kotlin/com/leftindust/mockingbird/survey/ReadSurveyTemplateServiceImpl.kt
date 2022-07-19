@@ -1,8 +1,6 @@
 package com.leftindust.mockingbird.survey
 
-import com.leftindust.mockingbird.clinic.ClinicDto
-import com.leftindust.mockingbird.graphql.types.input.RangeDto
-import com.leftindust.mockingbird.patient.PatientDto
+
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
 import mu.KotlinLogging

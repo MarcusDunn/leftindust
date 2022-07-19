@@ -5,14 +5,22 @@ import com.leftindust.mockingbird.NullEntityIdInConverterException
 import org.springframework.stereotype.Component
 import java.util.UUID
 
-//@Component
-//class SurveyTemplateEntityToSurveyTemplateConverter: InfallibleConverter<SurveyTemplateEntity, SurveyTemplate> {
-//    override fun convert(source: SurveyTemplateEntity): SurveyTemplate {
-//        return SurveyTemplateImpl(
-//            id = source.id ?: throw NullEntityIdInConverterException(source)
-//        )
-//    }
-//
-//    private class SurveyTemplateImpl(override val id: UUID) : SurveyTemplate {
-//    }
-//}
+@Component
+class SurveyTemplateEntityToSurveyTemplateConverter: InfallibleConverter<SurveyTemplateEntity, SurveyTemplate> {
+    override fun convert(source: SurveyTemplateEntity): SurveyTemplate {
+        return SurveyTemplateImpl(
+            id = source.id ?: throw NullEntityIdInConverterException(source),
+            title = source.title,
+            subtitle = source.subtitle
+        )
+    }
+
+    private data class SurveyTemplateImpl(override val id: UUID,
+                                     override val title: String,
+                                     override val subtitle: String?,
+                                     override val sections: Set<CreateSurveyTemplateSection>,
+                                     override val calculations: Set<CreateSurveyTemplateCalculation>
+    ) : SurveyTemplate {
+
+    }
+}
