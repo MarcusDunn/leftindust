@@ -157,6 +157,7 @@ export type Dictionary = {
     newDoctor: string;
     newPatient: string;
     compute: string;
+    poweredByDust: string;
   };
   examples: {
     totalPlateletCount: string;

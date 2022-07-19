@@ -151,6 +151,7 @@ const language: Dictionary = {
     newDoctor: 'New Doctor',
     newPatient: 'New Patient',
     compute: 'Compute',
+    poweredByDust: 'Powered by leftindust',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',

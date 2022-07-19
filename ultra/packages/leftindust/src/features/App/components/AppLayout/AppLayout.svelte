@@ -35,6 +35,8 @@
   export let items: (AppLayoutItem | AppLayoutSidebarTitle)[];
   export let sidebar = true;
 
+  export let showLoginScreen = true;
+
   const { id, theme, routes, autoDarkMode } = f7params;
 
   onAuthStateChanged(auth, (user) => {
@@ -58,14 +60,13 @@
   let width = window.innerWidth;
 
   setClient(client);
-  
 </script>
 
 <svelte:window bind:innerWidth={width} />
 
 <App {...{ id, theme, routes, autoDarkMode }}>
   <Dragbar />
-  <LoginScreen opened={!$account?.isRegistered}>
+  <LoginScreen opened={!$account?.isRegistered && showLoginScreen}>
     <View url="/account/login/" />
   </LoginScreen>
   
