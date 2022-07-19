@@ -23,8 +23,7 @@ class CreateSurveyTemplateServiceImpl(
                 )
             }.toMutableSet(),
         )
-        val surveyTemplateEntity = surveyTemplateRepository.save(newSurveyTemplate)
-        return surveyTemplateEntityToSurveyTemplateConverter.convert(surveyTemplateEntity)
+        return surveyTemplateRepository.save(surveyTemplateEntityToSurveyTemplateConverter.convert(newSurveyTemplate))
     }
 
     private fun createSectionToSectionEntity(
