@@ -2,6 +2,8 @@ package com.leftindust.mockingbird
 
 import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
+import com.leftindust.mockingbird.survey.SurveyTemplate
+import com.leftindust.mockingbird.survey.SurveyTemplateEntity
 import java.util.UUID
 import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
