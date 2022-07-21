@@ -45,7 +45,10 @@ internal class CreateSurveyTemplateServiceImplDatabaseTest(
     @MockkBean
     private lateinit var serverHttpSecurity: SecurityWebFilterChain
 
-    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, SurveyTemplateEntityToSurveyTemplateConverter())
+    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, SurveyTemplateEntityToSurveyTemplateConverter(
+        surveyTemplateEntityCalculationToSurveyTemplateCalculationConverter = TODO(),
+        surveyTemplateEntitySectionToSurveyTemplateSectionConverter = TODO()
+    ))
 
     @Test
     internal fun `check persists a new surveyTemplate`() = runTest {
