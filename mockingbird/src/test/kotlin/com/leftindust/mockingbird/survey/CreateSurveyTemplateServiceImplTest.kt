@@ -26,7 +26,7 @@ internal class CreateSurveyTemplateServiceImplUnitTest {
     @MockK
     private lateinit var surveyTemplateRepository: SurveyTemplateRepository
 
-    private val surveyTemplateEntityToSurveyTemplateConverter = SurveyTemplateEntityToSurveyTemplateConverter()
+    private val surveyTemplateEntityToSurveyTemplateConverter = SurveyTemplateEntityToSurveyTemplateConverter(TODO())
 
     @Test
     internal fun `check saves a new entity`() = runTest {
@@ -45,10 +45,7 @@ internal class CreateSurveyTemplateServiceImplDatabaseTest(
     @MockkBean
     private lateinit var serverHttpSecurity: SecurityWebFilterChain
 
-    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, SurveyTemplateEntityToSurveyTemplateConverter(
-        surveyTemplateEntityCalculationToSurveyTemplateCalculationConverter = TODO(),
-        surveyTemplateEntitySectionToSurveyTemplateSectionConverter = TODO()
-    ))
+    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, TODO())
 
     @Test
     internal fun `check persists a new surveyTemplate`() = runTest {
