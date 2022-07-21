@@ -16,8 +16,7 @@
             .scrollTop();
           let navbar: Element | null | undefined;
           // Navbar
-          if (f7.$(page)
-            .hasClass('page-master')) {
+          if (f7.$(page).hasClass('page-master')) {
             navbar = page.parentNode?.parentNode?.parentNode?.querySelector('.navbars > .navbar-master') ?? null;
           } else {
             navbar = page.parentNode?.parentNode?.parentNode?.querySelector('.navbars > .navbar-current') ?? null;

@@ -9,10 +9,16 @@
 <Page>
   <AppBar
     slot="fixed"
-    right={[{
-      title: $_('generics.create'),
-      icon: { f7: 'plus_circle_fill', color: 'deeppurple' },
-      onClick: () => openWizard('/wizard/template/'),
-    }]}
+    right={[
+      {
+        title: 'Send',
+        icon: { f7: 'arrowshape_turn_up_right_circle_fill', color: 'gray' },
+      },
+      {
+        title: $_('generics.create'),
+        icon: { f7: 'plus_circle_fill', color: 'deeppurple' },
+        onClick: () => openWizard('/wizard/template/'),
+      },
+    ]}
   />
 </Page>

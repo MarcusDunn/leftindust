@@ -33,7 +33,7 @@
 
 </script>
 
-<Page style="overflow: hidden">
+<Page style="overflow: hidden" pageContent={false}>
   <svelte:fragment slot="fixed">
     <Menu
       items={[

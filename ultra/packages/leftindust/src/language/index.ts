@@ -157,6 +157,8 @@ export type Dictionary = {
     newDoctor: string;
     newPatient: string;
     compute: string;
+    export: string;
+    share: string;
     poweredByDust: string;
   };
   examples: {
