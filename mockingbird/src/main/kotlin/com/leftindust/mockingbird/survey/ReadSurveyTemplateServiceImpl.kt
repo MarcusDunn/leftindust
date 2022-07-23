@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.survey
 
 
+import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
 import mu.KotlinLogging
@@ -12,10 +13,11 @@ import org.springframework.stereotype.Service
 class ReadSurveyTemplateServiceImpl(
     val surveyTemplateRepository: SurveyTemplateRepository,
     val readPatientService: ReadPatientService,
+    val surveyTemplateEntityToSurveyTemplateConverter: InfallibleConverter<SurveyTemplateEntity, SurveyTemplate>
 ) : ReadSurveyTemplateService {
-    private val logger = KotlinLogging.logger { }
-
     override suspend fun getByTemplateSurveyId(templateSurveyId: SurveyTemplateDto.Id): SurveyTemplate? {
-        return surveyTemplateRepository.findByIdOrNull(templateSurveyId.value)
+        val surveyTemplateEntity = surveyTemplateRepository.findByIdOrNull(templateSurveyId.value)
+            ?: return null
+        return surveyTemplateEntityToSurveyTemplateConverter.convert(surveyTemplateEntity)
     }
 }

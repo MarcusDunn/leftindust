@@ -1,17 +1,14 @@
 package com.leftindust.mockingbird.survey
 
-import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.util.SurveyTemplateMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers
 import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -26,7 +23,7 @@ internal class CreateSurveyTemplateServiceImplUnitTest {
     @MockK
     private lateinit var surveyTemplateRepository: SurveyTemplateRepository
 
-    private val surveyTemplateEntityToSurveyTemplateConverter = SurveyTemplateEntityToSurveyTemplateConverter(TODO())
+    private val surveyTemplateEntityToSurveyTemplateConverter = SurveyTemplateEntityToSurveyTemplateConverter()
 
     @Test
     internal fun `check saves a new entity`() = runTest {
@@ -45,7 +42,7 @@ internal class CreateSurveyTemplateServiceImplDatabaseTest(
     @MockkBean
     private lateinit var serverHttpSecurity: SecurityWebFilterChain
 
-    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, TODO())
+    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, SurveyTemplateEntityToSurveyTemplateConverter())
 
     @Test
     internal fun `check persists a new surveyTemplate`() = runTest {
