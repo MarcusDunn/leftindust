@@ -55,6 +55,7 @@ type Query {
     mockingbirdIsAlive: Boolean!
     clinicByClinicId(clinicId: ClinicIdInput!): Clinic
     userByUserUniqueId(uniqueId: String): MediqUser
+    surveyTemplateById(surveyTemplateId: SurveyTemplateIdInput): SurveyTemplate
 }
 
 input CreateSurveyTemplate {
@@ -112,19 +113,25 @@ enum SurveyTemplateCategory {
 }
 
 type SurveyTemplate {
-    id: SurveyTemplateId
+    id: SurveyTemplateId!
+    title: String!
+    subtitle: String
+}
+
+input SurveyTemplateIdInput {
+    value: UUID!
 }
 
 type SurveyTemplateId {
-    value: UUID
+    value: UUID!
 }
 
 type MediqUserId {
-    value: UUID
+    value: UUID!
 }
 
 type MediqGroupId {
-    value: MediqGroupId
+    value: MediqGroupId!
 }
 
 type MediqGroup {

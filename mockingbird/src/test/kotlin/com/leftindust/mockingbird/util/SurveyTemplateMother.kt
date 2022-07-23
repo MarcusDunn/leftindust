@@ -20,12 +20,13 @@ import com.leftindust.mockingbird.survey.SurveyTemplateSectionEntity
 import java.util.UUID
 
 object SurveyTemplateMother {
-    private val `koos knee survey template persisted id`: SurveyTemplateDto.Id
-        get() = SurveyTemplateDto.Id(UUID.fromString("7032ff1d-d89e-4d8a-b4cb-12a731a41b89"))
+    private val `koos knee survey template persisted id`: SurveyTemplateDto.SurveyTemplateDtoId
+        get() = SurveyTemplateDto.SurveyTemplateDtoId(UUID.fromString("7032ff1d-d89e-4d8a-b4cb-12a731a41b89"))
     val `koos knee survey template dto`: SurveyTemplateDto
         get() = SurveyTemplateDto(
             id = `koos knee survey template persisted id`,
-            title = `koos knee survey template entity unpersisted`.title
+            title = `koos knee survey template entity unpersisted`.title,
+            subtitle = `koos knee survey template entity unpersisted`.subtitle,
         )
 
     val `koos knee survey template`: SurveyTemplate

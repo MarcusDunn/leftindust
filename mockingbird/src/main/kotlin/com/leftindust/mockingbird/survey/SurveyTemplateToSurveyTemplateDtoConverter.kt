@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 class SurveyTemplateToSurveyTemplateDtoConverter: InfallibleConverter<SurveyTemplate, SurveyTemplateDto> {
     override fun convert(source: SurveyTemplate): SurveyTemplateDto {
         return SurveyTemplateDto(
-            id = SurveyTemplateDto.Id(source.id),
+            id = SurveyTemplateDto.SurveyTemplateDtoId(source.id),
             title = source.title,
             subtitle = source.subtitle
         )
