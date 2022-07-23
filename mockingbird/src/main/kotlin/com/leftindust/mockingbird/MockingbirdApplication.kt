@@ -50,7 +50,7 @@ class MockingbirdApplication {
                                     throw CoercingSerializeException("UUID must be a UUID, instead was $dataFetcherResult")
                                 }
                             } catch (e: Exception) {
-                                throw CoercingSerializeException(e)
+                                throw CoercingSerializeException("failed to coerce $dataFetcherResult to String", e)
                             }
                         }
 
@@ -59,7 +59,7 @@ class MockingbirdApplication {
                                 try {
                                     return UUID.fromString(input)
                                 } catch (e: Exception) {
-                                    throw CoercingSerializeException(e)
+                                    throw CoercingSerializeException("failed to coerce $input to UUID", e)
                                 }
                             } else {
                                 throw CoercingSerializeException("UUID must be a string, instead was $input")
@@ -71,7 +71,7 @@ class MockingbirdApplication {
                                 try {
                                     return UUID.fromString(input.value)
                                 } catch (e: Exception) {
-                                    throw CoercingSerializeException(e)
+                                    throw CoercingSerializeException("failed to coerce $input", e)
                                 }
                             } else {
                                 throw CoercingSerializeException("UUID must be a StringValue, instead was $input")
@@ -92,7 +92,7 @@ class MockingbirdApplication {
                                 throw CoercingSerializeException("Base64 must be a ByteArray, instead was $dataFetcherResult")
                             }
                         } catch (e: Exception) {
-                            throw CoercingSerializeException(e)
+                            throw CoercingSerializeException("failed to coerce $dataFetcherResult to String", e)
                         }
                     }
 
@@ -104,7 +104,7 @@ class MockingbirdApplication {
                                 throw CoercingSerializeException("Base64 must be a String, instead was $input")
                             }
                         } catch (e: Exception) {
-                            throw CoercingSerializeException(e)
+                            throw CoercingSerializeException("failed to coerce $input to ByteArray", e)
                         }
                     }
 
@@ -116,7 +116,7 @@ class MockingbirdApplication {
                                 throw CoercingSerializeException("Base64 must be a StringValue, instead was $input")
                             }
                         } catch (e: Exception) {
-                            throw CoercingSerializeException(e)
+                            throw CoercingSerializeException("failed to coerce $input", e)
                         }
                     }
                 }).build())

@@ -6,6 +6,4 @@ interface SurveyTemplate {
     val id: UUID
     val title: String
     val subtitle: String?
-    val sections: Set<CreateSurveyTemplateSection>
-    val calculations: Set<CreateSurveyTemplateCalculation>
 }
