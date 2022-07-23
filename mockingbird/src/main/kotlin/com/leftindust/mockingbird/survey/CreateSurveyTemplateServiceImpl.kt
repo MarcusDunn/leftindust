@@ -40,9 +40,9 @@ class CreateSurveyTemplateServiceImpl(
         )
     }
 
-    private fun createSurveyTemplateSectionInputToSurveyTemplateSectionInputEntity(createSurveyTemplateSectionInput: CreateSurveyTemplateSectionInput): CreateSurveyTemplateSectionInputEntity {
+    private fun createSurveyTemplateSectionInputToSurveyTemplateSectionInputEntity(createSurveyTemplateSectionInput: CreateSurveyTemplateSectionInput): SurveyTemplateSectionInputEntity {
         return when (val restriction = createSurveyTemplateSectionInput.restriction) {
-            is CreateSurveyTemplateSectionInputRestriction.Date -> CreateSurveyTemplateSectionInputEntity(
+            is CreateSurveyTemplateSectionInputRestriction.Date -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Date,
                 label = createSurveyTemplateSectionInput.label,
                 options = null,
@@ -52,7 +52,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadMultiple = null,
                 uploadAccept = null,
             )
-            is CreateSurveyTemplateSectionInputRestriction.MultiSelect -> CreateSurveyTemplateSectionInputEntity(
+            is CreateSurveyTemplateSectionInputRestriction.MultiSelect -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.MultiSelect,
                 label = createSurveyTemplateSectionInput.label,
                 options = restriction.options.toMutableList(),
@@ -62,7 +62,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadMultiple = null,
                 uploadAccept = null,
             )
-            is CreateSurveyTemplateSectionInputRestriction.Number -> CreateSurveyTemplateSectionInputEntity(
+            is CreateSurveyTemplateSectionInputRestriction.Number -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Number,
                 label = createSurveyTemplateSectionInput.label,
                 options = null,
@@ -72,7 +72,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadMultiple = null,
                 uploadAccept = null,
             )
-            is CreateSurveyTemplateSectionInputRestriction.Paragraph -> CreateSurveyTemplateSectionInputEntity(
+            is CreateSurveyTemplateSectionInputRestriction.Paragraph -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Paragraph,
                 label = createSurveyTemplateSectionInput.label,
                 options = null,
@@ -82,7 +82,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadMultiple = null,
                 uploadAccept = null,
             )
-            is CreateSurveyTemplateSectionInputRestriction.SingleSelect -> CreateSurveyTemplateSectionInputEntity(
+            is CreateSurveyTemplateSectionInputRestriction.SingleSelect -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.SingleSelect,
                 label = createSurveyTemplateSectionInput.label,
                 options = restriction.options.toMutableList(),
@@ -92,7 +92,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadMultiple = null,
                 uploadAccept = null,
             )
-            is CreateSurveyTemplateSectionInputRestriction.Text -> CreateSurveyTemplateSectionInputEntity(
+            is CreateSurveyTemplateSectionInputRestriction.Text -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Text,
                 label = createSurveyTemplateSectionInput.label,
                 options = null,
@@ -102,7 +102,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadMultiple = null,
                 uploadAccept = null,
             )
-            is CreateSurveyTemplateSectionInputRestriction.Title -> CreateSurveyTemplateSectionInputEntity(
+            is CreateSurveyTemplateSectionInputRestriction.Title -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Title,
                 label = createSurveyTemplateSectionInput.label,
                 options = null,
@@ -112,7 +112,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadMultiple = null,
                 uploadAccept = null,
             )
-            is CreateSurveyTemplateSectionInputRestriction.Upload -> CreateSurveyTemplateSectionInputEntity(
+            is CreateSurveyTemplateSectionInputRestriction.Upload -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Upload,
                 label = createSurveyTemplateSectionInput.label,
                 options = null,
