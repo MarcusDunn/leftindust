@@ -9,19 +9,34 @@ import com.leftindust.mockingbird.survey.CreateSurveyTemplateSectionDto
 import com.leftindust.mockingbird.survey.CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter
 import com.leftindust.mockingbird.survey.CreateSurveyTemplateSectionInputDto
 import com.leftindust.mockingbird.survey.CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConverter
-import com.leftindust.mockingbird.survey.CreateSurveyTemplateSectionInputEntity
+import com.leftindust.mockingbird.survey.SurveyTemplateSectionInputEntity
 import com.leftindust.mockingbird.survey.SurveyTemplate
 import com.leftindust.mockingbird.survey.SurveyTemplateCalculationEntity
 import com.leftindust.mockingbird.survey.SurveyTemplateCategory
 import com.leftindust.mockingbird.survey.SurveyTemplateDto
 import com.leftindust.mockingbird.survey.SurveyTemplateEntity
 import com.leftindust.mockingbird.survey.SurveyTemplateInputType
+import com.leftindust.mockingbird.survey.SurveyTemplateSection
+import com.leftindust.mockingbird.survey.SurveyTemplateSectionDto
 import com.leftindust.mockingbird.survey.SurveyTemplateSectionEntity
 import java.util.UUID
 
 object SurveyTemplateMother {
+    val `koos knee survey template sections dto`: List<SurveyTemplateSectionDto>
+        get() = `koos knee survey template entity persisted`.sections.map {
+            SurveyTemplateSectionDto(SurveyTemplateSectionDto.SurveyTemplateSectionDtoId(it.id!!))
+        }
+
+    val `koos knee survey template sections`: List<SurveyTemplateSection>
+        get() = `koos knee survey template entity persisted`.sections.map {
+            object : SurveyTemplateSection {
+                override val id = it.id!!
+            }
+        }
+
     private val `koos knee survey template persisted id`: SurveyTemplateDto.SurveyTemplateDtoId
         get() = SurveyTemplateDto.SurveyTemplateDtoId(UUID.fromString("7032ff1d-d89e-4d8a-b4cb-12a731a41b89"))
+
     val `koos knee survey template dto`: SurveyTemplateDto
         get() = SurveyTemplateDto(
             id = `koos knee survey template persisted id`,
@@ -38,6 +53,9 @@ object SurveyTemplateMother {
         }
 
     val `koos knee survey template entity unpersisted`
+        get() = `koos knee survey template entity persisted`.apply { id = null }
+
+    val `koos knee survey template entity persisted`
         get() = SurveyTemplateEntity(
             title = `create koos knee survey template title`,
             subtitle = `create koos knee survey template subtitle`,
@@ -47,7 +65,7 @@ object SurveyTemplateMother {
                     title = section.title,
                     subtitle = section.subtitle,
                     inputs = section.inputs.map {
-                        CreateSurveyTemplateSectionInputEntity(
+                        SurveyTemplateSectionInputEntity(
                             type = it.type,
                             label = it.label,
                             options = it.options?.toMutableList(),
@@ -58,7 +76,7 @@ object SurveyTemplateMother {
                             uploadAccept = it.uploadAccept
                         )
                     }.toMutableSet()
-                )
+                ).apply { id = UUID.fromString("32b0b8ba-7f8f-4c7d-bad9-23bea9a024ba") }
             }
                 .toMutableSet(),
             calculations = `create koos knee survey template dto calculations`.mapIndexed { i, calculator ->
@@ -68,14 +86,10 @@ object SurveyTemplateMother {
                     inputType = calculator.inputType,
                     showOnComplete = calculator.showOnComplete,
                     calculation = calculator.calculation
-                )
+                ).apply { id = UUID.fromString("abe1b9b4-fef9-4545-bf91-b8c9b37c14c7") }
             }
                 .toMutableSet()
         )
-
-    val `koos knee survey template entity persisted`
-        get() = `koos knee survey template entity unpersisted`
-            .apply { id = `koos knee survey template persisted id`.value }
 
     private val `create koos knee survey template title`: String
         get() = "KOOS knee survey"

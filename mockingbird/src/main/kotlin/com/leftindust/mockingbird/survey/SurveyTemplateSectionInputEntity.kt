@@ -5,7 +5,7 @@ import javax.persistence.ElementCollection
 import javax.persistence.Entity
 
 @Entity
-class CreateSurveyTemplateSectionInputEntity(
+class SurveyTemplateSectionInputEntity(
     val type: SurveyTemplateInputType,
     val label: String,
     @ElementCollection

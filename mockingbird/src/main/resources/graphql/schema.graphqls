@@ -116,6 +116,15 @@ type SurveyTemplate {
     id: SurveyTemplateId!
     title: String!
     subtitle: String
+    sections: [SurveyTemplateSection!]!
+}
+
+type SurveyTemplateSection {
+    id: SurveyTemplateSectionId!
+}
+
+type SurveyTemplateSectionId {
+    value: UUID!
 }
 
 input SurveyTemplateIdInput {
