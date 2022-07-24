@@ -7,6 +7,18 @@ type Mutation {
     addClinic(clinic: CreateClinic!): Clinic!
     editClinic(clinic: EditClinic!): Clinic
     addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate
+    addDoctor(doctor: CreateDoctor!): Doctor!
+    editDoctor(doctor: UpdateDoctor!): Doctor!
+}
+
+type Query {
+    mockingbirdIsAlive: Boolean!
+    clinicByClinicId(clinicId: ClinicIdInput!): Clinic
+    userByUserUniqueId(uniqueId: String): MediqUser
+    doctorsById(doctorIds: [DoctorIdInput!]!): [Doctor]!
+    doctorsByPatientId(patientId: PatientIdInput!): [Doctor]!
+    doctorsByRange(range: Range!): [Doctor]!
+    doctorByExample(example: GraphQLDoctor!): [Doctor]!
 }
 
 input EditClinic {
@@ -16,11 +28,145 @@ input EditClinic {
     doctors: [DoctorIdInput!]! = []
 }
 
+type CreateNameInfo {
+    firstName: String!
+    middleName: String
+    lastName: String!
+}
+
+type NoUser {
+    nameInfo: CreateNameInfo!
+}
+
+type FindUser {
+    userUid: String!
+}
+
+type CreateUser {
+    uid: String!
+    nameInfo: CreateNameInfo!
+    group: MediqGroupId
+}
+
+union User = NoUser | FindUser | CreateUser
+
+type MediqGroup {
+    id: MediqGroupId!
+    name: String!
+}
+
+type MediqGroupId {
+    value: UUID!
+}
+
+input CreateDoctor {
+    user: User!
+    phones: [CreatePhone!]!
+    title: String
+    clinic: [ClinicIdInput!]!
+    dateOfBirth: LocalDateInput
+    addresses: [CreateAddress!]!
+    emails: [CreateEmail!]!
+    patients: [PatientIdInput!]!
+}
+
+input UpdateDoctor {
+    did: DoctorIdInput!
+    userUid: String!
+    nameInfo: UpdateNameInfo!
+    phones: [CreatePhone!]!
+    title: String!
+    clinics: [ClinicIdInput!]!
+    dateOfBirth: LocalDateInput!
+    addresses: [CreateAddress!]!
+    emails: [CreateEmail!]!
+    patients: [PatientIdInput!]!
+}
+
+type Patient {
+    id: PatientId!
+    firstName: String!
+    middleName: String
+    lastName: String!
+    thumbnail: String
+    dateOfBirth: LocalDate!
+    insuranceNumber: String
+    sex: Sex!
+    gender: String!
+    ethnicity: Ethnicity
+}
+
+enum Ethnicity {
+    AmericanAboriginal
+    Asian
+    Black
+    Hispanic
+    PacificIslander
+    White
+}
+
+enum Sex {
+    Male
+    Female
+    Intersex
+}
+
+type PatientId {
+    value: UUID!
+}
+
+enum EmailType {
+    Work
+    Personal
+    School
+    Other
+}
+
+input CreateEmail {
+    type: EmailType!
+    email: String!
+}
+
+input CreatePhone {
+    number: String!
+    type: PhoneType!
+}
+
+enum PhoneType {
+    Work
+    Cell
+    Home
+    Pager
+    Other
+}
+
+type Doctor {
+    id: DoctorId!
+    firstName: String!
+    middleName: String
+    lastName: String!
+    thumbnail: String
+    title: String
+    dateOfBirth: LocalDate
+}
+
+type LocalDate {
+    isoDateString: String!
+}
+
+input LocalDateInput {
+    isoDateString: String!
+}
+
 type DoctorId {
     value: UUID!
 }
 
 input DoctorIdInput {
+    value: UUID!
+}
+
+input PatientIdInput {
     value: UUID!
 }
 
@@ -51,10 +197,27 @@ input CreateAddress {
     postalCode: String!
 }
 
-type Query {
-    mockingbirdIsAlive: Boolean!
-    clinicByClinicId(clinicId: ClinicIdInput!): Clinic
-    userByUserUniqueId(uniqueId: String): MediqUser
+input GraphQLDoctor {
+    firstName: CaseAgnosticStringFilter
+    lastName: CaseAgnosticStringFilter
+    strict: Boolean!
+}
+
+input CaseAgnosticStringFilter {
+    eq: String
+    ne: String
+    contains: String
+    notContain: String
+    startSWith: String
+    notStartWith: String
+    endsWith: String
+    notEndWith: String
+    strict: Boolean!
+}
+
+input Range {
+    from: Int!
+    to: Int!
 }
 
 input CreateSurveyTemplate {
@@ -145,6 +308,12 @@ type UserAccountDetails {
 }
 
 type NameInfo {
+    firstName: String
+    middleName: String
+    lastName: String
+}
+
+input UpdateNameInfo {
     firstName: String
     middleName: String
     lastName: String
