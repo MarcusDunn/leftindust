@@ -3,7 +3,7 @@
   import { PatientQueryDocument, type Data, type PatientFragment } from '@/api/server';
   
   import { account } from '../Account/store';
-  import { PatientTab } from '.';
+  import { ClientTab } from '../Client';
   import { Layout } from '../App';
 
   import { Tab, Tabs, Block } from 'framework7-svelte';
@@ -35,7 +35,7 @@
   let patient: PatientFragment | undefined;
 
   let layout: Layout = $account.database.settings.options.layout || Layout.Bundled;
-  let tab: PatientTab = PatientTab.Documents;
+  let tab: ClientTab = ClientTab.Records;
 
   const data: Data = JSON.parse(f7route.params.data ?? '{}');
 
@@ -97,16 +97,12 @@
         <SelectButton
           options={[
             {
-              text: $_('generics.documents'),
-              value: PatientTab.Documents,
-            },
-            {
               text: $_('generics.records'),
-              value: PatientTab.Records,
+              value: ClientTab.Records,
             },
             {
               text: $_('generics.contacts'),
-              value: PatientTab.Contacts,
+              value: ClientTab.Contacts,
             },
           ]}
           bind:value={tab}
@@ -166,10 +162,10 @@
       </div>
     </Profile>
     <Tabs>
-      <Tab tabActive={layout === Layout.Bundled && tab !== PatientTab.Overview}>
+      <Tab tabActive={layout === Layout.Bundled}>
         <Block style="margin-left: 25px;margin-right: 25px">
           <Tabs>
-            <Tab tabActive={tab === PatientTab.Contacts}>
+            <Tab tabActive={tab === ClientTab.Contacts}>
               <GenericGrid
                 props={{ id: 'Patient', data, quicklook }}
                 type={WidgetType.Bundle}
