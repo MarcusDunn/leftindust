@@ -26,7 +26,9 @@
       <slot />
     {/if}
     {#if title}
-      <div class="ui-menu_button-title"><span>{title || ''}</span></div>
+      <div class="ui-menu_button-title">
+        <div class="ui-menu_button-title-label">{title || ''}</div>
+      </div>
     {/if}
   </Link>
 </div>

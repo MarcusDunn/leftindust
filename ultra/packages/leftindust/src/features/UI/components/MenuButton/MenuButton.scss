@@ -39,7 +39,7 @@
         position: absolute;
         bottom: 2px;
 
-        span {
+        .ui-menu_button-title-label {
           position: absolute;
           bottom: 0px;
           font-size: 12px;
@@ -63,7 +63,7 @@
         }
   
         .ui-menu_button-title {
-          span {
+          .ui-menu_button-title-label {
             color: white;
           }
         }
