@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.survey
 
-import com.leftindust.mockingbird.util.SurveyTemplateMother
 import com.leftindust.mockingbird.util.SurveyTemplateMother.KoosKneeSurvey
 import com.leftindust.mockingbird.util.SurveyTemplateSectionMother.HowMuchPainAreYouInSection
 import com.ninjasquad.springmockk.MockkBean
@@ -40,6 +39,8 @@ internal class SurveyTemplateSectionQueryControllerWebTest(
                 surveyTemplateById(surveyTemplateId: {value: "${templateSurveyId.value}"}) {
                     sections {
                         id { value }
+                        title
+                        subtitle
                     }
                 }
             }
@@ -52,5 +53,11 @@ internal class SurveyTemplateSectionQueryControllerWebTest(
             .path("surveyTemplateById.sections[*].id.value")
             .entity(object : ParameterizedTypeReference<List<UUID>>() {})
             .isEqualTo(listOf(HowMuchPainAreYouInSection.id))
+            .path("surveyTemplateById.sections[*].title")
+            .entity(object : ParameterizedTypeReference<List<String>>() {})
+            .isEqualTo(listOf(HowMuchPainAreYouInSection.title))
+            .path("surveyTemplateById.sections[*].subtitle")
+            .entity(object : ParameterizedTypeReference<List<String>>() {})
+            .isEqualTo(listOf(HowMuchPainAreYouInSection.subtitle))
     }
 }

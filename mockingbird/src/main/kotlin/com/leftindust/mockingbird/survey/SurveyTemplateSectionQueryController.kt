@@ -11,6 +11,8 @@ class SurveyTemplateSectionToSurveyTemplateSectionDtoConverter: InfallibleConver
     override fun convert(source: SurveyTemplateSection): SurveyTemplateSectionDto {
         return SurveyTemplateSectionDto(
             id = SurveyTemplateSectionDto.SurveyTemplateSectionDtoId(source.id),
+            title = source.title,
+            subtitle = source.subtitle,
         )
     }
 }
