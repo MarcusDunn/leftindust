@@ -120,7 +120,15 @@ type SurveyTemplate {
 }
 
 type SurveyTemplateInput {
-    id: SurveyTemplateInputId
+    id: SurveyTemplateInputId!
+    type: SurveyTemplateInputType!
+    label: String!
+    options: [String!]
+    placeholder: String
+    required: Boolean!
+    category: SurveyTemplateCategory
+    uploadMultiple: Boolean
+    uploadAccept: TemplateInputUploadType
 }
 
 type SurveyTemplateInputId {
