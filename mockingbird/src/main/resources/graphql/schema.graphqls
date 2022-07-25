@@ -129,6 +129,8 @@ type SurveyTemplateInputId {
 
 type SurveyTemplateSection {
     id: SurveyTemplateSectionId!
+    title: String!
+    subtitle: String
     inputs: [SurveyTemplateInput!]!
 }
 

@@ -9,9 +9,15 @@ import org.springframework.stereotype.Component
 class SurveyTemplateSectionEntityToSurveyTemplateSectionConverter : InfallibleConverter<SurveyTemplateSectionEntity, SurveyTemplateSection> {
     override fun convert(source: SurveyTemplateSectionEntity): SurveyTemplateSection {
         return SurveyTemplateSectionImpl(
-            id = source.id ?: throw NullEntityIdInConverterException(source)
+            id = source.id ?: throw NullEntityIdInConverterException(source),
+            title = source.title,
+            subtitle = source.subtitle,
         )
     }
 
-    private data class SurveyTemplateSectionImpl(override val id: UUID) : SurveyTemplateSection
+    private data class SurveyTemplateSectionImpl(
+        override val id: UUID,
+        override val subtitle: String?,
+        override val title: String,
+    ) : SurveyTemplateSection
 }
