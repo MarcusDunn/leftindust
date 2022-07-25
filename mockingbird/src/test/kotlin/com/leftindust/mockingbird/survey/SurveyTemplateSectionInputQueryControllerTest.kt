@@ -41,6 +41,14 @@ internal class SurveyTemplateSectionInputQueryControllerWebTest(
                     sections {
                         inputs {
                             id { value }
+                            type
+                            label
+                            options
+                            placeholder
+                            required
+                            category
+                            uploadMultiple
+                            uploadAccept
                         }
                     }
                 }
