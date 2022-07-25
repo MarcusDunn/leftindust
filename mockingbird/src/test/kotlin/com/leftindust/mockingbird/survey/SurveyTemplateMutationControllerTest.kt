@@ -37,8 +37,8 @@ internal class SurveyTemplateMutationControllerUnitTest {
 
     @Test
     internal fun `check calls the creation service`() = runTest {
-        coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns SurveyTemplateMother.`koos knee survey template`
-        surveyTemplateMutationController.addSurveyTemplate(SurveyTemplateMother.`create koos knee survey template dto`)
+        coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns SurveyTemplateMother.KoosKneeSurvey.domain
+        surveyTemplateMutationController.addSurveyTemplate(SurveyTemplateMother.KoosKneeSurvey.createDto)
         coVerify(exactly = 1) { createSurveyTemplateService.createSurveyTemplate(any()) }
     }
 }
