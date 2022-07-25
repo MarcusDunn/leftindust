@@ -13,6 +13,7 @@ import com.leftindust.mockingbird.survey.SurveyTemplateSectionDto
 import com.leftindust.mockingbird.survey.SurveyTemplateSectionEntity
 import com.leftindust.mockingbird.survey.SurveyTemplateSectionEntityToSurveyTemplateSectionConverter
 import com.leftindust.mockingbird.survey.SurveyTemplateSectionToSurveyTemplateSectionDtoConverter
+import com.leftindust.mockingbird.util.SurveyTemplateSectionInputMother.HowMuchPainAreYouInSectionInput
 import java.util.UUID
 
 object SurveyTemplateSectionMother {
@@ -29,13 +30,13 @@ object SurveyTemplateSectionMother {
         val createDto: CreateSurveyTemplateSectionDto = CreateSurveyTemplateSectionDto(
             title = title,
             subtitle = subtitle,
-            inputs = listOf(SurveyTemplateSectionInputMother.HowMuchPainAreYouInSectionInput.inputDto)
+            inputs = listOf(HowMuchPainAreYouInSectionInput.inputDto)
         )
         val entityPersisted: SurveyTemplateSectionEntity = SurveyTemplateSectionEntity(
             index = 0,
             title = title,
             subtitle = "The first section",
-            inputs = listOf(SurveyTemplateSectionInputMother.HowMuchPainAreYouInSectionInput.entityPersisted).toMutableSet()
+            inputs = listOf(HowMuchPainAreYouInSectionInput.entityPersisted).toMutableSet()
         ).apply { this.id = this@HowMuchPainAreYouInSection.id }
 
         val entityUnpersited: SurveyTemplateSectionEntity

@@ -5,7 +5,8 @@ import java.util.UUID
 
 data class SurveyTemplateSectionDto(
     override val id: SurveyTemplateSectionDtoId,
-    // todo add more fields here
+    val title: String,
+    val subtitle: String?,
 ) : AbstractGraphQLDto<SurveyTemplateSectionDto.SurveyTemplateSectionDtoId>() {
     companion object {
         const val GRAPHQL_TYPE_NAME = "SurveyTemplateSection"
