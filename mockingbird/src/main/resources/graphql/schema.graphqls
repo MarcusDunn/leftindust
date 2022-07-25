@@ -119,8 +119,17 @@ type SurveyTemplate {
     sections: [SurveyTemplateSection!]!
 }
 
+type SurveyTemplateInput {
+    id: SurveyTemplateInputId
+}
+
+type SurveyTemplateInputId {
+    value: UUID
+}
+
 type SurveyTemplateSection {
     id: SurveyTemplateSectionId!
+    inputs: [SurveyTemplateInput!]!
 }
 
 type SurveyTemplateSectionId {
