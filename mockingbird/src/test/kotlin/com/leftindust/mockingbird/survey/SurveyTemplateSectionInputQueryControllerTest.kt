@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.survey
 
-import com.leftindust.mockingbird.util.SurveyTemplateMother
 import com.leftindust.mockingbird.util.SurveyTemplateMother.KoosKneeSurvey
+import com.leftindust.mockingbird.util.SurveyTemplateSectionInputMother.HowMuchPainAreYouInSectionInput
 import com.leftindust.mockingbird.util.SurveyTemplateSectionMother.HowMuchPainAreYouInSection
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -14,32 +14,34 @@ import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
 
-@GraphQlTest(controllers = [SurveyTemplateSectionQueryController::class, SurveyTemplateQueryController::class])
-internal class SurveyTemplateSectionQueryControllerWebTest(
+@GraphQlTest(controllers = [SurveyTemplateQueryController::class, SurveyTemplateSectionInputQueryController::class, SurveyTemplateSectionQueryController::class])
+internal class SurveyTemplateSectionInputQueryControllerWebTest(
     @Autowired private val graphQlTester: GraphQlTester
 ) {
-
     @MockkBean
     private lateinit var serverHttpSecurity: SecurityWebFilterChain
-
-    @MockkBean
-    private lateinit var readSurveyTemplateService: ReadSurveyTemplateService
-
     @MockkBean
     private lateinit var readSurveyTemplateSectionService: ReadSurveyTemplateSectionService
+    @MockkBean
+    private lateinit var readSurveyTemplateService: ReadSurveyTemplateService
+    @MockkBean
+    private lateinit var readSurveyTemplateSectionInputServiceImpl: ReadSurveyTemplateSectionInputService
 
     @Test
-    internal fun `check getting sections from a survey`() {
-        val templateSurveyId = KoosKneeSurvey.graphqlId
+    internal fun `check can query inputs`() {
+        val templateSurveyId = KoosKneeSurvey.dto.id
         coEvery { readSurveyTemplateService.getByTemplateSurveyId(templateSurveyId) } returns KoosKneeSurvey.domain
-        coEvery { readSurveyTemplateSectionService.surveyTemplateSectionServiceBySurveySectionId(KoosKneeSurvey.graphqlId) } returns listOf(HowMuchPainAreYouInSection.domain)
+        coEvery { readSurveyTemplateSectionService.surveyTemplateSectionServiceBySurveySectionId(any()) } returns listOf(HowMuchPainAreYouInSection.domain)
+        coEvery { readSurveyTemplateSectionInputServiceImpl.surveyTemplateSectionInputBySurveySection(any()) } returns listOf(HowMuchPainAreYouInSectionInput.domain)
 
         @Language("GraphQL")
         val query = """
             query {
                 surveyTemplateById(surveyTemplateId: {value: "${templateSurveyId.value}"}) {
                     sections {
-                        id { value }
+                        inputs {
+                            id { value }
+                        }
                     }
                 }
             }
@@ -49,8 +51,8 @@ internal class SurveyTemplateSectionQueryControllerWebTest(
             .execute()
             .errors()
             .verify()
-            .path("surveyTemplateById.sections[*].id.value")
-            .entity(object : ParameterizedTypeReference<List<UUID>>() {})
-            .isEqualTo(listOf(HowMuchPainAreYouInSection.id))
+            .path("surveyTemplateById.sections[*].inputs[*].id.value")
+            .entity(object: ParameterizedTypeReference<List<UUID>>() {})
+            .matches { it.contains(HowMuchPainAreYouInSectionInput.id) }
     }
 }

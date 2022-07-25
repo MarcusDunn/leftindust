@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.survey
 
-import com.leftindust.mockingbird.util.SurveyTemplateMother.`koos knee survey template`
-import com.leftindust.mockingbird.util.SurveyTemplateMother.`koos knee survey template dto`
+import com.leftindust.mockingbird.util.SurveyTemplateMother.KoosKneeSurvey
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import java.util.UUID
@@ -24,8 +23,8 @@ internal class SurveyTemplateQueryControllerWebTest(
 
     @Test
     internal fun `check can get a survey template by id`() {
-        val templateSurveyId = `koos knee survey template dto`.id
-        coEvery { readSurveyTemplateService.getByTemplateSurveyId(templateSurveyId) } returns `koos knee survey template`
+        val templateSurveyId = KoosKneeSurvey.graphqlId
+        coEvery { readSurveyTemplateService.getByTemplateSurveyId(templateSurveyId) } returns KoosKneeSurvey.domain
 
         @Language("GraphQL")
         val query = """
@@ -48,9 +47,9 @@ internal class SurveyTemplateQueryControllerWebTest(
             .isEqualTo(templateSurveyId.value)
             .path("surveyTemplateById.title")
             .entity(String::class.java)
-            .isEqualTo(`koos knee survey template dto`.title)
+            .isEqualTo(KoosKneeSurvey.title)
             .path("surveyTemplateById.subtitle")
             .entity(String::class.java)
-            .isEqualTo(`koos knee survey template dto`.subtitle)
+            .isEqualTo(KoosKneeSurvey.subtitle)
     }
 }

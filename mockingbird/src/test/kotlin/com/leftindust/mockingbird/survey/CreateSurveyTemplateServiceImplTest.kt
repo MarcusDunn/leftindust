@@ -27,9 +27,9 @@ internal class CreateSurveyTemplateServiceImplUnitTest {
 
     @Test
     internal fun `check saves a new entity`() = runTest {
-        every { surveyTemplateRepository.save(any()) } returns SurveyTemplateMother.`koos knee survey template entity persisted`
+        every { surveyTemplateRepository.save(any()) } returns SurveyTemplateMother.KoosKneeSurvey.entityPersisted
         val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, surveyTemplateEntityToSurveyTemplateConverter)
-        createSurveyTemplateServiceImpl.createSurveyTemplate(SurveyTemplateMother.`create koos knee survey template`)
+        createSurveyTemplateServiceImpl.createSurveyTemplate(SurveyTemplateMother.KoosKneeSurvey.createDomain)
         verify(exactly = 1) { surveyTemplateRepository.save(any()) }
     }
 }
@@ -46,7 +46,7 @@ internal class CreateSurveyTemplateServiceImplDatabaseTest(
 
     @Test
     internal fun `check persists a new surveyTemplate`() = runTest {
-        val createSurveyTemplate = createSurveyTemplateServiceImpl.createSurveyTemplate(SurveyTemplateMother.`create koos knee survey template`)
-        assertThat(surveyTemplateRepository.findByIdOrNull(createSurveyTemplate.id), notNullValue())
+        val surveyTemplate = createSurveyTemplateServiceImpl.createSurveyTemplate(SurveyTemplateMother.KoosKneeSurvey.createDomain)
+        assertThat(surveyTemplateRepository.findByIdOrNull(surveyTemplate.id), notNullValue())
     }
 }

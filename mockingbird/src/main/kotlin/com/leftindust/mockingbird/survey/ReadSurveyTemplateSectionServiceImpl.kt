@@ -2,16 +2,20 @@ package com.leftindust.mockingbird.survey
 
 import com.leftindust.mockingbird.InfallibleConverter
 import javax.transaction.Transactional
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 @Transactional
 class ReadSurveyTemplateSectionServiceImpl(
     private val surveyTemplateRepository: SurveyTemplateRepository,
-    private val surveyTemplateSectionEntityToSurveyTemplateSectionConverter: InfallibleConverter<SurveyTemplateSectionEntity, SurveyTemplateSection>
+    private val surveyTemplateSectionEntityToSurveyTemplateSectionConverter: InfallibleConverter<SurveyTemplateSectionEntity, SurveyTemplateSection>,
 ) : ReadSurveyTemplateSectionService {
     override suspend fun surveyTemplateSectionServiceBySurveySectionId(surveyTemplateId: SurveyTemplateDto.SurveyTemplateDtoId): List<SurveyTemplateSection>? {
-        val surveyTemplateSectionEntities = surveyTemplateRepository.getReferenceById(surveyTemplateId.value).sections
-        return surveyTemplateSectionEntities.sortedBy { it.index }.map { surveyTemplateSectionEntityToSurveyTemplateSectionConverter.convert(it) }
+        val surveyTemplateEntity = surveyTemplateRepository.findByIdOrNull(surveyTemplateId.value)
+            ?: return null
+        return surveyTemplateEntity.sections
+            .sortedBy { it.index }
+            .map { surveyTemplateSectionEntityToSurveyTemplateSectionConverter.convert(it) }
     }
 }
