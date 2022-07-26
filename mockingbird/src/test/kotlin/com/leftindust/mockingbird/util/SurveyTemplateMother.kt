@@ -1,11 +1,11 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.survey.CreateSurveyTemplateDto
-import com.leftindust.mockingbird.survey.CreateSurveyTemplateDtoToCreateSurveyTemplateConverter
-import com.leftindust.mockingbird.survey.SurveyTemplateDto
-import com.leftindust.mockingbird.survey.SurveyTemplateEntity
-import com.leftindust.mockingbird.survey.SurveyTemplateEntityToSurveyTemplateConverter
-import com.leftindust.mockingbird.survey.SurveyTemplateToSurveyTemplateDtoConverter
+import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateDto
+import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateDtoToCreateSurveyTemplateConverter
+import com.leftindust.mockingbird.survey.template.SurveyTemplateDto
+import com.leftindust.mockingbird.survey.template.SurveyTemplateEntity
+import com.leftindust.mockingbird.survey.template.SurveyTemplateEntityToSurveyTemplateConverter
+import com.leftindust.mockingbird.survey.template.SurveyTemplateToSurveyTemplateDtoConverter
 import java.util.UUID
 
 object SurveyTemplateMother {
