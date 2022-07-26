@@ -4,18 +4,6 @@ import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullSubQueryException
 import org.springframework.graphql.data.method.annotation.SchemaMapping
 import org.springframework.stereotype.Controller
-import org.springframework.stereotype.Service
-
-@Service
-class SurveyTemplateSectionToSurveyTemplateSectionDtoConverter: InfallibleConverter<SurveyTemplateSection, SurveyTemplateSectionDto> {
-    override fun convert(source: SurveyTemplateSection): SurveyTemplateSectionDto {
-        return SurveyTemplateSectionDto(
-            id = SurveyTemplateSectionDto.SurveyTemplateSectionDtoId(source.id),
-            title = source.title,
-            subtitle = source.subtitle,
-        )
-    }
-}
 
 @Controller
 class SurveyTemplateSectionQueryController(
