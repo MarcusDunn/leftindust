@@ -45,7 +45,7 @@ object SurveyTemplateSectionInputMother {
             uploadAccept = uploadAccept,
         ).apply { this.id = this@HowMuchPainAreYouInSectionInput.id }
 
-        val domain = surveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter.convert(entityPersisted)
+        val domain = surveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter.convert(entityPersisted)!!
 
         val dto = surveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter.convert(domain)
     }
