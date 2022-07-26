@@ -6,7 +6,11 @@ import java.util.UUID
 
 data class SurveyTemplateCalculationDto(
     override val id: SurveyTemplateCalculationDtoId,
-    // todo add more fields here
+    val index: Int,
+    val label: String,
+    val inputType: SurveyTemplateInputType,
+    val showOnComplete: Boolean,
+    val calculation: String,
 ) : AbstractGraphQLDto<SurveyTemplateCalculationDtoId>() {
     data class SurveyTemplateCalculationDtoId(override val value: UUID) : GraphQLID<UUID>
 }

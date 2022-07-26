@@ -117,6 +117,20 @@ type SurveyTemplate {
     title: String!
     subtitle: String
     sections: [SurveyTemplateSection!]!
+    calculations: [SurveyTemplateCalculation!]!
+}
+
+type SurveyTemplateCalculation {
+    id: SurveyTemplateCalculationId
+    index: Int
+    label: String
+    inputType: SurveyTemplateInputType
+    showOnComplete: Boolean
+    calculation: String
+}
+
+type SurveyTemplateCalculationId {
+    value: UUID
 }
 
 type SurveyTemplateInput {
