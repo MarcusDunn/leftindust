@@ -41,9 +41,9 @@ class CreateDoctorServiceImpl(
         val notNullNameInfo = nameInfo ?: user?.nameInfo!!
         val doctor = Doctor(
             nameInfo = notNullNameInfo,
-            addresses = createDoctor.addresses?.map { createAddressService.createAddress(it) }?.toMutableSet() ?: mutableSetOf(),
-            emails = createDoctor.emails?.map { createEmailService.createEmail(it) }?.toMutableSet() ?: mutableSetOf(),
-            phones = createDoctor.phones?.map { createPhoneService.createPhone(it) }?.toMutableSet() ?: mutableSetOf(),
+            addresses = createDoctor.addresses.map { createAddressService.createAddress(it) }.toMutableSet(),
+            emails = createDoctor.emails.map { createEmailService.createEmail(it) }.toMutableSet(),
+            phones = createDoctor.phones.map { createPhoneService.createPhone(it) }.toMutableSet(),
             user = user,
             events = mutableSetOf(), // not currently possible to set on create doctor.
             thumbnail = null,

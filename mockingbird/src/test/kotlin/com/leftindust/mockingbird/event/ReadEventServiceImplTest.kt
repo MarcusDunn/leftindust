@@ -14,6 +14,7 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
@@ -26,8 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.security.web.server.SecurityWebFilterChain
-import java.util.*
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
 internal class ReadEventServiceImplUnitTest {
     @MockK
@@ -54,8 +55,7 @@ internal class ReadEventServiceImplUnitTest {
     }
 
     @Test
-    internal fun `check getByPatientId returns null when no matching patient exists corresponding to any events`() =
-        runTest {
+    internal fun `check getByPatientId returns null when no matching patient exists corresponding to any events`() = runTest {
             val someNonExistentUUid = UUID.fromString("235b4875-92d4-4553-8852-eb8f4b3a887d")
             coEvery { readPatientService.getByPatientId(match { it.value == someNonExistentUUid }) } returns null
             val readEventServiceImpl =

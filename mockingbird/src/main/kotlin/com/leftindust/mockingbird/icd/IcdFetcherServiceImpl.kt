@@ -1,12 +1,14 @@
 package com.leftindust.mockingbird.icd
 
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
-import io.ktor.client.*
+import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.serialization.gson.gson
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.url
+import io.ktor.serialization.jackson.jackson
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -18,7 +20,7 @@ class IcdFetcherServiceImpl(
 
     private val client = HttpClient(CIO) {
         install(ContentNegotiation) {
-            gson()
+            jackson()
         }
         expectSuccess = true
     }
