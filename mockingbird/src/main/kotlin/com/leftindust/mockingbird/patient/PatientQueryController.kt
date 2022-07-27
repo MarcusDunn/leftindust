@@ -1,16 +1,10 @@
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.address.AddressDto
-import com.leftindust.mockingbird.contact.ContactDto
-import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.email.EmailDto
-import com.leftindust.mockingbird.event.EventDto
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
-import com.leftindust.mockingbird.phone.PhoneDto
-import com.leftindust.mockingbird.user.MediqUserDto
-import com.leftindust.mockingbird.visit.VisitDto
 import mu.KotlinLogging
+import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 
 @Controller
@@ -24,7 +18,8 @@ class PatientQueryController(
         return readPatientService.getMany(range).map { patientToPatientDtoConverter.convert(it) }
     }
 
-    suspend fun patientsByPatientId(patientIds: List<PatientDto.PatientDtoId>): List<PatientDto?> {
+    @QueryMapping("patientsByPatientId")
+    suspend fun patientsByPatientId(@Argument("patientIds") patientIds: List<PatientDto.PatientDtoId>): List<PatientDto?> {
         return patientIds
             .map { readPatientService.getByPatientId(it) }
             .map { it?.let { patient -> patientToPatientDtoConverter.convert(patient) } }
@@ -33,20 +28,4 @@ class PatientQueryController(
     suspend fun patientsByExample(example: PatientExampleDto): List<PatientDto> {
         return readPatientService.searchByExample(example).map { patientToPatientDtoConverter.convert(it) }
     }
-
-    suspend fun contacts(): List<ContactDto> = TODO()
-
-    suspend fun doctors(): List<DoctorDto> = TODO()
-
-    suspend fun visits(): List<VisitDto> = TODO()
-
-    suspend fun user(): MediqUserDto? = TODO()
-
-    suspend fun events(): List<EventDto> = TODO()
-
-    suspend fun phones(): List<PhoneDto> = TODO()
-
-    suspend fun emails(): List<EmailDto> = TODO()
-
-    suspend fun addresses(): List<AddressDto> = TODO()
 }

@@ -1,8 +1,6 @@
 package com.leftindust.mockingbird.event
 
-import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.doctor.ReadDoctorService
-import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
 import org.springframework.stereotype.Service

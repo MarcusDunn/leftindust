@@ -1,17 +1,18 @@
 package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.graphql.types.Updatable
-import com.leftindust.mockingbird.util.ClinicMother
+import com.leftindust.mockingbird.util.ClinicMother.DansClinic
 import java.util.UUID
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.instanceOf
 import org.junit.jupiter.api.Test
 
 internal class MapDelegatingUpdateClinicDtoTest {
     @Test
     internal fun `test creating all defined '`() {
         val clinicName = "Clyde's Clinic"
-        val clinicAddress = ClinicMother.createDansClinicDto
+        val clinicAddress = DansClinic.address
         val clinicDoctors = listOf(UUID.randomUUID())
 
         val clinicDto: ClinicEdit = MapDelegatingUpdateClinicDto(mapOf(
