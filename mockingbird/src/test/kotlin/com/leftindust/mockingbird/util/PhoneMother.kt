@@ -2,19 +2,39 @@ package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.phone.PhoneType
+import java.util.UUID
 
 object PhoneMother {
-    private val `jenny's home phone type` = PhoneType.Home
-    private const val `jenny's home phone number` = "(604) 073-4427"
-    val jennysHomePhone = Phone(
-        number = `jenny's home phone number`,
-        type = `jenny's home phone type`
-    )
+    object JennysHomePhone {
+        val id = UUID.fromString("548143f2-a3ba-4c95-ac3a-27e76c37149e")
+        val type = PhoneType.Home
+        const val number = "(604) 073-4427"
+        val entityPersisted = Phone(
+            number = number,
+            type = type
+        ).apply { id = this@JennysHomePhone.id  }
+    }
 
-    private const val `jenny's work phone number` = "(604) 532-4327"
-    private val `jenny's work phone type` = PhoneType.Work
-    val jennysWorkPhone = Phone(
-        number = `jenny's work phone number`,
-        type = `jenny's work phone type`
-    )
+    object DansCell {
+        val id = UUID.fromString("1ac8f1d3-ca0d-4160-8c04-c548a1bfcb2a")
+        val type = PhoneType.Cell
+        const val number = "(778) 211-1992"
+        val entityPersisted = Phone(
+            number = number,
+            type = type
+        ).apply { id = this@DansCell.id  }
+    }
+
+
+    object JennysWorkPhone {
+        const val number = "(604) 532-4327"
+        val type = PhoneType.Work
+
+        val entityPersisted = Phone(
+            number = number,
+            type = type
+        )
+    }
+
+
 }

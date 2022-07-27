@@ -15,7 +15,7 @@ class ReadPatientServiceImpl : ReadPatientService {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getByDoctor(doctorId: DoctorDto.DoctorDtoId): List<Patient>? {
+    override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Patient>? {
         TODO("Not yet implemented")
     }
 

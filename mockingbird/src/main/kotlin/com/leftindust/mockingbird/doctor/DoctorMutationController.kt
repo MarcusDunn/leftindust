@@ -58,7 +58,7 @@ class CreateDoctorDtoToCreateDoctorConverter : FallibleConverter<CreateDoctorDto
 }
 
 @Controller
-class DoctorMutation(
+class DoctorMutationController(
     private val updateDoctorService: UpdateDoctorService,
     private val createDoctorService: CreateDoctorService,
     private val doctorToDoctorDtoInfallibleConverter: InfallibleConverter<Doctor, DoctorDto>,
