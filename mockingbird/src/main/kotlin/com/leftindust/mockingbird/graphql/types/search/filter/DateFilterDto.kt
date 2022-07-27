@@ -1,14 +1,14 @@
 package com.leftindust.mockingbird.graphql.types.search.filter
 
 import com.leftindust.mockingbird.graphql.types.search.Filter
-import java.sql.Date
+import com.leftindust.mockingbird.graphql.types.search.combineWithStrict
 import java.time.LocalDate
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.From
 import javax.persistence.criteria.Predicate
 import javax.persistence.metamodel.SingularAttribute
 
-data class DateFilter(
+data class DateFilterDto(
     val before: LocalDate? = null,
     val after: LocalDate? = null,
     override val strict: Boolean,

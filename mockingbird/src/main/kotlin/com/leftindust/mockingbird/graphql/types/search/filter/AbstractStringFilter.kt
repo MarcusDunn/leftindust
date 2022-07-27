@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.graphql.types.search.filter
 
 import com.leftindust.mockingbird.graphql.types.search.Filter
+import com.leftindust.mockingbird.graphql.types.search.combineWithStrict
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.Expression
 import javax.persistence.criteria.From

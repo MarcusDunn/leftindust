@@ -58,6 +58,11 @@ type Query {
     userByUserUniqueId(uniqueId: String): MediqUser
     surveyTemplateById(surveyTemplateId: SurveyTemplateIdInput): SurveyTemplate
     surveyLinkById(surveyLinkId: SurveyLinkIdInput): SurveyLink
+    patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!
+}
+
+input PatientIdInput {
+    value: UUID
 }
 
 input SurveyLinkIdInput {
@@ -158,6 +163,38 @@ type SurveyTemplateInput {
     category: SurveyTemplateCategory
     uploadMultiple: Boolean
     uploadAccept: TemplateInputUploadType
+}
+
+type Patient {
+    id: PatientId
+    firstName: String!
+    middleName: String
+    lastName: String!
+    thumbnail: Base64
+    dateOfBirth: LocalDate!
+    insuranceNumber: String
+    sex: Sex!
+    gender: String!
+    ethnicity: Ethnicity
+}
+
+enum Ethnicity {
+    AmericanAboriginal
+    Asian
+    Black
+    Hispanic
+    PacificIslander
+    White
+}
+
+enum Sex {
+    Male
+    Female
+    Intersex
+}
+
+type PatientId {
+    value: UUID
 }
 
 type SurveyTemplateInputId {

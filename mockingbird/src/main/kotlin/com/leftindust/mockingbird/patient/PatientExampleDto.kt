@@ -1,22 +1,20 @@
 package com.leftindust.mockingbird.patient
 
-import com.leftindust.mockingbird.event.Event_
 import com.leftindust.mockingbird.graphql.types.search.Example
-import com.leftindust.mockingbird.graphql.types.search.filter.CaseAgnosticStringFilter
-import com.leftindust.mockingbird.graphql.types.search.filter.DateFilter
-import com.leftindust.mockingbird.graphql.types.search.filter.WhiteSpaceAgnosticStringFilter
-import com.leftindust.mockingbird.icd.IcdListFilter
+import com.leftindust.mockingbird.graphql.types.search.combineWithStrict
+import com.leftindust.mockingbird.graphql.types.search.filter.CaseAgnosticStringFilterDto
+import com.leftindust.mockingbird.graphql.types.search.filter.DateFilterDto
+import com.leftindust.mockingbird.graphql.types.search.filter.WhiteSpaceAgnosticStringFilterDto
 import com.leftindust.mockingbird.person.NameInfo_
-import com.leftindust.mockingbird.visit.Visit_
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
 data class PatientExampleDto(
-    val firstName: CaseAgnosticStringFilter? = null,
-    val lastName: CaseAgnosticStringFilter? = null,
-    val dateOfBirth: DateFilter? = null,
-    val insuranceNumber: WhiteSpaceAgnosticStringFilter? = null,
+    val firstName: CaseAgnosticStringFilterDto? = null,
+    val lastName: CaseAgnosticStringFilterDto? = null,
+    val dateOfBirth: DateFilterDto? = null,
+    val insuranceNumber: WhiteSpaceAgnosticStringFilterDto? = null,
     override val strict: Boolean,
 ) : Example<Patient> {
     override fun toPredicate(criteriaBuilder: CriteriaBuilder, root: Root<Patient>): Predicate {

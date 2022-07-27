@@ -4,7 +4,7 @@ import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
-import com.leftindust.mockingbird.util.DoctorMother
+import com.leftindust.mockingbird.util.DoctorMother.Jenny
 import com.leftindust.mockingbird.util.EventMother
 import com.leftindust.mockingbird.util.PatientMother
 import com.leftindust.mockingbird.util.VisitMother
@@ -19,6 +19,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
+import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.nullValue
 import org.junit.jupiter.api.Test
@@ -45,13 +46,12 @@ internal class ReadEventServiceImplUnitTest {
 
     @Test
     internal fun `check getByPatientId returns a patient's event when patient exists`() = runTest {
-        val jennyThePatient = PatientMother.jennyThePatientPersisted
-        coEvery { readPatientService.getByPatientId(match { it.value == jennyThePatient.id }) } returns jennyThePatient
+        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlid) } returns PatientMother.Dan.entityPersisted
         val readEventServiceImpl =
             ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
-        val events = readEventServiceImpl.getByPatientId(PatientDto.PatientDtoId(jennyThePatient.id!!))
+        val events = readEventServiceImpl.getByPatientId(PatientMother.Dan.graphqlid)
 
-        assertThat(events, equalTo(jennyThePatient.events.map { it.event }))
+        assertThat(events, containsInAnyOrder(PatientMother.Dan.events.map { equalTo(it.event) }))
     }
 
     @Test
@@ -67,13 +67,12 @@ internal class ReadEventServiceImplUnitTest {
 
     @Test
     internal fun `check getByDoctorId returns a doctor's event when doctor exists`() = runTest {
-        val jennyTheDoctor = DoctorMother.jennyTheDoctorPersisted
-        coEvery { readDoctorService.getByDoctorId(match { it.value == jennyTheDoctor.id }) } returns jennyTheDoctor
+        coEvery { readDoctorService.getByDoctorId(Jenny.graphqlId) } returns Jenny.entityPersisted
         val readEventServiceImpl =
             ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
-        val events = readEventServiceImpl.getByDoctorId(DoctorDto.DoctorDtoId(jennyTheDoctor.id!!))
+        val events = readEventServiceImpl.getByDoctorId(Jenny.graphqlId)
 
-        assertThat(events, equalTo(jennyTheDoctor.events.map { it.event }))
+        assertThat(events, containsInAnyOrder(Jenny.events.map { equalTo(it.event) }))
     }
 
     @Test
@@ -94,9 +93,9 @@ internal class ReadEventServiceImplUnitTest {
         coEvery { readVisitService.getByVisitId(VisitDto.VisitDtoId(jennyDoctorVisit.id!!)) } returns jennyDoctorVisit
         val readEventServiceImpl =
             ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
-        val events = readEventServiceImpl.getByVisitId(VisitDto.VisitDtoId(jennyDoctorVisit.id!!))
+        val event = readEventServiceImpl.getByVisitId(VisitDto.VisitDtoId(jennyDoctorVisit.id!!))
 
-        assertThat(events, equalTo(jennyDoctorVisit.event))
+        assertThat(event, equalTo(jennyDoctorVisit.event))
     }
 
     @Test
