@@ -13,5 +13,8 @@ data class DoctorDto(
     val title: String?,
     val dateOfBirth: LocalDate?,
 ) : AbstractGraphQLDto<DoctorDto.DoctorDtoId>() {
+    companion object {
+        const val GRAPHQL_TYPE = "Doctor"
+    }
     data class DoctorDtoId(override val value: UUID) : GraphQLID<UUID>
 }

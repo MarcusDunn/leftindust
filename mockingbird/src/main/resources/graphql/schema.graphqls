@@ -11,6 +11,7 @@ type Query {
     surveyLinkById(surveyLinkId: SurveyLinkIdInput!): SurveyLink
     patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!
     patientsByRange(range: Range!): [Patient!]!
+    doctorsByDoctorIds(doctorIds: [DoctorIdInput!]!): [Doctor]!
 }
 
 type Mutation {
@@ -18,6 +19,16 @@ type Mutation {
     editClinic(clinic: EditClinic!): Clinic
     addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate!
     createSurveyLink(surveyTemplateId: SurveyTemplateIdInput): SurveyLink!
+}
+
+type Doctor {
+    id: DoctorId
+    firstName: String!
+    middleName: String
+    lastName: String!
+    thumbnail: Base64
+    title: String
+    dateOfBirth: LocalDate
 }
 
 input Range {
