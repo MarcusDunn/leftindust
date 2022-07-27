@@ -6,3 +6,4 @@ import org.springframework.security.access.prepost.PreAuthorize
 interface ReadSurveyTemplateService {
     suspend fun getByTemplateSurveyId(templateSurveyId: SurveyTemplateDto.SurveyTemplateDtoId): SurveyTemplate?
 }
+

@@ -7,6 +7,7 @@ type Mutation {
     addClinic(clinic: CreateClinic!): Clinic!
     editClinic(clinic: EditClinic!): Clinic
     addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate
+    createSurveyLink(surveyTemplateId: SurveyTemplateIdInput): SurveyLink!
 }
 
 input EditClinic {
@@ -56,6 +57,11 @@ type Query {
     clinicByClinicId(clinicId: ClinicIdInput!): Clinic
     userByUserUniqueId(uniqueId: String): MediqUser
     surveyTemplateById(surveyTemplateId: SurveyTemplateIdInput): SurveyTemplate
+    surveyLinkById(surveyLinkId: SurveyLinkIdInput): SurveyLink
+}
+
+input SurveyLinkIdInput {
+    value: UUID
 }
 
 input CreateSurveyTemplate {
@@ -127,6 +133,15 @@ type SurveyTemplateCalculation {
     inputType: SurveyTemplateInputType
     showOnComplete: Boolean
     calculation: String
+}
+
+type SurveyLink {
+    id: SurveyLinkId
+    surveyTemplate: SurveyTemplate
+}
+
+type SurveyLinkId {
+    value: UUID
 }
 
 type SurveyTemplateCalculationId {
@@ -214,3 +229,5 @@ type Clinic {
 
 scalar UUID
 scalar Base64
+scalar Duration
+scalar LocalDateTime
