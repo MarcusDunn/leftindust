@@ -755,4 +755,18 @@
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="phone" validate="true"/>
     </changeSet>
+    <changeSet id="1656393684356" author="marcus">
+        <createTable tableName="survey_link_entity">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_link_entity_pkey"/>
+            </column>
+            <column name="survey_template_entity_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="survey_link_entity" baseColumnNames="survey_template_entity_id"
+                                 constraintName="survey_template_entity_id_fk"
+                                 referencedTableName="survey_template_entity"
+                                 referencedColumnNames="id" validate="true"/>
+    </changeSet>
 </databaseChangeLog>
