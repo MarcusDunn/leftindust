@@ -11,6 +11,7 @@ import com.leftindust.mockingbird.config.IcdApiClientConfiguration
 import graphql.schema.GraphQLScalarType
 import java.time.Clock
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.Base64
 import java.util.UUID
@@ -48,8 +49,7 @@ class MockingbirdApplication {
                         .name("UUID")
                         .coercing(StringCoercing(UUID::fromString, UUID::toString))
                         .build()
-                )
-                .scalar(
+                ).scalar(
                     GraphQLScalarType
                         .newScalar()
                         .name("Base64")
@@ -66,6 +66,12 @@ class MockingbirdApplication {
                         .newScalar()
                         .name("LocalDateTime")
                         .coercing(StringCoercing(LocalDateTime::parse, LocalDateTime::toString))
+                        .build()
+                ).scalar(
+                    GraphQLScalarType
+                        .newScalar()
+                        .name("LocalDate")
+                        .coercing(StringCoercing(LocalDate::parse, LocalDate::toString))
                         .build()
                 )
         }

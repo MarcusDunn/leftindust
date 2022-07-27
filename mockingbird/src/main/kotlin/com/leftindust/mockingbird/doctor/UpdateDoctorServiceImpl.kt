@@ -2,7 +2,6 @@ package com.leftindust.mockingbird.doctor
 
 import com.leftindust.mockingbird.AddedAllEntityCollectionMessage
 import com.leftindust.mockingbird.ClearedEntityCollectionMessage
-import com.leftindust.mockingbird.FallibleConverter
 import com.leftindust.mockingbird.MissedCollectionAddNoEntityWithId
 import com.leftindust.mockingbird.NoOpUpdatedEntityFieldMessage
 import com.leftindust.mockingbird.NoUpdatesOccurredNoEntityWithId
@@ -15,12 +14,10 @@ import com.leftindust.mockingbird.clinic.ReadClinicService
 import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.graphql.types.Deletable
-import com.leftindust.mockingbird.graphql.types.LocalDateDto
 import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.applyDeletable
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
-import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.person.UpdateNameInfo
 import com.leftindust.mockingbird.person.UpdateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhone
@@ -28,8 +25,6 @@ import com.leftindust.mockingbird.phone.CreatePhoneService
 import com.leftindust.mockingbird.user.ReadUserService
 import java.time.LocalDate
 import javax.transaction.Transactional
-import kotlin.math.log
-import kotlin.reflect.KMutableProperty0
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
@@ -41,7 +36,6 @@ class UpdateDoctorServiceImpl(
     private val updateNameInfoService: UpdateNameInfoService,
     private val createPhoneService: CreatePhoneService,
     private val readClinicService: ReadClinicService,
-    private val localDateDtoToLocalDateConverter: FallibleConverter<LocalDateDto, LocalDate>,
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,
     private val readPatientService: ReadPatientService,
@@ -115,10 +109,8 @@ class UpdateDoctorServiceImpl(
         }
     }
 
-    private fun updateDateOfBirth(dateOfBirth: Updatable<LocalDateDto>, doctor: Doctor) {
-        dateOfBirth
-            .map { localDateDtoToLocalDateConverter.convert(it) ?: return }
-            .applyDeletable(doctor, doctor::dateOfBirth, logger)
+    private fun updateDateOfBirth(dateOfBirth: Updatable<LocalDate>, doctor: Doctor) {
+        dateOfBirth.applyDeletable(doctor, doctor::dateOfBirth, logger)
     }
 
     private suspend fun updateClinics(clinics: Updatable<List<ClinicDto.ClinicDtoId>>, doctor: Doctor) {
