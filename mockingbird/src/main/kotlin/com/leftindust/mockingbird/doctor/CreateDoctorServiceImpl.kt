@@ -3,17 +3,13 @@ package com.leftindust.mockingbird.doctor
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.clinic.ReadClinicService
 import com.leftindust.mockingbird.email.CreateEmailService
-import com.leftindust.mockingbird.graphql.types.LocalDateDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhoneService
 import com.leftindust.mockingbird.user.CreateUserDto
 import com.leftindust.mockingbird.user.CreateUserService
 import com.leftindust.mockingbird.user.ReadUserService
-import java.time.LocalDate
 import javax.transaction.Transactional
-import org.slf4j.LoggerFactory
-import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Service
 
 @Transactional
@@ -26,11 +22,9 @@ class CreateDoctorServiceImpl(
     private val createEmailService: CreateEmailService,
     private val createNameInfoService: CreateNameInfoService,
     private val createPhoneService: CreatePhoneService,
-    private val localDateDtoToLocalDateConverter: Converter<LocalDateDto, LocalDate>,
     private val readClinicService: ReadClinicService,
     private val readPatientService: ReadPatientService,
 ) : CreateDoctorService {
-    private val logger = LoggerFactory.getLogger(CreateDoctorServiceImpl::class.java)
 
     override suspend fun addDoctor(createDoctor: CreateDoctor): Doctor {
         val (user, nameInfo) = when (val user = createDoctor.user) {
@@ -48,12 +42,7 @@ class CreateDoctorServiceImpl(
             events = mutableSetOf(), // not currently possible to set on create doctor.
             thumbnail = null,
             title = createDoctor.title,
-            dateOfBirth = createDoctor.dateOfBirth?.let {
-                localDateDtoToLocalDateConverter.convert(it) ?: run {
-                    logger.warn("Set the doctor ${notNullNameInfo.firstName} ${notNullNameInfo.lastName}'s date of birth to null. $localDateDtoToLocalDateConverter failed to convert $it to a LocalDate")
-                    null
-                }
-            },
+            dateOfBirth = createDoctor.dateOfBirth,
             clinics = mutableSetOf(), // set in apply block
             patients = mutableSetOf(), // set in apply block
         ).apply {

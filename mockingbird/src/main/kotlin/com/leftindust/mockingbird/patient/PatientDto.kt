@@ -1,9 +1,9 @@
 package com.leftindust.mockingbird.patient
 
+import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.Sex
-import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
-import com.leftindust.mockingbird.graphql.types.*
+import java.time.LocalDate
 import java.util.UUID
 
 data class PatientDto(
@@ -11,8 +11,8 @@ data class PatientDto(
     val firstName: String,
     val middleName: String?,
     val lastName: String,
-    val thumbnail: String?,
-    val dateOfBirth: LocalDateDto,
+    val thumbnail: ByteArray?,
+    val dateOfBirth: LocalDate,
     val insuranceNumber: String?,
     val sex: Sex,
     val gender: String,

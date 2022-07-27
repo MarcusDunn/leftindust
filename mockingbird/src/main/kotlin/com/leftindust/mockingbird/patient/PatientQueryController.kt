@@ -14,7 +14,7 @@ import mu.KotlinLogging
 import org.springframework.stereotype.Controller
 
 @Controller
-class PatientQuery(
+class PatientQueryController(
     private val readPatientService: ReadPatientService,
     private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>,
 ) {

@@ -1,10 +1,10 @@
 package com.leftindust.mockingbird.event
 
-import com.leftindust.mockingbird.graphql.types.LocalDateDto
 import java.time.DayOfWeek
+import java.time.LocalDate
 
 data class RecurrenceDto(
-    val startDate: LocalDateDto,
-    val endDate: LocalDateDto,
+    val startDate: LocalDate,
+    val endDate: LocalDate,
     val daysOfWeek: List<DayOfWeek>,
 )
