@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.patient
 
+import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -25,7 +26,7 @@ internal class PatientQueryControllerWebTest(
         coEvery { readPatientService.getByPatientId(Dan.graphqlid) } returns Dan.entityPersisted
 
         @Language("graphql")
-        val mutation = """
+        val query = """
             query {
                 patientsByPatientId(patientIds: [{ value: "${Dan.id}" }]) {
                     id { value }
@@ -42,11 +43,42 @@ internal class PatientQueryControllerWebTest(
             }
         """.trimIndent()
 
-        graphQlTester.document(mutation)
+        graphQlTester.document(query)
             .execute()
             .errors()
             .verify()
             .path("patientsByPatientId[0]")
+            .entity(PatientDto::class.java)
+            .isEqualTo(Dan.dto)
+    }
+
+    @Test
+    internal fun `check can query by range`() {
+        coEvery { readPatientService.getMany(RangeDto(0, 1)) } returns listOf(Dan.entityPersisted)
+
+        @Language("graphql")
+        val query = """
+            query {
+                patientsByRange(range: {from: 0, to: 1}) {
+                    id { value }
+                    firstName
+                    middleName
+                    lastName
+                    thumbnail
+                    dateOfBirth
+                    insuranceNumber
+                    sex
+                    gender
+                    ethnicity
+                }
+            }
+        """.trimIndent()
+
+        graphQlTester.document(query)
+            .execute()
+            .errors()
+            .verify()
+            .path("patientsByRange[0]")
             .entity(PatientDto::class.java)
             .isEqualTo(Dan.dto)
     }

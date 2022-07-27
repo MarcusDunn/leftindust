@@ -14,7 +14,8 @@ class PatientQueryController(
 ) {
     private val logger = KotlinLogging.logger { }
 
-    suspend fun patientsByRange(range: RangeDto): List<PatientDto> {
+    @QueryMapping("patientsByRange")
+    suspend fun patientsByRange(@Argument("range") range: RangeDto): List<PatientDto> {
         return readPatientService.getMany(range).map { patientToPatientDtoConverter.convert(it) }
     }
 

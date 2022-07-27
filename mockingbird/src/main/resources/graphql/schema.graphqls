@@ -3,11 +3,26 @@ schema {
     mutation: Mutation
 }
 
+type Query {
+    mockingbirdIsAlive: Boolean!
+    clinicByClinicId(clinicId: ClinicIdInput!): Clinic
+    userByUserUniqueId(uniqueId: String!): MediqUser
+    surveyTemplateById(surveyTemplateId: SurveyTemplateIdInput!): SurveyTemplate
+    surveyLinkById(surveyLinkId: SurveyLinkIdInput!): SurveyLink
+    patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!
+    patientsByRange(range: Range!): [Patient!]!
+}
+
 type Mutation {
     addClinic(clinic: CreateClinic!): Clinic!
     editClinic(clinic: EditClinic!): Clinic
-    addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate
+    addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate!
     createSurveyLink(surveyTemplateId: SurveyTemplateIdInput): SurveyLink!
+}
+
+input Range {
+    from: Int
+    to: Int
 }
 
 input EditClinic {
@@ -50,15 +65,6 @@ input CreateAddress {
     country: Countries!
     province: String!
     postalCode: String!
-}
-
-type Query {
-    mockingbirdIsAlive: Boolean!
-    clinicByClinicId(clinicId: ClinicIdInput!): Clinic
-    userByUserUniqueId(uniqueId: String): MediqUser
-    surveyTemplateById(surveyTemplateId: SurveyTemplateIdInput): SurveyTemplate
-    surveyLinkById(surveyLinkId: SurveyLinkIdInput): SurveyLink
-    patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!
 }
 
 input PatientIdInput {
