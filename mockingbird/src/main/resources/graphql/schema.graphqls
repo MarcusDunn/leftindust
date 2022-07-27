@@ -231,3 +231,4 @@ scalar UUID
 scalar Base64
 scalar Duration
 scalar LocalDateTime
+scalar LocalDate

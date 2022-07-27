@@ -5,7 +5,7 @@ import graphql.schema.DataFetchingEnvironment
 import org.springframework.stereotype.Controller
 
 @Controller
-class PatientMutation(
+class PatientMutationController(
     private val updatePatientService: UpdatePatientService,
     private val createPatientService: CreatePatientService,
     private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>
