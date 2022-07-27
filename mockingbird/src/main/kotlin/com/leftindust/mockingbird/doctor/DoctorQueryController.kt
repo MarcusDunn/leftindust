@@ -15,8 +15,8 @@ class DoctorQueryController(
 ) {
     private val logger = LoggerFactory.getLogger(DoctorQueryController::class.java)
 
-    @QueryMapping
-    suspend fun doctorsById(@Argument doctorIds: List<DoctorDto.DoctorDtoId>): List<DoctorDto?> {
+    @QueryMapping("doctorsByDoctorIds")
+    suspend fun doctorsById(@Argument("doctorIds") doctorIds: List<DoctorDto.DoctorDtoId>): List<DoctorDto?> {
         return doctorIds
             .map { readDoctorService.getByDoctorId(it) }
             .map { doctor -> doctor?.let { doctorToDoctorDtoConverter.convert(it) } }
