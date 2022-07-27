@@ -5,7 +5,7 @@ import com.leftindust.mockingbird.NullEntityIdInConverterException
 import org.springframework.stereotype.Component
 
 @Component
-class DoctorDtoConverter : InfallibleConverter<Doctor, DoctorDto> {
+class DoctorToDoctorDtoConverter : InfallibleConverter<Doctor, DoctorDto> {
     override fun convert(source: Doctor): DoctorDto {
         return DoctorDto(
             id = DoctorDto.DoctorDtoId(source.id ?: throw NullEntityIdInConverterException(source)),

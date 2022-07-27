@@ -5,6 +5,7 @@ import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorEventEntity
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
+import com.leftindust.mockingbird.doctor.DoctorToDoctorDtoConverter
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.JennysHouse
@@ -15,6 +16,7 @@ import java.time.Month
 import java.util.UUID
 
 object DoctorMother {
+    val doctorToDoctorDto = DoctorToDoctorDtoConverter()
     object Jenny {
         const val firstName = "Jenny"
         const val middleName = "Ellis"
@@ -48,6 +50,8 @@ object DoctorMother {
                 clinics = clinics,
                 patients = patients,
             ).apply { id = this@Jenny.id }
+
+        val dto = doctorToDoctorDto.convert(entityPersisted)
     }
 
 }
