@@ -20,6 +20,7 @@ type Mutation {
     editClinic(clinic: EditClinic!): Clinic
     addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate!
     createSurveyLink(surveyTemplateId: SurveyTemplateIdInput): SurveyLink!
+    createCompleteSurvey(createCompleteSurvey: CreateCompleteSurvey): CompleteSurvey
 }
 
 type Doctor {
@@ -280,6 +281,38 @@ input ClinicIdInput {
 type Clinic {
     id: ClinicId
     name: String
+}
+
+
+input CreateCompleteSurvey {
+    surveyTemplateId: SurveyTemplateIdInput!
+    completeSurveyTemplateSections: [CreateCompleteSurveySections!]!
+}
+
+input CreateCompleteSurveySections {
+    surveyTemplateSectionId: SurveyTemplateSectionIdInput!
+    completedSurveyInputs: [CreateCompleteSurveyInput!]!
+}
+
+input SurveyTemplateSectionIdInput {
+    value: UUID!
+}
+
+input CreateCompleteSurveyInput {
+    surveyTemplateSectionInputId: SurveyTemplateSectionInputIdInput!
+    value: String
+}
+
+input SurveyTemplateSectionInputIdInput {
+    value: UUID!
+}
+
+type CompleteSurvey {
+    id: CompleteSurveyId
+}
+
+type CompleteSurveyId {
+    value: UUID
 }
 
 scalar UUID
