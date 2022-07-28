@@ -3,6 +3,7 @@ package com.leftindust.mockingbird.util
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateSectionInputDto
 import com.leftindust.mockingbird.survey.template.SurveyTemplateCategory
 import com.leftindust.mockingbird.survey.template.SurveyTemplateInputType
+import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputDto
 import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputEntity
 import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter
 import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter
@@ -14,6 +15,7 @@ object SurveyTemplateSectionInputMother {
 
     object HowMuchPainAreYouInSectionInput {
         val id = UUID.fromString("9d642214-6c6d-4639-8209-5401acc244c1")
+        val graphqlId = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(id)
         val type = SurveyTemplateInputType.Number
         val label = "how much pain are you in?"
         val options: MutableList<String>? = null
