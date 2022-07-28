@@ -24,6 +24,7 @@ object SurveyTemplateSectionMother {
 
     object HowMuchPainAreYouInSection {
         val id = UUID.fromString("32b0b8ba-7f8f-4c7d-bad9-23bea9a024ba")
+        val graphqlId = SurveyTemplateSectionDto.SurveyTemplateSectionDtoId(id)
         val title = "Section the first!"
         val subtitle = "The first section"
 
