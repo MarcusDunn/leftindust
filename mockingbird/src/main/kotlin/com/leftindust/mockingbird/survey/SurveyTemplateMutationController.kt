@@ -21,4 +21,3 @@ class SurveyTemplateMutationController(
         return surveyTemplateToSurveyTemplateDtoConverter.convert(surveyTemplate)
     }
 }
-
