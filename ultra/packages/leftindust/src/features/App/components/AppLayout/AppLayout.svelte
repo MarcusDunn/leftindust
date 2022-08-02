@@ -74,7 +74,7 @@
     <View url={AppRootRoutes.LifeCycleError} iosSwipeBack={false} />
   </Popup>
 
-  {#if $account?.isRegistered}
+  {#if $account?.isRegistered || !showLoginScreen}
     <Popup id={AppPopups.Default} closeByBackdropClick={false}>
       <View id={AppViews.Popup} iosSwipeBack={false} />
     </Popup>
