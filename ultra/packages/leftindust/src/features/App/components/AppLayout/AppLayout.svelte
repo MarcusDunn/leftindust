@@ -4,7 +4,7 @@
 
   import { AppPopups, AppViews, AppRootRoutes } from '../../';
   import { getFirebaseUserDatabaseAndSignIn } from '@/features/Account';
-  import { auth, client, database } from '@/api/server';
+  import { auth, client, database, Month, Sex } from '@/api/server';
   import { account, signInStatus } from '@/features/Account/store';
   
   import { onAuthStateChanged } from 'firebase/auth';
