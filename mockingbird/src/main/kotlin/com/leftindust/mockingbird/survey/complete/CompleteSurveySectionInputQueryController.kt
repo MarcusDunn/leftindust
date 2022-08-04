@@ -1,9 +1,7 @@
 package com.leftindust.mockingbird.survey.complete
 
-import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullSubQueryException
 import org.springframework.graphql.data.method.annotation.SchemaMapping
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Controller
 
 @Controller
@@ -18,14 +16,4 @@ class CompleteSurveySectionInputQueryController(
             ?: throw NullSubQueryException(surveySectionDto, ReadCompleteSurveySectionInputService::completeSurveySectionInputByCompleteSurveySectionId)
         return completeSurveySectionInputs.map { completeSurveySectionInputToCompleteSurveySectionInputDtoConverter.convert(it) }
     }
-}
-
-@Component
-class CompleteSurveySectionInputToCompleteSurveySectionInputDtoConverter : InfallibleConverter<CompleteSurveySectionInput, CompleteSurveySectionInputDto> {
-    override fun convert(source: CompleteSurveySectionInput): CompleteSurveySectionInputDto {
-        return CompleteSurveySectionInputDto(
-            id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(source.id)
-        )
-    }
-
 }

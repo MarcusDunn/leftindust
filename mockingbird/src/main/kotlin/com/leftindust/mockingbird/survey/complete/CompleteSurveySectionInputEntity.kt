@@ -5,5 +5,7 @@ import javax.persistence.Entity
 
 @Entity
 class CompleteSurveySectionInputEntity(
+    val value: String
+): AbstractJpaPersistable() {
 
-): AbstractJpaPersistable()
+}
