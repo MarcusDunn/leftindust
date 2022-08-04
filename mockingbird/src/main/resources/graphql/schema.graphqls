@@ -9,10 +9,15 @@ type Query {
     userByUserUniqueId(uniqueId: String!): MediqUser
     surveyTemplateById(surveyTemplateId: SurveyTemplateIdInput!): SurveyTemplate
     surveyLinkById(surveyLinkId: SurveyLinkIdInput!): SurveyLink
+    completeSurveyById(completeSurveyId: CompleteSurveyIdInput): CompleteSurvey
     patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!
     patientsByRange(range: Range!): [Patient!]!
     doctorsByDoctorIds(doctorIds: [DoctorIdInput!]!): [Doctor]!
     doctorsByRange(range: Range!): [Doctor!]!
+}
+
+input CompleteSurveyIdInput {
+    value: UUID
 }
 
 type Mutation {
@@ -309,6 +314,25 @@ input SurveyTemplateSectionInputIdInput {
 
 type CompleteSurvey {
     id: CompleteSurveyId
+    sections: [CompleteSurveySection!]!
+}
+
+type CompleteSurveySection {
+    id: CompleteSurveySectionId
+    inputs: [CompleteSurveySectionInput!]!
+}
+
+type CompleteSurveySectionInput {
+    id: CompleteSurveySectionInputId
+    value: String
+}
+
+type CompleteSurveySectionInputId {
+    value: UUID
+}
+
+type CompleteSurveySectionId {
+    value: UUID
 }
 
 type CompleteSurveyId {
