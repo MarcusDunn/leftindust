@@ -11,7 +11,7 @@ import java.util.UUID
 object SurveyTemplateMother {
     val surveyTemplateEntityToSurveyTemplateConverter = SurveyTemplateEntityToSurveyTemplateConverter()
     val surveyTemplateToSurveyTemplateDtoConverter = SurveyTemplateToSurveyTemplateDtoConverter()
-    val createSurveyTemplateDtoToCreateSurveyTemplateConverter = CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(SurveyTemplateSectionMother.createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter, SurveySectionTemplateCalculationMother.createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter)
+    val createSurveyTemplateDtoToCreateSurveyTemplateConverter = CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(SurveyTemplateSectionMother.createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter, SurveyTemplateSectionCalculationMother.createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter)
 
     object KoosKneeSurvey {
         val id = UUID.fromString("8fcf8e13-ba61-4216-a3a5-2be88ae27d74")
@@ -19,7 +19,7 @@ object SurveyTemplateMother {
         val title = "KOOS knee survey"
         val subtitle = "the knee'd to know about knees"
         val sectionEntities = mutableSetOf(SurveyTemplateSectionMother.HowMuchPainAreYouInSection.entityPersisted)
-        val calculationEntities = mutableSetOf(SurveySectionTemplateCalculationMother.FirstCalculation.entityPersisted)
+        val calculationEntities = mutableSetOf(SurveyTemplateSectionCalculationMother.FirstCalculation.entityPersisted)
         val entityPersisted = SurveyTemplateEntity(
             title = title,
             subtitle = subtitle,
@@ -42,7 +42,7 @@ object SurveyTemplateMother {
         val dto = surveyTemplateToSurveyTemplateDtoConverter.convert(domain)
 
         val dtoSections = listOf(SurveyTemplateSectionMother.HowMuchPainAreYouInSection.createDto)
-        val dtoCalculations = listOf(SurveySectionTemplateCalculationMother.FirstCalculation.createDto)
+        val dtoCalculations = listOf(SurveyTemplateSectionCalculationMother.FirstCalculation.createDto)
         val createDto = CreateSurveyTemplateDto(
             title = this.title,
             subtitle = this.subtitle,

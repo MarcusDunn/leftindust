@@ -10,5 +10,4 @@ class CompleteSurveyToCompleteSurveyDtoConverter: InfallibleConverter<CompleteSu
             id = CompleteSurveyDto.CompleteSurveyDtoId(source.id)
         )
     }
-
 }

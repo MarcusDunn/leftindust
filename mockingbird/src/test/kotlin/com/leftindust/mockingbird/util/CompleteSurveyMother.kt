@@ -17,7 +17,10 @@ object CompleteSurveyMother {
         val completeSurveyTemplateSections = listOf(CompleteHowMuchPainAreYouInSection.createDto)
         val surveyTemplateId = KoosKneeSurvey.graphqlId
 
-        val entityPersisted = CompleteSurveyEntity().apply { id = this@FilledOutKoosKneeSurvey.id }
+        val entityPersisted = CompleteSurveyEntity(
+            sections = setOf(CompleteHowMuchPainAreYouInSection.entityPersisted)
+        )
+            .apply { id = this@FilledOutKoosKneeSurvey.id }
 
         val domain = completeSurveyEntityToCompleteSurvey.convert(entityPersisted)
 
