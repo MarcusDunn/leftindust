@@ -6,7 +6,7 @@ import javax.persistence.OneToMany
 
 @Entity
 class CompleteSurveyEntity(
-    @OneToMany(mappedBy = "completeSurvey")
+    @OneToMany
     val sections: Set<CompleteSurveySectionEntity>
 ) : AbstractJpaPersistable() {
 
