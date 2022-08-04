@@ -94,6 +94,9 @@ liquibase {
             "url" to "jdbc:postgresql://127.0.0.1:5432/mediq",
             "username" to "mediq",
             "password" to "mediq",
+            "referenceUrl" to "jdbc:postgresql://127.0.0.1:5433/mediq",
+            "referenceUsername" to "mediq",
+            "referencePassword" to "mediq",
         )
     }
     runList = "main"
