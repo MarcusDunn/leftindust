@@ -5,7 +5,7 @@ import com.leftindust.mockingbird.survey.template.ReadSurveyTemplateService
 import com.leftindust.mockingbird.survey.template.SurveyTemplateCalculationDto
 import com.leftindust.mockingbird.survey.template.SurveyTemplateCalculationQueryController
 import com.leftindust.mockingbird.survey.template.SurveyTemplateQueryController
-import com.leftindust.mockingbird.util.SurveySectionTemplateCalculationMother.FirstCalculation
+import com.leftindust.mockingbird.util.SurveyTemplateSectionCalculationMother.FirstCalculation
 import com.leftindust.mockingbird.util.SurveyTemplateMother.KoosKneeSurvey
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
