@@ -9,10 +9,11 @@ import org.springframework.stereotype.Component
 class CompleteSurveySectionInputEntityToCompleteSurveySectionInputConverter : InfallibleConverter<CompleteSurveySectionInputEntity, CompleteSurveySectionInput> {
     override fun convert(source: CompleteSurveySectionInputEntity): CompleteSurveySectionInput {
         return CompleteSurveySectionInputImpl(
-            id = source.id ?: throw NullEntityIdInConverterException(source)
+            id = source.id ?: throw NullEntityIdInConverterException(source),
+            value = source.value
         )
     }
 
-    class CompleteSurveySectionInputImpl(override val id: UUID) : CompleteSurveySectionInput {
+    class CompleteSurveySectionInputImpl(override val id: UUID, override val value: String) : CompleteSurveySectionInput {
     }
 }

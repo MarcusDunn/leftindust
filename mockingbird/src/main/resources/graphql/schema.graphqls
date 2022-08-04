@@ -156,8 +156,8 @@ type SurveyTemplate {
 }
 
 type SurveyTemplateCalculation {
-    id: SurveyTemplateCalculationId
-    index: Int
+    id: SurveyTemplateCalculationId!
+    index: Int!
     label: String
     inputType: SurveyTemplateInputType
     showOnComplete: Boolean
@@ -165,16 +165,16 @@ type SurveyTemplateCalculation {
 }
 
 type SurveyLink {
-    id: SurveyLinkId
-    surveyTemplate: SurveyTemplate
+    id: SurveyLinkId!
+    surveyTemplate: SurveyTemplate!
 }
 
 type SurveyLinkId {
-    value: UUID
+    value: UUID!
 }
 
 type SurveyTemplateCalculationId {
-    value: UUID
+    value: UUID!
 }
 
 type SurveyTemplateInput {
@@ -190,7 +190,7 @@ type SurveyTemplateInput {
 }
 
 type Patient {
-    id: PatientId
+    id: PatientId!
     firstName: String!
     middleName: String
     lastName: String!
@@ -218,11 +218,11 @@ enum Sex {
 }
 
 type PatientId {
-    value: UUID
+    value: UUID!
 }
 
 type SurveyTemplateInputId {
-    value: UUID
+    value: UUID!
 }
 
 type SurveyTemplateSection {
@@ -253,14 +253,14 @@ type MediqGroupId {
 }
 
 type MediqGroup {
-    id: MediqGroupId
+    id: MediqGroupId!
     name: String
 }
 
 type MediqUser {
-    id: MediqUserId
+    id: MediqUserId!
     group: MediqGroup
-    name: NameInfo
+    name: NameInfo!
     accountDetails: UserAccountDetails
 }
 
@@ -270,22 +270,22 @@ type UserAccountDetails {
 }
 
 type NameInfo {
-    firstName: String
+    firstName: String!
     middleName: String
-    lastName: String
+    lastName: String!
 }
 
 type ClinicId {
-    value: UUID
+    value: UUID!
 }
 
 input ClinicIdInput {
-    value: UUID
+    value: UUID!
 }
 
 type Clinic {
-    id: ClinicId
-    name: String
+    id: ClinicId!
+    name: String!
 }
 
 
@@ -305,7 +305,7 @@ input SurveyTemplateSectionIdInput {
 
 input CreateCompleteSurveyInput {
     surveyTemplateSectionInputId: SurveyTemplateSectionInputIdInput!
-    value: String
+    value: String!
 }
 
 input SurveyTemplateSectionInputIdInput {
@@ -313,30 +313,30 @@ input SurveyTemplateSectionInputIdInput {
 }
 
 type CompleteSurvey {
-    id: CompleteSurveyId
+    id: CompleteSurveyId!
     sections: [CompleteSurveySection!]!
 }
 
 type CompleteSurveySection {
-    id: CompleteSurveySectionId
+    id: CompleteSurveySectionId!
     inputs: [CompleteSurveySectionInput!]!
 }
 
 type CompleteSurveySectionInput {
-    id: CompleteSurveySectionInputId
-    value: String
+    id: CompleteSurveySectionInputId!
+    value: String!
 }
 
 type CompleteSurveySectionInputId {
-    value: UUID
+    value: UUID!
 }
 
 type CompleteSurveySectionId {
-    value: UUID
+    value: UUID!
 }
 
 type CompleteSurveyId {
-    value: UUID
+    value: UUID!
 }
 
 scalar UUID

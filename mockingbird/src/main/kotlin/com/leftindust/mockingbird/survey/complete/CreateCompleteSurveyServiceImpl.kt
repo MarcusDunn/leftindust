@@ -12,9 +12,15 @@ class CreateCompleteSurveyServiceImpl(
     override suspend fun createCompleteSurvey(createCompleteSurvey: CreateCompleteSurvey): CompleteSurvey {
         val newCompleteSurvey = CompleteSurveyEntity(
             sections = createCompleteSurvey.completeSurveyTemplateSections
-                .map {
+                .map { createCompleteSurveySection ->
                     CompleteSurveySectionEntity(
-                        inputs = it.completedSurveyInputs.map { CompleteSurveySectionInputEntity() }.toSet()
+                        inputs = createCompleteSurveySection.completedSurveyInputs
+                            .map { createCompleteSurveyInput ->
+                                CompleteSurveySectionInputEntity(
+                                    value = createCompleteSurveyInput.value
+                                )
+                            }
+                            .toSet()
                     )
                 }
                 .toSet()
