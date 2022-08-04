@@ -117,7 +117,7 @@ class MockingbirdApplication {
     }
 
     @Bean
-    fun httpSecurity(@Suppress("SpringJavaInjectionPointsAutowiringInspection") http: ServerHttpSecurity): SecurityWebFilterChain =
+    fun httpSecurity(http: ServerHttpSecurity): SecurityWebFilterChain =
         http
             .csrf { it.disable() }
             .authorizeExchange { it.anyExchange().permitAll() }
