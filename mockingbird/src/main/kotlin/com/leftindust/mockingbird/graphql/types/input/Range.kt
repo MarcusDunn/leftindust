@@ -10,7 +10,6 @@ interface Range {
 
 private val DEFAULT_SORT = Sort.unsorted()
 fun Range.toPageable(sort: Sort = DEFAULT_SORT): Pageable = OffsetLimitPageable(from, to, sort = sort)
-
 private class OffsetLimitPageable(private val offset: Int, private val size: Int, private val pageNumber: Int = 0, private val sort: Sort = DEFAULT_SORT) : Pageable {
     init {
         require(offset >= 0) { "Offset must not be less than zero!" }

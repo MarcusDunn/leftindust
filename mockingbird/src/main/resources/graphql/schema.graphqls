@@ -14,6 +14,7 @@ type Query {
     patientsByRange(range: Range!): [Patient!]!
     doctorsByDoctorIds(doctorIds: [DoctorIdInput!]!): [Doctor]!
     doctorsByRange(range: Range!): [Doctor!]!
+    surveyTemplateByRange(range: Range!): [SurveyTemplate!]!
 }
 
 input CompleteSurveyIdInput {
