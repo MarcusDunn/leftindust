@@ -5,6 +5,7 @@ import com.leftindust.mockingbird.survey.complete.CompleteSurveyEntity
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyEntityToCompleteSurvey
 import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveyDto
 import com.leftindust.mockingbird.util.CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection
+import com.leftindust.mockingbird.util.SurveyLinkMother.KoosKneeSurveyLink
 import com.leftindust.mockingbird.util.SurveyTemplateMother.KoosKneeSurvey
 import java.util.UUID
 
@@ -15,7 +16,7 @@ object CompleteSurveyMother {
         val id = UUID.fromString("d30e7ae9-01bc-4027-9825-94709e55b2cd")
         val graphqlId = CompleteSurveyDto.CompleteSurveyDtoId(id)
         val completeSurveyTemplateSections = listOf(CompleteHowMuchPainAreYouInSection.createDto)
-        val surveyTemplateId = KoosKneeSurvey.graphqlId
+        val surveyLinkId = KoosKneeSurveyLink.graphqlId
 
         val entityPersisted = CompleteSurveyEntity(
             sections = setOf(CompleteHowMuchPainAreYouInSection.entityPersisted),
@@ -30,7 +31,7 @@ object CompleteSurveyMother {
         )
 
         val createDto = CreateCompleteSurveyDto(
-            surveyTemplateId = surveyTemplateId,
+            surveyLinkId = surveyLinkId,
             completeSurveyTemplateSections = completeSurveyTemplateSections
         )
     }
