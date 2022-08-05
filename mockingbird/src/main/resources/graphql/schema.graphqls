@@ -4,17 +4,32 @@ schema {
 }
 
 type Query {
+    # mockingbirdIsAlive
     mockingbirdIsAlive: Boolean!
+
+    # clinic
     clinicByClinicId(clinicId: ClinicIdInput!): Clinic
+
+    # user
     userByUserUniqueId(uniqueId: String!): MediqUser
+
+    # survey template
     surveyTemplateById(surveyTemplateId: SurveyTemplateIdInput!): SurveyTemplate
+    surveyTemplateByRange(range: Range!): [SurveyTemplate!]!
+
+    # survey link
     surveyLinkById(surveyLinkId: SurveyLinkIdInput!): SurveyLink
+
+    # complete survey
     completeSurveyById(completeSurveyId: CompleteSurveyIdInput): CompleteSurvey
+
+    # patient
     patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!
     patientsByRange(range: Range!): [Patient!]!
+
+    # doctor
     doctorsByDoctorIds(doctorIds: [DoctorIdInput!]!): [Doctor]!
     doctorsByRange(range: Range!): [Doctor!]!
-    surveyTemplateByRange(range: Range!): [SurveyTemplate!]!
 }
 
 input CompleteSurveyIdInput {
@@ -22,10 +37,17 @@ input CompleteSurveyIdInput {
 }
 
 type Mutation {
+    # clinic
     addClinic(clinic: CreateClinic!): Clinic!
     editClinic(clinic: EditClinic!): Clinic
+
+    # survey template
     addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate!
+
+    # survey link
     createSurveyLink(surveyTemplateId: SurveyTemplateIdInput): SurveyLink!
+
+    # complete survey
     createCompleteSurvey(createCompleteSurvey: CreateCompleteSurvey): CompleteSurvey
 }
 
