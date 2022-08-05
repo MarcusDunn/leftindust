@@ -1,8 +1,8 @@
 package com.leftindust.mockingbird.survey.complete
 
-import com.leftindust.mockingbird.survey.template.SurveyTemplateDto
+import com.leftindust.mockingbird.survey.link.SurveyLinkDto
 
 interface CreateCompleteSurvey {
-    val surveyTemplateId: SurveyTemplateDto.SurveyTemplateDtoId
+    val surveyLinkId: SurveyLinkDto.SurveyLinkDtoId
     val completeSurveyTemplateSections: List<CreateCompleteSurveySection>
 }

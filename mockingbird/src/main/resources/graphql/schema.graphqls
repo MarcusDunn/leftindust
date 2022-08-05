@@ -289,9 +289,12 @@ type Clinic {
     name: String!
 }
 
+input SurveyTemplateLinkIdInput {
+    value: UUID
+}
 
 input CreateCompleteSurvey {
-    surveyTemplateId: SurveyTemplateIdInput!
+    surveyTemplateLinkId: SurveyTemplateLinkIdInput!
     completeSurveyTemplateSections: [CreateCompleteSurveySections!]!
 }
 

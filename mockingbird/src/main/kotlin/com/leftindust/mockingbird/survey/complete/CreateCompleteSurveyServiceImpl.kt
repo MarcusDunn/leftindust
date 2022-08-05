@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.survey.complete
 
+import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import com.leftindust.mockingbird.survey.template.SurveyTemplateRepository
 import javax.transaction.Transactional
 import mu.KotlinLogging
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service
 class CreateCompleteSurveyServiceImpl(
     private val completeSurveyRepository: CompleteSurveyRepository,
     private val surveyTemplateRepository: SurveyTemplateRepository,
+    private val surveyLinkRepository: SurveyLinkRepository,
     private val completeSurveyEntityToCompleteSurvey: CompleteSurveyEntityToCompleteSurvey,
 ) : CreateCompleteSurveyService {
     private val logger = KotlinLogging.logger {  }
@@ -29,8 +31,11 @@ class CreateCompleteSurveyServiceImpl(
                     )
                 }
                 .toSet(),
-            surveyTemplate = surveyTemplateRepository.findByIdOrNull(createCompleteSurvey.surveyTemplateId.value)
-                ?: return null.also { logger.debug { "Did not find a surveyTemplate with id [${createCompleteSurvey.surveyTemplateId.value}] while creating $createCompleteSurvey" } }
+            surveyTemplate = run {
+                val surveyLink = surveyLinkRepository.findByIdOrNull(createCompleteSurvey.surveyLinkId.value)
+                    ?: return null.also { logger.debug { "Did not find a surveyTemplateLink with id [${createCompleteSurvey.surveyLinkId.value}] while creating $createCompleteSurvey" } }
+                surveyLink.surveyTemplateEntity
+            }
         )
         val completeSurveyEntity = completeSurveyRepository.save(newCompleteSurvey)
         return completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity)
