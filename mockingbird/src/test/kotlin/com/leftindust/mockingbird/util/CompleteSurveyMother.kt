@@ -6,7 +6,6 @@ import com.leftindust.mockingbird.survey.complete.CompleteSurveyEntityToComplete
 import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveyDto
 import com.leftindust.mockingbird.util.CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection
 import com.leftindust.mockingbird.util.SurveyLinkMother.KoosKneeSurveyLink
-import com.leftindust.mockingbird.util.SurveyTemplateMother.KoosKneeSurvey
 import java.util.UUID
 
 object CompleteSurveyMother {
@@ -20,7 +19,7 @@ object CompleteSurveyMother {
 
         val entityPersisted = CompleteSurveyEntity(
             sections = setOf(CompleteHowMuchPainAreYouInSection.entityPersisted),
-            surveyTemplate = KoosKneeSurvey.entityPersisted
+            surveyLink = KoosKneeSurveyLink.entityPersisted
         )
             .apply { id = this@FilledOutKoosKneeSurvey.id }
 

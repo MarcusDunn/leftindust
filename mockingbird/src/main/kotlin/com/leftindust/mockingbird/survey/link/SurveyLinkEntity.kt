@@ -9,4 +9,6 @@ import javax.persistence.ManyToOne
 class SurveyLinkEntity(
     @ManyToOne
     val surveyTemplateEntity: SurveyTemplateEntity
-) : AbstractJpaPersistable()
+) : AbstractJpaPersistable() {
+
+}
