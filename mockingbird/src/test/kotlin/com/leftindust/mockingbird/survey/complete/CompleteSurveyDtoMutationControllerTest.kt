@@ -3,7 +3,6 @@ package com.leftindust.mockingbird.survey.complete
 import com.leftindust.mockingbird.util.CompleteSurveyInputMother.CompleteRateThePain
 import com.leftindust.mockingbird.util.CompleteSurveyMother.FilledOutKoosKneeSurvey
 import com.leftindust.mockingbird.util.CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection
-import com.leftindust.mockingbird.util.SurveyLinkMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import org.intellij.lang.annotations.Language
@@ -31,7 +30,7 @@ internal class CompleteSurveyDtoMutationControllerTest(
         val mutation = """
             mutation {
                 createCompleteSurvey(createCompleteSurvey: { 
-                    surveyTemplateLinkId: { value: "${SurveyLinkMother.KoosKneeSurveyLink.id}" }
+                    surveyLinkId: { value: "${FilledOutKoosKneeSurvey.surveyLinkId.value}" }
                     completeSurveyTemplateSections: [{
                             surveyTemplateSectionId: {value: "${CompleteHowMuchPainAreYouInSection.surveyTemplateSectionId.value}"}
                             completedSurveyInputs: [{

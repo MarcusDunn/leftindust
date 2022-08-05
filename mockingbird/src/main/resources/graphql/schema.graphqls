@@ -294,7 +294,7 @@ input SurveyTemplateLinkIdInput {
 }
 
 input CreateCompleteSurvey {
-    surveyTemplateLinkId: SurveyTemplateLinkIdInput!
+    surveyLinkId: SurveyTemplateLinkIdInput!
     completeSurveyTemplateSections: [CreateCompleteSurveySections!]!
 }
 
