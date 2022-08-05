@@ -9,7 +9,7 @@ spring:
     password: mediq
   security:
     oauth2:
-      resourceserver:
+      resource-server:
         jwt:
           jwk-set-uri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken%40system.gserviceaccount.com
   graphql:

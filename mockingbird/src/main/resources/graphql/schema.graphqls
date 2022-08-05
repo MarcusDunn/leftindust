@@ -316,6 +316,7 @@ input SurveyTemplateSectionInputIdInput {
 type CompleteSurvey {
     id: CompleteSurveyId!
     sections: [CompleteSurveySection!]!
+    surveyTemplate: SurveyTemplate!
 }
 
 type CompleteSurveySection {

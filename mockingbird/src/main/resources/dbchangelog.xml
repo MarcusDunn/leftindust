@@ -874,4 +874,12 @@
     <changeSet author="marcus (generated)" id="1659593354856-1">
         <dropNotNullConstraint columnDataType="uuid" columnName="survey_template_entity_id" tableName="survey_link_entity"/>
     </changeSet>
+    <changeSet author="marcus (generated)" id="1659683779706-1">
+        <addColumn tableName="complete_survey_entity">
+            <column name="survey_template_id" type="uuid"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659683779706-2">
+        <addForeignKeyConstraint baseColumnNames="survey_template_id" baseTableName="complete_survey_entity" constraintName="fk1xih1bubu6j2aiomde9q978a6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="survey_template_entity" validate="true"/>
+    </changeSet>
 </databaseChangeLog>

@@ -12,9 +12,10 @@ class CompleteSurveyDtoMutationController(
     private val completeSurveyToCompleteSurveyDtoConverter: InfallibleConverter<CompleteSurvey, CompleteSurveyDto>,
 ) {
     @MutationMapping("createCompleteSurvey")
-    suspend fun createCompleteSurvey(@Argument("createCompleteSurvey") createCompleteSurveyDto: CreateCompleteSurveyDto): CompleteSurveyDto {
+    suspend fun createCompleteSurvey(@Argument("createCompleteSurvey") createCompleteSurveyDto: CreateCompleteSurveyDto): CompleteSurveyDto? {
         val createCompleteSurvey = createCompleteSurveyDtoToCreateCompleteSurveyConverter.convert(createCompleteSurveyDto)
         val completeSurvey = createCompleteSurveyService.createCompleteSurvey(createCompleteSurvey)
+            ?: return null
         return completeSurveyToCompleteSurveyDtoConverter.convert(completeSurvey)
     }
 }
