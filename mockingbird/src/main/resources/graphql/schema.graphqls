@@ -168,6 +168,7 @@ type SurveyTemplateCalculation {
 type SurveyLink {
     id: SurveyLinkId!
     surveyTemplate: SurveyTemplate!
+    completedSurveys: [CompleteSurvey!]!
 }
 
 type SurveyLinkId {
