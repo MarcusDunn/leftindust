@@ -26,4 +26,3 @@ class SurveyTemplateQueryController(
         return surveyTemplates.map {  surveyTemplateToSurveyTemplateDtoConverter.convert(it) }
     }
 }
-

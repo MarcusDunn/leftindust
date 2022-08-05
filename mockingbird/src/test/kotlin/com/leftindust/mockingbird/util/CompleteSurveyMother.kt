@@ -18,7 +18,8 @@ object CompleteSurveyMother {
         val surveyTemplateId = KoosKneeSurvey.graphqlId
 
         val entityPersisted = CompleteSurveyEntity(
-            sections = setOf(CompleteHowMuchPainAreYouInSection.entityPersisted)
+            sections = setOf(CompleteHowMuchPainAreYouInSection.entityPersisted),
+            surveyTemplate = KoosKneeSurvey.entityPersisted
         )
             .apply { id = this@FilledOutKoosKneeSurvey.id }
 
