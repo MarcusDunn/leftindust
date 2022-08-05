@@ -31,10 +31,9 @@ class CreateCompleteSurveyServiceImpl(
                     )
                 }
                 .toSet(),
-            surveyTemplate = run {
-                val surveyLink = surveyLinkRepository.findByIdOrNull(createCompleteSurvey.surveyLinkId.value)
+            surveyLink = run {
+                surveyLinkRepository.findByIdOrNull(createCompleteSurvey.surveyLinkId.value)
                     ?: return null.also { logger.debug { "Did not find a surveyTemplateLink with id [${createCompleteSurvey.surveyLinkId.value}] while creating $createCompleteSurvey" } }
-                surveyLink.surveyTemplateEntity
             }
         )
         val completeSurveyEntity = completeSurveyRepository.save(newCompleteSurvey)

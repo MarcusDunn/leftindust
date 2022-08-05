@@ -33,6 +33,6 @@ class ReadSurveyTemplateServiceImpl(
     override suspend fun getByCompletedSurvey(completeSurveyId: CompleteSurveyDto.CompleteSurveyDtoId): SurveyTemplate? {
         val completeSurveyEntity = completeSurveyRepository.findByIdOrNull(completeSurveyId.value)
             ?: return null
-        return surveyTemplateEntityToSurveyTemplateConverter.convert(completeSurveyEntity.surveyTemplate)
+        return surveyTemplateEntityToSurveyTemplateConverter.convert(completeSurveyEntity.surveyLink.surveyTemplateEntity)
     }
 }
