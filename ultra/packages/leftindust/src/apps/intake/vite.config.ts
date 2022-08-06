@@ -1,35 +1,21 @@
+// @ts-nocheck
 import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import sveltePreprocess from 'svelte-preprocess';
 import path from 'path';
 
-const graphql = require('@rollup/plugin-graphql');
+import graphql from '@rollup/plugin-graphql';
 
 const production = process.env.NODE_ENV === 'production';
 
-const root = path.resolve(__dirname, 'src');
-const outDir = path.resolve(__dirname, 'build');
-
 // https://vitejs.dev/config/
 export default defineConfig({
-  root,
   base: '',
-  publicDir: '../public',
   build: {
-    outDir,
-    rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'src/index.html'),
-        mediq: path.resolve(__dirname,'src/apps/mediq/index.html'),
-        queue: path.resolve(__dirname, 'src/apps/queue/index.html'),
-        intake: path.resolve(__dirname, 'src/apps/intake/index.html'),
-      },
-    },
-    assetsInlineLimit: 0,
-    emptyOutDir: true,
+    outDir: '../../../../build/intake',
   },
   server: {
-  host: true,
+    host: true,
     port: 5002,
   },
   rollupDedupe: ['svelte', '@fullcalendar/common'],
@@ -41,7 +27,7 @@ export default defineConfig({
       preprocess: [
         sveltePreprocess({
           typescript: {
-            tsconfigFile: './tsconfig.json',
+            tsconfigFile: '../../../../tsconfig.json',
           },
         }),
       ],
@@ -60,7 +46,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(path.resolve(), './src'),
+      '@': path.resolve(path.resolve(), '../../../../src'),
     },
   },
 });

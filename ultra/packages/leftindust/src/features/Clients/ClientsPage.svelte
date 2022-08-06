@@ -11,6 +11,7 @@
     Button,
     Icon,
     Searchbar,
+    PageContent,
   } from 'framework7-svelte';
 
   import { wizardOpen } from '@/features/Wizard/store';
@@ -33,7 +34,7 @@
 
 </script>
 
-<Page style="overflow: hidden">
+<Page style="overflow: hidden" pageContent={false}>
   <svelte:fragment slot="fixed">
     <Menu
       items={[
@@ -101,12 +102,14 @@
       </svelte:fragment>
     </AppBar>
   </svelte:fragment>
-  <Tabs style="height: 100%">
-    <Tab tabActive={$clientsSelectedTab === ClientsTab.Patients}>
-      <PatientsTab {f7router} {f7route}/>
-    </Tab>
-    <Tab tabActive={$clientsSelectedTab === ClientsTab.Doctors}>
-      <DoctorsTab {f7router} {f7route} />
-    </Tab>
-  </Tabs>
+  <PageContent style="padding: 0; overflow: hidden">
+    <Tabs style="height: 100%">
+      <Tab tabActive={$clientsSelectedTab === ClientsTab.Patients}>
+        <PatientsTab {f7router} {f7route}/>
+      </Tab>
+      <Tab tabActive={$clientsSelectedTab === ClientsTab.Doctors}>
+        <DoctorsTab {f7router} {f7route} />
+      </Tab>
+    </Tabs>
+  </PageContent>
 </Page>

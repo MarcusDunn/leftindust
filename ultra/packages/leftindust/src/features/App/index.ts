@@ -16,7 +16,7 @@ export enum AppViews {
   Templates = 'view-templates',
   Wizard = 'view-wizard',
   Popup = 'view-popup',
-  Hub = 'view-hub'
+  Main = 'view-main',
 }
 
 export enum AppRootRoutes {

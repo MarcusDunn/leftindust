@@ -24,9 +24,15 @@
     height: 85px;
     object-fit: cover;
     filter: saturate(2);
+    pointer-events: none;
 
     &::-webkit-media-controls {
       display: none !important;
+    }
+
+    &::-webkit-media-controls-panel {
+      display: none !important;
+      opacity: 1 !important;
     }
 
     &::-webkit-media-controls-start-playback-button {

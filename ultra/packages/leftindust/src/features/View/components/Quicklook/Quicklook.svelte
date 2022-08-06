@@ -62,7 +62,7 @@
   >
     <Footer>
       <p />
-      <div style="float: right">
+      <div style="float: right; margin: 0 20px">
         <slot name="footer" /> 
         <Button
           {color}
