@@ -112,7 +112,11 @@ enum SurveyTemplateCategory {
 }
 
 type SurveyTemplate {
-    id: UUID
+    id: SurveyTemplateId
+}
+
+type SurveyTemplateId {
+    value: UUID
 }
 
 type MediqUserId {

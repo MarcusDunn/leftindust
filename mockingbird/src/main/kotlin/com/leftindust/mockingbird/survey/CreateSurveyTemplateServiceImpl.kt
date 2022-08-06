@@ -17,10 +17,7 @@ class CreateSurveyTemplateServiceImpl(
             sections = surveyTemplate.sections.mapIndexed { i, section -> createSectionToSectionEntity(section, i) }
                 .toMutableSet(),
             calculations = surveyTemplate.calculations.mapIndexed { i, calculation ->
-                createCalculationToCalculationEntity(
-                    calculation,
-                    i
-                )
+                createCalculationToCalculationEntity(calculation, i)
             }.toMutableSet(),
         )
         val surveyTemplateEntity = surveyTemplateRepository.save(newSurveyTemplate)
