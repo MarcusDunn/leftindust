@@ -1,0 +1,3 @@
+schema: 'ultra/packages/leftindust/src/api/server/graphql/schema/leftindust.schema.graphql'
+documents:
+  - 'ultra/packages/leftindust/src/api/server/graphql/requests/**/*.graphql'

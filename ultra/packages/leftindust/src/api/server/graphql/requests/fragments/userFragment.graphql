@@ -1,13 +1,18 @@
-#import "./usersFragment.graphql"
-#import "./doctorsFragment.graphql"
-#import "./patientsFragment.graphql"
+#import "./nameFragment.graphql"
 
-fragment user on User {
-  ...users
-  doctor {
-      ...doctors
-  }
-  patient {
-      ...patients
-  }
+fragment users on MediqUser {
+    __typename
+    id {
+        value
+    }
+    group {
+        name
+    }
+    accountDetails {
+        email
+        isRegistered
+    }
+    name {
+        ...name
+    }
 }

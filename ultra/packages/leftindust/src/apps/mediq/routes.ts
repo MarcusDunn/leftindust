@@ -1,5 +1,3 @@
-import type { SvelteComponentDev } from 'svelte/internal';
-
 import DashboardPage from '@/features/Dashboard/DashboardPage.svelte';
 import ClientsPage from '@/features/Clients/ClientsPage.svelte';
 
