@@ -15,6 +15,11 @@ spring:
   graphql:
     graphiql:
       enabled: true
+  sql:
+    init:
+      schema-locations:
+        - classpath:data-postgres.sql
+      mode: always
 icd:
   client:
     url: localhost:80/icd
