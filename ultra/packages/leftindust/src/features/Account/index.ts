@@ -3,10 +3,10 @@ import {
   database,
   resolversArray,
   resolversRecord,
-  UserQueryDocument,
+  PartialUserByUserUniqueIdQueryDocument,
   type Data,
   type ResolversTypes,
-  type UserFragment,
+  type PartialPartialUserFragment,
 } from '@/api/server';
 import type { WidgetType } from '../Widgets';
 
@@ -79,7 +79,7 @@ export type AccountDatabaseTemplate = {
   layout: AccountLayoutTemplate;
 };
 
-export type Account = UserFragment & {
+export type Account = PartialPartialUserFragment & {
   database: AccountDatabaseTemplate;
 };
 
@@ -137,8 +137,8 @@ const accountDatabaseTemplate: AccountDatabaseTemplate = {
 export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): void => {
   const { user, database } = fb;
 
-  client.query(UserQueryDocument, {
-    uid: user.uid,
+  client.query(PartialUserByUserUniqueIdQueryDocument, {
+    uniqueId: user.uid,
   })
     .toPromise()
     .then(({ data, error }) => {
@@ -153,7 +153,7 @@ export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): v
       if (navigator.onLine) {
         if (data) {
           account.update(() => ({
-            ...data.user,
+            ...data.userByUserUniqueId,
             database: deepmerge(accountDatabaseTemplate, database),
           }));
         } else if (error) {
@@ -220,22 +220,22 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
           }));
           
           account.update(() => ({
-            __typename: 'User',
-            isRegistered: true,
-            uid: user.uid,
-            patient: undefined,
-            doctor: undefined,
-            firebaseUserInfo: {
-              email: user.email ?? '',
-              displayName: user.displayName,
+            __typename: 'MediqUser',
+            id: {
+              value: user.uid,
             },
-            names: {
+            accountDetails: {
+              email: user.email ?? '',
+              isRegistered: true,
+            },
+            name: {
               __typename: 'NameInfo',
               firstName: 'John',
+              middleName: undefined,
               lastName: 'Doe',
             },
             group: {
-              __typename: 'Group',
+              __typename: 'MediqGroup',
               name: 'Development',
             },
             database: data,

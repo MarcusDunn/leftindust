@@ -1,7 +1,6 @@
 #import "./nameFragment.graphql"
 
-fragment users on MediqUser {
-    __typename
+fragment partialUser on MediqUser {
     id {
         value
     }

@@ -1,7 +1,7 @@
 import type {
-  DoctorsFragment,
+  PartialDoctorFragment,
   IcdFragment,
-  PatientsFragment,
+  PartialPatientFragment,
   Data,
 } from '@/api/server';
 
@@ -16,5 +16,5 @@ export const clientsSearchQuery = writable('');
 export const patientsSelectedAttachments = writable<Data[]>([]);
 export const doctorsSelectedAttachments = writable<Data[]>([]);
 
-export const patientsSelectedAttachmentsFragments = writable<Record<string, IcdFragment | DoctorsFragment>>({});
-export const doctorsSelectedAttachmentsFragments = writable<Record<string, PatientsFragment>>({});
+export const patientsSelectedAttachmentsFragments = writable<Record<string, IcdFragment | PartialDoctorFragment>>({});
+export const doctorsSelectedAttachmentsFragments = writable<Record<string, PartialPatientFragment>>({});

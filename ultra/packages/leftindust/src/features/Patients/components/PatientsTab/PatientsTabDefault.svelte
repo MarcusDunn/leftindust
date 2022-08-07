@@ -3,9 +3,9 @@
 
   import {
     defaultRangeInput,
-    PatientsQueryDocument,
+    PartialPatientsByPatientIdQueryDocument,
     SortableField,
-    type PatientsFragment,
+    type PartialPatientFragment,
   } from '@/api/server';
   import { clientsSelected } from '@/features/Clients/store';
 
@@ -25,15 +25,15 @@
 
   export let f7router: Router.Router;
 
-  let patients: PatientsFragment[];
-  let recents: PatientsFragment[];
+  let patients: PartialPatientFragment[];
+  let recents: PartialPatientFragment[];
 
-  const request = operationStore(PatientsQueryDocument, {
+  const request = operationStore(PartialPatientsByPatientIdQueryDocument, {
     range: defaultRangeInput,
     sortedBy: SortableField.LastName,
   });
 
-  const recentsRequest = operationStore(PatientsQueryDocument, {
+  const recentsRequest = operationStore(PartialPatientsByPatientIdQueryDocument, {
     pids: getTimestampedValues($account.database.recents.Patient ??= {}).map(id => ({ id })),
   });
 
@@ -49,12 +49,12 @@
     pids: getTimestampedValues($account.database.recents.Patient ?? {}).map(id => ({ id })),
   };
 
-  $: patients = $request.data?.patients ?? [];
+  $: patients = $request.data?.patientsByPatientId ?? [];
   $: timestampedRecents = $account.database.recents.Patient ?? {};
   $: recents = sortRecents(
     $recentsRequest.data?.patients ?? [],
     timestampedRecents,
-    (patient => patient.pid.id),
+    (patient => patient.id.value),
   );
 
   query(request);

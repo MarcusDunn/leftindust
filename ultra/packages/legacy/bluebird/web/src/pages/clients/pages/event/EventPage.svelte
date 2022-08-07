@@ -59,7 +59,7 @@
       event.subscribe((value) => {
         if (value)
           $ClientsSelected = [
-            ...value.doctors.map((doctor) => ({ type: 'Doctor', id: doctor.did.id })),
+            ...value.doctors.map((doctor) => ({ type: 'Doctor', id: doctor.id?.value })),
             ...value.patients.map((doctor) => ({ type: 'Patient', id: doctor.pid.id })),
           ] as Selectable[];
       });

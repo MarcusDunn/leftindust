@@ -14,7 +14,7 @@
 
   let selectable: Selectable = {
     type: doctor.__typename,
-    id: doctor.did.id ?? '',
+    id: doctor.id?.value ?? '',
   };
 
   let value = JSON.stringify(selectable);

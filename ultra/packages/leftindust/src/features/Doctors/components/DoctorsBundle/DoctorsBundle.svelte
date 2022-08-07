@@ -4,26 +4,26 @@
   import { _ } from '@/language';
   import { configuration } from '@/features/Doctors';
   import { operationStore, query } from '@urql/svelte';
-  import { DoctorsQueryDocument, type DoctorsFragment } from '@/api/server';
+  import { PartialDoctorsByDoctorIdQueryDocument, type PartialDoctorFragment } from '@/api/server';
   import { pinned, pin } from '@/features/Pin';
   import DoctorPinnableCell from '@/features/Doctor/components/DoctorCell/DoctorPinnableCell.svelte';
   import Request from '@/features/Server/components/Request/Request.svelte';
   import Cells from '@/features/UI/components/Cells/Cells.svelte';
   import { Row, Col, Button } from 'framework7-svelte';
-  import language from "@/language/locales/en"
-import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
+  import language from '@/language/locales/en';
+  import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
 
-  let doctors: DoctorsFragment[] = [];
+  let doctors: PartialDoctorFragment[] = [];
 
   const { data, dragger, quicklook } = $$props as BundleProps;
 
-  const request = operationStore(DoctorsQueryDocument, {
-    pid: { id: data.id },
+  const request = operationStore(PartialDoctorsByDoctorIdQueryDocument, {
+    doctorIds: { value: data.id },
   });
 
   query(request);
   
-  $: if ($request.data?.doctors[0]) doctors = $request.data?.doctors;
+  $: if ($request.data?.doctorsByDoctorIds[0]) doctors = $request.data?.doctorsByDoctorIds;
 </script>
 
 <Bundle
@@ -40,11 +40,11 @@ import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceho
           <DoctorPinnableCell
             {doctor}
             pinned={pinned({
-              id: doctor.did.id,
+              id: doctor.id?.value,
               type: doctor.__typename,
             }, data)}
             on:pin={({ detail }) => pin(detail, {
-              id: doctor.did.id,
+              id: doctor.id?.value,
               type: doctor.__typename,
             }, data)}
           />
@@ -52,16 +52,16 @@ import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceho
       </Cells>
     {:else}
       <DescriptivePlaceholder 
-       title={$_('generics.noDoctors')}
-       description={$_('descriptions.noDoctors')}
-       link = {{
-         label: $_('descriptions.learnMoreDoctors')
-       }}
+        title={$_('generics.noDoctors')}
+        description={$_('descriptions.noDoctors')}
+        link = {{
+          label: $_('descriptions.learnMoreDoctors'),
+        }}
       />
     {/if}
   </Request>
-  <Row slot='controls'>
-    <Col width='50'>
+  <Row slot="controls">
+    <Col width="50">
       <Button
         class={`${quicklook ? 'disabled' : ''}`}
         color={configuration.color}
@@ -71,7 +71,7 @@ import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceho
         {$_('generics.newDoctor')}
       </Button>
     </Col>
-    <Col width='50'>
+    <Col width="50">
       <Button
         color={configuration.color}
         outline

@@ -1,0 +1,7 @@
+#import "../fragments/partialPatientFragment.graphql"
+
+query partialPatientsByPatientIdQuery($patientIds: [PatientIdInput!]!) {
+  patientsByPatientId(patientIds: $patientIds) {
+    ...partialPatient
+  }
+}

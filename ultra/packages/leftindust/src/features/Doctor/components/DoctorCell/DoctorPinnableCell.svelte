@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { DoctorsFragment } from '@/api/server';
+  import type { PartialDoctorFragment } from '@/api/server';
   import { createEventDispatcher } from 'svelte';
   
   import Cell from '@/features/UI/components/Cell/Cell.svelte';
@@ -9,7 +9,7 @@
 
   const dispatch = createEventDispatcher();
 
-  export let doctor: Partial<DoctorsFragment>;
+  export let doctor: Partial<PartialDoctorFragment>;
   export let link = true;
   export let pinned = false;
 </script>

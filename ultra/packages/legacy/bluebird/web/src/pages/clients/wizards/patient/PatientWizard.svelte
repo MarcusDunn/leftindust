@@ -89,12 +89,12 @@
         middleName: $patient.middleName,
         lastName: $patient.lastName,
       },
-      doctors: $patient.doctors.map((doctor) => ({ id: doctor.did.id })),
+      doctors: $patient.doctors.map((doctor) => ({ id: doctor.id?.value })),
     });
 
     $doctors = $patient.doctors.map((doctor) => ({
       type: doctor.__typename,
-      id: doctor.did.id,
+      id: doctor.id?.value,
     }));
 
     input = stripped;

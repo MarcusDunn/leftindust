@@ -40,10 +40,10 @@
   const data: Data = JSON.parse(f7route.params.data ?? '{}');
 
   const request = operationStore(PatientQueryDocument, {
-    pids: [{ id: data.id }],
+    patientIds: [{ value: data.id }],
   });
 
-  $: patient = $request.data?.patients[0];
+  $: patient = $request.data?.patientsByPatientId[0];
 
   query(request);
 </script>

@@ -67,11 +67,11 @@
     {#if reference}
       <PinButtonUI
         pinned={pinned({
-          id: doctor.did.id,
+          id: doctor.id?.value,
           type: doctor.__typename,
         }, reference)}
         on:pin={({ detail }) => reference && pin(detail, {
-          id: doctor.did.id,
+          id: doctor.id?.value,
           type: doctor.__typename,
         }, reference)}
       />

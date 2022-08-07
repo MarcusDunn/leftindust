@@ -1,0 +1,37 @@
+fragment templateFragment on SurveyTemplate {
+  id {
+    value
+  }
+  title
+  subtitle
+  sections {
+    id {
+      value
+    }
+    title
+    subtitle
+    inputs {
+      id {
+        value
+      }
+      category
+      label
+      options
+      placeholder
+      required
+      type
+      uploadAccept
+      uploadMultiple
+    }
+  }
+  calculations {
+    id {
+      value
+    }
+    calculation
+    index
+    inputType
+    label
+    showOnComplete
+  }
+}

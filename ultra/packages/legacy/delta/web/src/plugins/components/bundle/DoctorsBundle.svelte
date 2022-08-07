@@ -42,16 +42,16 @@
               <DoctorPinnableItem
                 {doctor}
                 pinned={pinned({
-                  id: doctor.did.id,
+                  id: doctor.id?.value,
                   type: doctor.__typename,
                 }, selectable)}
                 on:pin={({ detail }) => pin(detail, {
-                  id: doctor.did.id,
+                  id: doctor.id?.value,
                   type: doctor.__typename,
                 }, selectable)}
                 on:click={() => {
                   void safeNavigate(`/doctor/${JSON.stringify({
-                    id: doctor.did.id,
+                    id: doctor.id?.value,
                     type: doctor.__typename,
                   })}/`, AppViews.Clients);
                 }}
@@ -80,7 +80,7 @@
           round
           disabled={$doctors.length === 0}
           on:click={() => void safeNavigate(`/people/${JSON.stringify($doctors.map((doctor) => ({
-            id: doctor.did.id,
+            id: doctor.id?.value,
             type: doctor.__typename,
           })))}/`, AppViews.Clients)}
         >

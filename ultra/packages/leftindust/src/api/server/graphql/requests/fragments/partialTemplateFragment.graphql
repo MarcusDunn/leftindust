@@ -1,0 +1,19 @@
+fragment partialTemplateFragment on SurveyTemplate {
+  id {
+    value
+  }
+  title
+  subtitle
+  sections {
+    id {
+      value
+    }
+    title
+    inputs {
+      id {
+        value
+      }
+      label
+    }
+  }
+}
