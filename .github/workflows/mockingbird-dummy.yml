@@ -6,7 +6,7 @@ on:
     branches:
       - main
 jobs:
-  build:
+  build-mockingbird:
     runs-on: ubuntu-latest
     steps:
       - run: 'echo "No build required"'
