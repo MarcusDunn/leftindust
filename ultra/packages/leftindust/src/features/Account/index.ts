@@ -6,7 +6,7 @@ import {
   PartialUserByUserUniqueIdQueryDocument,
   type Data,
   type ResolversTypes,
-  type PartialPartialUserFragment,
+  type PartialUserFragment,
 } from '@/api/server';
 import type { WidgetType } from '../Widgets';
 
@@ -79,7 +79,7 @@ export type AccountDatabaseTemplate = {
   layout: AccountLayoutTemplate;
 };
 
-export type Account = PartialPartialUserFragment & {
+export type Account = PartialUserFragment & {
   database: AccountDatabaseTemplate;
 };
 
@@ -141,7 +141,7 @@ export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): v
     uniqueId: user.uid,
   })
     .toPromise()
-    .then(({ data, error }) => {
+    .then(({ data }) => {
       const showSignInError = (message = language('errors.connectionError')) => {
         signInStatus.update((prev) => ({
           ...prev,
@@ -151,12 +151,13 @@ export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): v
       };
 
       if (navigator.onLine) {
-        if (data) {
+        if (data?.userByUserUniqueId) {
           account.update(() => ({
-            ...data.userByUserUniqueId,
+            // I'm not sure why this needs to be casted––the type signature should be the same
+            ...data.userByUserUniqueId as PartialUserFragment,
             database: deepmerge(accountDatabaseTemplate, database),
           }));
-        } else if (error) {
+        } else {
           showSignInError();
         }
       } else {
@@ -222,9 +223,11 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
           account.update(() => ({
             __typename: 'MediqUser',
             id: {
+              __typename: 'MediqUserId',
               value: user.uid,
             },
             accountDetails: {
+              __typename: 'UserAccountDetails',
               email: user.email ?? '',
               isRegistered: true,
             },

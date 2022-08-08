@@ -17,7 +17,7 @@
 
   export let f7params: Framework7Parameters;
 
-  $: if ($account?.isRegistered && !$account?.database.settings.setup)
+  $: if ($account?.accountDetails?.isRegistered && !$account?.database.settings.setup)
     f7ready(() => setTimeout(() => openPopupUrl('/setup/'), 100));
 </script>
 

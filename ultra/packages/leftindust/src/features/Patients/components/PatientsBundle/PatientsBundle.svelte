@@ -12,7 +12,6 @@
   import Request from '@/features/Server/components/Request/Request.svelte';
   import Cells from '@/features/UI/components/Cells/Cells.svelte';
   import { Row, Col, Button } from 'framework7-svelte';
-  import language from '@/language/locales/en';
   import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
 
   let patients: PartialPatientFragment[] = [];
@@ -25,7 +24,9 @@
 
   query(request);
 
-  $: if ($request.data?.patientsByPatientId[0]) patients = $request.data.patientsByPatientId;
+  $: patients = $request.data?.patientsByPatientId.filter(
+    (patient): patient is PartialPatientFragment => !!patient,
+  ) ?? [];
 </script>
 
 <Bundle 

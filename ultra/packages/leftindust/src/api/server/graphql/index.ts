@@ -206,7 +206,7 @@ export const client = createClient({
             ...fetchOptions,
             headers: {
               ...fetchOptions.headers,
-              'mediq-auth-token': authState.token,
+              // Authorization: authState.token,
             },
           },
         });

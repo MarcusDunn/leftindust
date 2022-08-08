@@ -10,7 +10,6 @@
   import Request from '@/features/Server/components/Request/Request.svelte';
   import Cells from '@/features/UI/components/Cells/Cells.svelte';
   import { Row, Col, Button } from 'framework7-svelte';
-  import language from '@/language/locales/en';
   import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
 
   let doctors: PartialDoctorFragment[] = [];
@@ -23,7 +22,9 @@
 
   query(request);
   
-  $: if ($request.data?.doctorsByDoctorIds[0]) doctors = $request.data?.doctorsByDoctorIds;
+  $: doctors = $request.data?.doctorsByDoctorIds.filter(
+    (doctor): doctor is PartialDoctorFragment => !!doctor,
+  ) ?? [];
 </script>
 
 <Bundle
