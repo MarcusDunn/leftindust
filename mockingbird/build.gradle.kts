@@ -3,9 +3,9 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
+    application
     kotlin("jvm") version "1.7.0"
     kotlin("kapt") version "1.7.0"
     kotlin("plugin.spring") version "1.7.0"
@@ -16,6 +16,10 @@ plugins {
 
     // liquibase
     id("org.liquibase.gradle") version "2.1.1"
+}
+
+application {
+    mainClass.set("com.leftindust.mockingbird.MockingbirdApplicationKt")
 }
 
 repositories {
@@ -143,12 +147,4 @@ kapt {
     includeCompileClasspath = false
     strictMode = true
     correctErrorTypes = true
-}
-
-tasks.withType<BootJar> {
-    enabled = false
-}
-
-tasks.named("jar") {
-    enabled = true
 }
