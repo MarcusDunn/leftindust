@@ -3,6 +3,7 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     kotlin("jvm") version "1.7.0"
@@ -142,4 +143,12 @@ kapt {
     includeCompileClasspath = false
     strictMode = true
     correctErrorTypes = true
+}
+
+tasks.withType<BootJar> {
+    enabled = false
+}
+
+tasks.named("jar") {
+    enabled = true
 }
