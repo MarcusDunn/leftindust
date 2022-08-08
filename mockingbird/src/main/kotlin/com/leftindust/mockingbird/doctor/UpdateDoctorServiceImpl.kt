@@ -22,7 +22,7 @@ import com.leftindust.mockingbird.person.UpdateNameInfo
 import com.leftindust.mockingbird.person.UpdateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.CreatePhoneService
-import com.leftindust.mockingbird.user.ReadUserService
+import com.leftindust.mockingbird.user.ReadMediqUserService
 import java.time.LocalDate
 import javax.transaction.Transactional
 import mu.KotlinLogging
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Service
 @Transactional
 class UpdateDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
-    private val readUserService: ReadUserService,
+    private val readMediqUserService: ReadMediqUserService,
     private val updateNameInfoService: UpdateNameInfoService,
     private val createPhoneService: CreatePhoneService,
     private val readClinicService: ReadClinicService,
@@ -170,7 +170,7 @@ class UpdateDoctorServiceImpl(
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::user) }
             }
             is Updatable.Update -> {
-                val user = readUserService.getByUserUid(userUid.value)
+                val user = readMediqUserService.getByUserUid(userUid.value)
                 if (user == null) {
                     logger.warn { NoOpUpdatedEntityFieldMessage(doctor, doctor::user, "no user with id $userUid") }
                 } else {

@@ -10,5 +10,5 @@ class NameInfo(
     var firstName: String,
     @Column(nullable = false)
     var lastName: String,
-    var middleName: String? = null,
+    var middleName: String?,
 ) : AbstractJpaPersistable()

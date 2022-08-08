@@ -6,7 +6,7 @@ import com.leftindust.mockingbird.group.MediqGroup
 import org.springframework.stereotype.Component
 
 @Component
-class MediqGroupToUserGroupDtoConverter : InfallibleConverter<MediqGroup, MediqGroupDto> {
+class MediqGroupToMediqGroupDtoConverter : InfallibleConverter<MediqGroup, MediqGroupDto> {
     override fun convert(source: MediqGroup): MediqGroupDto {
         return MediqGroupDto(
             id = MediqGroupDto.MediqGroupId(source.id ?: throw NullEntityIdInConverterException(source)),
