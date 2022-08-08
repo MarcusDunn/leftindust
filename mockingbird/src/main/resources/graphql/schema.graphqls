@@ -49,6 +49,25 @@ type Mutation {
 
     # complete survey
     createCompleteSurvey(createCompleteSurvey: CreateCompleteSurvey): CompleteSurvey
+
+    # user
+    createMediqUser(createUser: CreateUser): MediqUser
+}
+
+input CreateUser {
+    uid: String!
+    nameInfo: CreateNameInfo!
+    group: MediqGroupIdInput
+}
+
+input MediqGroupIdInput {
+    value: UUID
+}
+
+input CreateNameInfo {
+    firstName: String!
+    middleName: String
+    lastName: String!
 }
 
 type Doctor {
@@ -269,11 +288,11 @@ type SurveyTemplateId {
 }
 
 type MediqUserId {
-    value: UUID!
+    value: String!
 }
 
 type MediqGroupId {
-    value: MediqGroupId!
+    value: UUID!
 }
 
 type MediqGroup {

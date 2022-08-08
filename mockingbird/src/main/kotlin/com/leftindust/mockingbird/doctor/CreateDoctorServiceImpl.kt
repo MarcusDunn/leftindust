@@ -4,11 +4,15 @@ import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.clinic.ReadClinicService
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhoneService
-import com.leftindust.mockingbird.user.CreateUserDto
-import com.leftindust.mockingbird.user.CreateUserService
-import com.leftindust.mockingbird.user.ReadUserService
+import com.leftindust.mockingbird.user.CreateMediqUser
+import com.leftindust.mockingbird.user.CreateMediqUserService
+import com.leftindust.mockingbird.user.MediqGroupDto
+import com.leftindust.mockingbird.user.MediqUserDto
+import com.leftindust.mockingbird.user.ProofOfValidUser
+import com.leftindust.mockingbird.user.ReadMediqUserService
 import javax.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -16,8 +20,8 @@ import org.springframework.stereotype.Service
 @Service
 class CreateDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
-    private val createUserService: CreateUserService,
-    private val readUserService: ReadUserService,
+    private val createMediqUserService: CreateMediqUserService,
+    private val readMediqUserService: ReadMediqUserService,
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,
     private val createNameInfoService: CreateNameInfoService,
@@ -28,8 +32,16 @@ class CreateDoctorServiceImpl(
 
     override suspend fun addDoctor(createDoctor: CreateDoctor): Doctor {
         val (user, nameInfo) = when (val user = createDoctor.user) {
-            is CreateDoctor.User.Create -> createUserService.addUser(CreateUserDto(user.uid, user.nameInfo, user.group, null)) to null
-            is CreateDoctor.User.Find -> readUserService.findUserByUid(user.userUid) to null
+            is CreateDoctor.User.Create -> createMediqUserService.addUser(
+                CreateMediqUserImpl(
+                    uid = user.uid,
+                    nameInfo = user.nameInfo,
+                    group = user.group,
+                    doctor = null,
+                    proofOfValidUser = user.proofOfValidUser
+                )
+            ) to null
+            is CreateDoctor.User.Find -> readMediqUserService.getByUserUid(user.userUid) to null
             is CreateDoctor.User.NoUser -> null to createNameInfoService.createNameInfo(user.nameInfo)
         }
         val notNullNameInfo = nameInfo ?: user?.nameInfo!!
@@ -59,4 +71,12 @@ class CreateDoctorServiceImpl(
         }
         return doctorRepository.save(doctor)
     }
+
+    data class CreateMediqUserImpl(
+        override val uid: MediqUserDto.MediqUserUniqueId,
+        override val nameInfo: CreateNameInfo,
+        override val group: MediqGroupDto.MediqGroupId,
+        override val doctor: DoctorDto.DoctorDtoId?,
+        override val proofOfValidUser: ProofOfValidUser,
+    ) : CreateMediqUser
 }
