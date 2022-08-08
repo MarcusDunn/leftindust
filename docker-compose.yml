@@ -1,14 +1,6 @@
 version: '3.2'
 
 services:
-  mockingbird-icd-api:
-    image: whoicd/icd-api
-    environment:
-      - acceptLicense=true
-      - saveAnalytics=true
-      - include=2021-05_en
-    ports:
-      - "81:80"
   mockingbird-postgres:
     environment:
       POSTGRES_DB: mediq
@@ -28,12 +20,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://mockingbird-postgres:5432/mediq
       - SPRING_DATASOURCE_USERNAME=mediq
       - SPRING_DATASOURCE_PASSWORD=mediq
-    build:
-      context: mockingbird
+    image: ghcr.io/marcusdunn/mockingbird:latest
     depends_on:
       - mockingbird-postgres
-  ultra:
-    ports:
-      - "80:80"
-    build:
-      context: ultra
