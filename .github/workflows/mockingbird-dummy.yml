@@ -1,8 +1,10 @@
 name: Mockingbird
 on:
-  push:
+  pull_request:
     paths-ignore:
       - 'mockingbird/**'
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest

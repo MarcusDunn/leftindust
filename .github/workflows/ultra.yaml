@@ -1,8 +1,10 @@
 name: Ultra
 on: 
-  push:
+  pull_request:
     paths:
       - 'ultra/**'
+    branches:
+      - main
   workflow_dispatch:
       
 concurrency: 
