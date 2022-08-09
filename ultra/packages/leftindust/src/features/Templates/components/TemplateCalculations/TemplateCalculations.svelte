@@ -1,14 +1,19 @@
 <script lang="ts">
-  import { type TemplateInput, TemplateInputType, getTemplateSocketType } from '../..';
+  import { type TemplateInput, TemplateInputType, getTemplateSocketType, type TemplateCalculationWithInstance, templateForm } from '../..';
   import AppLauncherApp from '@/features/Apps/components/AppLauncher/AppLauncherApp.svelte';
   import FlowCover from '@/apps/flow/assets/flow.png';
-  import { TemplateInputItems, TemplateCalculations } from '../../store';
+  import { TemplateInputItems } from '../../store';
   import { writable, type Writable } from 'svelte/store';
 
   import { BlockFooter, Button } from 'framework7-svelte';
 
   import { _ } from '@/language';
   import TemplateCalculationInput from './TemplateCalculationInput.svelte';
+
+  export let calculations: TemplateCalculationWithInstance[];
+  
+  export let data: ReturnType<typeof templateForm>['data'];
+  export let errors: ReturnType<typeof templateForm>['errors'];
 
   let inputs: (TemplateInput & {
     sectionIndex: number;
@@ -57,12 +62,14 @@
 <br />
 <br />
 
-{#if $TemplateCalculations.length > 0}
-  {#each $TemplateCalculations as calculation, index}
+{#if calculations.length > 0}
+  {#each calculations as calculation, index}
     <TemplateCalculationInput
       {index}
       {nodeInputs}
-      bind:calculations={$TemplateCalculations}
+      {errors}
+      {data}
+      bind:calculations={calculations}
       bind:calculation
     />
     <br />
@@ -87,8 +94,8 @@
         color="deeppurple"
         style="width: 100%;margin-right: 0"
         on:click={() => {
-          $TemplateCalculations = [
-            ...$TemplateCalculations,
+          calculations = [
+            ...calculations,
             {
               label: '',
               type: TemplateInputType.Text,
@@ -107,7 +114,7 @@
                     x: window.innerWidth - 360,
                     y: 100,
                     store: {
-                      index: $TemplateCalculations.length,
+                      index: calculations.length,
                     },
                   },
                 },

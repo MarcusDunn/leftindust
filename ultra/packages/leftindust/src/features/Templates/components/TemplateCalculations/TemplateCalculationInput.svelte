@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TemplateInputType, type TemplateCalculationWithInstance } from '../..';
+  import { templateForm, TemplateInputType, type TemplateCalculationWithInstance } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
@@ -26,6 +26,9 @@
   export let modalOpen = false;
 
   export let nodeInputs: Record<string, { type: string; value: Writable<unknown> }>;
+
+  export let errors: ReturnType<typeof templateForm>['errors'];
+  export let data: ReturnType<typeof templateForm>['data'];
   
   let nodeOutputs = {
     Value: {
@@ -129,6 +132,9 @@
 
   $: calculation.editor = editor;
   $: console.log($value);
+
+  $: if ($data?.calculations?.[index] && $data.calculations[index].calculation !== JSON.stringify(calculation.calculation))
+    $data.calculations[index].calculation = JSON.stringify(calculation.calculation);
 </script>
 
 <NodesModal
@@ -181,14 +187,21 @@
       },
     ]}
     bind:value={calculation.type}
+    name={`calculations.${index}.type`}
   />
   <p />
-  <Input style="width: 100%">
+  <Input
+    style="width: 100%"
+    error={// https://github.com/pablo-abc/felte/issues/162
+      // @ts-expect-error
+      $errors?.calculations?.[index]?.label}
+  >
     <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
     <input
       type="text"
       bind:value={calculation.label}
       placeholder={$_('examples.calculation')}
+      name={`calculations.${index}.label`}
     />
   </Input>
   <Input style="width: 100%;margin-top: 30px">
@@ -196,6 +209,7 @@
       <span>Show on Complete</span>
       <Toggle
         color="deeppurple"
+        name={`calculations.${index}.showOnComplete`}
         bind:checked={calculation.showOnComplete}
       />
     </ListItem>

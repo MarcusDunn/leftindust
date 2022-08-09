@@ -6,10 +6,16 @@
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   
   import { _ } from 'svelte-i18n';
+  import type { templateForm } from '../..';
 
   import './TemplateInputSelect.scss';
 
+  export let errors: ReturnType<typeof templateForm>['errors'];
+
   export let index: number;
+  export let inputIndex: number;
+  export let sectionIndex: number;
+
   export let options: string[];
 
   export let title: string | undefined = undefined;
@@ -26,6 +32,7 @@
         type="text"
         placeholder={$_('generics.optionIndexed', { values: { index: index + 1 } })}
         bind:value={options[index]}
+        name={`sections.${sectionIndex}.inputs.${inputIndex}.options.${index}`}
       />
     </Input>
   </div>

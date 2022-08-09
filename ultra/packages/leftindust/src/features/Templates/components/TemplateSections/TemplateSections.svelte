@@ -1,11 +1,12 @@
 <script lang="ts">
   import type { DndEvent } from 'svelte-dnd-action';
-  import type { TemplateSection as TemplateSectionT } from '../..';
+  import type { templateForm, TemplateSection as TemplateSectionT } from '../..';
   import TemplateSection from '../TemplateSection/TemplateSection.svelte';
   import { dndzone, SOURCES, TRIGGERS	} from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
+  import { TemplateInputItems } from '../../store';
 
   const flipDurationMs = 200;
   let dragDisabled = true;
@@ -38,6 +39,25 @@
     e.preventDefault();
     dragDisabled = false;
   };
+
+  export let errors: ReturnType<typeof templateForm>['errors'];
+  export let data: ReturnType<typeof templateForm>['data'];
+      
+  // When the section length is one, the default title needs to be set to the section title
+  // because the section title is not editable, and yup will not validate it if its empty
+  let singleSectionSwitched = false;
+  $: if ($data?.sections?.[0]) {
+    if (
+      sections.length === 1
+        && $data.sections[0].title !== $TemplateInputItems.title
+    ) {
+      $data.sections[0].title = $TemplateInputItems.title;
+      singleSectionSwitched = true;
+    } else if (sections.length > 1 && singleSectionSwitched) {
+      $data.sections[0].title = '';
+      singleSectionSwitched = false;
+    }
+  }
 </script>
 
 <section
@@ -53,6 +73,8 @@
         bind:sections
         bind:globalIndex
         bind:section
+        {errors}
+        {data}
       />
     </div>
   {/each}
