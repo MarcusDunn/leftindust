@@ -1,0 +1,11 @@
+fragment doctor on Doctor {
+  id {
+    value
+  }
+  title
+  firstName
+  middleName
+  lastName
+  dateOfBirth
+  thumbnail
+}

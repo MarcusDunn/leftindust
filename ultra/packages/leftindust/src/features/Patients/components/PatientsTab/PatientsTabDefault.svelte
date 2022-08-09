@@ -3,8 +3,8 @@
 
   import {
     defaultRangeInput,
+    PartialPatientsByRangeQueryDocument,
     PartialPatientsByPatientIdQueryDocument,
-    SortableField,
     type PartialPatientFragment,
   } from '@/api/server';
   import { clientsSelected } from '@/features/Clients/store';
@@ -28,13 +28,12 @@
   let patients: PartialPatientFragment[];
   let recents: PartialPatientFragment[];
 
-  const request = operationStore(PartialPatientsByPatientIdQueryDocument, {
+  const request = operationStore(PartialPatientsByRangeQueryDocument, {
     range: defaultRangeInput,
-    sortedBy: SortableField.LastName,
   });
 
   const recentsRequest = operationStore(PartialPatientsByPatientIdQueryDocument, {
-    pids: getTimestampedValues($account.database.recents.Patient ??= {}).map(id => ({ id })),
+    patientIds: getTimestampedValues($account.database.recents.Patient ??= {}).map(id => ({ value: id })),
   });
 
   const navigate = (multiple: boolean) => {
@@ -46,16 +45,18 @@
   };
 
   $: $recentsRequest.variables = {
-    pids: getTimestampedValues($account.database.recents.Patient ?? {}).map(id => ({ id })),
+    patientIds: getTimestampedValues($account.database.recents.Patient ?? {}).map(id => ({ value: id })),
   };
 
-  $: patients = $request.data?.patientsByPatientId ?? [];
+  $: patients = $request.data?.patientsByRange ?? [];
   $: timestampedRecents = $account.database.recents.Patient ?? {};
   $: recents = sortRecents(
-    $recentsRequest.data?.patients ?? [],
+    $recentsRequest.data?.patientsByPatientId ?? [],
     timestampedRecents,
-    (patient => patient.id.value),
-  );
+    (patient => patient?.id.value),
+  ).filter(
+    (patient): patient is PartialPatientFragment => !!patient,
+  ) ?? [];
 
   query(request);
   query(recentsRequest);

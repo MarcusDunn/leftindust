@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
-  import { PatientQueryDocument, type Data, type PatientFragment } from '@/api/server';
+  import { PatientsByPatientIdQueryDocument, type Data, type PatientFragment } from '@/api/server';
   
   import { account } from '../Account/store';
   import { ClientTab } from '../Client';
@@ -39,7 +39,7 @@
 
   const data: Data = JSON.parse(f7route.params.data ?? '{}');
 
-  const request = operationStore(PatientQueryDocument, {
+  const request = operationStore(PatientsByPatientIdQueryDocument, {
     patientIds: [{ value: data.id }],
   });
 
@@ -130,15 +130,15 @@
       />
       <div slot="drawer">
         {#key $account}
-          {#if $account.database.layout.pinned['Patient']?.[patient?.pid.id]?.length ?? 0 > 0}
+          {#if $account.database.layout.pinned['Patient']?.[patient?.id.value]?.length ?? 0 > 0}
             <SpecificGrid
-              props={$account.database.layout.pinned['Patient']?.[patient?.pid.id]?.map(({ type, id }) => {
+              props={$account.database.layout.pinned['Patient']?.[patient?.id.value]?.map(({ type, id }) => {
                 if (type) {
                   return {
                     id: type,
                     data: { id, type },
                     reference: {
-                      id: patient?.pid.id,
+                      id: patient?.id.value,
                       type: 'Patient',
                     },
                     quicklook,

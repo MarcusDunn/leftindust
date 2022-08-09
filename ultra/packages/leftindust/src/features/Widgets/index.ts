@@ -8,7 +8,7 @@ import DoctorsBundle from '@/features/Doctors/components/DoctorsBundle/DoctorsBu
 import PatientCard from '@/features/Patient/components/PatientCard/PatientCard.svelte';
 import DoctorCard from '@/features/Doctor/components/DoctorCard/DoctorCard.svelte';
 import UserCard from '@/features/User/components/UserCard/UserCard.svelte';
-import IcdCard from '@/features/Icd/components/IcdCard/IcdCard.svelte';
+// import IcdCard from '@/features/Icd/components/IcdCard/IcdCard.svelte';
 import PatientsBundle from '../Patients/components/PatientsBundle/PatientsBundle.svelte';
 
 export enum WidgetType {
@@ -87,15 +87,17 @@ const Widgets: Widgets = {
       category: [WidgetCategory.Document],
     },
     user: {
-      type: ['User', 'FirebaseInfo'],
+      type: ['MediqUser'],
       component: UserCard,
       category: [WidgetCategory.Document],
     },
+    /*
     icd: {
       type: ['IcdSimpleEntity', 'IcdLinearizationEntity'],
       component: IcdCard,
       category: [WidgetCategory.Record],
     },
+    */
   },
   cluster: {},
   comparable: {},
