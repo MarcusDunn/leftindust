@@ -1,12 +1,13 @@
 <script lang="ts">
   import type { DndEvent } from 'svelte-dnd-action';
-  import type { templateForm, TemplateSection as TemplateSectionT } from '../..';
+  import type { templateForm } from '../..';
   import TemplateSection from '../TemplateSection/TemplateSection.svelte';
   import { dndzone, SOURCES, TRIGGERS	} from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
-  import { TemplateInputItems } from '../../store';
+  import type { SurveyTemplateSection } from '@/api/server';
+  import { Template } from '../../store';
 
   const flipDurationMs = 200;
   let dragDisabled = true;
@@ -14,11 +15,11 @@
   // Global index starts at 1 because sections always init with one item
   let globalIndex = 1;
 
-  export let sections: TemplateSectionT[];
+  export let sections: SurveyTemplateSection[];
         
   const handleConsider = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source, trigger } } = e.detail;
-    sections = newItems as TemplateSectionT[];
+    sections = newItems as SurveyTemplateSection[];
     // Ensure dragging is stopped on drag finish via keyboard
     if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
       dragDisabled = true;
@@ -27,7 +28,7 @@
 
   const handleFinalize = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source } } = e.detail;
-    sections = newItems as TemplateSectionT[];
+    sections = newItems as SurveyTemplateSection[];
     // Ensure dragging is stopped on drag finish via pointer (mouse, touch)
     if (source === SOURCES.POINTER) {
       dragDisabled = true;
@@ -49,9 +50,9 @@
   $: if ($data?.sections?.[0]) {
     if (
       sections.length === 1
-        && $data.sections[0].title !== $TemplateInputItems.title
+        && $data.sections[0].title !== $Template.title
     ) {
-      $data.sections[0].title = $TemplateInputItems.title;
+      $data.sections[0].title = $Template.title;
       singleSectionSwitched = true;
     } else if (sections.length > 1 && singleSectionSwitched) {
       $data.sections[0].title = '';
@@ -95,7 +96,7 @@
         {
           title: '',
           inputs: [],
-          id: globalIndex,
+        //  id: globalIndex,
         },
       ];
 

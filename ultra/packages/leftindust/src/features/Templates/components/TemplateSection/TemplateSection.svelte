@@ -1,19 +1,20 @@
 <script lang="ts">
-  import type { templateForm, TemplateSection } from '../..';
+  import type { templateForm } from '../..';
   import Section from '@/features/UI/components/Section/Section.svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
 
   import './TemplateSection.scss';
   
-  import { TemplateIndex, TemplateInputItems } from '../../store';
+  import { TemplateIndex, Template } from '../../store';
   import { Icon } from 'framework7-svelte';
 
   import { _ } from 'svelte-i18n';
+  import type { SurveyTemplateSection } from '@/api/server';
   import TemplateSectionInputs from './TemplateSectionInputs.svelte';
 
   export let index: number;
-  export let section: TemplateSection;
-  export let sections: TemplateSection[];
+  export let section: SurveyTemplateSection;
+  export let sections: SurveyTemplateSection[];
 
   export let errors: ReturnType<typeof templateForm>['errors'];
   export let data: ReturnType<typeof templateForm>['data'];
@@ -32,8 +33,11 @@
     }, true);
   };
 
+//TODO: Add back once type id is on server
+  /*
   $: if ($data?.sections?.[index] && typeof $data?.sections?.[index]?.id === 'undefined')
     $data.sections[index].id = section.id;
+    */
 </script>
 
 <div
@@ -74,8 +78,8 @@
     -->
     <div style={sections.length === 1 ? '' : 'display: none;'}>
       <TemplateSectionInputs
-        bind:title={$TemplateInputItems.title}
-        bind:subtitle={$TemplateInputItems.subtitle}
+        bind:title={$Template.title}
+        bind:subtitle={$Template.subtitle}
         bind:inputs={section.inputs}
         bind:globalIndex
         {errors}
@@ -99,10 +103,10 @@
           ...sections.slice(0, index),
           {
             ...sections[index],
-            id: globalIndex,
+            // id: globalIndex,
             inputs: section.inputs.map((input) => {
               globalIndex += 1;
-              return { ...input, id: globalIndex };
+              return { ...input /* id: globalIndex */ };
             }),
           },
           ...sections.slice(index),

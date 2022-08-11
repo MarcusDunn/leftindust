@@ -1,8 +1,6 @@
 <script lang="ts">
-  import { templateForm, templateInputSelectOptions, type TemplateInput } from '../..';
-  import { TemplateInputUploadType } from '../..';
+  import { templateForm, templateInputSelectOptions } from '../..';
   import { _ } from 'svelte-i18n';
-  import { TemplateInputType } from '../..';
   import {
     Button,
     Col,
@@ -12,19 +10,20 @@
     Toggle,
   } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
+  import { type SurveyTemplateInput, SurveyTemplateInputType, TemplateInputUploadType } from '@/api/server';
   import Input from '@/features/Input/Input.svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import './TemplateInput.scss';
   import TemplateInputSelect from './TemplateInputSelect.svelte';
   import Add from '@/features/Input/components/Add/Add.svelte';
   
-  export let inputs: TemplateInput[];
+  export let inputs: SurveyTemplateInput[];
   export let index: number;
   export let globalIndex: number;
   export let sectionIndex: number;
   export let id: number;
   
-  export let type: TemplateInputType = TemplateInputType.Text;
+  export let type: SurveyTemplateInputType = SurveyTemplateInputType.Text;
   export let label = '';
   export let placeholder = '';
   export let required = false;
@@ -42,8 +41,8 @@
   $: if ($data?.sections?.[sectionIndex]?.inputs?.[index] && typeof $data?.sections?.[sectionIndex]?.inputs?.[index].id === 'undefined')
     $data.sections[sectionIndex].inputs[index].id = id;
 
-  $: multiselect = (type === TemplateInputType.SingleSelect || type === TemplateInputType.MultiSelect);
-  $: title = type === TemplateInputType.Title;
+  $: multiselect = (type === SurveyTemplateInputType.SingleSelect || type === SurveyTemplateInputType.MultiSelect);
+  $: title = type === SurveyTemplateInputType.Title;
   $: compute = false;
 
   // https://github.com/sveltejs/svelte/issues/5162
@@ -124,7 +123,7 @@
           />
         </Col>
       {/if}
-      {#if type === TemplateInputType.Upload}
+      {#if type === SurveyTemplateInputType.Upload}
         <Col width="100">
           <br />
           <Select
@@ -191,7 +190,9 @@
                 inputs = [
                   ...inputs.slice(0, index),
                   {
-                    id: globalIndex,
+                    id: {
+                      value: globalIndex,
+                    },
                     type,
                     label,
                     placeholder,

@@ -1,13 +1,14 @@
 <script lang="ts">
-  import type { templateForm, TemplateInput } from '../..';
+  import type { templateForm } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import TemplateInputs from '../TemplateInputs/TemplateInputs.svelte';
+  import type { SurveyTemplateInput } from '@/api/server';
 
   import { _ } from 'svelte-i18n';
 
   export let title: string;
   export let subtitle: string | undefined = undefined;
-  export let inputs: TemplateInput[] | undefined = undefined;
+  export let inputs: SurveyTemplateInput[] | undefined = undefined;
 
   export let globalIndex: number | undefined = undefined;
 

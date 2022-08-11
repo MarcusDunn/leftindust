@@ -1,13 +1,14 @@
 <script lang="ts">
-  import { type TemplateInput, TemplateInputType, getTemplateSocketType, type TemplateCalculationWithInstance, templateForm } from '../..';
+  import { getTemplateSocketType, type TemplateCalculationWithInstance, templateForm } from '../..';
   import AppLauncherApp from '@/features/Apps/components/AppLauncher/AppLauncherApp.svelte';
   import FlowCover from '@/apps/flow/assets/flow.png';
-  import { TemplateInputItems } from '../../store';
+  import { Template } from '../../store';
   import { writable, type Writable } from 'svelte/store';
 
   import { BlockFooter, Button } from 'framework7-svelte';
 
   import { _ } from '@/language';
+  import type { SurveyTemplateInputType } from '@/api/server';
   import TemplateCalculationInput from './TemplateCalculationInput.svelte';
 
   export let calculations: TemplateCalculationWithInstance[];
@@ -15,20 +16,20 @@
   export let data: ReturnType<typeof templateForm>['data'];
   export let errors: ReturnType<typeof templateForm>['errors'];
 
-  let inputs: (TemplateInput & {
+  let inputs: (SurveyTemplateInputType & {
     sectionIndex: number;
     index: number;
   })[];
 
   let nodeInputs: Record<string, { type: string; value: Writable<unknown> }> = {};
 
-  $: inputs = $TemplateInputItems.sections.flatMap((section, index) =>
+  $: inputs = $Template.sections.flatMap((section, index) =>
     section.inputs.map((input, inputIndex) => ({
       ...input,
       sectionIndex: index,
       index: inputIndex,
       label: `${input.label}${
-        $TemplateInputItems.sections.length > 1
+        $Template.sections.length > 1
           // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           ? ` (${$_('generics.sectionIndexed', { values: { number: index + 1 } })})`
           : ''

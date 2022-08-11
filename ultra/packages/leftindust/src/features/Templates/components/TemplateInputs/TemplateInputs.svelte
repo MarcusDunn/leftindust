@@ -1,13 +1,13 @@
 <script lang="ts">
   import type { DndEvent } from 'svelte-dnd-action';
-  import type { templateForm, TemplateInput as TemplateInputT } from '../../';
-  import { TemplateInputType, TemplateInputUploadType } from '../../';
+  import type { templateForm } from '../../';
   import { dndzone, SOURCES, TRIGGERS	} from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import TemplateInput from '../TemplateInput/TemplateInput.svelte';
+  import { SurveyTemplateInputType, TemplateInputUploadType, type SurveyTemplateInput } from '@/api/server';
   
-  export let inputs: TemplateInputT[] = [];
+  export let inputs: SurveyTemplateInput[] = [];
   export let globalIndex = 0;
   export let sectionIndex = 0;
 			
@@ -16,7 +16,7 @@
 			
   const handleConsider = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source, trigger } } = e.detail;
-    inputs = newItems as TemplateInputT[];
+    inputs = newItems as SurveyTemplateInput[];
     // Ensure dragging is stopped on drag finish via keyboard
     if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
       dragDisabled = true;
@@ -25,7 +25,7 @@
 
   const handleFinalize = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source } } = e.detail;
-    inputs = newItems as TemplateInputT[];
+    inputs = newItems as SurveyTemplateInput[];
     // Ensure dragging is stopped on drag finish via pointer (mouse, touch)
     if (source === SOURCES.POINTER) {
       dragDisabled = true;
@@ -62,7 +62,7 @@
           bind:globalIndex
           bind:inputs
           bind:type={input.type}
-          bind:id={input.id}
+          bind:id={input.id.value}
           bind:label={input.label}
           bind:options={input.options}
           bind:placeholder={input.placeholder}
@@ -85,8 +85,10 @@
         inputs = [
           ...inputs,
           {
-            id: globalIndex,
-            type: TemplateInputType.Text,
+            id: {
+              value: globalIndex,
+            },
+            type: SurveyTemplateInputType.Text,
             label: '',
             placeholder: '',
             required: false,

@@ -6,7 +6,7 @@
     Tab,
   } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
-  import { TemplateInputItems, TemplateNodesModalOpen, TemplateSelectedTab, TemplateCalculations as TemplateCalculationsStore } from './store';
+  import { Template, TemplateNodesModalOpen, TemplateSelectedTab, TemplateCalculations as TemplateCalculationsStore } from './store';
   import { fade } from 'svelte/transition';
 
   import IFrame from '../View/components/IFrame/IFrame.svelte';
@@ -55,10 +55,10 @@
   <form use:form bind:this={ref}>
     <Tabs>
       <Tab tabActive={$TemplateSelectedTab === 'input'}>
-        {#if $TemplateInputItems.sections.length > 1}
+        {#if $Template.sections.length > 1}
           <TemplateSectionInputs
-            bind:title={$TemplateInputItems.title}
-            bind:subtitle={$TemplateInputItems.subtitle}
+            bind:title={$Template.title}
+            bind:subtitle={$Template.subtitle}
             {errors}
             {data}
           />
@@ -66,7 +66,7 @@
           <br />
         {/if}
         <TemplateSections
-          bind:sections={$TemplateInputItems.sections}
+          bind:sections={$Template.sections}
           {errors}
           {data}
         />
@@ -78,14 +78,14 @@
       </Tab>
       <Tab tabActive={$TemplateSelectedTab === 'output'}>
         <TemplateSectionInputs
-          bind:title={$TemplateInputItems.title}
-          bind:subtitle={$TemplateInputItems.subtitle}
+          bind:title={$Template.title}
+          bind:subtitle={$Template.subtitle}
           {errors}
           {data}
         />
         <br />
         <br />
-        <TemplateCategoryInputs bind:sections={$TemplateInputItems.sections} />
+        <TemplateCategoryInputs bind:sections={$Template.sections} />
       </Tab>
     </Tabs>
   </form>

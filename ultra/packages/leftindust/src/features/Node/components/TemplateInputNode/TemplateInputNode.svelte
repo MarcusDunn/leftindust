@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TemplateInputItems } from '@/features/Templates/store';
+  import { Template } from '@/features/Templates/store';
 
   import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, TemplateInputType, type TemplateCalculationSockets, type TemplateInput } from '@/features/Templates';
   import type { Editor, OutputSocket, OutputSockets, Node } from 'function-junctions/types';
@@ -43,7 +43,7 @@
 
   const reevaluateConnections = () => {
     if (input) {
-      if ($TemplateInputItems.sections[input.sectionIndex].inputs[input.index]?.type !== prevType) {
+      if ($Template.sections[input.sectionIndex].inputs[input.index]?.type !== prevType) {
         editor.nodes.current.update(() => Object.keys($nodes).reduce((newNodes: Record<string, Node>, key) => {
           const oldNode = $nodes[key];
           const inputs = oldNode.inputs;
@@ -63,18 +63,18 @@
           return newNodes;
         }, {}));
 
-        prevType = $TemplateInputItems.sections[input.sectionIndex].inputs[input.index]?.type;
+        prevType = $Template.sections[input.sectionIndex].inputs[input.index]?.type;
       }
     }
   };
 
-  $: inputs = $TemplateInputItems.sections.flatMap((section, index) =>
+  $: inputs = $Template.sections.flatMap((section, index) =>
     section.inputs.map((input, inputIndex) => ({
       ...input,
       sectionIndex: index,
       index: inputIndex,
       label: `${input.label}${
-        $TemplateInputItems.sections.length > 1
+        $Template.sections.length > 1
           // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           ? ` (${$_('generics.sectionIndexed', { values: { number: index + 1 } })})`
           : ''
@@ -98,7 +98,7 @@
     }
   }
 
-  $: if (input && !prevType) prevType = $TemplateInputItems.sections[input.sectionIndex].inputs[input.index].type;
+  $: if (input && !prevType) prevType = $Template.sections[input.sectionIndex].inputs[input.index].type;
 
   $: inputs, reevaluateConnections();
   
@@ -114,7 +114,7 @@
       title={$_('generics.type')}
       placeholder={$_('examples.text')}
       options={templateInputSelectOptions}
-      bind:value={$TemplateInputItems.sections[input.sectionIndex].inputs[input.index].type}
+      bind:value={$Template.sections[input.sectionIndex].inputs[input.index].type}
     />
     <p />
     <Input title="Input" disabled={inputs.length < 1}>

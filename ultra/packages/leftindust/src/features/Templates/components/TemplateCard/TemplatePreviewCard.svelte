@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { TemplateInput } from '../..';
-  import { TemplateInputItems } from '../../store';
+  import { Template } from '../../store';
   import { TemplateCategory } from '../..';
   import { _ } from 'svelte-i18n';
   import {
@@ -31,11 +31,11 @@
     ({ category }) => category === TemplateCategory.Body,
   )[0]?.label;
 
-  $: inputs = $TemplateInputItems.sections.flatMap((section, index) =>
+  $: inputs = $Template.sections.flatMap((section, index) =>
     section.inputs.map((input) => ({
       ...input,
       label: `${input.label}${
-        $TemplateInputItems.sections.length > 1
+        $Template.sections.length > 1
           // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           ? ` (${$_('generics.sectionIndexed', { values: { number: index + 1 } })})`
           : ''
@@ -65,7 +65,7 @@
         style="padding-right: 15px"
       />
     {:else}
-      {$TemplateInputItems.title}
+      {$Template.title}
     {/if}
   </svelte:fragment>
 
@@ -95,7 +95,7 @@
       <Col width="50">
         <Button round fill>
           {$_('generics.view', {
-            values: { label: $TemplateInputItems.title },
+            values: { label: $Template.title },
           })}
         </Button>
       </Col>

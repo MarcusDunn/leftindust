@@ -1,5 +1,5 @@
 import type { Editor } from 'function-junctions/types';
-import type { EditorState, SocketBlueprint } from 'function-junctions/types';
+import type { SocketBlueprint } from 'function-junctions/types';
 import { get } from 'svelte/store';
 import dateSocket from '../Socket/components/DateSocket';
 import numberSocket from '../Socket/components/NumberSocket';
@@ -12,66 +12,11 @@ import { _ } from '@/language';
 import * as yup from 'yup';
 import { createForm } from 'felte';
 import { validator } from '@felte/validator-yup';
+import { type CreateSurveyTemplate, type CreateSurveyTemplateCalculation, SurveyTemplateInputType } from '@/api/server';
 
 const language = get(_);
 
-export enum TemplateInputType {
-  Text = 'text',
-  Number = 'number',
-  Date = 'date',
-  Paragraph = 'paragraph',
-  Upload = 'upload',
-  SingleSelect = 'single-select',
-  MultiSelect = 'multi-select',
-  Title = 'title'
-}
-
-export enum TemplateCategory {
-  Date = 'date',
-  Title = 'title',
-  Body = 'body',
-}
-
-export enum TemplateInputUploadType {
-  All = '*',
-  Images = 'image/*',
-  Documents = '.txt,.pdf,.rtf,.doc,.docx'
-}
-
-export type TemplateInput<T = unknown> = {
-  id: number;
-  type: TemplateInputType;
-  label: string;
-  options?: string[];
-  placeholder?: string;
-  required?: boolean;
-  category?: TemplateCategory;
-  uploadMultiple?: boolean;
-  uploadAccept?: TemplateInputUploadType;
-  value?: T;
-}
-
-export type TemplateSection = {
-  id: number;
-  title: string;
-  subtitle?: string;
-  inputs: TemplateInput[];
-}
-
-export type Template = {
-  title: string;
-  subtitle?: string;
-  sections: TemplateSection[];
-};
-
-export type TemplateCalculation = {
-  label: string;
-  type: TemplateInputType;
-  showOnComplete: boolean;
-  calculation: EditorState;
-}
-
-export type TemplateCalculationWithInstance = TemplateCalculation & {
+export type TemplateCalculationWithInstance = CreateSurveyTemplateCalculation & {
   editor?: Editor;
 }
 
@@ -85,12 +30,11 @@ export type TemplateCalculationSockets = {
   text_array_array: SocketBlueprint;
 }
 
-export const defaultTemplate: Template = {
+export const defaultTemplate: CreateSurveyTemplate = {
   title: '',
   sections: [{
     title: '',
     inputs: [],
-    id: 0,
   }],
 };
 
@@ -104,23 +48,23 @@ export const templateCalculationSockets: TemplateCalculationSockets = {
   text_array_array: twoDimensionalTextArraySocket,
 };
 
-export const getTemplateSocketType = (inputType: TemplateInputType) => {
+export const getTemplateSocketType = (inputType: SurveyTemplateInputType) => {
   let type: 'text' | 'number' | 'date' | 'text_array';
 
   switch (inputType) {
-    case TemplateInputType.Text:
-    case TemplateInputType.Title:
-    case TemplateInputType.Paragraph:
-    case TemplateInputType.SingleSelect:
+    case SurveyTemplateInputType.Text:
+    case SurveyTemplateInputType.Title:
+    case SurveyTemplateInputType.Paragraph:
+    case SurveyTemplateInputType.SingleSelect:
       type = 'text';
       break;
-    case TemplateInputType.Number:
+    case SurveyTemplateInputType.Number:
       type = 'number';
       break;
-    case TemplateInputType.Date:
+    case SurveyTemplateInputType.Date:
       type = 'date';
       break;
-    case TemplateInputType.MultiSelect:
+    case SurveyTemplateInputType.MultiSelect:
       type = 'text_array';
       break;
   }
@@ -133,27 +77,27 @@ export const getTemplateSocketType = (inputType: TemplateInputType) => {
 export const templateInputSelectOptions = [
   {
     text: language('generics.text'),
-    value: TemplateInputType.Text,
+    value: SurveyTemplateInputType.Text,
   },
   {
     text: language('generics.number'),
-    value: TemplateInputType.Number,
+    value: SurveyTemplateInputType.Number,
   },
   {
     text: language('generics.date'),
-    value: TemplateInputType.Date,
+    value: SurveyTemplateInputType.Date,
   },
   {
     text: language('generics.paragraph'),
-    value: TemplateInputType.Paragraph,
+    value: SurveyTemplateInputType.Paragraph,
   },
   {
     text: language('generics.singleSelect'),
-    value: TemplateInputType.SingleSelect,
+    value: SurveyTemplateInputType.SingleSelect,
   },
   {
     text: language('generics.multiSelect'),
-    value: TemplateInputType.MultiSelect,
+    value: SurveyTemplateInputType.MultiSelect,
   },
   /*
   {
@@ -163,7 +107,7 @@ export const templateInputSelectOptions = [
   */
   {
     text: language('generics.title'),
-    value: TemplateInputType.Title,
+    value: SurveyTemplateInputType.Title,
   },
 ];
 
@@ -189,7 +133,7 @@ export const templateForm = () => {
     })).required(),
     calculations: yup.array(yup.object({
       label: yup.string().required(),
-      type: yup.string().required(),
+      inputType: yup.mixed<keyof typeof SurveyTemplateInputType>().oneOf(Object.values(SurveyTemplateInputType)),
       showOnComplete: yup.boolean().required(),
       calculation: yup.string().required(),
     })),

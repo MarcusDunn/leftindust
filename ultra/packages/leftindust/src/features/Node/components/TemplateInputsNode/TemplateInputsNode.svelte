@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TemplateInputItems } from '@/features/Templates/store';
+  import { Template } from '@/features/Templates/store';
 
   import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, TemplateInputType, type TemplateCalculationSockets } from '@/features/Templates';
   import type { Editor, OutputSocket, OutputSockets } from 'function-junctions/types';
@@ -30,13 +30,13 @@
 
   let prevType = store.type;
 
-  $: inputs = $TemplateInputItems.sections.flatMap((section, index) =>
+  $: inputs = $Template.sections.flatMap((section, index) =>
     section.inputs.map((input, inputIndex) => ({
       ...input,
       sectionIndex: index,
       index: inputIndex,
       label: `${input.label}${
-        $TemplateInputItems.sections.length > 1
+        $Template.sections.length > 1
           // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           ? ` (${$_('generics.sectionIndexed', { values: { number: index + 1 } })})`
           : ''

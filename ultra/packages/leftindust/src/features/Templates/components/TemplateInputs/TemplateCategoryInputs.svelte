@@ -1,19 +1,18 @@
 <script lang="ts">
-  import type { TemplateSection, TemplateInput } from '../../';
-  import { TemplateInputType, TemplateCategory } from '../../';
   import { _ } from '@/language';
   import { Col, Row } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
+  import type { SurveyTemplateCategory, SurveyTemplateInput, SurveyTemplateSection } from '@/api/server';
   
-  export let sections: TemplateSection[];
+  export let sections: SurveyTemplateSection[];
 
-  let inputs: (TemplateInput & {
+  let inputs: (SurveyTemplateInput & {
     originalSectionIndex: number;
   })[] = [];
 
-  const getValue = (selectedCategory: TemplateCategory) => inputs.filter(({ category }) => category === selectedCategory)[0]?.id ?? 'default';
+  const getValue = (selectedCategory: SurveyTemplateCategory) => inputs.filter(({ category }) => category === selectedCategory)[0]?.id ?? 'default';
   
-  const onChange = (value: string | number, selectedCategory: TemplateCategory, keepOld?: boolean) => {
+  const onChange = (value: string | number, selectedCategory: SurveyTemplateCategory, keepOld?: boolean) => {
     const resetInputIndex = inputs.findIndex(({ category }) => category === selectedCategory);
 
     if (resetInputIndex >= 0) {
@@ -48,7 +47,7 @@
           value: 'default',
         },
         ...inputs
-          .filter(({ category }) => category ? category === TemplateCategory.Date : !category)
+          .filter(({ category }) => category ? category === SurveyTemplateCategory.Date : !category)
           .filter(({ type }) =>
             type === TemplateInputType.Date,
           )
@@ -57,8 +56,8 @@
             value: input.id,
           })),
       ]}
-      value={getValue(TemplateCategory.Date)}
-      on:change={({ detail: value }) => onChange(value, TemplateCategory.Date)}
+      value={getValue(SurveyTemplateCategory.Date)}
+      on:change={({ detail: value }) => onChange(value, SurveyTemplateCategory.Date)}
     />
     <br />
   </Col>
@@ -71,7 +70,7 @@
           value: 'default',
         },
         ...inputs
-          .filter(({ category }) => category ? category === TemplateCategory.Title : !category)
+          .filter(({ category }) => category ? category === SurveyTemplateCategory.Title : !category)
           .filter(({ type }) =>
             type === TemplateInputType.Text
               || type === TemplateInputType.Number
@@ -83,8 +82,8 @@
             value: input.id,
           })),
       ]}
-      value={getValue(TemplateCategory.Title)}
-      on:change={({ detail: value }) => onChange(value, TemplateCategory.Title)}
+      value={getValue(SurveyTemplateCategory.Title)}
+      on:change={({ detail: value }) => onChange(value, SurveyTemplateCategory.Title)}
     />
     <br />
   </Col>
@@ -97,7 +96,7 @@
           value: 'default',
         },
         ...inputs
-          .filter(({ category }) => category ? category === TemplateCategory.Body : !category)
+          .filter(({ category }) => category ? category === SurveyTemplateCategory.Body : !category)
           .filter(({ type }) =>
             type === TemplateInputType.Text
               || type === TemplateInputType.Number
@@ -110,8 +109,8 @@
             value: input.id,
           })),
       ]}
-      value={getValue(TemplateCategory.Body)}
-      on:change={({ detail: value }) => onChange(value, TemplateCategory.Body)}
+      value={getValue(SurveyTemplateCategory.Body)}
+      on:change={({ detail: value }) => onChange(value, SurveyTemplateCategory.Body)}
     />
     <br />
     <br />
