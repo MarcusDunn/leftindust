@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class DoctorToDoctorDtoConverter(
-    private val phoneToPhoneDtoConverter : InfallibleConverter<Phone, PhoneDto>,
-    private val emailToEmailDtoConverter:  InfallibleConverter<Email, EmailDto>,
-    private val addressToAddressDtoConverter: InfallibleConverter<Address, AddressDto>
+    val phoneToPhoneDtoConverter : InfallibleConverter<Phone, PhoneDto>,
+    val emailToEmailDtoConverter:  InfallibleConverter<Email, EmailDto>,
+    val addressToAddressDtoConverter: InfallibleConverter<Address, AddressDto>
 ) : InfallibleConverter<Doctor, DoctorDto> {
     override fun convert(source: Doctor): DoctorDto {
         return DoctorDto(
