@@ -1,12 +1,15 @@
 package com.leftindust.mockingbird.util
 
+import com.leftindust.mockingbird.address.AddressToAddressDtoConverter
 import com.leftindust.mockingbird.doctor.ClinicDoctorEntity
 import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorEventEntity
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.doctor.DoctorToDoctorDtoConverter
+import com.leftindust.mockingbird.email.EmailToEmailDtoConverter
 import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.phone.PhoneToPhoneDtoConverter
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.JennysHouse
 import com.leftindust.mockingbird.util.PhoneMother.JennysHomePhone
@@ -16,7 +19,7 @@ import java.time.Month
 import java.util.UUID
 
 object DoctorMother {
-    val doctorToDoctorDto = DoctorToDoctorDtoConverter()
+    val doctorToDoctorDto = DoctorToDoctorDtoConverter(PhoneToPhoneDtoConverter(), EmailToEmailDtoConverter(), AddressToAddressDtoConverter())
     object Jenny {
         const val firstName = "Jenny"
         const val middleName = "Ellis"
