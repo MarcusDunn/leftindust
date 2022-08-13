@@ -1,8 +1,10 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.address.AddressToAddressDtoConverter
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
+import com.leftindust.mockingbird.email.EmailToEmailDtoConverter
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.PatientEventEntity
@@ -10,6 +12,7 @@ import com.leftindust.mockingbird.patient.PatientToPatientDtoConverter
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.person.Sex
+import com.leftindust.mockingbird.phone.PhoneToPhoneDtoConverter
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.DansHouse
 import com.leftindust.mockingbird.util.EmailMother.DansEmail
@@ -18,7 +21,11 @@ import java.time.Month
 import java.util.UUID
 
 object PatientMother {
-    val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto> = PatientToPatientDtoConverter()
+    val patientToPatientDtoConverter = PatientToPatientDtoConverter(
+        PhoneToPhoneDtoConverter(),
+        EmailToEmailDtoConverter(),
+        AddressToAddressDtoConverter()
+    )
 
     object Dan {
         const val firstName = "Dan"
