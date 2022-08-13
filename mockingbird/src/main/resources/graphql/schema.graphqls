@@ -243,9 +243,9 @@ type Patient {
     firstName: String!
     middleName: String
     lastName: String!
-    phoneNumbers: String!
-    email: String!
-    address: String!
+    phoneNumbers: [Phone!]!
+    email: [Email!]!
+    address: [Address!]!
     thumbnail: Base64
     dateOfBirth: LocalDate!
     insuranceNumber: String
