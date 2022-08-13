@@ -88,6 +88,12 @@ input CreateCompleteSurveySections {
   surveyTemplateSectionId: SurveyTemplateSectionIdInput!
 }
 
+input CreateNameInfo {
+  firstName: String!
+  lastName: String!
+  middleName: String
+}
+
 input CreateSurveyTemplate {
   calculations: [CreateSurveyTemplateCalculation!]! = []
   sections: [CreateSurveyTemplateSection!]!
@@ -117,6 +123,12 @@ input CreateSurveyTemplateSectionInput {
   type: SurveyTemplateInputType!
   uploadAccept: TemplateInputUploadType
   uploadMultiple: Boolean
+}
+
+input CreateUser {
+  group: MediqGroupIdInput
+  nameInfo: CreateNameInfo!
+  uid: String!
 }
 
 type Doctor {
@@ -168,7 +180,11 @@ type MediqGroup {
 }
 
 type MediqGroupId {
-  value: MediqGroupId!
+  value: UUID!
+}
+
+input MediqGroupIdInput {
+  value: UUID
 }
 
 type MediqUser {
@@ -179,7 +195,7 @@ type MediqUser {
 }
 
 type MediqUserId {
-  value: UUID!
+  value: String!
 }
 
 type Mutation {
@@ -191,6 +207,9 @@ type Mutation {
 
   """ complete survey"""
   createCompleteSurvey(createCompleteSurvey: CreateCompleteSurvey): CompleteSurvey
+
+  """ user"""
+  createMediqUser(createUser: CreateUser): MediqUser
 
   """ survey link"""
   createSurveyLink(surveyTemplateId: SurveyTemplateIdInput): SurveyLink!

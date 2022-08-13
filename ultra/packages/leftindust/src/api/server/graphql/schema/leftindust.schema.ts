@@ -112,6 +112,12 @@ export type CreateCompleteSurveySections = {
   surveyTemplateSectionId: SurveyTemplateSectionIdInput;
 };
 
+export type CreateNameInfo = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  middleName?: InputMaybe<Scalars['String']>;
+};
+
 export type CreateSurveyTemplate = {
   calculations?: Array<CreateSurveyTemplateCalculation>;
   sections: Array<CreateSurveyTemplateSection>;
@@ -141,6 +147,12 @@ export type CreateSurveyTemplateSectionInput = {
   type: SurveyTemplateInputType;
   uploadAccept?: InputMaybe<TemplateInputUploadType>;
   uploadMultiple?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type CreateUser = {
+  group?: InputMaybe<MediqGroupIdInput>;
+  nameInfo: CreateNameInfo;
+  uid: Scalars['String'];
 };
 
 export type Doctor = {
@@ -187,7 +199,11 @@ export type MediqGroup = {
 
 export type MediqGroupId = {
   __typename?: 'MediqGroupId';
-  value: MediqGroupId;
+  value: Scalars['UUID'];
+};
+
+export type MediqGroupIdInput = {
+  value?: InputMaybe<Scalars['UUID']>;
 };
 
 export type MediqUser = {
@@ -200,7 +216,7 @@ export type MediqUser = {
 
 export type MediqUserId = {
   __typename?: 'MediqUserId';
-  value: Scalars['UUID'];
+  value: Scalars['String'];
 };
 
 export type Mutation = {
@@ -211,6 +227,8 @@ export type Mutation = {
   addSurveyTemplate: SurveyTemplate;
   /**  complete survey */
   createCompleteSurvey?: Maybe<CompleteSurvey>;
+  /**  user */
+  createMediqUser?: Maybe<MediqUser>;
   /**  survey link */
   createSurveyLink: SurveyLink;
   editClinic?: Maybe<Clinic>;
@@ -229,6 +247,11 @@ export type MutationAddSurveyTemplateArgs = {
 
 export type MutationCreateCompleteSurveyArgs = {
   createCompleteSurvey?: InputMaybe<CreateCompleteSurvey>;
+};
+
+
+export type MutationCreateMediqUserArgs = {
+  createUser?: InputMaybe<CreateUser>;
 };
 
 

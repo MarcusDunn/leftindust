@@ -15,7 +15,7 @@ export type PartialPatientFragment = { __typename: 'Patient', firstName: string,
 
 export type PartialTemplateFragmentFragment = { __typename: 'SurveyTemplate', title: string, subtitle: string | undefined, id: { __typename: 'SurveyTemplateId', value: any }, sections: Array<{ __typename: 'SurveyTemplateSection', title: string, id: { __typename: 'SurveyTemplateSectionId', value: any }, inputs: Array<{ __typename: 'SurveyTemplateInput', label: string, id: { __typename: 'SurveyTemplateInputId', value: any } }> }> };
 
-export type PartialUserFragment = { __typename: 'MediqUser', id: { __typename: 'MediqUserId', value: any }, group: { __typename: 'MediqGroup', name: string | undefined } | undefined, accountDetails: { __typename: 'UserAccountDetails', email: string | undefined, isRegistered: boolean } | undefined, name: { __typename: 'NameInfo', firstName: string, middleName: string | undefined, lastName: string } };
+export type PartialUserFragment = { __typename: 'MediqUser', id: { __typename: 'MediqUserId', value: string }, group: { __typename: 'MediqGroup', name: string | undefined } | undefined, accountDetails: { __typename: 'UserAccountDetails', email: string | undefined, isRegistered: boolean } | undefined, name: { __typename: 'NameInfo', firstName: string, middleName: string | undefined, lastName: string } };
 
 export type PatientFragment = { __typename: 'Patient', firstName: string, middleName: string | undefined, lastName: string, dateOfBirth: any, gender: string, sex: Schema.Sex, thumbnail: any | undefined, insuranceNumber: string | undefined, ethnicity: Schema.Ethnicity | undefined, id: { __typename: 'PatientId', value: any } };
 
@@ -61,7 +61,7 @@ export type PartialUserByUserUniqueIdQueryQueryVariables = Schema.Exact<{
 }>;
 
 
-export type PartialUserByUserUniqueIdQueryQuery = { __typename: 'Query', userByUserUniqueId: { __typename: 'MediqUser', id: { __typename: 'MediqUserId', value: any }, group: { __typename: 'MediqGroup', name: string | undefined } | undefined, accountDetails: { __typename: 'UserAccountDetails', email: string | undefined, isRegistered: boolean } | undefined, name: { __typename: 'NameInfo', firstName: string, middleName: string | undefined, lastName: string } } | undefined };
+export type PartialUserByUserUniqueIdQueryQuery = { __typename: 'Query', userByUserUniqueId: { __typename: 'MediqUser', id: { __typename: 'MediqUserId', value: string }, group: { __typename: 'MediqGroup', name: string | undefined } | undefined, accountDetails: { __typename: 'UserAccountDetails', email: string | undefined, isRegistered: boolean } | undefined, name: { __typename: 'NameInfo', firstName: string, middleName: string | undefined, lastName: string } } | undefined };
 
 export type PatientsByPatientIdQueryQueryVariables = Schema.Exact<{
   patientIds: Array<Schema.PatientIdInput> | Schema.PatientIdInput;
@@ -158,10 +158,12 @@ export type ResolversTypes = {
   CreateCompleteSurvey: Schema.CreateCompleteSurvey;
   CreateCompleteSurveyInput: Schema.CreateCompleteSurveyInput;
   CreateCompleteSurveySections: Schema.CreateCompleteSurveySections;
+  CreateNameInfo: Schema.CreateNameInfo;
   CreateSurveyTemplate: Schema.CreateSurveyTemplate;
   CreateSurveyTemplateCalculation: Schema.CreateSurveyTemplateCalculation;
   CreateSurveyTemplateSection: Schema.CreateSurveyTemplateSection;
   CreateSurveyTemplateSectionInput: Schema.CreateSurveyTemplateSectionInput;
+  CreateUser: Schema.CreateUser;
   Doctor: ResolverTypeWrapper<Schema.Doctor>;
   DoctorId: ResolverTypeWrapper<Schema.DoctorId>;
   DoctorIdInput: Schema.DoctorIdInput;
@@ -173,6 +175,7 @@ export type ResolversTypes = {
   LocalDateTime: ResolverTypeWrapper<Schema.Scalars['LocalDateTime']>;
   MediqGroup: ResolverTypeWrapper<Schema.MediqGroup>;
   MediqGroupId: ResolverTypeWrapper<Schema.MediqGroupId>;
+  MediqGroupIdInput: Schema.MediqGroupIdInput;
   MediqUser: ResolverTypeWrapper<Schema.MediqUser>;
   MediqUserId: ResolverTypeWrapper<Schema.MediqUserId>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -225,10 +228,12 @@ export type ResolversParentTypes = {
   CreateCompleteSurvey: Schema.CreateCompleteSurvey;
   CreateCompleteSurveyInput: Schema.CreateCompleteSurveyInput;
   CreateCompleteSurveySections: Schema.CreateCompleteSurveySections;
+  CreateNameInfo: Schema.CreateNameInfo;
   CreateSurveyTemplate: Schema.CreateSurveyTemplate;
   CreateSurveyTemplateCalculation: Schema.CreateSurveyTemplateCalculation;
   CreateSurveyTemplateSection: Schema.CreateSurveyTemplateSection;
   CreateSurveyTemplateSectionInput: Schema.CreateSurveyTemplateSectionInput;
+  CreateUser: Schema.CreateUser;
   Doctor: Schema.Doctor;
   DoctorId: Schema.DoctorId;
   DoctorIdInput: Schema.DoctorIdInput;
@@ -239,6 +244,7 @@ export type ResolversParentTypes = {
   LocalDateTime: Schema.Scalars['LocalDateTime'];
   MediqGroup: Schema.MediqGroup;
   MediqGroupId: Schema.MediqGroupId;
+  MediqGroupIdInput: Schema.MediqGroupIdInput;
   MediqUser: Schema.MediqUser;
   MediqUserId: Schema.MediqUserId;
   Mutation: {};
@@ -352,7 +358,7 @@ export type MediqGroupResolvers<ContextType = any, ParentType extends ResolversP
 };
 
 export type MediqGroupIdResolvers<ContextType = any, ParentType extends ResolversParentTypes['MediqGroupId'] = ResolversParentTypes['MediqGroupId']> = {
-  value?: Resolver<ResolversTypes['MediqGroupId'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -365,7 +371,7 @@ export type MediqUserResolvers<ContextType = any, ParentType extends ResolversPa
 };
 
 export type MediqUserIdResolvers<ContextType = any, ParentType extends ResolversParentTypes['MediqUserId'] = ResolversParentTypes['MediqUserId']> = {
-  value?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -373,6 +379,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addClinic?: Resolver<ResolversTypes['Clinic'], ParentType, ContextType, RequireFields<Schema.MutationAddClinicArgs, 'clinic'>>;
   addSurveyTemplate?: Resolver<ResolversTypes['SurveyTemplate'], ParentType, ContextType, RequireFields<Schema.MutationAddSurveyTemplateArgs, 'surveyTemplate'>>;
   createCompleteSurvey?: Resolver<Schema.Maybe<ResolversTypes['CompleteSurvey']>, ParentType, ContextType, Partial<Schema.MutationCreateCompleteSurveyArgs>>;
+  createMediqUser?: Resolver<Schema.Maybe<ResolversTypes['MediqUser']>, ParentType, ContextType, Partial<Schema.MutationCreateMediqUserArgs>>;
   createSurveyLink?: Resolver<ResolversTypes['SurveyLink'], ParentType, ContextType, Partial<Schema.MutationCreateSurveyLinkArgs>>;
   editClinic?: Resolver<Schema.Maybe<ResolversTypes['Clinic']>, ParentType, ContextType, RequireFields<Schema.MutationEditClinicArgs, 'clinic'>>;
 };

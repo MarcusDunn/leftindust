@@ -1,5 +1,5 @@
 <style lang="scss" global>
-  @import './IntakeFooter.scss';
+  @import './RecordFooter.scss';
 </style>
 
 <script lang="ts">
@@ -16,9 +16,9 @@
 
 <svelte:window bind:innerWidth={width} />
 
-<Footer class="intake-intake_footer">
-  <div class="intake-intake_footer-content">
-    <div class="intake-intake_footer-progress">
+<Footer class="record-record_footer">
+  <div class="record-record_footer-content">
+    <div class="record-record_footer-progress">
       <Progressbar {color} progress={66} />
       <SegmentedText
         text={['Introduction', 'Symptoms', 'Stiffness', 'Pain', 'Function, daily living']}
@@ -27,7 +27,7 @@
       />
     </div>
     <div class="flex-grow" />
-    <div class="intake-intake_footer-controls">
+    <div class="record-record_footer-controls">
       <Row>
         <Col width="50">
           <Button {color} round outline>{$_('generics.back')}</Button>

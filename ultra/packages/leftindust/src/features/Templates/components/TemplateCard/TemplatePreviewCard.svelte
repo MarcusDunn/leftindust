@@ -1,7 +1,5 @@
 <script lang="ts">
-  import type { TemplateInput } from '../..';
   import { Template } from '../../store';
-  import { TemplateCategory } from '../..';
   import { _ } from 'svelte-i18n';
   import {
     Button,
@@ -12,6 +10,7 @@
   } from 'framework7-svelte';
   import { format } from 'date-fns';
   import Card from '@/features/Widgets/components/Card/Card.svelte';
+  import  { type SurveyTemplateInput, SurveyTemplateCategory } from '@/api/server';
 
   export let shadow = true;
 
@@ -19,16 +18,16 @@
   let title: string;
   let body: string;
 
-  let inputs: TemplateInput[] = [];
+  let inputs: SurveyTemplateInput[] = [];
 
   $: date = inputs.filter(
-    ({ category }) => category === TemplateCategory.Date,
+    ({ category }) => category === SurveyTemplateCategory.Date,
   )[0]?.label;
   $: title = inputs.filter(
-    ({ category }) => category === TemplateCategory.Title,
+    ({ category }) => category === SurveyTemplateCategory.Title,
   )[0]?.label;
   $: body = inputs.filter(
-    ({ category }) => category === TemplateCategory.Body,
+    ({ category }) => category === SurveyTemplateCategory.Body,
   )[0]?.label;
 
   $: inputs = $Template.sections.flatMap((section, index) =>
