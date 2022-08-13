@@ -12,22 +12,17 @@ import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Lob
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
+import javax.persistence.*
 
 @Entity
 class Patient(
     @OneToOne
     var nameInfo: NameInfo,
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     var addresses: MutableSet<Address>,
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     var emails: MutableSet<Email>,
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     var phones: MutableSet<Phone>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
     var events: MutableSet<PatientEventEntity> = mutableSetOf(),

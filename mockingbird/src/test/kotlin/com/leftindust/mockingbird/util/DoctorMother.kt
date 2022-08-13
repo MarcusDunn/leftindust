@@ -19,7 +19,12 @@ import java.time.Month
 import java.util.UUID
 
 object DoctorMother {
-    val doctorToDoctorDto = DoctorToDoctorDtoConverter(PhoneToPhoneDtoConverter(), EmailToEmailDtoConverter(), AddressToAddressDtoConverter())
+    val doctorToDoctorDto = DoctorToDoctorDtoConverter(
+        PhoneToPhoneDtoConverter(),
+        EmailToEmailDtoConverter(),
+        AddressToAddressDtoConverter()
+    )
+
     object Jenny {
         const val firstName = "Jenny"
         const val middleName = "Ellis"
@@ -37,22 +42,22 @@ object DoctorMother {
         val clinics = mutableSetOf<ClinicDoctorEntity>()
         val patients = mutableSetOf<DoctorPatientEntity>()
         val entityPersisted = Doctor(
-                nameInfo = NameInfo(
-                    firstName = firstName,
-                    lastName = lastName,
-                    middleName = middleName
-                ),
-                addresses = addresses,
-                emails = emails,
-                phones = phones,
-                user = user,
-                events = events,
-                thumbnail = thumbnail,
-                title = title,
-                dateOfBirth = dateOfBirth,
-                clinics = clinics,
-                patients = patients,
-            ).apply { id = this@Jenny.id }
+            nameInfo = NameInfo(
+                firstName = firstName,
+                lastName = lastName,
+                middleName = middleName
+            ),
+            addresses = addresses,
+            emails = emails,
+            phones = phones,
+            user = user,
+            events = events,
+            thumbnail = thumbnail,
+            title = title,
+            dateOfBirth = dateOfBirth,
+            clinics = clinics,
+            patients = patients,
+        ).apply { id = this@Jenny.id }
 
         val dto = doctorToDoctorDto.convert(entityPersisted)
     }
