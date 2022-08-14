@@ -1,0 +1,21 @@
+#import "./templateFragment.graphql"
+
+fragment completeSurveyFragment on CompleteSurvey {
+  id {
+    value
+  }
+  sections {
+    id {
+      value
+    }
+    inputs {
+      id {
+        value
+      }
+      value
+    }
+  }
+  surveyTemplate {
+    ...templateFragment
+  }
+}

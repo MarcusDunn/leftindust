@@ -1,0 +1,7 @@
+#import "../fragments/completeSurveyFragment.graphql"
+
+query completeSurveyByIdQuery($completeSurveyId: CompleteSurveyIdInput!) {
+  completeSurveyById(completeSurveyId: $completeSurveyId) {
+    ...completeSurveyFragment
+  }
+}
