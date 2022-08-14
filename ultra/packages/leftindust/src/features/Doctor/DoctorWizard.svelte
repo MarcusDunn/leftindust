@@ -3,36 +3,24 @@
   import type { Popover } from 'framework7/types'
 
   import type { NameInfo, DoctorInput } from '@/api/server/graphql/schema/leftindust.schema'
-  // import type {DoctorEngine as DoctorEngineType}
-
-  import { Country } from '@/api/server/graphql/schema/leftindust.schema'
-  import { WidgetType } from '../Widgets';
 
   import { writable } from 'svelte/store';
   import { _ } from '@/language';
-  import { loginForm } from '../Account';
-  import { closeWizard } from '../Wizard';
-  // import DoctorEngine from '';
 
-  // import { DoctorMutationDocument } from '@/api/server';
-  import getNativeAPI from '@/api/bridge';
   import deepmerge from 'deepmerge';
 
   import { Row, Col, Block } from 'framework7-svelte';
 
   import Input from '../Input/Input.svelte';
   import Wizard from '../Wizard/Wizard.svelte';
-  import Add from '../Input/components/Add/Add.svelte'
-  // import Phone from '../Phone/Phone.svelte';
 
-  import { AttachmentsTabs } from '../Attachments'; //!!!
-  import SpecificGrid from '../Widgets/components/Grid/SpecificGrid.svelte';
-  import { clientsSelectedTab } from '@/features/Clients/store'
-  import { ClientsTab } from '@/features/Clients/index'
+  import { createDoctorFormValidator } from '.';
 
   export let data: Data<'Doctor'> | undefined = undefined;
 
-  const { Dialog } = getNativeAPI();
+  const { form, errors, data: formData } = createDoctorFormValidator();
+
+  let ref: HTMLFormElement;
 
   let doctor: any = writable();
   let disabled = true;
@@ -69,7 +57,7 @@
 
   $: if ($doctor) edit();
 
-  const { form, errors } = loginForm();
+  //model inputs in a schema
 
 </script>
 
@@ -79,14 +67,14 @@
   bind:instance={patientsPopover}
 /> -->
 
-<form use:form>
-  <Wizard
-    title={$_('generics.newDoctor')}
-    subtitle={$_('descriptions.addDoctorDescription')}
-    color="purple"
-    {disabled}
-    on:submit={submit}
-  >
+<Wizard
+  title={$_('generics.newDoctor')}
+  subtitle={$_('descriptions.addDoctorDescription')}
+  color="purple"
+  {disabled}
+  on:submit={submit}
+> 
+  <form use:form bind:this={ref}>   
     <Block style="margin-top: 60px">
       <Block>
         <h4>Identification</h4>
@@ -95,7 +83,8 @@
             <Row>
               <Col width="100" medium="33">
                 <Input>
-                  <input type="text" placeholder="First Name" bind:value={input.nameInfo.firstName} />
+                  <input type="text" placeholder="First Name" bind:value={input.nameInfo.firstName} />  
+                  <!-- Felte can be used instead of binding -->
                 </Input>
                 <p />
               </Col>
@@ -126,5 +115,5 @@
         </Row>
       </Block>
     </Block>
-  </Wizard>
-</form>
+  </form>
+</Wizard>
