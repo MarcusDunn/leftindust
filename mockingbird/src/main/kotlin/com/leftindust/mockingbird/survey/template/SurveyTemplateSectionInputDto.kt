@@ -14,6 +14,7 @@ data class SurveyTemplateSectionInputDto(
     val category: SurveyTemplateCategory,
     val uploadMultiple: Boolean?,
     val uploadAccept: TemplateInputUploadType?,
+    val calculationId: Int?,
 ) : AbstractGraphQLDto<SurveyTemplateSectionInputDtoId>() {
     data class SurveyTemplateSectionInputDtoId(override val value: UUID) : GraphQLID<UUID>
 }

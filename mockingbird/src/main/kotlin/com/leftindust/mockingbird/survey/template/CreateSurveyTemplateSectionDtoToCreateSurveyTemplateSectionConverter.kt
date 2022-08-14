@@ -20,12 +20,14 @@ class CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter(
                     it
                 ) ?: return null.also { logger.trace { FailedConversionMessage(source) } }
             },
+            calculationId = source.calculationId,
         )
     }
 
     private data class CreateSurveyTemplateSectionImpl(
         override val title: String,
         override val subtitle: String?,
-        override val inputs: List<CreateSurveyTemplateSectionInput>
+        override val inputs: List<CreateSurveyTemplateSectionInput>,
+        override val calculationId: Int?
     ) : CreateSurveyTemplateSection
 }

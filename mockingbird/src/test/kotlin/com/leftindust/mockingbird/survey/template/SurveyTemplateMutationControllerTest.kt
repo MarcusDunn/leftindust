@@ -5,16 +5,20 @@ import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateDtoToCreat
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConverter
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateService
+import com.leftindust.mockingbird.survey.template.ReadSurveyTemplateSectionInputService
+import com.leftindust.mockingbird.survey.template.ReadSurveyTemplateSectionService
 import com.leftindust.mockingbird.survey.template.SurveyTemplateMutationController
+import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputQueryController
+import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionQueryController
 import com.leftindust.mockingbird.survey.template.SurveyTemplateToSurveyTemplateDtoConverter
-import com.leftindust.mockingbird.util.SurveyTemplateMother
+import com.leftindust.mockingbird.util.SurveyTemplateMother.KoosKneeSurvey
+import com.leftindust.mockingbird.util.SurveyTemplateSectionInputMother.HowMuchPainAreYouInSectionInput
+import com.leftindust.mockingbird.util.SurveyTemplateSectionMother.HowMuchPainAreYouInSection
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -44,13 +48,13 @@ internal class SurveyTemplateMutationControllerUnitTest {
 
     @Test
     internal fun `check calls the creation service`() = runTest {
-        coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns SurveyTemplateMother.KoosKneeSurvey.domain
-        surveyTemplateMutationController.addSurveyTemplate(SurveyTemplateMother.KoosKneeSurvey.createDto)
+        coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns KoosKneeSurvey.domain
+        surveyTemplateMutationController.addSurveyTemplate(KoosKneeSurvey.createDto)
         coVerify(exactly = 1) { createSurveyTemplateService.createSurveyTemplate(any()) }
     }
 }
 
-@GraphQlTest(controllers = [SurveyTemplateMutationController::class])
+@GraphQlTest(controllers = [SurveyTemplateMutationController::class, SurveyTemplateSectionQueryController::class, SurveyTemplateSectionInputQueryController::class])
 internal class SurveyTemplateMutationControllerWebTest(
     @Autowired private val graphQlTester: GraphQlTester,
 ) {
@@ -59,6 +63,12 @@ internal class SurveyTemplateMutationControllerWebTest(
 
     @MockkBean
     private lateinit var createSurveyTemplateService: CreateSurveyTemplateService
+
+    @MockkBean
+    private lateinit var readSurveyTemplateSectionService: ReadSurveyTemplateSectionService
+
+    @MockkBean
+    private lateinit var readSurveyTemplateSectionInputService: ReadSurveyTemplateSectionInputService
 
     @Test
     internal fun `check accepts the smallest valid mutation`() {
@@ -77,10 +87,7 @@ internal class SurveyTemplateMutationControllerWebTest(
             |  id { value }
             | } }""".trimMargin()
 
-        val generatedUuid = UUID.fromString("61adf575-b7ec-4554-bdca-d35d73a4a869")
-        coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns mockk(relaxed = true) {
-            every { id } returns generatedUuid
-        }
+        coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns KoosKneeSurvey.domain
 
         graphQlTester
             .document(mutation)
@@ -89,6 +96,50 @@ internal class SurveyTemplateMutationControllerWebTest(
             .verify()
             .path("addSurveyTemplate.id.value")
             .entity(UUID::class.java)
-            .isEqualTo(generatedUuid)
+            .isEqualTo(KoosKneeSurvey.id)
+    }
+
+    @Test
+    internal fun `check creating an input and section with calculationIds returns them`() {
+        coEvery { readSurveyTemplateSectionService.surveyTemplateSectionServiceBySurveySectionId(KoosKneeSurvey.graphqlId) } returns listOf(HowMuchPainAreYouInSection.domain)
+        coEvery { readSurveyTemplateSectionInputService.surveyTemplateSectionInputBySurveySection(HowMuchPainAreYouInSection.graphqlId) } returns listOf(HowMuchPainAreYouInSectionInput.domain)
+
+        val mutation = """mutation { addSurveyTemplate(surveyTemplate: { 
+            |    title: "COOS knee survey"
+            |    sections: [{
+            |        calculationId: 0
+            |        title: "how much pain are you in"
+            |        inputs: [{
+            |            label: "rate it 0-1"
+            |            type: Number
+            |            category: Body
+            |            required: true
+            |            calculationId: 1
+            |        }]
+            |    }]
+            |}) {
+            |  sections {
+            |    calculationId
+            |    inputs {
+            |       calculationId            
+            |    }
+            |  }
+            | } }""".trimMargin()
+
+        coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns KoosKneeSurvey.domain
+
+        graphQlTester
+            .document(mutation)
+            .execute()
+            .errors()
+            .verify()
+            .path("addSurveyTemplate.sections[0].calculationId")
+            .hasValue()
+            .entity(Int::class.java)
+            .isEqualTo(HowMuchPainAreYouInSection.calculationId)
+            .path("addSurveyTemplate.sections[0].inputs[0].calculationId")
+            .hasValue()
+            .entity(Int::class.java)
+            .isEqualTo(HowMuchPainAreYouInSectionInput.calculationId)
     }
 }

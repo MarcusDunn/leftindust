@@ -27,24 +27,21 @@ object SurveyTemplateSectionMother {
         val graphqlId = SurveyTemplateSectionDto.SurveyTemplateSectionDtoId(id)
         val title = "Section the first!"
         val subtitle = "The first section"
+        val calculationId = 0
 
         val createDto: CreateSurveyTemplateSectionDto = CreateSurveyTemplateSectionDto(
             title = title,
             subtitle = subtitle,
-            inputs = listOf(HowMuchPainAreYouInSectionInput.inputDto)
+            inputs = listOf(HowMuchPainAreYouInSectionInput.inputDto),
+            calculationId = calculationId,
         )
         val entityPersisted: SurveyTemplateSectionEntity = SurveyTemplateSectionEntity(
             index = 0,
             title = title,
             subtitle = "The first section",
-            inputs = listOf(HowMuchPainAreYouInSectionInput.entityPersisted).toMutableSet()
+            inputs = listOf(HowMuchPainAreYouInSectionInput.entityPersisted).toMutableSet(),
+            calculationId = calculationId,
         ).apply { this.id = this@HowMuchPainAreYouInSection.id }
-
-        val entityUnpersited: SurveyTemplateSectionEntity
-            get() = entityPersisted.apply {
-                id = null
-                inputs.map { it.apply { id = null } }
-            }
 
         val domain: SurveyTemplateSection = surveyTemplateSectionEntityToSurveyTemplateSectionConverter.convert(entityPersisted)
 

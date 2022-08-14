@@ -27,16 +27,6 @@ object SurveyTemplateMother {
             calculations = calculationEntities,
         ).apply { id = this@KoosKneeSurvey.id }
 
-        val entityUnpersisted: SurveyTemplateEntity
-            get() = entityPersisted.apply {
-                id = null
-                sections.forEach {
-                    it.id = null
-                    it.inputs.forEach { it.id = null }
-                }
-                calculations.forEach { it.id = null }
-            }
-
         val domain = surveyTemplateEntityToSurveyTemplateConverter.convert(entityPersisted)
 
         val dto = surveyTemplateToSurveyTemplateDtoConverter.convert(domain)

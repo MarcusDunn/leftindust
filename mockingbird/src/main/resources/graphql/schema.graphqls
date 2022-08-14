@@ -164,6 +164,7 @@ input CreateSurveyTemplateSection {
     title: String!,
     subtitle: String,
     inputs: [CreateSurveyTemplateSectionInput!]!,
+    calculationId: Int
 }
 
 input CreateSurveyTemplateSectionInput {
@@ -175,6 +176,7 @@ input CreateSurveyTemplateSectionInput {
     category: SurveyTemplateCategory!,
     uploadMultiple: Boolean,
     uploadAccept: TemplateInputUploadType,
+    calculationId: Int
 }
 
 enum TemplateInputUploadType {
@@ -230,6 +232,7 @@ type SurveyTemplateInput {
     category: SurveyTemplateCategory
     uploadMultiple: Boolean
     uploadAccept: TemplateInputUploadType
+    calculationId: Int
 }
 
 type Patient {
@@ -273,6 +276,7 @@ type SurveyTemplateSection {
     title: String!
     subtitle: String
     inputs: [SurveyTemplateInput!]!
+    calculationId: Int
 }
 
 type SurveyTemplateSectionId {
@@ -337,16 +341,17 @@ input SurveyTemplateLinkIdInput {
 
 input CreateCompleteSurvey {
     surveyLinkId: SurveyTemplateLinkIdInput!
-    completeSurveyTemplateSections: [CreateCompleteSurveySections!]!
+    completeSurveyTemplateSections: [CreateCompleteSurveySection!]!
 }
 
-input CreateCompleteSurveySections {
+input CreateCompleteSurveySection {
     surveyTemplateSectionId: SurveyTemplateSectionIdInput!
     completedSurveyInputs: [CreateCompleteSurveyInput!]!
 }
 
 input SurveyTemplateSectionIdInput {
     value: UUID!
+    calculationId: Int
 }
 
 input CreateCompleteSurveyInput {

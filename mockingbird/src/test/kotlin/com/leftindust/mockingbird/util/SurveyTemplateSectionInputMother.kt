@@ -24,6 +24,7 @@ object SurveyTemplateSectionInputMother {
         val category = SurveyTemplateCategory.Body
         val uploadMultiple = null
         val uploadAccept = null
+        val calculationId = 0
 
         val inputDto = CreateSurveyTemplateSectionInputDto(
             type = type,
@@ -34,6 +35,7 @@ object SurveyTemplateSectionInputMother {
             category = category,
             uploadMultiple = uploadMultiple,
             uploadAccept = uploadAccept,
+            calculationId = 0,
         )
 
         val entityPersisted: SurveyTemplateSectionInputEntity = SurveyTemplateSectionInputEntity(
@@ -45,6 +47,7 @@ object SurveyTemplateSectionInputMother {
             category = category,
             uploadMultiple = uploadMultiple,
             uploadAccept = uploadAccept,
+            calculationId = calculationId
         ).apply { this.id = this@HowMuchPainAreYouInSectionInput.id }
 
         val domain = surveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter.convert(entityPersisted)!!

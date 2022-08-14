@@ -6,4 +6,5 @@ interface CreateSurveyTemplateSectionInput {
     val placeholder: String?
     val category: SurveyTemplateCategory
     val restriction: CreateSurveyTemplateSectionInputRestriction
+    val calculationId: Int?
 }
