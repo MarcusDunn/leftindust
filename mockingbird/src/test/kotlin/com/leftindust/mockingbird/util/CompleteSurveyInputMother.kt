@@ -9,7 +9,7 @@ object CompleteSurveyInputMother {
         val surveyTemplateSectionInputId = HowMuchPainAreYouInSectionInput.graphqlId
         val createDto = CreateCompleteSurveyInputDto(
             surveyTemplateSectionInputId = surveyTemplateSectionInputId,
-            value = value
+            value = value,
         )
     }
 }

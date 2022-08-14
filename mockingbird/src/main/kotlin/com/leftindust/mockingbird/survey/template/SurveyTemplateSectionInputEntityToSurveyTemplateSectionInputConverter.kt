@@ -26,7 +26,8 @@ class SurveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter : Fa
                 SurveyTemplateInputType.SingleSelect -> SingleSelectSurveyTemplateSectionInputRestrictionImpl(source.options ?: return null.also { logger.trace { FailedConversionMessage(source) } })
                 SurveyTemplateInputType.MultiSelect -> MultiSelectSurveyTemplateSectionInputRestrictionImpl(source.options ?: return null.also { logger.trace { FailedConversionMessage(source) } })
                 SurveyTemplateInputType.Title -> object : TitleSurveyTemplateSectionInputRestriction {}
-            }
+            },
+            calculationId = source.calculationId,
         )
     }
 
@@ -54,5 +55,6 @@ class SurveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter : Fa
         override val placeholder: String?,
         override val label: String,
         override val restriction: SurveyTemplateSectionInputRestriction,
+        override val calculationId: Int?,
     ) : SurveyTemplateSectionInput
 }

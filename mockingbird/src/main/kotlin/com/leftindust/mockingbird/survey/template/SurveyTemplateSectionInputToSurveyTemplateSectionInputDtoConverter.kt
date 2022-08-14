@@ -17,6 +17,7 @@ class SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter : Infal
                 category = source.category,
                 uploadMultiple = null,
                 uploadAccept = null,
+                calculationId = source.calculationId
             )
             is MultiSelectSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
                 id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
@@ -28,6 +29,7 @@ class SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter : Infal
                 category = source.category,
                 uploadMultiple = null,
                 uploadAccept = null,
+                calculationId = source.calculationId
             )
             is NumberSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
                 id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
@@ -39,6 +41,7 @@ class SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter : Infal
                 category = source.category,
                 uploadMultiple = null,
                 uploadAccept = null,
+                calculationId = source.calculationId,
             )
             is ParagraphSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
                 id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
@@ -50,7 +53,9 @@ class SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter : Infal
                 category = source.category,
                 uploadMultiple = null,
                 uploadAccept = null,
-            )
+                calculationId = source.calculationId,
+
+                )
             is SingleSelectSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
                 id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
                 type = SurveyTemplateInputType.SingleSelect,
@@ -61,7 +66,9 @@ class SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter : Infal
                 category = source.category,
                 uploadMultiple = null,
                 uploadAccept = null,
-            )
+                calculationId = source.calculationId,
+
+                )
             is TextSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
                 id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
                 type = SurveyTemplateInputType.Text,
@@ -72,7 +79,9 @@ class SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter : Infal
                 category = source.category,
                 uploadMultiple = null,
                 uploadAccept = null,
-            )
+                calculationId = source.calculationId,
+
+                )
             is TitleSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
                 id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
                 type = SurveyTemplateInputType.Title,
@@ -83,7 +92,9 @@ class SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter : Infal
                 category = source.category,
                 uploadMultiple = null,
                 uploadAccept = null,
-            )
+                calculationId = source.calculationId,
+
+                )
             is UploadSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
                 id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
                 type = SurveyTemplateInputType.Upload,
@@ -94,7 +105,8 @@ class SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter : Infal
                 category = source.category,
                 uploadMultiple = restriction.uploadMultiple,
                 uploadAccept = restriction.uploadAccept,
-            )
+                calculationId = source.calculationId,
+                )
         }
     }
 }

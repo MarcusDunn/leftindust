@@ -9,6 +9,7 @@ interface SurveyTemplateSectionInput {
     val restriction: SurveyTemplateSectionInputRestriction
     val required: Boolean
     val placeholder: String?
+    val calculationId: Int?
 }
 
 sealed interface SurveyTemplateSectionInputRestriction {

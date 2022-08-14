@@ -10,6 +10,7 @@ class SurveyTemplateSectionToSurveyTemplateSectionDtoConverter: InfallibleConver
             id = SurveyTemplateSectionDto.SurveyTemplateSectionDtoId(source.id),
             title = source.title,
             subtitle = source.subtitle,
+            calculationId = source.calculationId,
         )
     }
 }

@@ -14,6 +14,7 @@ class CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConve
             required = source.required,
             category = source.category,
             placeholder = source.placeholder,
+            calculationId = source.calculationId,
             restriction = when (source.type) {
                 SurveyTemplateInputType.Text -> object : CreateSurveyTemplateSectionInputRestriction.Text {}
                 SurveyTemplateInputType.Number -> object : CreateSurveyTemplateSectionInputRestriction.Number {}
@@ -59,6 +60,7 @@ class CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConve
         override val required: Boolean,
         override val restriction: CreateSurveyTemplateSectionInputRestriction,
         override val placeholder: String?,
-        override val category: SurveyTemplateCategory
+        override val category: SurveyTemplateCategory,
+        override val calculationId: Int?
     ) : CreateSurveyTemplateSectionInput
 }

@@ -11,5 +11,6 @@ class SurveyTemplateSectionEntity(
     val title: String,
     val subtitle: String?,
     @OneToMany(cascade = [CascadeType.ALL])
-    val inputs: MutableSet<SurveyTemplateSectionInputEntity>
+    val inputs: MutableSet<SurveyTemplateSectionInputEntity>,
+    val calculationId: Int?,
 ): AbstractJpaPersistable()

@@ -12,6 +12,7 @@ class SurveyTemplateSectionEntityToSurveyTemplateSectionConverter : InfallibleCo
             id = source.id ?: throw NullEntityIdInConverterException(source),
             title = source.title,
             subtitle = source.subtitle,
+            calculationId = source.calculationId
         )
     }
 
@@ -19,5 +20,6 @@ class SurveyTemplateSectionEntityToSurveyTemplateSectionConverter : InfallibleCo
         override val id: UUID,
         override val subtitle: String?,
         override val title: String,
+        override val calculationId: Int?,
     ) : SurveyTemplateSection
 }

@@ -1,8 +1,8 @@
 package com.leftindust.mockingbird.survey.template
 
 import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Service
 import javax.transaction.Transactional
+import org.springframework.stereotype.Service
 
 @Service
 @Transactional
@@ -37,6 +37,7 @@ class CreateSurveyTemplateServiceImpl(
                     it
                 )
             }.toMutableSet(),
+            calculationId = createSurveyTemplateSection.calculationId
         )
     }
 
@@ -51,6 +52,7 @@ class CreateSurveyTemplateServiceImpl(
                 category = createSurveyTemplateSectionInput.category,
                 uploadMultiple = null,
                 uploadAccept = null,
+                calculationId = createSurveyTemplateSectionInput.calculationId
             )
             is CreateSurveyTemplateSectionInputRestriction.MultiSelect -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.MultiSelect,
@@ -61,6 +63,7 @@ class CreateSurveyTemplateServiceImpl(
                 category = createSurveyTemplateSectionInput.category,
                 uploadMultiple = null,
                 uploadAccept = null,
+                calculationId = createSurveyTemplateSectionInput.calculationId
             )
             is CreateSurveyTemplateSectionInputRestriction.Number -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Number,
@@ -71,6 +74,7 @@ class CreateSurveyTemplateServiceImpl(
                 category = createSurveyTemplateSectionInput.category,
                 uploadMultiple = null,
                 uploadAccept = null,
+                calculationId = createSurveyTemplateSectionInput.calculationId
             )
             is CreateSurveyTemplateSectionInputRestriction.Paragraph -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Paragraph,
@@ -81,6 +85,7 @@ class CreateSurveyTemplateServiceImpl(
                 category = createSurveyTemplateSectionInput.category,
                 uploadMultiple = null,
                 uploadAccept = null,
+                calculationId = createSurveyTemplateSectionInput.calculationId
             )
             is CreateSurveyTemplateSectionInputRestriction.SingleSelect -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.SingleSelect,
@@ -91,6 +96,7 @@ class CreateSurveyTemplateServiceImpl(
                 category = createSurveyTemplateSectionInput.category,
                 uploadMultiple = null,
                 uploadAccept = null,
+                calculationId = createSurveyTemplateSectionInput.calculationId
             )
             is CreateSurveyTemplateSectionInputRestriction.Text -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Text,
@@ -101,6 +107,7 @@ class CreateSurveyTemplateServiceImpl(
                 category = createSurveyTemplateSectionInput.category,
                 uploadMultiple = null,
                 uploadAccept = null,
+                calculationId = createSurveyTemplateSectionInput.calculationId
             )
             is CreateSurveyTemplateSectionInputRestriction.Title -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Title,
@@ -111,6 +118,7 @@ class CreateSurveyTemplateServiceImpl(
                 category = createSurveyTemplateSectionInput.category,
                 uploadMultiple = null,
                 uploadAccept = null,
+                calculationId = createSurveyTemplateSectionInput.calculationId
             )
             is CreateSurveyTemplateSectionInputRestriction.Upload -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Upload,
@@ -121,6 +129,7 @@ class CreateSurveyTemplateServiceImpl(
                 category = createSurveyTemplateSectionInput.category,
                 uploadMultiple = restriction.uploadMultiple,
                 uploadAccept = restriction.uploadAccept,
+                calculationId = createSurveyTemplateSectionInput.calculationId
             )
         }
     }

@@ -16,4 +16,5 @@ class SurveyTemplateSectionInputEntity(
     val category: SurveyTemplateCategory,
     val uploadMultiple: Boolean?,
     val uploadAccept: TemplateInputUploadType?,
+    val calculationId: Int?
 ) : AbstractJpaPersistable()
