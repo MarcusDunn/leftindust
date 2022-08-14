@@ -36,9 +36,9 @@ internal class CompleteSurveyDtoMutationControllerTest(
                             completedSurveyInputs: [{
                                 surveyTemplateSectionInputId: { value: "${CompleteRateThePain.surveyTemplateSectionInputId.value}"}
                                 value: "${CompleteRateThePain.value}"
-                            }]           
+                            }]
                         }]
-                    } ) {
+                    }) {
                     id { value }
                 }
             }
