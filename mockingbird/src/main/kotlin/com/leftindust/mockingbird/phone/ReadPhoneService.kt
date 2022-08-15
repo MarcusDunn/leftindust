@@ -7,9 +7,12 @@ import org.springframework.security.access.prepost.PreAuthorize
 
 @PreAuthorize("hasAuthority('READ_PHONE')")
 interface ReadPhoneService {
-    fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Phone>?
 
-    fun getByContactId(contactContactDtoId: ContactDto.ContactDtoId): List<Phone>?
+    suspend fun getByPhoneId(phoneId: PhoneDto.PhoneDtoId): Phone?
 
-    fun getPatientId(patientId: PatientDto.PatientDtoId): List<Phone>?
+    suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Phone>?
+
+    suspend fun getByContactId(contactId: ContactDto.ContactDtoId): List<Phone>?
+
+    suspend fun getPatientId(patientId: PatientDto.PatientDtoId): List<Phone>?
 }
