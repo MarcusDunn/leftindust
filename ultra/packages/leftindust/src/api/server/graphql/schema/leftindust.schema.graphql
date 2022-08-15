@@ -74,7 +74,7 @@ input CreateClinic {
 }
 
 input CreateCompleteSurvey {
-  completeSurveyTemplateSections: [CreateCompleteSurveySections!]!
+  completeSurveyTemplateSections: [CreateCompleteSurveySection!]!
   surveyLinkId: SurveyTemplateLinkIdInput!
 }
 
@@ -83,7 +83,7 @@ input CreateCompleteSurveyInput {
   value: String!
 }
 
-input CreateCompleteSurveySections {
+input CreateCompleteSurveySection {
   completedSurveyInputs: [CreateCompleteSurveyInput!]!
   surveyTemplateSectionId: SurveyTemplateSectionIdInput!
 }
@@ -109,12 +109,14 @@ input CreateSurveyTemplateCalculation {
 }
 
 input CreateSurveyTemplateSection {
+  calculationId: Int
   inputs: [CreateSurveyTemplateSectionInput!]!
   subtitle: String
   title: String!
 }
 
 input CreateSurveyTemplateSectionInput {
+  calculationId: Int
   category: SurveyTemplateCategory!
   label: String!
   options: [String!]
@@ -333,6 +335,7 @@ input SurveyTemplateIdInput {
 }
 
 type SurveyTemplateInput {
+  calculationId: Int
   category: SurveyTemplateCategory
   id: SurveyTemplateInputId!
   label: String!
@@ -364,6 +367,7 @@ input SurveyTemplateLinkIdInput {
 }
 
 type SurveyTemplateSection {
+  calculationId: Int
   id: SurveyTemplateSectionId!
   inputs: [SurveyTemplateInput!]!
   subtitle: String
@@ -375,6 +379,7 @@ type SurveyTemplateSectionId {
 }
 
 input SurveyTemplateSectionIdInput {
+  calculationId: Int
   value: UUID!
 }
 

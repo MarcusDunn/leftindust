@@ -2,9 +2,9 @@
   import { _ } from '@/language';
   import { Col, Row } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
-  import type { SurveyTemplateCategory, SurveyTemplateInput, SurveyTemplateSection } from '@/api/server';
+  import type { SurveyTemplateCategory, SurveyTemplateInput, CreateSurveyTemplateSection } from '@/api/server';
   
-  export let sections: SurveyTemplateSection[];
+  export let sections: CreateSurveyTemplateSection[];
 
   let inputs: (SurveyTemplateInput & {
     originalSectionIndex: number;
@@ -22,7 +22,7 @@
       if (resetIndex >= 0 && !keepOld) sections[resetSectionIndex].inputs[resetIndex].category = undefined;
     }
     
-    const inputIndex = inputs.findIndex(({ id }) => id === value);
+    const inputIndex = inputs.findIndex(({ calculationId }) => calculationId === value);
     const sectionIndex = inputs[inputIndex]?.originalSectionIndex ?? -1;
     const index = sections[sectionIndex]?.inputs?.findIndex(({ id }) => id === value);
 

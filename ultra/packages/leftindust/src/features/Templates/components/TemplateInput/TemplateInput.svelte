@@ -10,14 +10,14 @@
     Toggle,
   } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
-  import { type SurveyTemplateInput, SurveyTemplateInputType, TemplateInputUploadType } from '@/api/server';
+  import { type CreateSurveyTemplateSectionInput, SurveyTemplateInputType, TemplateInputUploadType, SurveyTemplateCategory } from '@/api/server';
   import Input from '@/features/Input/Input.svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import './TemplateInput.scss';
   import TemplateInputSelect from './TemplateInputSelect.svelte';
   import Add from '@/features/Input/components/Add/Add.svelte';
   
-  export let inputs: SurveyTemplateInput[];
+  export let inputs: CreateSurveyTemplateSectionInput[];
   export let index: number;
   export let globalIndex: number;
   export let sectionIndex: number;
@@ -190,14 +190,13 @@
                 inputs = [
                   ...inputs.slice(0, index),
                   {
-                    id: {
-                      value: globalIndex,
-                    },
+                    calculationId: globalIndex,
                     type,
                     label,
                     placeholder,
                     required,
                     options,
+                    category: SurveyTemplateCategory.Title,
                   },
                   ...inputs.slice(index),
                 ];

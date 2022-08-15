@@ -12,7 +12,7 @@ import { _ } from '@/language';
 import * as yup from 'yup';
 import { createForm } from 'felte';
 import { validator } from '@felte/validator-yup';
-import { type CreateSurveyTemplate, type CreateSurveyTemplateCalculation, SurveyTemplateInputType } from '@/api/server';
+import { type CreateSurveyTemplate, type CreateSurveyTemplateCalculation, SurveyTemplateInputType, SurveyTemplateCategory, TemplateInputUploadType } from '@/api/server';
 
 const language = get(_);
 
@@ -116,24 +116,24 @@ export const templateForm = () => {
     title: yup.string().required(),
     subtitle: yup.string(),
     sections: yup.array(yup.object({
-      id: yup.number().required(),
+      calculationId: yup.number().required(),
       title: yup.string().required(),
       subtitle: yup.string(),
       inputs: yup.array(yup.object({
-        id: yup.number().required(),
-        type: yup.string().required(),
+        calculationId: yup.number().required(),
+        type: yup.mixed<keyof typeof SurveyTemplateInputType>().oneOf(Object.values(SurveyTemplateInputType)),
         label: yup.string().required(),
         options: yup.array().of(yup.string()),
         placeholder: yup.string(),
         required: yup.boolean(),
-        category: yup.string(),
+        category: yup.mixed<keyof typeof SurveyTemplateCategory>().oneOf(Object.values(SurveyTemplateCategory)),
         uploadMultiple: yup.boolean(),
-        uploadAccept: yup.string(),
+        uploadAccept: yup.mixed<keyof typeof TemplateInputUploadType>().oneOf(Object.values(TemplateInputUploadType)),
       })).required(),
     })).required(),
     calculations: yup.array(yup.object({
       label: yup.string().required(),
-      inputType: yup.mixed<keyof typeof SurveyTemplateInputType>().oneOf(Object.values(SurveyTemplateInputType)),
+      inputType: yup.mixed<keyof typeof SurveyTemplateInputType>().oneOf(Object.values(SurveyTemplateInputType)).nullable(),
       showOnComplete: yup.boolean().required(),
       calculation: yup.string().required(),
     })),

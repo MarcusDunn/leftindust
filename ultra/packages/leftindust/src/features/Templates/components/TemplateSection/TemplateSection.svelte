@@ -9,12 +9,12 @@
   import { Icon } from 'framework7-svelte';
 
   import { _ } from 'svelte-i18n';
-  import type { SurveyTemplateSection } from '@/api/server';
+  import type { CreateSurveyTemplateSection } from '@/api/server';
   import TemplateSectionInputs from './TemplateSectionInputs.svelte';
 
   export let index: number;
-  export let section: SurveyTemplateSection;
-  export let sections: SurveyTemplateSection[];
+  export let section: CreateSurveyTemplateSection;
+  export let sections: CreateSurveyTemplateSection[];
 
   export let errors: ReturnType<typeof templateForm>['errors'];
   export let data: ReturnType<typeof templateForm>['data'];

@@ -77,15 +77,17 @@
         />
       </Tab>
       <Tab tabActive={$TemplateSelectedTab === 'output'}>
-        <TemplateSectionInputs
-          bind:title={$Template.title}
-          bind:subtitle={$Template.subtitle}
-          {errors}
-          {data}
-        />
-        <br />
-        <br />
-        <TemplateCategoryInputs bind:sections={$Template.sections} />
+        <!--          
+          <TemplateSectionInputs
+            bind:title={$Template.title}
+            bind:subtitle={$Template.subtitle}
+            {errors}
+            {data}
+          />
+          <br />
+          <br />
+          <TemplateCategoryInputs bind:sections={$Template.sections} />
+        -->
       </Tab>
     </Tabs>
   </form>

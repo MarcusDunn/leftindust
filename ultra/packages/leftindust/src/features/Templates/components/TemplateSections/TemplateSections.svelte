@@ -6,7 +6,7 @@
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
-  import type { SurveyTemplateSection } from '@/api/server';
+  import type { CreateSurveyTemplateSection } from '@/api/server';
   import { Template } from '../../store';
 
   const flipDurationMs = 200;
@@ -15,11 +15,11 @@
   // Global index starts at 1 because sections always init with one item
   let globalIndex = 1;
 
-  export let sections: SurveyTemplateSection[];
+  export let sections: CreateSurveyTemplateSection[];
         
   const handleConsider = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source, trigger } } = e.detail;
-    sections = newItems as SurveyTemplateSection[];
+    sections = newItems as CreateSurveyTemplateSection[];
     // Ensure dragging is stopped on drag finish via keyboard
     if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
       dragDisabled = true;
@@ -28,7 +28,7 @@
 
   const handleFinalize = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source } } = e.detail;
-    sections = newItems as SurveyTemplateSection[];
+    sections = newItems as CreateSurveyTemplateSection[];
     // Ensure dragging is stopped on drag finish via pointer (mouse, touch)
     if (source === SOURCES.POINTER) {
       dragDisabled = true;
@@ -66,7 +66,7 @@
   on:consider={handleConsider}
   on:finalize={handleFinalize}
 >
-  {#each sections as section, index (section.id)}
+  {#each sections as section, index (section.calculationId)}
     <div animate:flip={{ duration: flipDurationMs }}>
       <TemplateSection
         dragger={sections.length > 1 ? startDrag : undefined}

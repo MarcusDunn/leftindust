@@ -166,7 +166,7 @@ export type ResolversTypes = {
   CreateClinic: Schema.CreateClinic;
   CreateCompleteSurvey: Schema.CreateCompleteSurvey;
   CreateCompleteSurveyInput: Schema.CreateCompleteSurveyInput;
-  CreateCompleteSurveySections: Schema.CreateCompleteSurveySections;
+  CreateCompleteSurveySection: Schema.CreateCompleteSurveySection;
   CreateNameInfo: Schema.CreateNameInfo;
   CreateSurveyTemplate: Schema.CreateSurveyTemplate;
   CreateSurveyTemplateCalculation: Schema.CreateSurveyTemplateCalculation;
@@ -236,7 +236,7 @@ export type ResolversParentTypes = {
   CreateClinic: Schema.CreateClinic;
   CreateCompleteSurvey: Schema.CreateCompleteSurvey;
   CreateCompleteSurveyInput: Schema.CreateCompleteSurveyInput;
-  CreateCompleteSurveySections: Schema.CreateCompleteSurveySections;
+  CreateCompleteSurveySection: Schema.CreateCompleteSurveySection;
   CreateNameInfo: Schema.CreateNameInfo;
   CreateSurveyTemplate: Schema.CreateSurveyTemplate;
   CreateSurveyTemplateCalculation: Schema.CreateSurveyTemplateCalculation;
@@ -475,6 +475,7 @@ export type SurveyTemplateIdResolvers<ContextType = any, ParentType extends Reso
 };
 
 export type SurveyTemplateInputResolvers<ContextType = any, ParentType extends ResolversParentTypes['SurveyTemplateInput'] = ResolversParentTypes['SurveyTemplateInput']> = {
+  calculationId?: Resolver<Schema.Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   category?: Resolver<Schema.Maybe<ResolversTypes['SurveyTemplateCategory']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['SurveyTemplateInputId'], ParentType, ContextType>;
   label?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -493,6 +494,7 @@ export type SurveyTemplateInputIdResolvers<ContextType = any, ParentType extends
 };
 
 export type SurveyTemplateSectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['SurveyTemplateSection'] = ResolversParentTypes['SurveyTemplateSection']> = {
+  calculationId?: Resolver<Schema.Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['SurveyTemplateSectionId'], ParentType, ContextType>;
   inputs?: Resolver<Array<ResolversTypes['SurveyTemplateInput']>, ParentType, ContextType>;
   subtitle?: Resolver<Schema.Maybe<ResolversTypes['String']>, ParentType, ContextType>;

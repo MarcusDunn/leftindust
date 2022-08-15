@@ -5,9 +5,9 @@
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import TemplateInput from '../TemplateInput/TemplateInput.svelte';
-  import { SurveyTemplateInputType, TemplateInputUploadType, type SurveyTemplateInput } from '@/api/server';
+  import { SurveyTemplateCategory, SurveyTemplateInputType, TemplateInputUploadType, type CreateSurveyTemplateSectionInput } from '@/api/server';
   
-  export let inputs: SurveyTemplateInput[] = [];
+  export let inputs: CreateSurveyTemplateSectionInput[] = [];
   export let globalIndex = 0;
   export let sectionIndex = 0;
 			
@@ -16,7 +16,7 @@
 			
   const handleConsider = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source, trigger } } = e.detail;
-    inputs = newItems as SurveyTemplateInput[];
+    inputs = newItems as CreateSurveyTemplateSectionInput[];
     // Ensure dragging is stopped on drag finish via keyboard
     if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
       dragDisabled = true;
@@ -25,7 +25,7 @@
 
   const handleFinalize = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source } } = e.detail;
-    inputs = newItems as SurveyTemplateInput[];
+    inputs = newItems as CreateSurveyTemplateSectionInput[];
     // Ensure dragging is stopped on drag finish via pointer (mouse, touch)
     if (source === SOURCES.POINTER) {
       dragDisabled = true;
@@ -48,7 +48,7 @@
     on:consider={handleConsider}
     on:finalize={handleFinalize}
   >
-    {#each inputs as input, index (input.id)}
+    {#each inputs as input, index (input.calculationId)}
       <div
         animate:flip={{ duration: flipDurationMs }}
         style="margin-bottom: 30px"
@@ -62,7 +62,7 @@
           bind:globalIndex
           bind:inputs
           bind:type={input.type}
-          bind:id={input.id.value}
+          bind:id={input.calculationId}
           bind:label={input.label}
           bind:options={input.options}
           bind:placeholder={input.placeholder}
@@ -85,9 +85,7 @@
         inputs = [
           ...inputs,
           {
-            id: {
-              value: globalIndex,
-            },
+            calculationId: globalIndex,
             type: SurveyTemplateInputType.Text,
             label: '',
             placeholder: '',
@@ -95,6 +93,7 @@
             options: [''],
             uploadAccept: TemplateInputUploadType.All,
             uploadMultiple: true,
+            category: SurveyTemplateCategory.Body,
           },
         ];
         globalIndex += 1;
