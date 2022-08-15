@@ -30,7 +30,13 @@
   import Select from '../Input/components/Select/Select.svelte'
   import Wizard from '../Wizard/Wizard.svelte';
 
+  import { createPatientFormValidator } from './';
+
   export let data: Data<'Patient'> | undefined = undefined;
+
+  const { form, errors, data: formData } = createPatientFormValidator();
+
+  let ref: HTMLFormElement;
 
   let patient: any = writable();
   let disabled = true;
@@ -70,7 +76,6 @@
 
   const submit = () => {};
 
-  const { form, errors } = loginForm();
 </script>
 
 <Wizard
@@ -80,7 +85,7 @@ color="purple"
 {disabled}
 on:submit={submit}
 >
-  <form use:form>
+  <form use:form bind:this={ref}>
       {#key $patient}
         <Block style="margin-top: 60px">
           <Block>
@@ -90,19 +95,19 @@ on:submit={submit}
                 <Row>              
                   <Col width="100" medium="33">
                   <Input>
-                    <input type="text" placeholder="First Name" bind:value={input.nameInfo.firstName} />
+                    <input type="text" name="firstName" placeholder="First Name" bind:value={input.nameInfo.firstName} />
                   </Input>
                   <p />
                 </Col>
                 <Col width="100" medium="33">
                   <Input>
-                    <input type="text" placeholder="Middle Name (Optional)" bind:value={input.nameInfo.middleName} />
+                    <input type="text" name="middleName" placeholder="Middle Name (Optional)" bind:value={input.nameInfo.middleName} />
                   </Input>
                   <p />
                 </Col>
                 <Col width="100" medium="33">
                   <Input>
-                    <input type="text" placeholder="Last Name" bind:value={input.nameInfo.lastName} />
+                    <input type="text" name="lastName" placeholder="Last Name" bind:value={input.nameInfo.lastName} />
                   </Input>
                   <p />
                 </Col>
@@ -143,14 +148,14 @@ on:submit={submit}
                   </Col>
                   <Col width="100" medium="50">
                     <Input>
-                      <input type="text" placeholder="Gender Identity (Optional)" bind:value={input.gender} />
+                      <input type="text" name="genderIdentity" placeholder="Gender Identity (Optional)" bind:value={input.gender} />
                     </Input>
                     <p />
                   </Col>
                 </Row>
                 <Col width="100">
                   <Input>
-                    <input type="text" placeholder="Insurance Number (Optional)" bind:value={input.insuranceNumber} />
+                    <input type="text" name="insuranceNumber" placeholder="Insurance Number (Optional)" bind:value={input.insuranceNumber} />
                   </Input>
                   <p />
                 </Col>

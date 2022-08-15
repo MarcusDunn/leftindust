@@ -14,7 +14,7 @@
   import Input from '../Input/Input.svelte';
   import Wizard from '../Wizard/Wizard.svelte';
 
-  import { createDoctorFormValidator } from '.';
+  import { createDoctorFormValidator } from './';
 
   export let data: Data<'Doctor'> | undefined = undefined;
 
@@ -57,15 +57,7 @@
 
   $: if ($doctor) edit();
 
-  //model inputs in a schema
-
 </script>
-
-<!-- <AttachmentsTabs 
-  attachments={patients}
-  types={['Patient']}
-  bind:instance={patientsPopover}
-/> -->
 
 <Wizard
   title={$_('generics.newDoctor')}
@@ -83,20 +75,19 @@
             <Row>
               <Col width="100" medium="33">
                 <Input>
-                  <input type="text" placeholder="First Name" bind:value={input.nameInfo.firstName} />  
-                  <!-- Felte can be used instead of binding -->
+                  <input type="text" name="firstName" placeholder="First Name" bind:value={input.nameInfo.firstName} />  
                 </Input>
                 <p />
               </Col>
               <Col width="100" medium="33">
                 <Input>
-                  <input type="text" placeholder="Middle Name (Optional)" bind:value={input.nameInfo.middleName} />
+                  <input type="text" name="middleName" placeholder="Middle Name (Optional)" bind:value={input.nameInfo.middleName} />
                 </Input>
                 <p />
               </Col>
               <Col width="100" medium="33">
                 <Input>
-                  <input type="text" placeholder="Last Name" bind:value={input.nameInfo.lastName} />
+                  <input type="text" name="lastName" placeholder="Last Name" bind:value={input.nameInfo.lastName} />
                 </Input>
                 <p />
               </Col>
@@ -106,7 +97,7 @@
             <Row>
               <Col width="100">
                 <Input>
-                  <input type="text" placeholder="Title" bind:value={input.title} />
+                  <input type="text" name="title" placeholder="Title" bind:value={input.title} />
                 </Input>
                 <p />
               </Col>
