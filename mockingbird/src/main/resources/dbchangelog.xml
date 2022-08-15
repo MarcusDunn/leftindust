@@ -933,4 +933,14 @@
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="survey_link_entity" validate="true"/>
     </changeSet>
+    <changeSet id="1659685626555-1" author="marcus (manual)">
+        <addColumn tableName="survey_template_section_entity">
+            <column name="calculation_id" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1659685626555-2" author="marcus (manual)">
+        <addColumn tableName="survey_template_section_input_entity">
+            <column name="calculation_id" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
