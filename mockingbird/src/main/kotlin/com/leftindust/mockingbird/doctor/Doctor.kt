@@ -11,7 +11,6 @@ import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
 import javax.persistence.CascadeType
 import javax.persistence.Entity
-import javax.persistence.FetchType
 import javax.persistence.Lob
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
@@ -20,11 +19,11 @@ import javax.persistence.OneToOne
 class Doctor(
     @OneToOne(optional = false)
     var nameInfo: NameInfo,
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     var addresses: MutableSet<Address>,
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     var emails: MutableSet<Email>,
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     var phones: MutableSet<Phone>,
     @OneToOne
     var user: MediqUser?,
