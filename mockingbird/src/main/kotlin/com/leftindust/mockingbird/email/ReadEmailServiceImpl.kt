@@ -19,7 +19,7 @@ class ReadEmailServiceImpl(
     val readContactService: ReadContactService,
 ) : ReadEmailService {
     private val logger = KotlinLogging.logger { }
-    override suspend fun getByEmailId(emailId: EmailDto.Id): Email? {
+    override suspend fun getByEmailId(emailId: EmailDto.EmailDtoId): Email? {
         return emailRepository.findById(emailId.value).orElse(null)
     }
 

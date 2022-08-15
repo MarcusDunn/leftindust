@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 class EmailToEmailDtoConverter : InfallibleConverter<Email, EmailDto> {
     override fun convert(source: Email): EmailDto {
         return EmailDto(
-            EmailDto.Id(source.id ?: throw NullEntityIdInConverterException(source)),
+            EmailDto.EmailDtoId(source.id ?: throw NullEntityIdInConverterException(source)),
             source.type,
             source.address
         )
