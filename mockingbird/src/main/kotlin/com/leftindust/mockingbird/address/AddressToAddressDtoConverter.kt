@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 class AddressToAddressDtoConverter : InfallibleConverter<Address, AddressDto> {
     override fun convert(source: Address): AddressDto {
         return AddressDto(
-            id = AddressDto.Id(source.id ?: throw NullEntityIdInConverterException(source)),
+            id = AddressDto.AddressDtoId(source.id ?: throw NullEntityIdInConverterException(source)),
             type = source.type,
             address = source.address,
             city = source.city,

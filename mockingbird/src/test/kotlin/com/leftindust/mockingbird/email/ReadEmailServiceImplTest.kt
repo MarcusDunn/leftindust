@@ -110,7 +110,7 @@ internal class ReadEmailServiceImplDataTest(
             testEntityManager.persistAndGetId(EmailMother.jennysEmail, UUID::class.java)
         val readEmailServiceImpl =
             ReadEmailServiceImpl(emailRepository, readDoctorService, readPatientService, readContactService)
-        val returnedEmail = readEmailServiceImpl.getByEmailId(EmailDto.Id(jennyEmailAddressId!!))
+        val returnedEmail = readEmailServiceImpl.getByEmailId(EmailDto.EmailDtoId(jennyEmailAddressId!!))
 
         assertThat(returnedEmail, Matchers.notNullValue())
         assertThat(returnedEmail!!.id, equalTo(jennyEmailAddressId))
@@ -122,7 +122,7 @@ internal class ReadEmailServiceImplDataTest(
             val someNonExistentUuid = UUID.fromString("235b4875-92d4-4553-8852-eb8f4b3a887d")
             val readEmailServiceImpl =
                 ReadEmailServiceImpl(emailRepository, readDoctorService, readPatientService, readContactService)
-            val returnedEmail = readEmailServiceImpl.getByEmailId(EmailDto.Id(someNonExistentUuid))
+            val returnedEmail = readEmailServiceImpl.getByEmailId(EmailDto.EmailDtoId(someNonExistentUuid))
 
             assertThat(returnedEmail, nullValue())
         }
