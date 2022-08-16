@@ -29,7 +29,8 @@ internal class DoctorAddressQueryControllerTest(
     private lateinit var readDoctorService: ReadDoctorService
 
     @Test
-    internal fun `check can query for phone fields`() {
+
+    internal fun `check can query for doctor address fields`() {
         coEvery { readDoctorService.getByDoctorId(DoctorMother.Dan.graphqlId) } returns DoctorMother.Dan.entityPersisted
         coEvery { readAddressService.getByDoctorId(DoctorMother.Dan.graphqlId) } returns listOf(AddressMother.DansHouse.entityPersisted)
 
@@ -55,9 +56,10 @@ internal class DoctorAddressQueryControllerTest(
             .execute()
             .errors()
             .verify()
-            .path("doctorsByDoctorIds[0].addresses[*].id.value")
-            .entity(object : ParameterizedTypeReference<List<UUID>>() {})
-            .matches { it.contains(AddressMother.DansHouse.dto.id.value) }
+            .path("doctorsByDoctorIds[0].addresses[0].id.value")
+//            .matchesJson("{}")
+            .entity(object : ParameterizedTypeReference<UUID>() {})
+            .matches { it.equals(AddressMother.DansHouse.dto.id.value) }
             .path("doctorsByDoctorIds[0].addresses[0]")
             .entity(AddressDto::class.java)
             .isEqualTo(AddressMother.DansHouse.dto)

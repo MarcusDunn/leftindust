@@ -29,7 +29,7 @@ internal class DoctorEmailQueryControllerTest(
     private lateinit var readDoctorService: ReadDoctorService
 
     @Test
-    internal fun `check can query for phone fields`() {
+    internal fun `check can query for doctor email fields`() {
         coEvery { readDoctorService.getByDoctorId(DoctorMother.Dan.graphqlId) } returns DoctorMother.Dan.entityPersisted
         coEvery { readEmailService.getByDoctorId(DoctorMother.Dan.graphqlId) } returns listOf(EmailMother.DansEmail.entityPersisted)
 
