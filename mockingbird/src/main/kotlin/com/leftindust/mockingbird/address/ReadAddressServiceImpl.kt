@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Repository
 class ReadAddressServiceImpl(
-    private val readDoctorService: ReadDoctorService,
-    private val readPatientService: ReadPatientService,
+    val addressRepository: AddressRepository,
+    val readDoctorService: ReadDoctorService,
+    val readPatientService: ReadPatientService,
 ) : ReadAddressService {
     override suspend fun getByAddressId(addressId: AddressDto.AddressDtoId): Address? {
-        TODO("Not yet implemented")
+        return addressRepository.findById(addressId.value).orElse(null)
     }
 
     override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Address>? {

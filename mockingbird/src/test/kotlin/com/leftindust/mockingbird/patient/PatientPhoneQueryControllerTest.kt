@@ -29,7 +29,7 @@ internal class PatientPhoneQueryControllerTest(
     private lateinit var readPhoneService: ReadPhoneService
 
     @Test
-    internal fun `check can query for phone fields`() {
+    internal fun `check can query for patient phone fields`() {
         coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityPersisted
         coEvery { readPhoneService.getByPatientId(PatientMother.Dan.graphqlId) } returns listOf(PhoneMother.DansCell.entityPersisted)
 

@@ -18,11 +18,11 @@ import javax.persistence.*
 class Patient(
     @OneToOne
     var nameInfo: NameInfo,
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     var addresses: MutableSet<Address>,
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     var emails: MutableSet<Email>,
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     var phones: MutableSet<Phone>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
     var events: MutableSet<PatientEventEntity> = mutableSetOf(),

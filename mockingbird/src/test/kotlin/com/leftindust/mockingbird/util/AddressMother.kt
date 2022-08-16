@@ -14,11 +14,11 @@ object AddressMother {
 
     object DansHouse {
         val addressType = AddressType.Home
-        const val address = "841 Main Street"
-        const val city = "North Vancouver"
+        const val address = "842 Main Street"
+        const val city = "South Vancouver"
         val country = Countries.Canada
         const val province = "BC"
-        const val postalCode = "H8L2O9"
+        const val postalCode = "H8L210"
         val id = UUID.fromString("670ec435-682a-4563-b612-59a36e46f4a8")
         val createDto = CreateAddressDto(
             addressType = addressType,
@@ -62,7 +62,7 @@ object AddressMother {
             postalCode = postalCode
         ).apply { id = this@JennysHouse.id }
 
-        val dto = addressToAddressDto.convert(DansHouse.entityPersisted)
+        val dto = addressToAddressDto.convert(entityPersisted)
     }
 
 }

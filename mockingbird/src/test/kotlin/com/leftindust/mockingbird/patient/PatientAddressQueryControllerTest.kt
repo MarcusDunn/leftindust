@@ -16,7 +16,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 import java.util.*
 
 @GraphQlTest(controllers = [PatientQueryController::class, PatientAddressQueryController::class])
-class PatientAddressQueryControllerTest(
+internal class PatientAddressQueryControllerTest(
         @Autowired private val graphQlTester: GraphQlTester
     ) {
         @MockkBean
@@ -29,35 +29,35 @@ class PatientAddressQueryControllerTest(
         private lateinit var readAddressService: ReadAddressService
 
         @Test
-        internal fun `check can query for phone fields`() {
+        internal fun `check can query for patient address fields`() {
             coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityPersisted
             coEvery { readAddressService.getByPatientId(PatientMother.Dan.graphqlId) } returns listOf(AddressMother.DansHouse.entityPersisted)
 
             @Language("graphql")
             val query = """
-            query {
-                patientsByPatientId(patientIds: [{ value: "${PatientMother.Dan.id}" }]) {
-                    addresses {
-                        id { value }
-                        type
-                        address
-                        city
-                        country
-                        province
-                        postalCode
+                query {
+                    patientsByPatientId(patientIds: [{ value: "${PatientMother.Dan.id}" }]) {
+                        addresses {
+                            id { value }
+                            type
+                            address
+                            city
+                            country
+                            province
+                            postalCode
+                        }
                     }
                 }
-            }
-        """.trimIndent()
+            """.trimIndent()
 
 
             graphQlTester.document(query)
                 .execute()
                 .errors()
                 .verify()
-                .path("patientsByPatientId[0].addresses[*].id.value")
-                .entity(object : ParameterizedTypeReference<List<UUID>>() {})
-                .matches { it.contains(AddressMother.DansHouse.dto.id.value) }
+                .path("patientsByPatientId[0].addresses[0].id.value")
+                .entity(object : ParameterizedTypeReference<UUID>() {})
+                .matches { it.equals(AddressMother.DansHouse.dto.id.value) }
                 .path("patientsByPatientId[0].addresses[0]")
                 .entity(AddressDto::class.java)
                 .isEqualTo(AddressMother.DansHouse.dto)
