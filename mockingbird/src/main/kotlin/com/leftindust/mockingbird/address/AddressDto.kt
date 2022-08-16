@@ -13,5 +13,9 @@ data class AddressDto(
     val province: String,
     val postalCode: String,
 ) : AbstractGraphQLDto<AddressDto.AddressDtoId>() {
+
+    companion object {
+        const val GRAPHQL_TYPE = "Address"
+    }
     data class AddressDtoId(override val value: UUID) : GraphQLID<UUID>
 }
