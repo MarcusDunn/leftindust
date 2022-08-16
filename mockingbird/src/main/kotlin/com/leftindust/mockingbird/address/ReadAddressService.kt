@@ -6,7 +6,10 @@ import org.springframework.security.access.prepost.PreAuthorize
 
 @PreAuthorize("hasAuthority('READ_ADDRESS')")
 interface ReadAddressService {
-    suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): Set<Address>?
 
-    suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): Set<Address>?
+    suspend fun getByAddressId(addressId: AddressDto.AddressDtoId): Address?
+
+    suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Address>?
+
+    suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<Address>?
 }
