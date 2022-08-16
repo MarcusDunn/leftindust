@@ -57,8 +57,8 @@ type Doctor {
     middleName: String
     lastName: String!
     phoneNumbers: [Phone!]
-    email: [Email!]
-    address: [Address!]
+    emails: [Email!]
+    addresses: [Address!]
     thumbnail: Base64
     title: String
     dateOfBirth: LocalDate
@@ -222,8 +222,8 @@ type Patient {
     middleName: String
     lastName: String!
     phoneNumbers: [Phone!]
-    email: [Email!]
-    address: [Address!]
+    emails: [Email!]
+    addresses: [Address!]
     thumbnail: Base64
     dateOfBirth: LocalDate!
     insuranceNumber: String
