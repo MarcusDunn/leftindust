@@ -67,9 +67,9 @@ internal class ReadEmailServiceImplUnitTest {
     @Test
     internal fun `check getPatientEmails returns a list of email addresses corresponding to a patient's Id`() =
         runTest {
-            coEvery { readPatientService.getByPatientId(Dan.graphqlid) } returns Dan.entityPersisted
+            coEvery { readPatientService.getByPatientId(Dan.graphqlId) } returns Dan.entityPersisted
             val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, readDoctorService, readPatientService, readContactService)
-            val emails = readEmailServiceImpl.getPatientEmails(Dan.graphqlid)
+            val emails = readEmailServiceImpl.getPatientEmails(Dan.graphqlId)
 
             assertThat(emails, containsInAnyOrder(Dan.emails.map { equalTo(it) }))
         }
