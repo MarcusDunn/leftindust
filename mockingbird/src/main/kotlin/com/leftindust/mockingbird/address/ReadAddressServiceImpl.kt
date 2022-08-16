@@ -13,15 +13,19 @@ class ReadAddressServiceImpl(
     private val readDoctorService: ReadDoctorService,
     private val readPatientService: ReadPatientService,
 ) : ReadAddressService {
-    override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): Set<Address>? {
-        val doctor = readDoctorService.getByDoctorId(doctorId)
-            ?: return null
-        return doctor.addresses
+    override suspend fun getByAddressId(addressId: AddressDto.AddressDtoId): Address? {
+        TODO("Not yet implemented")
     }
 
-    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): Set<Address>? {
+    override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Address>? {
+        val doctor = readDoctorService.getByDoctorId(doctorId)
+            ?: return null
+        return doctor.addresses.toList()
+    }
+
+    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<Address>? {
         val byPatientId = readPatientService.getByPatientId(patientId)
             ?: return null
-        return byPatientId.addresses
+        return byPatientId.addresses.toList()
     }
 }
