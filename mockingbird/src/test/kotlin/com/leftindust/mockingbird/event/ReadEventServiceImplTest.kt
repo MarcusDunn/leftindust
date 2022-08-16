@@ -46,10 +46,10 @@ internal class ReadEventServiceImplUnitTest {
 
     @Test
     internal fun `check getByPatientId returns a patient's event when patient exists`() = runTest {
-        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlid) } returns PatientMother.Dan.entityPersisted
+        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityPersisted
         val readEventServiceImpl =
             ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
-        val events = readEventServiceImpl.getByPatientId(PatientMother.Dan.graphqlid)
+        val events = readEventServiceImpl.getByPatientId(PatientMother.Dan.graphqlId)
 
         assertThat(events, containsInAnyOrder(PatientMother.Dan.events.map { equalTo(it.event) }))
     }
