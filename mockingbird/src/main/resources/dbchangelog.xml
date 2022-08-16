@@ -943,4 +943,13 @@
             <column name="calculation_id" type="INTEGER"/>
         </addColumn>
     </changeSet>
+    <changeSet id="1659685626556-1" author="marcus (manual)">
+        <addNotNullConstraint tableName="survey_template_section_input_entity" columnName="calculation_id"/>
+    </changeSet>
+    <changeSet id="1659685626556-2" author="marcus (manual)">
+        <addNotNullConstraint tableName="survey_template_section_entity" columnName="calculation_id"/>
+    </changeSet>
+    <changeSet id="" author="marcus (manual)">
+        <addNotNullConstraint tableName="survey_template_section_input_entity" columnName="calculation_id"/>
+    </changeSet>
 </databaseChangeLog>

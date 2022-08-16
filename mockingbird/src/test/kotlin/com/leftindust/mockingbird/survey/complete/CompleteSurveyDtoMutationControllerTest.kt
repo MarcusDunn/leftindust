@@ -32,7 +32,9 @@ internal class CompleteSurveyDtoMutationControllerTest(
                 createCompleteSurvey(createCompleteSurvey: { 
                     surveyLinkId: { value: "${FilledOutKoosKneeSurvey.surveyLinkId.value}" }
                     completeSurveyTemplateSections: [{
-                            surveyTemplateSectionId: {value: "${CompleteHowMuchPainAreYouInSection.surveyTemplateSectionId.value}"}
+                            surveyTemplateSectionId: {
+                                value: "${CompleteHowMuchPainAreYouInSection.surveyTemplateSectionId.value}"
+                            }
                             completedSurveyInputs: [{
                                 surveyTemplateSectionInputId: { value: "${CompleteRateThePain.surveyTemplateSectionInputId.value}"}
                                 value: "${CompleteRateThePain.value}"

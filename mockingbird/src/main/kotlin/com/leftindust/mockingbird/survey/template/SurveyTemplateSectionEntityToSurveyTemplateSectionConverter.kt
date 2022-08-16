@@ -20,6 +20,6 @@ class SurveyTemplateSectionEntityToSurveyTemplateSectionConverter : InfallibleCo
         override val id: UUID,
         override val subtitle: String?,
         override val title: String,
-        override val calculationId: Int?,
+        override val calculationId: Int,
     ) : SurveyTemplateSection
 }

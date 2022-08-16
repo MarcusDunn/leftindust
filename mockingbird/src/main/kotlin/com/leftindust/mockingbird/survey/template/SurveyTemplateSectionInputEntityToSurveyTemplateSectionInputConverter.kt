@@ -55,6 +55,6 @@ class SurveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter : Fa
         override val placeholder: String?,
         override val label: String,
         override val restriction: SurveyTemplateSectionInputRestriction,
-        override val calculationId: Int?,
+        override val calculationId: Int,
     ) : SurveyTemplateSectionInput
 }

@@ -9,5 +9,5 @@ data class CreateSurveyTemplateSectionInputDto (
     val category: SurveyTemplateCategory,
     val uploadMultiple: Boolean?,
     val uploadAccept: TemplateInputUploadType?,
-    val calculationId: Int?
+    val calculationId: Int
 )

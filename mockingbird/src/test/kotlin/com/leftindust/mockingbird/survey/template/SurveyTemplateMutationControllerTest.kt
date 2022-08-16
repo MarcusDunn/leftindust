@@ -22,6 +22,7 @@ import io.mockk.junit5.MockKExtension
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -72,6 +73,7 @@ internal class SurveyTemplateMutationControllerWebTest(
 
     @Test
     internal fun `check accepts the smallest valid mutation`() {
+        @Language("GraphQL")
         val mutation = """mutation { addSurveyTemplate(surveyTemplate: { 
             |    title: "COOS knee survey"
             |    sections: [{
@@ -81,7 +83,9 @@ internal class SurveyTemplateMutationControllerWebTest(
             |            type: Number
             |            category: Body
             |            required: true
+            |            calculationId: 1
             |        }]
+            |        calculationId: 0        
             |    }]
             |}) {
             |  id { value }
