@@ -32,7 +32,7 @@ class ReadPhoneServiceImpl(
         return contact.phone.toList()
     }
 
-    override suspend fun getPatientId(patientId: PatientDto.PatientDtoId): List<Phone>? {
+    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<Phone>? {
         val patient = readPatientService.getByPatientId(patientId)
             ?: return null
         return patient.phones.toList()
