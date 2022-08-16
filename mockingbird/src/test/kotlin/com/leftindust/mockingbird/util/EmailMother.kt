@@ -13,6 +13,12 @@ object EmailMother {
         )
     }
 
+    val dansEmail = Email(
+        type = DansEmail.emailType,
+        address = DansEmail.address
+    )
+
+
     private val `jenny's email type` = EmailType.Personal
     private const val `jenny's email address` = "jenny.e.white@example.com"
     val jennysEmail = Email(

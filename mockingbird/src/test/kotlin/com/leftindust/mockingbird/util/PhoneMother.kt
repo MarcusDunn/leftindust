@@ -1,10 +1,13 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.phone.Phone
+import com.leftindust.mockingbird.phone.PhoneToPhoneDtoConverter
 import com.leftindust.mockingbird.phone.PhoneType
 import java.util.UUID
 
 object PhoneMother {
+    val phoneToPhoneDtoConverter = PhoneToPhoneDtoConverter()
+
     object JennysHomePhone {
         val id = UUID.fromString("548143f2-a3ba-4c95-ac3a-27e76c37149e")
         val type = PhoneType.Home
@@ -13,6 +16,8 @@ object PhoneMother {
             number = number,
             type = type
         ).apply { id = this@JennysHomePhone.id  }
+
+        val dto = phoneToPhoneDtoConverter.convert(entityPersisted)
     }
 
     object DansCell {
@@ -23,17 +28,21 @@ object PhoneMother {
             number = number,
             type = type
         ).apply { id = this@DansCell.id  }
+
+        val dto = phoneToPhoneDtoConverter.convert(entityPersisted)
     }
 
 
     object JennysWorkPhone {
-        const val number = "(604) 532-4327"
+        val id = UUID.fromString("1ac8f1d3-ca0d-4160-8c04-c548a1bfcb2a")
         val type = PhoneType.Work
+        const val number = "(604) 532-4327"
 
         val entityPersisted = Phone(
             number = number,
             type = type
-        )
+        ).apply { id = this@JennysWorkPhone.id }
+        val dto = phoneToPhoneDtoConverter.convert(entityPersisted)
     }
 
 
