@@ -6,5 +6,5 @@ interface SurveyTemplateSection {
     val subtitle: String?
     val title: String
     val id: UUID
-    val calculationId: Int?
+    val calculationId: Int
 }

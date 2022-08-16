@@ -61,6 +61,6 @@ class CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConve
         override val restriction: CreateSurveyTemplateSectionInputRestriction,
         override val placeholder: String?,
         override val category: SurveyTemplateCategory,
-        override val calculationId: Int?
+        override val calculationId: Int
     ) : CreateSurveyTemplateSectionInput
 }

@@ -28,6 +28,6 @@ class CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter(
         override val title: String,
         override val subtitle: String?,
         override val inputs: List<CreateSurveyTemplateSectionInput>,
-        override val calculationId: Int?
+        override val calculationId: Int
     ) : CreateSurveyTemplateSection
 }
