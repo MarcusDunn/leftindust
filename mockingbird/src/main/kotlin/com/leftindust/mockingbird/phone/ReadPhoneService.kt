@@ -14,5 +14,5 @@ interface ReadPhoneService {
 
     suspend fun getByContactId(contactId: ContactDto.ContactDtoId): List<Phone>?
 
-    suspend fun getPatientId(patientId: PatientDto.PatientDtoId): List<Phone>?
+    suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<Phone>?
 }
