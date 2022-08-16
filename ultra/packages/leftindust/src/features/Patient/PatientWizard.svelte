@@ -15,16 +15,13 @@
     Relationship,
     Country,
   } from '@/api/server/graphql/schema/leftindust.schema';
-  import { WidgetType } from '../Widgets';
 
   import { writable } from 'svelte/store';
   import { _ } from '@/language';
-  import { loginForm } from '../Account';
 
-  import getNativeAPI from '@/api/bridge';
   import deepmerge from 'deepmerge';
 
-  import { Row, Col, Block } from 'framework7-svelte';
+  import { Row, Col, Block, ListItem } from 'framework7-svelte';
 
   import Input from '../Input/Input.svelte';
   import Select from '../Input/components/Select/Select.svelte'
@@ -35,8 +32,6 @@
   export let data: Data<'Patient'> | undefined = undefined;
 
   const { form, errors, data: formData } = createPatientFormValidator();
-
-  let ref: HTMLFormElement;
 
   let patient: any = writable();
   let disabled = true;
@@ -85,7 +80,7 @@ color="purple"
 {disabled}
 on:submit={submit}
 >
-  <form use:form bind:this={ref}>
+  <form use:form>
       {#key $patient}
         <Block style="margin-top: 60px">
           <Block>
@@ -94,28 +89,28 @@ on:submit={submit}
               <Col xlarge="50" width="100">
                 <Row>              
                   <Col width="100" medium="33">
-                  <Input>
-                    <input type="text" name="firstName" placeholder="First Name" bind:value={input.nameInfo.firstName} />
-                  </Input>
-                  <p />
-                </Col>
-                <Col width="100" medium="33">
-                  <Input>
-                    <input type="text" name="middleName" placeholder="Middle Name (Optional)" bind:value={input.nameInfo.middleName} />
-                  </Input>
-                  <p />
-                </Col>
-                <Col width="100" medium="33">
-                  <Input>
-                    <input type="text" name="lastName" placeholder="Last Name" bind:value={input.nameInfo.lastName} />
-                  </Input>
-                  <p />
-                </Col>
+                    <Input>
+                      <input type="text" name="firstName" placeholder="First Name" />
+                    </Input>
+                    <p />
+                  </Col>
+                  <Col width="100" medium="33">
+                    <Input>
+                      <input type="text" name="middleName" placeholder="Middle Name (Optional)" />
+                    </Input>
+                    <p />
+                  </Col>
+                  <Col width="100" medium="33">
+                    <Input>
+                      <input type="text" name="lastName" placeholder="Last Name" />
+                    </Input>
+                    <p />
+                  </Col>
                 </Row>
-                <Row>
+                <Row class="align-items-flex-end">
                   <Col width="100" medium="50">
-                    <Select
-                    title="Ethnicity"
+                      <Select
+                      title="Ethnicity"
                       options={[
                         {
                           text: 'American Aboriginal',
@@ -143,19 +138,19 @@ on:submit={submit}
                         },
                       ]}
                       bind:value={input.ethnicity}
-                    />
+                      />
                     <p />
                   </Col>
                   <Col width="100" medium="50">
                     <Input>
-                      <input type="text" name="genderIdentity" placeholder="Gender Identity (Optional)" bind:value={input.gender} />
+                      <input type="text" name="genderIdentity" placeholder="Gender Identity (Optional)" />
                     </Input>
                     <p />
                   </Col>
                 </Row>
                 <Col width="100">
                   <Input>
-                    <input type="text" name="insuranceNumber" placeholder="Insurance Number (Optional)" bind:value={input.insuranceNumber} />
+                    <input type="text" name="insuranceNumber" placeholder="Insurance Number (Optional)" />
                   </Input>
                   <p />
                 </Col>

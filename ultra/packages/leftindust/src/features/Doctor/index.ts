@@ -18,9 +18,9 @@ const defaultDoctorForm: CreateDoctor = {
 
 export const createDoctorFormValidator = () => {
   const schema = yup.object({
-    firstName: yup.string().required('First name is required'),
+    firstName: yup.string().required(),
     middleName: yup.string(),
-    lastName: yup.string().required('Last name is required'),
+    lastName: yup.string().required(),
     title: yup.string(),
   });
 
@@ -29,4 +29,4 @@ export const createDoctorFormValidator = () => {
     onSubmit: (form) => console.log(form),
     extend: [validator({ schema })]
   });
-}
+};
