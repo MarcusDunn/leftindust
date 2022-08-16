@@ -15,6 +15,10 @@ data class DoctorDto(
 ) : AbstractGraphQLDto<DoctorDto.DoctorDtoId>() {
     companion object {
         const val GRAPHQL_TYPE = "Doctor"
+        const val GRAPHQL_ADDRESS_FIELD_NAME = "addresses"
+        const val GRAPHQL_EMAIL_FIELD_NAME = "emails"
+        const val GRAPHQL_PHONE_FIELD_NAME = "phoneNumbers"
+
     }
     data class DoctorDtoId(override val value: UUID) : GraphQLID<UUID>
 }

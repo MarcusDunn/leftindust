@@ -14,16 +14,21 @@ data class PatientDto(
     val firstName: String,
     val middleName: String?,
     val lastName: String,
-    val addresses: List<AddressDto>,
-    val emails: List<EmailDto>,
-    val phoneNumbers: List<PhoneDto>,
-    val thumbnail: ByteArray?,
     val dateOfBirth: LocalDate,
     val insuranceNumber: String?,
     val sex: Sex,
     val gender: String,
     val ethnicity: Ethnicity?,
 ) : AbstractGraphQLDto<PatientDto.PatientDtoId>() {
+
+    companion object {
+        const val GRAPHQL_TYPE = "Patient"
+        const val GRAPHQL_ADDRESS_FIELD_NAME = "addresses"
+        const val GRAPHQL_EMAIL_FIELD_NAME = "emails"
+        const val GRAPHQL_PHONE_FIELD_NAME = "phoneNumbers"
+    }
+
+
     data class PatientDtoId(override val value: UUID) : GraphQLID<UUID>
 
 
