@@ -23,7 +23,7 @@ internal class PatientQueryControllerWebTest(
 
     @Test
     internal fun `check can query all basic fields`() {
-        coEvery { readPatientService.getByPatientId(Dan.graphqlid) } returns Dan.entityPersisted
+        coEvery { readPatientService.getByPatientId(Dan.graphqlId) } returns Dan.entityPersisted
 
         @Language("graphql")
         val query = """
