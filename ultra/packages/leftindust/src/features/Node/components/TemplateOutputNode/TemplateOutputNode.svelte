@@ -4,9 +4,10 @@
   import type { Editor,  InputSocket, InputSockets } from 'function-junctions/types';
   import type { Writable } from 'svelte/store';
 
-  import { getTemplateSocketType, templateCalculationSockets, TemplateInputType } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets } from '@/features/Templates';
   import { _ } from '@/language';
   import { TemplateCalculations } from '@/features/Templates/store';
+  import { SurveyTemplateInputType } from '@/api/server';
   import Input from '@/features/Input/Input.svelte';
 
   export let editor: Editor;
@@ -24,32 +25,36 @@
     index: 0,
   };
     
-  let prevType = $TemplateCalculations[store.index].type;
+  let prevType = $TemplateCalculations[store.index].inputType;
 
   const reevaluateConnections = () => {
-    if ($TemplateCalculations[store.index].type !== prevType) {
+    if ($TemplateCalculations[store.index].inputType !== prevType) {
       $connection = undefined;
 
-      prevType = $TemplateCalculations[store.index].type;
+      prevType = $TemplateCalculations[store.index].inputType;
     }
   };
     
   $: value = editor.outputs?.Value?.value;
 
-  $: $TemplateCalculations[store.index].type, (() => {
+  $: $TemplateCalculations[store.index].inputType, (() => {
     if (value && Value) $value = $Value;
   })();
 
   $: $TemplateCalculations[store.index], (() => {
-    const type = getTemplateSocketType($TemplateCalculations[store.index].type);
-
-    if (type) {
-      const socket = templateCalculationSockets[type];
+    if ($TemplateCalculations[store.index].inputType) {
+      // TS has brain damage
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const type = getTemplateSocketType($TemplateCalculations[store.index].inputType!);
   
-      if (socket) {
-        inputs.Value.type = type;
-        inputs.Value.disabled = !value;
-        inputs.Value.color = socket.color;
+      if (type) {
+        const socket = templateCalculationSockets[type];
+    
+        if (socket) {
+          inputs.Value.type = type;
+          inputs.Value.disabled = !value;
+          inputs.Value.color = socket.color;
+        }
       }
     }
   })();
@@ -64,38 +69,38 @@
     options={[
       {
         text: $_('generics.text'),
-        value: TemplateInputType.Text,
+        value: SurveyTemplateInputType.Text,
       },
       {
         text: $_('generics.number'),
-        value: TemplateInputType.Number,
+        value: SurveyTemplateInputType.Number,
       },
       {
         text: $_('generics.date'),
-        value: TemplateInputType.Date,
+        value: SurveyTemplateInputType.Date,
       },
       {
         text: $_('generics.paragraph'),
-        value: TemplateInputType.Paragraph,
+        value: SurveyTemplateInputType.Paragraph,
       },
       {
         text: $_('generics.singleSelect'),
-        value: TemplateInputType.SingleSelect,
+        value: SurveyTemplateInputType.SingleSelect,
       },
       {
         text: $_('generics.multiSelect'),
-        value: TemplateInputType.MultiSelect,
+        value: SurveyTemplateInputType.MultiSelect,
       },
       {
         text: $_('generics.upload'),
-        value: TemplateInputType.Upload,
+        value: SurveyTemplateInputType.Upload,
       },
       {
         text: $_('generics.title'),
-        value: TemplateInputType.Title,
+        value: SurveyTemplateInputType.Title,
       },
     ]}
-    bind:value={$TemplateCalculations[store.index].type}
+    bind:value={$TemplateCalculations[store.index].inputType}
   />
   <p />
   <Input style="width: 100%">

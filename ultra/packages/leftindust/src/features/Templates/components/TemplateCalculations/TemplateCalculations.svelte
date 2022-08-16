@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getTemplateSocketType, type TemplateCalculationWithInstance, templateForm } from '../..';
+  import { getTemplateSocketType, type TemplateCalculationWithInstance, templateForm, type TemplateSchema } from '../..';
   import AppLauncherApp from '@/features/Apps/components/AppLauncher/AppLauncherApp.svelte';
   import FlowCover from '@/apps/flow/assets/flow.png';
   import { Template } from '../../store';
@@ -8,7 +8,7 @@
   import { BlockFooter, Button } from 'framework7-svelte';
 
   import { _ } from '@/language';
-  import type { SurveyTemplateInputType } from '@/api/server';
+  import { SurveyTemplateInputType } from '@/api/server';
   import TemplateCalculationInput from './TemplateCalculationInput.svelte';
 
   export let calculations: TemplateCalculationWithInstance[];
@@ -16,7 +16,7 @@
   export let data: ReturnType<typeof templateForm>['data'];
   export let errors: ReturnType<typeof templateForm>['errors'];
 
-  let inputs: (SurveyTemplateInputType & {
+  let inputs: (TemplateSchema['sections'][number]['inputs'][number] & {
     sectionIndex: number;
     index: number;
   })[];
@@ -41,19 +41,21 @@
     nodeInputs = {};
 
     inputs.forEach((input) => {
-      const type = getTemplateSocketType(input.type);
-      
-      nodeInputs = {
-        ...nodeInputs,
-        [input.id]: {
-          type,
-          value: nodeInputs[input.id]?.value ?? writable(),
-        },
-      };
-    });
-
-    inputs.forEach((input) => {
-      nodeInputs[input.id].value.update(() => input.value);
+      if (input.type) {
+        const type = getTemplateSocketType(input.type as SurveyTemplateInputType);
+        
+        nodeInputs = {
+          ...nodeInputs,
+          [input.id]: {
+            type,
+            value: nodeInputs[input.id]?.value ?? writable(),
+          },
+        };
+      }
+  
+      inputs.forEach((input) => {
+        nodeInputs[input.id].value.update(() => input.value);
+      });
     });
   }
 </script>
@@ -99,9 +101,9 @@
             ...calculations,
             {
               label: '',
-              type: TemplateInputType.Text,
+              inputType: SurveyTemplateInputType.Text,
               showOnComplete: false,
-              calculation: {
+              deserializedCalculation: {
                 position: {
                   originX: 0,
                   originY: 0,

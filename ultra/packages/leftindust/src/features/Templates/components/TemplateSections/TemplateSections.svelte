@@ -1,12 +1,11 @@
 <script lang="ts">
   import type { DndEvent } from 'svelte-dnd-action';
-  import type { templateForm } from '../..';
+  import type { templateForm, TemplateSchema } from '../..';
   import TemplateSection from '../TemplateSection/TemplateSection.svelte';
   import { dndzone, SOURCES, TRIGGERS	} from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
-  import type { CreateSurveyTemplateSection } from '@/api/server';
   import { Template } from '../../store';
 
   const flipDurationMs = 200;
@@ -15,11 +14,11 @@
   // Global index starts at 1 because sections always init with one item
   let globalIndex = 1;
 
-  export let sections: CreateSurveyTemplateSection[];
+  export let sections: TemplateSchema['sections'];
         
   const handleConsider = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source, trigger } } = e.detail;
-    sections = newItems as CreateSurveyTemplateSection[];
+    sections = newItems as TemplateSchema['sections'];
     // Ensure dragging is stopped on drag finish via keyboard
     if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
       dragDisabled = true;
@@ -28,7 +27,7 @@
 
   const handleFinalize = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source } } = e.detail;
-    sections = newItems as CreateSurveyTemplateSection[];
+    sections = newItems as TemplateSchema['sections'];
     // Ensure dragging is stopped on drag finish via pointer (mouse, touch)
     if (source === SOURCES.POINTER) {
       dragDisabled = true;
@@ -66,7 +65,7 @@
   on:consider={handleConsider}
   on:finalize={handleFinalize}
 >
-  {#each sections as section, index (section.calculationId)}
+  {#each sections as section, index (section.id)}
     <div animate:flip={{ duration: flipDurationMs }}>
       <TemplateSection
         dragger={sections.length > 1 ? startDrag : undefined}
@@ -95,8 +94,9 @@
         ...sections,
         {
           title: '',
+          subtitle: undefined,
           inputs: [],
-        //  id: globalIndex,
+          id: globalIndex,
         },
       ];
 

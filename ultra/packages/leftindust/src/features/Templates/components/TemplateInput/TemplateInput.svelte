@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { templateForm, templateInputSelectOptions } from '../..';
+  import { templateForm, templateInputSelectOptions, type TemplateSchema } from '../..';
   import { _ } from 'svelte-i18n';
   import {
     Button,
@@ -10,14 +10,14 @@
     Toggle,
   } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
-  import { type CreateSurveyTemplateSectionInput, SurveyTemplateInputType, TemplateInputUploadType, SurveyTemplateCategory } from '@/api/server';
+  import { SurveyTemplateInputType, TemplateInputUploadType, SurveyTemplateCategory } from '@/api/server';
   import Input from '@/features/Input/Input.svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import './TemplateInput.scss';
   import TemplateInputSelect from './TemplateInputSelect.svelte';
   import Add from '@/features/Input/components/Add/Add.svelte';
   
-  export let inputs: CreateSurveyTemplateSectionInput[];
+  export let inputs: TemplateSchema['sections'][number]['inputs'];
   export let index: number;
   export let globalIndex: number;
   export let sectionIndex: number;
@@ -31,7 +31,7 @@
   export let uploadAccept: TemplateInputUploadType | undefined = undefined;
   export let uploadMultiple: boolean | undefined = undefined;
 
-  export let options: string[] = [''];
+  export let options: string[] | undefined = [''];
 
   export let dragger: ((event: Event) => void)| undefined = undefined;
 
@@ -104,24 +104,26 @@
           </Col>
         {/if}
       {:else}
-        {#each options as _, optionsIndex}
-          <Col width="100">
-            <TemplateInputSelect
-              index={optionsIndex}
-              inputIndex={index}
-              {sectionIndex}
-              {errors}
-              title={optionsIndex === 0 ? optionText : undefined}
-              bind:options
+        {#if options}
+          {#each options as _, optionsIndex}
+            <Col width="100">
+              <TemplateInputSelect
+                index={optionsIndex}
+                inputIndex={index}
+                {sectionIndex}
+                {errors}
+                title={optionsIndex === 0 ? optionText : undefined}
+                bind:options
+              />
+            </Col>
+          {/each}
+          <Col width="100" style="margin-top: 10px">
+            <Add
+              placeholder={$_('generics.addOption')}
+              on:click={() => (options = [...options ?? [], ''])}
             />
           </Col>
-        {/each}
-        <Col width="100" style="margin-top: 10px">
-          <Add
-            placeholder={$_('generics.addOption')}
-            on:click={() => (options = [...options, ''])}
-          />
-        </Col>
+        {/if}
       {/if}
       {#if type === SurveyTemplateInputType.Upload}
         <Col width="100">
@@ -190,12 +192,14 @@
                 inputs = [
                   ...inputs.slice(0, index),
                   {
-                    calculationId: globalIndex,
+                    id: globalIndex,
                     type,
                     label,
                     placeholder,
                     required,
                     options,
+                    uploadMultiple: undefined,
+                    uploadAccept: undefined,
                     category: SurveyTemplateCategory.Title,
                   },
                   ...inputs.slice(index),

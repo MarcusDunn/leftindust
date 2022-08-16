@@ -1,13 +1,13 @@
 <script lang="ts">
   import type { DndEvent } from 'svelte-dnd-action';
-  import type { templateForm } from '../../';
+  import type { templateForm, TemplateSchema } from '../../';
   import { dndzone, SOURCES, TRIGGERS	} from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import TemplateInput from '../TemplateInput/TemplateInput.svelte';
-  import { SurveyTemplateCategory, SurveyTemplateInputType, TemplateInputUploadType, type CreateSurveyTemplateSectionInput } from '@/api/server';
+  import { SurveyTemplateCategory, SurveyTemplateInputType, TemplateInputUploadType } from '@/api/server';
   
-  export let inputs: CreateSurveyTemplateSectionInput[] = [];
+  export let inputs: TemplateSchema['sections'][number]['inputs'] = [];
   export let globalIndex = 0;
   export let sectionIndex = 0;
 			
@@ -16,7 +16,7 @@
 			
   const handleConsider = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source, trigger } } = e.detail;
-    inputs = newItems as CreateSurveyTemplateSectionInput[];
+    inputs = newItems as TemplateSchema['sections'][number]['inputs'];
     // Ensure dragging is stopped on drag finish via keyboard
     if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
       dragDisabled = true;
@@ -25,7 +25,7 @@
 
   const handleFinalize = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source } } = e.detail;
-    inputs = newItems as CreateSurveyTemplateSectionInput[];
+    inputs = newItems as TemplateSchema['sections'][number]['inputs'];
     // Ensure dragging is stopped on drag finish via pointer (mouse, touch)
     if (source === SOURCES.POINTER) {
       dragDisabled = true;
@@ -48,7 +48,7 @@
     on:consider={handleConsider}
     on:finalize={handleFinalize}
   >
-    {#each inputs as input, index (input.calculationId)}
+    {#each inputs as input, index (input.id)}
       <div
         animate:flip={{ duration: flipDurationMs }}
         style="margin-bottom: 30px"
@@ -62,7 +62,7 @@
           bind:globalIndex
           bind:inputs
           bind:type={input.type}
-          bind:id={input.calculationId}
+          bind:id={input.id}
           bind:label={input.label}
           bind:options={input.options}
           bind:placeholder={input.placeholder}
@@ -85,7 +85,7 @@
         inputs = [
           ...inputs,
           {
-            calculationId: globalIndex,
+            id: globalIndex,
             type: SurveyTemplateInputType.Text,
             label: '',
             placeholder: '',

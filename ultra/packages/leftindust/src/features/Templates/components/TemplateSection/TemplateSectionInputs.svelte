@@ -1,14 +1,13 @@
 <script lang="ts">
-  import type { templateForm } from '../..';
+  import type { templateForm, TemplateSchema } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import TemplateInputs from '../TemplateInputs/TemplateInputs.svelte';
-  import type { CreateSurveyTemplateSectionInput } from '@/api/server';
 
   import { _ } from 'svelte-i18n';
 
   export let title: string;
-  export let subtitle: string | undefined = undefined;
-  export let inputs: CreateSurveyTemplateSectionInput[] | undefined = undefined;
+  export let subtitle: string | null | undefined = undefined;
+  export let inputs: TemplateSchema['sections'][number]['inputs'] | undefined = undefined;
 
   export let globalIndex: number | undefined = undefined;
 

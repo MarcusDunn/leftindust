@@ -1,12 +1,13 @@
 <script lang="ts">
   import { Template } from '@/features/Templates/store';
 
-  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, TemplateInputType, type TemplateCalculationSockets } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, type TemplateCalculationSockets } from '@/features/Templates';
   import type { Editor, OutputSocket, OutputSockets } from 'function-junctions/types';
   import { _ } from '@/language';
   import { ListItem } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import Input from '@/features/Input/Input.svelte';
+  import { SurveyTemplateInputType } from '@/api/server';
   import { get } from 'svelte/store';
 
   export let outputs: OutputSockets<{
@@ -21,10 +22,10 @@
   let smartSelectOpen = false;
   
   export let store: {
-    type: TemplateInputType;
+    type: SurveyTemplateInputType;
     ids: string[];
   } = {
-    type: TemplateInputType.Text,
+    type: SurveyTemplateInputType.Text,
     ids: [],
   };
 
@@ -96,7 +97,7 @@
       >
         <select placeholder="Eg. Input A, Input B" name="inputs" multiple bind:value={store.ids}>
           {#each inputs as input}
-            <option value={input.id}>{input.label}</option>
+            <option value={input.calculationId}>{input.label}</option>
           {/each}
         </select>
       </ListItem>

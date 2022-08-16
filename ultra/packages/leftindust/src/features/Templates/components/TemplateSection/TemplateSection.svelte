@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { templateForm } from '../..';
+  import type { templateForm, TemplateSchema } from '../..';
   import Section from '@/features/UI/components/Section/Section.svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
 
@@ -13,8 +13,8 @@
   import TemplateSectionInputs from './TemplateSectionInputs.svelte';
 
   export let index: number;
-  export let section: CreateSurveyTemplateSection;
-  export let sections: CreateSurveyTemplateSection[];
+  export let section: TemplateSchema['sections'][number];
+  export let sections: TemplateSchema['sections'];
 
   export let errors: ReturnType<typeof templateForm>['errors'];
   export let data: ReturnType<typeof templateForm>['data'];

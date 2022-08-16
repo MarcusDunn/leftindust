@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { templateForm, TemplateInputType, type TemplateCalculationWithInstance } from '../..';
+  import type { templateForm, TemplateCalculationWithInstance } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
@@ -17,6 +17,7 @@
   import NumberNode from '@/features/Node/components/NumberNode';
   import TextNode from '@/features/Node/components/TextNode';
   import DateNode from '@/features/Node/components/DateNode';
+  import { SurveyTemplateInputType } from '@/api/server';
   import type { MenuNodes } from '@/features/Nodes';
 
   export let index: number;
@@ -133,8 +134,8 @@
   $: calculation.editor = editor;
   $: console.log($value);
 
-  $: if ($data?.calculations?.[index] && $data.calculations[index].calculation !== JSON.stringify(calculation.calculation))
-    $data.calculations[index].calculation = JSON.stringify(calculation.calculation);
+  $: if ($data?.calculations?.[index] && $data.calculations[index].calculation !== JSON.stringify(calculation.deserializedCalculation))
+    $data.calculations[index].calculation = JSON.stringify(calculation.deserializedCalculation);
 </script>
 
 <NodesModal
@@ -142,7 +143,7 @@
   {menuNodes}
   inputs={nodeInputs}
   outputs={nodeOutputs}
-  bind:state={calculation.calculation}
+  bind:state={calculation.deserializedCalculation}
   bind:open={modalOpen}
   on:close={() => $TemplateNodesModalOpen = false}
   bind:editor={editor}
@@ -155,38 +156,38 @@
     options={[
       {
         text: $_('generics.text'),
-        value: TemplateInputType.Text,
+        value: SurveyTemplateInputType.Text,
       },
       {
         text: $_('generics.number'),
-        value: TemplateInputType.Number,
+        value: SurveyTemplateInputType.Number,
       },
       {
         text: $_('generics.date'),
-        value: TemplateInputType.Date,
+        value: SurveyTemplateInputType.Date,
       },
       {
         text: $_('generics.paragraph'),
-        value: TemplateInputType.Paragraph,
+        value: SurveyTemplateInputType.Paragraph,
       },
       {
         text: $_('generics.singleSelect'),
-        value: TemplateInputType.SingleSelect,
+        value: SurveyTemplateInputType.SingleSelect,
       },
       {
         text: $_('generics.multiSelect'),
-        value: TemplateInputType.MultiSelect,
+        value: SurveyTemplateInputType.MultiSelect,
       },
       {
         text: $_('generics.upload'),
-        value: TemplateInputType.Upload,
+        value: SurveyTemplateInputType.Upload,
       },
       {
         text: $_('generics.title'),
-        value: TemplateInputType.Title,
+        value: SurveyTemplateInputType.Title,
       },
     ]}
-    bind:value={calculation.type}
+    bind:value={calculation.inputType}
     name={`calculations.${index}.type`}
   />
   <p />
@@ -241,9 +242,9 @@
             ...calculations.slice(0, index),
             {
               label: calculation.label,
-              type: calculation.type,
+              inputType: calculation.inputType,
               showOnComplete: false,
-              calculation: calculation.calculation,
+              deserializedCalculation: calculation.deserializedCalculation,
             },
             ...calculations.slice(index),
           ];

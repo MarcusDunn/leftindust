@@ -1,4 +1,4 @@
-import type { Editor } from 'function-junctions/types';
+import type { Editor, EditorState } from 'function-junctions/types';
 import type { SocketBlueprint } from 'function-junctions/types';
 import { get } from 'svelte/store';
 import dateSocket from '../Socket/components/DateSocket';
@@ -16,8 +16,9 @@ import { type CreateSurveyTemplate, type CreateSurveyTemplateCalculation, Survey
 
 const language = get(_);
 
-export type TemplateCalculationWithInstance = CreateSurveyTemplateCalculation & {
+export type TemplateCalculationWithInstance = Omit<CreateSurveyTemplateCalculation, 'calculation'> & {
   editor?: Editor;
+  deserializedCalculation: EditorState;
 }
 
 export type TemplateCalculationSockets = {
@@ -30,12 +31,45 @@ export type TemplateCalculationSockets = {
   text_array_array: SocketBlueprint;
 }
 
-export const defaultTemplate: CreateSurveyTemplate = {
+export const templatesSchema = yup.object({
+  title: yup.string().required(),
+  subtitle: yup.string().notRequired(),
+  sections: yup.array(yup.object({
+    id: yup.number().required(),
+    title: yup.string().required(),
+    subtitle: yup.string().nullable(),
+    inputs: yup.array(yup.object({
+      id: yup.number().required(),
+      type: yup.mixed<keyof typeof SurveyTemplateInputType>().oneOf(Object.values(SurveyTemplateInputType)),
+      label: yup.string().required(),
+      options: yup.array().of(yup.string().required()),
+      placeholder: yup.string(),
+      required: yup.boolean(),
+      category: yup.mixed<keyof typeof SurveyTemplateCategory>().oneOf(Object.values(SurveyTemplateCategory)),
+      uploadMultiple: yup.boolean(),
+      uploadAccept: yup.mixed<keyof typeof TemplateInputUploadType>().oneOf([null, ...Object.values(TemplateInputUploadType)]),
+    })).required(),
+  })).required(),
+  calculations: yup.array(yup.object({
+    label: yup.string().required(),
+    inputType: yup.mixed<keyof typeof SurveyTemplateInputType>().oneOf(Object.values(SurveyTemplateInputType)).nullable(),
+    showOnComplete: yup.boolean().required(),
+    calculation: yup.string().required(),
+  })),
+});
+
+export type TemplateSchema = yup.InferType<typeof templatesSchema>;
+
+export const defaultTemplate: TemplateSchema = {
   title: '',
+  subtitle: '',
   sections: [{
     title: '',
+    subtitle: '',
     inputs: [],
+    id: 0,
   }],
+  calculations: [],
 };
 
 export const templateCalculationSockets: TemplateCalculationSockets = {
@@ -112,40 +146,15 @@ export const templateInputSelectOptions = [
 ];
 
 export const templateForm = () => {
-  const schema = yup.object({
-    title: yup.string().required(),
-    subtitle: yup.string(),
-    sections: yup.array(yup.object({
-      calculationId: yup.number().required(),
-      title: yup.string().required(),
-      subtitle: yup.string(),
-      inputs: yup.array(yup.object({
-        calculationId: yup.number().required(),
-        type: yup.mixed<keyof typeof SurveyTemplateInputType>().oneOf(Object.values(SurveyTemplateInputType)),
-        label: yup.string().required(),
-        options: yup.array().of(yup.string()),
-        placeholder: yup.string(),
-        required: yup.boolean(),
-        category: yup.mixed<keyof typeof SurveyTemplateCategory>().oneOf(Object.values(SurveyTemplateCategory)),
-        uploadMultiple: yup.boolean(),
-        uploadAccept: yup.mixed<keyof typeof TemplateInputUploadType>().oneOf(Object.values(TemplateInputUploadType)),
-      })).required(),
-    })).required(),
-    calculations: yup.array(yup.object({
-      label: yup.string().required(),
-      inputType: yup.mixed<keyof typeof SurveyTemplateInputType>().oneOf(Object.values(SurveyTemplateInputType)).nullable(),
-      showOnComplete: yup.boolean().required(),
-      calculation: yup.string().required(),
-    })),
-  });
 
-  return createForm<yup.InferType<typeof schema>>({
+
+  return createForm<TemplateSchema>({
     initialValues: defaultTemplate,
     onSubmit: (form) => {
       console.log(form);
     },
     extend: [
-      validator({ schema }),
+      validator({ schema: templatesSchema }),
     ],
   });
 };

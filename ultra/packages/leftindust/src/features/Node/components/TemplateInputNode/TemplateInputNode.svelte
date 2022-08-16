@@ -1,13 +1,14 @@
 <script lang="ts">
   import { Template } from '@/features/Templates/store';
 
-  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, TemplateInputType, type TemplateCalculationSockets, type TemplateInput } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions } from '@/features/Templates';
   import type { Editor, OutputSocket, OutputSockets, Node } from 'function-junctions/types';
   import { _ } from '@/language';
   import { BlockFooter, Button, Link, ListItem } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import Input from '@/features/Input/Input.svelte';
   import { get } from 'svelte/store';
+  import type { SurveyTemplateInput, SurveyTemplateInputType } from '@/api/server';
 
   export let outputs: OutputSockets<{
     Value: OutputSocket<unknown>;
@@ -28,17 +29,17 @@
     id: undefined,
   };
 
-  let input: TemplateInput & {
+  let input: Omit<SurveyTemplateInput, 'id'> & {
     sectionIndex: number;
     index: number;
   } | undefined;
 
-  let prevType: TemplateInputType;
+  let prevType: SurveyTemplateInputType;
 
   outputs.Value.disabled = !$Value;
 
   const changeInput = () => {
-    input = inputs.find((input) => input.id === store?.id);
+    input = inputs.find((input) => input.calculationId === store?.id);
   };
 
   const reevaluateConnections = () => {
@@ -135,7 +136,7 @@
         >
           <select name="input" bind:value={store.id}>
             {#each inputs as i}
-              <option value={i.id}>{i.label}</option>
+              <option value={i.calculationId}>{i.label}</option>
             {/each}
           </select>
         </ListItem>
@@ -166,7 +167,7 @@
         <select name="input" bind:value={store.id}>
           <option value="" selected disabled>Eg. Input A</option>
           {#each inputs as i}
-            <option value={i.id}>{i.label}</option>
+            <option value={i.calculationId}>{i.label}</option>
           {/each}
         </select>
       </Button>
