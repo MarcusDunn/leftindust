@@ -1,13 +1,7 @@
 <script lang="ts">
   import type { Data } from '@/api/server/graphql' 
-  import type { Popover } from 'framework7/types'
 
-  import type { NameInfo, DoctorInput } from '@/api/server/graphql/schema/leftindust.schema'
-
-  import { writable } from 'svelte/store';
   import { _ } from '@/language';
-
-  import deepmerge from 'deepmerge';
 
   import { Row, Col, Block } from 'framework7-svelte';
 
@@ -18,39 +12,8 @@
 
   export let data: Data<'Doctor'> | undefined = undefined;
 
-  const { form, errors, data: formData, handleSubmit } = createDoctorFormValidator();
+  const { form, data: formData, handleSubmit } = createDoctorFormValidator();
 
-  let doctor: any = writable();
-
-  let input: Partial<DoctorInput> & { nameInfo: NonNullable<NameInfo>} = {
-    nameInfo:{
-      firstName: '',
-      middleName: '',
-      lastName: '',
-    },
-    title: '',
-    addresses: [],
-    patients: [],
-    emails: [],
-    phones: [],
-  }
-  
-  let patients = writable<Data[]>([]);
-
-  let patientsPopover: Popover.Popover;
-
-  const edit = (): void => {
-    input = deepmerge(input, {
-      ...$doctor,
-      nameInfo: {
-        firstName: $doctor.firstName,
-        middleName: $doctor.middleName,
-        lastName: $doctor.lastName,
-      },
-    });
-  }
-
-  $: if ($doctor) edit();
   let ref: HTMLFormElement;
 </script>
 
