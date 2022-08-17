@@ -61,7 +61,7 @@
   disabled={false}
   on:submit={() => ref?.requestSubmit()}
 > 
-  <form use:form on:submit="{handleSubmit}">
+  <form use:form on:submit="{handleSubmit}" bind:this="{ref}">
     <Block style="margin-top: 60px">
       <Block>
         <h4>Identification</h4>
@@ -100,7 +100,6 @@
           </Col>
         </Row>
       </Block>
-      <button type="submit" style="height: 80px;">Done</button>
     </Block>
   </form>
 </Wizard>
