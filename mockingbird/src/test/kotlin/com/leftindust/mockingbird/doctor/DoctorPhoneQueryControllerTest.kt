@@ -51,6 +51,7 @@ internal class DoctorPhoneQueryControllerTest(
             .errors()
             .verify()
             .path("doctorsByDoctorIds[0].phoneNumbers[*].id.value")
+//            .matchesJson("{\"bruh\": \"bruh\"}")
             .entity(object : ParameterizedTypeReference<List<UUID>>() {})
             .matches { it.contains(PhoneMother.DansCell.dto.id.value) }
             .path("doctorsByDoctorIds[0].phoneNumbers[0]")
