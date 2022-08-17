@@ -25,19 +25,18 @@ internal class DoctorAddressQueryControllerTest(
     @MockkBean
     private lateinit var readAddressService: ReadAddressService
 
-    @MockkBean
+    @MockkBean()
     private lateinit var readDoctorService: ReadDoctorService
 
     @Test
-
     internal fun `check can query for doctor address fields`() {
-        coEvery { readDoctorService.getByDoctorId(DoctorMother.Dan.graphqlId) } returns DoctorMother.Dan.entityPersisted
-        coEvery { readAddressService.getByDoctorId(DoctorMother.Dan.graphqlId) } returns listOf(AddressMother.DansHouse.entityPersisted)
+        coEvery { readDoctorService.getByDoctorId(DoctorMother.Jenny.graphqlId) } returns DoctorMother.Jenny.entityPersisted
+        coEvery { readAddressService.getByDoctorId(DoctorMother.Jenny.graphqlId) } returns listOf(AddressMother.JennysHouse.entityPersisted)
 
         @Language("graphql")
         val query = """
             query {
-                doctorsByDoctorIds(doctorIds: [{ value: "${DoctorMother.Dan.id}" }]) {
+                doctorsByDoctorIds(doctorIds: [{ value: "${DoctorMother.Jenny.id}" }]) {
                     addresses {
                         id { value }
                         type
@@ -56,13 +55,13 @@ internal class DoctorAddressQueryControllerTest(
             .execute()
             .errors()
             .verify()
-            .path("doctorsByDoctorIds[0].addresses[0].id.value")
-//            .matchesJson("{}")
-            .entity(object : ParameterizedTypeReference<UUID>() {})
-            .matches { it.equals(AddressMother.DansHouse.dto.id.value) }
+            .path("doctorsByDoctorIds[0].addresses[*].id.value")
+//            .matchesJson("{\"bruh\": \"bruh\"}")
+            .entity(object : ParameterizedTypeReference<List<UUID>>() {})
+            .matches { it.contains(AddressMother.JennysHouse.id) }
             .path("doctorsByDoctorIds[0].addresses[0]")
             .entity(AddressDto::class.java)
-            .isEqualTo(AddressMother.DansHouse.dto)
+            .isEqualTo(AddressMother.JennysHouse.dto)
 
     }
 }
