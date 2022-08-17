@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 @Service
 @Transactional
 class CreatePatientServiceImpl(
-    private val patientRepository: HibernatePatientRepository,
+    private val patientRepository: PatientRepository,
     private val createNameInfoService: CreateNameInfoService,
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,

@@ -5,10 +5,10 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    application
     kotlin("jvm") version "1.7.0"
     kotlin("kapt") version "1.7.0"
     kotlin("plugin.spring") version "1.7.0"
-    kotlin("plugin.allopen") version "1.7.0"
     kotlin("plugin.jpa") version "1.7.0"
     id("org.jetbrains.kotlinx.kover") version "0.5.0"
     id("org.springframework.boot") version "2.7.0"
@@ -16,6 +16,10 @@ plugins {
 
     // liquibase
     id("org.liquibase.gradle") version "2.1.1"
+}
+
+application {
+    mainClass.set("com.leftindust.mockingbird.MockingbirdApplicationKt")
 }
 
 repositories {
@@ -44,7 +48,10 @@ dependencies {
     implementation("io.ktor", "ktor-client")
     implementation("io.ktor", "ktor-client-cio")
     implementation("io.ktor", "ktor-client-content-negotiation")
-    implementation("io.ktor", "ktor-serialization-gson")
+    implementation("io.ktor", "ktor-serialization-jackson")
+
+    // jackson
+    implementation("com.fasterxml.jackson.module", "jackson-module-kotlin")
 
     // hibernate model code generation
     implementation("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
@@ -92,6 +99,9 @@ liquibase {
             "url" to "jdbc:postgresql://127.0.0.1:5432/mediq",
             "username" to "mediq",
             "password" to "mediq",
+            "referenceUrl" to "jdbc:postgresql://127.0.0.1:5433/mediq",
+            "referenceUsername" to "mediq",
+            "referencePassword" to "mediq",
         )
     }
     runList = "main"

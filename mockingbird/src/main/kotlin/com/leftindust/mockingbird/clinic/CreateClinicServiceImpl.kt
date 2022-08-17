@@ -3,7 +3,6 @@ package com.leftindust.mockingbird.clinic
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.doctor.ReadDoctorService
 import javax.transaction.Transactional
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service

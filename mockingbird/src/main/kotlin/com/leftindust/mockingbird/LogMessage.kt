@@ -2,8 +2,6 @@ package com.leftindust.mockingbird
 
 import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
-import com.leftindust.mockingbird.survey.SurveyTemplate
-import com.leftindust.mockingbird.survey.SurveyTemplateEntity
 import java.util.UUID
 import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
@@ -60,3 +58,15 @@ class NullEntityIdInConverterException(entity: AbstractJpaPersistable) : Mocking
 
 class NullSubQueryException(origin: AbstractGraphQLDto<*>, functionName: KCallable<*>) :
     MockingbirdException("${functionName.name} returned null when called used to resolve a sub query of $origin.")
+
+class InconvertibleDtoException(dto: Any, kClass: KClass<*>) : MockingbirdException("Tried to convert $dto to ${kClass.simpleName} but failed") {
+    companion object {
+        inline operator fun <reified T> invoke(dto: Any): InconvertibleDtoException = InconvertibleDtoException(dto, T::class)
+    }
+}
+
+class InconvertibleEntityException(entity: AbstractJpaPersistable, kClass: KClass<*>) : MockingbirdException("Tried to convert $entity to ${kClass.simpleName} but failed") {
+    companion object {
+        inline operator fun <reified T> invoke(entity: AbstractJpaPersistable): InconvertibleEntityException = InconvertibleEntityException(entity, T::class)
+    }
+}
