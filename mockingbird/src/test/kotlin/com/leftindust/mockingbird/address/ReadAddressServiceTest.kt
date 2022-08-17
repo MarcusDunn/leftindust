@@ -44,4 +44,20 @@ internal class ReadAddressServiceTest {
         )
     }
 
+    @Test
+    internal fun `check getByPatientId returns a list of addresses corresponding to a patient's Id`() =
+        runTest {
+            coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityPersisted
+            val readAddressServiceImpl =
+                withContext(Dispatchers.IO) {
+                    ReadAddressServiceImpl(addressRepository, readDoctorService, readPatientService)
+                }
+            val addresses = readAddressServiceImpl.getByPatientId(PatientMother.Dan.graphqlId)
+
+            MatcherAssert.assertThat(
+                addresses,
+                Matchers.containsInAnyOrder(PatientMother.Dan.addresses.map { Matchers.equalTo(it) })
+            )
+        }
+
 }
