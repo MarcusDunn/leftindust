@@ -11,8 +11,10 @@ import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
+import java.util.*
 
 
 @GraphQlTest(controllers = [PatientQueryController::class, PatientAddressQueryController::class])
@@ -55,12 +57,10 @@ internal class PatientAddressQueryControllerTest(
             .execute()
             .errors()
             .verify()
-//            .path("doctorsByDoctorIds[0].addresses[*].id.value")
-//            .matchesJson("{\"bruh\": \"bruh\"}")
-//            .entity(object : ParameterizedTypeReference<List<UUID>>() {})
-//            .matches { it.contains(AddressMother.JennysHouse.id) }
+            .path("patientsByPatientId[0].addresses[*].id.value")
+            .entity(object : ParameterizedTypeReference<List<UUID>>() {})
+            .matches { it.contains(AddressMother.JennysHouse.id) }
             .path("patientsByPatientId[0].addresses[0]")
-//            .matchesJson("{\"bruh\": \"bruh\"}")
             .entity(AddressDto::class.java)
             .isEqualTo(AddressMother.JennysHouse.dto)
     }
