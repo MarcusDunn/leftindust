@@ -18,7 +18,7 @@
 
   export let data: Data<'Doctor'> | undefined = undefined;
 
-  const { form, errors, data: formData } = createDoctorFormValidator();
+  const { form, errors, data: formData, handleSubmit } = createDoctorFormValidator();
 
   let doctor: any = writable();
 
@@ -50,19 +50,18 @@
     });
   }
 
-  const submit = () => {}
-
   $: if ($doctor) edit();
-
+  let ref: HTMLFormElement;
 </script>
 
 <Wizard
   title={$_('generics.newDoctor')}
   subtitle={$_('descriptions.addDoctorDescription')}
   color="purple"
-  on:submit={submit}
+  disabled={false}
+  on:submit={() => ref?.requestSubmit()}
 > 
-  <form use:form>   
+  <form use:form on:submit="{handleSubmit}">
     <Block style="margin-top: 60px">
       <Block>
         <h4>Identification</h4>
@@ -101,6 +100,7 @@
           </Col>
         </Row>
       </Block>
+      <button type="submit" style="height: 80px;">Done</button>
     </Block>
   </form>
 </Wizard>

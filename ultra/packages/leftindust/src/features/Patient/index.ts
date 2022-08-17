@@ -43,6 +43,7 @@ export const createPatientFormValidator = () => {
   return createForm<yup.InferType<typeof schema >>({
     initialValues: defaultPatientForm,
     onSubmit: (form) => console.log(form),
+    onError: (errors) => console.log(errors),
     extend: [validator({ schema })]
   });
 }

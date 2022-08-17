@@ -31,7 +31,7 @@
 
   export let data: Data<'Patient'> | undefined = undefined;
 
-  const { form, errors, data: formData } = createPatientFormValidator();
+  const { form, errors, data: formData, handleSubmit } = createPatientFormValidator();
 
   let patient: any = writable();
   let disabled = true;
@@ -71,16 +71,17 @@
 
   const submit = () => {};
 
+  let ref: HTMLFormElement;
 </script>
 
 <Wizard
-title={$_("generics.newPatient")}
-subtitle={$_("descriptions.addPatientDescription")}
-color="purple"
-{disabled}
-on:submit={submit}
+  title={$_("generics.newPatient")}
+  subtitle={$_("descriptions.addPatientDescription")}
+  color="purple"
+  disabled={false}
+  on:submit={() => ref?.requestSubmit()}
 >
-  <form use:form>
+  <form use:form on:submit="{handleSubmit}">
       {#key $patient}
         <Block style="margin-top: 60px">
           <Block>
@@ -137,7 +138,7 @@ on:submit={submit}
                           value: Ethnicity.White,
                         },
                       ]}
-                      bind:value={input.ethnicity}
+                      bind:value={$formData.ethnicity}
                       />
                     <p />
                   </Col>
@@ -157,6 +158,7 @@ on:submit={submit}
               </Col>
             </Row>
           </Block>
+          <button type="submit" style="height: 80px;">Done</button>
         </Block>
       {/key}
     </form>
