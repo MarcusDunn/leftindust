@@ -11,6 +11,7 @@
   import { format } from 'date-fns';
   import Card from '@/features/Widgets/components/Card/Card.svelte';
   import  { type SurveyTemplateInput, SurveyTemplateCategory } from '@/api/server';
+  import type { Template as TemplateType } from '../..';
 
   export let shadow = true;
 
@@ -18,7 +19,7 @@
   let title: string;
   let body: string;
 
-  let inputs: SurveyTemplateInput[] = [];
+  let inputs: TemplateType['sections'][number]['inputs'] = [];
 
   $: date = inputs.filter(
     ({ category }) => category === SurveyTemplateCategory.Date,

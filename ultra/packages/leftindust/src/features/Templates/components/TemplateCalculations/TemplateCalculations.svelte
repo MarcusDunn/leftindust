@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getTemplateSocketType, type TemplateCalculationWithInstance, templateForm, type TemplateSchema } from '../..';
+  import { getTemplateSocketType, type TemplateCalculationWithInstance, templateForm, type Template as TemplateType } from '../..';
   import AppLauncherApp from '@/features/Apps/components/AppLauncher/AppLauncherApp.svelte';
   import FlowCover from '@/apps/flow/assets/flow.png';
   import { Template } from '../../store';
@@ -13,10 +13,9 @@
 
   export let calculations: TemplateCalculationWithInstance[];
   
-  export let data: ReturnType<typeof templateForm>['data'];
   export let errors: ReturnType<typeof templateForm>['errors'];
 
-  let inputs: (TemplateSchema['sections'][number]['inputs'][number] & {
+  let inputs: (TemplateType['sections'][number]['inputs'][number] & {
     sectionIndex: number;
     index: number;
   })[];
@@ -51,11 +50,10 @@
             value: nodeInputs[input.id]?.value ?? writable(),
           },
         };
+        
+        nodeInputs[input.id].value.update(() => input.value);
       }
   
-      inputs.forEach((input) => {
-        nodeInputs[input.id].value.update(() => input.value);
-      });
     });
   }
 </script>
@@ -71,7 +69,6 @@
       {index}
       {nodeInputs}
       {errors}
-      {data}
       bind:calculations={calculations}
       bind:calculation
     />

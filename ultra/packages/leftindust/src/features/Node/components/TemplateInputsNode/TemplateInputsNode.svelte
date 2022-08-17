@@ -97,7 +97,7 @@
       >
         <select placeholder="Eg. Input A, Input B" name="inputs" multiple bind:value={store.ids}>
           {#each inputs as input}
-            <option value={input.calculationId}>{input.label}</option>
+            <option value={input.id}>{input.label}</option>
           {/each}
         </select>
       </ListItem>

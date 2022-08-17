@@ -2,11 +2,12 @@
   import { _ } from '@/language';
   import { Col, Row } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
-  import type { SurveyTemplateCategory, SurveyTemplateInput, CreateSurveyTemplateSection } from '@/api/server';
+  import { SurveyTemplateCategory, type CreateSurveyTemplateSection, SurveyTemplateInputType } from '@/api/server';
+  import type { Template } from '../..';
   
-  export let sections: CreateSurveyTemplateSection[];
+  export let sections: Template['sections'];
 
-  let inputs: (SurveyTemplateInput & {
+  let inputs: (Template['sections'][number]['inputs'][number] & {
     originalSectionIndex: number;
   })[] = [];
 
@@ -22,7 +23,7 @@
       if (resetIndex >= 0 && !keepOld) sections[resetSectionIndex].inputs[resetIndex].category = undefined;
     }
     
-    const inputIndex = inputs.findIndex(({ calculationId }) => calculationId === value);
+    const inputIndex = inputs.findIndex(({ id }) => id === value);
     const sectionIndex = inputs[inputIndex]?.originalSectionIndex ?? -1;
     const index = sections[sectionIndex]?.inputs?.findIndex(({ id }) => id === value);
 
@@ -49,7 +50,7 @@
         ...inputs
           .filter(({ category }) => category ? category === SurveyTemplateCategory.Date : !category)
           .filter(({ type }) =>
-            type === TemplateInputType.Date,
+            type === SurveyTemplateInputType.Date,
           )
           .map((input) => ({
             text: input.label,
@@ -72,10 +73,10 @@
         ...inputs
           .filter(({ category }) => category ? category === SurveyTemplateCategory.Title : !category)
           .filter(({ type }) =>
-            type === TemplateInputType.Text
-              || type === TemplateInputType.Number
-              || type === TemplateInputType.SingleSelect
-              || type === TemplateInputType.MultiSelect,
+            type === SurveyTemplateInputType.Text
+              || type === SurveyTemplateInputType.Number
+              || type === SurveyTemplateInputType.SingleSelect
+              || type === SurveyTemplateInputType.MultiSelect,
           )
           .map((input) => ({
             text: input.label,
@@ -98,11 +99,11 @@
         ...inputs
           .filter(({ category }) => category ? category === SurveyTemplateCategory.Body : !category)
           .filter(({ type }) =>
-            type === TemplateInputType.Text
-              || type === TemplateInputType.Number
-              || type === TemplateInputType.SingleSelect
-              || type === TemplateInputType.MultiSelect
-              || type === TemplateInputType.Paragraph,
+            type === SurveyTemplateInputType.Text
+              || type === SurveyTemplateInputType.Number
+              || type === SurveyTemplateInputType.SingleSelect
+              || type === SurveyTemplateInputType.MultiSelect
+              || type === SurveyTemplateInputType.Paragraph,
           )
           .map((input) => ({
             text: input.label,

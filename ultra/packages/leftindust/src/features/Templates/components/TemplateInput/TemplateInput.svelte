@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { templateForm, templateInputSelectOptions, type TemplateSchema } from '../..';
+  import { templateForm, templateInputSelectOptions, type Template as TemplateType } from '../..';
   import { _ } from 'svelte-i18n';
   import {
     Button,
@@ -9,6 +9,7 @@
     Row,
     Toggle,
   } from 'framework7-svelte';
+  import { Template } from '../../store';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import { SurveyTemplateInputType, TemplateInputUploadType, SurveyTemplateCategory } from '@/api/server';
   import Input from '@/features/Input/Input.svelte';
@@ -17,7 +18,7 @@
   import TemplateInputSelect from './TemplateInputSelect.svelte';
   import Add from '@/features/Input/components/Add/Add.svelte';
   
-  export let inputs: TemplateSchema['sections'][number]['inputs'];
+  export let inputs: TemplateType['sections'][number]['inputs'];
   export let index: number;
   export let globalIndex: number;
   export let sectionIndex: number;
@@ -28,18 +29,17 @@
   export let placeholder = '';
   export let required = false;
 
-  export let uploadAccept: TemplateInputUploadType | undefined = undefined;
-  export let uploadMultiple: boolean | undefined = undefined;
+  export let uploadAccept: TemplateInputUploadType;
+  export let uploadMultiple: boolean;
 
-  export let options: string[] | undefined = [''];
+  export let options: string[] = [''];
 
   export let dragger: ((event: Event) => void)| undefined = undefined;
 
   export let errors: ReturnType<typeof templateForm>['errors'];
-  export let data: ReturnType<typeof templateForm>['data'];
 
-  $: if ($data?.sections?.[sectionIndex]?.inputs?.[index] && typeof $data?.sections?.[sectionIndex]?.inputs?.[index].id === 'undefined')
-    $data.sections[sectionIndex].inputs[index].id = id;
+  $: if ($Template?.sections?.[sectionIndex]?.inputs?.[index] && typeof $Template?.sections?.[sectionIndex]?.inputs?.[index].id === 'undefined')
+    $Template.sections[sectionIndex].inputs[index].id = id;
 
   $: multiselect = (type === SurveyTemplateInputType.SingleSelect || type === SurveyTemplateInputType.MultiSelect);
   $: title = type === SurveyTemplateInputType.Title;
@@ -175,7 +175,6 @@
                 <Toggle
                   color="deeppurple"
                   bind:checked={required}
-                  name={`sections.${sectionIndex}.inputs.${index}.required`}
                 />
               </ListItem>
             </Input>
@@ -198,9 +197,10 @@
                     placeholder,
                     required,
                     options,
-                    uploadMultiple: undefined,
-                    uploadAccept: undefined,
+                    uploadMultiple,
+                    uploadAccept,
                     category: SurveyTemplateCategory.Title,
+                    value: '',
                   },
                   ...inputs.slice(index),
                 ];

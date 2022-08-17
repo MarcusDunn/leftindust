@@ -15,6 +15,7 @@ export default defineConfig({
   root,
   base: '',
   publicDir: '../public',
+  mode: production ? undefined : 'development',
   build: {
     outDir,
     rollupOptions: {

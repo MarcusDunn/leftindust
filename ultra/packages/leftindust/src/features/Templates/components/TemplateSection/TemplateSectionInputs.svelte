@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { templateForm, TemplateSchema } from '../..';
+  import type { templateForm, Template as TemplateType } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import TemplateInputs from '../TemplateInputs/TemplateInputs.svelte';
 
@@ -7,14 +7,13 @@
 
   export let title: string;
   export let subtitle: string | null | undefined = undefined;
-  export let inputs: TemplateSchema['sections'][number]['inputs'] | undefined = undefined;
+  export let inputs: TemplateType['sections'][number]['inputs'] | undefined = undefined;
 
   export let globalIndex: number | undefined = undefined;
 
   export let index: number | undefined = undefined;
 
   export let errors: ReturnType<typeof templateForm>['errors'];
-  export let data: ReturnType<typeof templateForm>['data'];
 </script>
 
 <Input
@@ -53,7 +52,6 @@
     bind:inputs={inputs}
     bind:globalIndex
     {errors}
-    {data}
     sectionIndex={index}
   />
 {/if}

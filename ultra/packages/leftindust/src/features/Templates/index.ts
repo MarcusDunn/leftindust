@@ -12,7 +12,7 @@ import { _ } from '@/language';
 import * as yup from 'yup';
 import { createForm } from 'felte';
 import { validator } from '@felte/validator-yup';
-import { type CreateSurveyTemplate, type CreateSurveyTemplateCalculation, SurveyTemplateInputType, SurveyTemplateCategory, TemplateInputUploadType } from '@/api/server';
+import { type CreateSurveyTemplateCalculation, SurveyTemplateInputType, SurveyTemplateCategory, TemplateInputUploadType } from '@/api/server';
 
 const language = get(_);
 
@@ -31,15 +31,41 @@ export type TemplateCalculationSockets = {
   text_array_array: SocketBlueprint;
 }
 
+export type Template = {
+  title: string;
+  subtitle?: string;
+  sections: {
+    id: number;
+    title: string;
+    subtitle?: string;
+    inputs: {
+      id: number;
+      type: SurveyTemplateInputType;
+      label: string;
+      options: string[];
+      placeholder?: string;
+      required?: boolean;
+      category?: SurveyTemplateCategory;
+      uploadMultiple: boolean;
+      uploadAccept: TemplateInputUploadType;
+      value: unknown;
+    }[];
+  }[];
+  calculations: {
+    label: string;
+    inputType: SurveyTemplateInputType;
+    showOnComplete: boolean;
+    calculation: EditorState;
+  }[];
+}
+
 export const templatesSchema = yup.object({
   title: yup.string().required(),
-  subtitle: yup.string().notRequired(),
+  subtitle: yup.string(),
   sections: yup.array(yup.object({
-    id: yup.number().required(),
     title: yup.string().required(),
-    subtitle: yup.string().nullable(),
+    subtitle: yup.string(),
     inputs: yup.array(yup.object({
-      id: yup.number().required(),
       type: yup.mixed<keyof typeof SurveyTemplateInputType>().oneOf(Object.values(SurveyTemplateInputType)),
       label: yup.string().required(),
       options: yup.array().of(yup.string().required()),
@@ -48,24 +74,23 @@ export const templatesSchema = yup.object({
       category: yup.mixed<keyof typeof SurveyTemplateCategory>().oneOf(Object.values(SurveyTemplateCategory)),
       uploadMultiple: yup.boolean(),
       uploadAccept: yup.mixed<keyof typeof TemplateInputUploadType>().oneOf([null, ...Object.values(TemplateInputUploadType)]),
-    })).required(),
+    })),
   })).required(),
   calculations: yup.array(yup.object({
     label: yup.string().required(),
     inputType: yup.mixed<keyof typeof SurveyTemplateInputType>().oneOf(Object.values(SurveyTemplateInputType)).nullable(),
     showOnComplete: yup.boolean().required(),
-    calculation: yup.string().required(),
   })),
 });
 
 export type TemplateSchema = yup.InferType<typeof templatesSchema>;
 
-export const defaultTemplate: TemplateSchema = {
+export const defaultTemplate: Template = {
   title: '',
-  subtitle: '',
+  subtitle: undefined,
   sections: [{
     title: '',
-    subtitle: '',
+    subtitle: undefined,
     inputs: [],
     id: 0,
   }],
@@ -145,16 +170,12 @@ export const templateInputSelectOptions = [
   },
 ];
 
-export const templateForm = () => {
-
-
-  return createForm<TemplateSchema>({
-    initialValues: defaultTemplate,
-    onSubmit: (form) => {
-      console.log(form);
-    },
-    extend: [
-      validator({ schema: templatesSchema }),
-    ],
-  });
-};
+export const templateForm = () => createForm<TemplateSchema>({
+  initialValues: defaultTemplate,
+  onSubmit: (form) => {
+    console.log(form);
+  },
+  extend: [
+    validator({ schema: templatesSchema }),
+  ],
+});

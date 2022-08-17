@@ -1,13 +1,13 @@
 <script lang="ts">
   import type { DndEvent } from 'svelte-dnd-action';
-  import type { templateForm, TemplateSchema } from '../../';
+  import type { templateForm, Template as TemplateType } from '../../';
   import { dndzone, SOURCES, TRIGGERS	} from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import TemplateInput from '../TemplateInput/TemplateInput.svelte';
   import { SurveyTemplateCategory, SurveyTemplateInputType, TemplateInputUploadType } from '@/api/server';
   
-  export let inputs: TemplateSchema['sections'][number]['inputs'] = [];
+  export let inputs: TemplateType['sections'][number]['inputs'] = [];
   export let globalIndex = 0;
   export let sectionIndex = 0;
 			
@@ -16,7 +16,7 @@
 			
   const handleConsider = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source, trigger } } = e.detail;
-    inputs = newItems as TemplateSchema['sections'][number]['inputs'];
+    inputs = newItems as TemplateType['sections'][number]['inputs'];
     // Ensure dragging is stopped on drag finish via keyboard
     if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
       dragDisabled = true;
@@ -25,7 +25,7 @@
 
   const handleFinalize = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source } } = e.detail;
-    inputs = newItems as TemplateSchema['sections'][number]['inputs'];
+    inputs = newItems as TemplateType['sections'][number]['inputs'];
     // Ensure dragging is stopped on drag finish via pointer (mouse, touch)
     if (source === SOURCES.POINTER) {
       dragDisabled = true;
@@ -39,7 +39,6 @@
   };
 
   export let errors: ReturnType<typeof templateForm>['errors'];
-  export let data: ReturnType<typeof templateForm>['data'];
 </script>
 
 {#if inputs.length > 0}
@@ -58,7 +57,6 @@
           {sectionIndex}
           dragger={startDrag}
           {errors}
-          {data}
           bind:globalIndex
           bind:inputs
           bind:type={input.type}
@@ -94,6 +92,7 @@
             uploadAccept: TemplateInputUploadType.All,
             uploadMultiple: true,
             category: SurveyTemplateCategory.Body,
+            value: '',
           },
         ];
         globalIndex += 1;

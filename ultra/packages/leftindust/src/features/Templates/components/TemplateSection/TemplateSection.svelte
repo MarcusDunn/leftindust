@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { templateForm, TemplateSchema } from '../..';
+  import type { templateForm, Template as TemplateType } from '../..';
   import Section from '@/features/UI/components/Section/Section.svelte';
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
 
@@ -9,15 +9,13 @@
   import { Icon } from 'framework7-svelte';
 
   import { _ } from 'svelte-i18n';
-  import type { CreateSurveyTemplateSection } from '@/api/server';
   import TemplateSectionInputs from './TemplateSectionInputs.svelte';
 
   export let index: number;
-  export let section: TemplateSchema['sections'][number];
-  export let sections: TemplateSchema['sections'];
+  export let section: TemplateType['sections'][number];
+  export let sections: TemplateType['sections'];
 
   export let errors: ReturnType<typeof templateForm>['errors'];
-  export let data: ReturnType<typeof templateForm>['data'];
 
   export let globalIndex: number;
 
@@ -66,7 +64,6 @@
           bind:globalIndex
           {index}
           {errors}
-          {data}
         />
       </Section>
     {/if}
@@ -83,7 +80,6 @@
         bind:inputs={section.inputs}
         bind:globalIndex
         {errors}
-        {data}
       />
     </div>
   </div>

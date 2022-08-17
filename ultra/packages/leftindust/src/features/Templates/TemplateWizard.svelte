@@ -11,7 +11,6 @@
 
   import IFrame from '../View/components/IFrame/IFrame.svelte';
   import WizardSplit from '../Wizard/components/WizardSplit/WizardSplit.svelte';
-  import TemplateCategoryInputs from './components/TemplateInputs/TemplateCategoryInputs.svelte';
   import TemplateSections from './components/TemplateSections/TemplateSections.svelte';
   import TemplateSectionInputs from './components/TemplateSection/TemplateSectionInputs.svelte';
   import TemplateCalculations from './components/TemplateCalculations/TemplateCalculations.svelte';
@@ -20,6 +19,12 @@
   const { form, errors, data } = templateForm();
 
   let ref: HTMLFormElement;
+
+  $: console.log($errors);
+  $: console.log({
+    data: $data,
+    template: $Template,
+  });
 </script>
 
 <WizardSplit
@@ -60,7 +65,6 @@
             bind:title={$Template.title}
             bind:subtitle={$Template.subtitle}
             {errors}
-            {data}
           />
           <br />
           <br />
@@ -68,12 +72,10 @@
         <TemplateSections
           bind:sections={$Template.sections}
           {errors}
-          {data}
         />
         <TemplateCalculations
           bind:calculations={$TemplateCalculationsStore}
           {errors}
-          {data}
         />
       </Tab>
       <Tab tabActive={$TemplateSelectedTab === 'output'}>

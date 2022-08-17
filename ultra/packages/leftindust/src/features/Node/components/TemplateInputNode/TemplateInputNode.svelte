@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Template } from '@/features/Templates/store';
+  import type { Template as TemplateType } from '@/features/Templates';
 
   import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions } from '@/features/Templates';
   import type { Editor, OutputSocket, OutputSockets, Node } from 'function-junctions/types';
@@ -19,9 +20,6 @@
   
   const { value: Value } = outputs.Value;
   const { current: nodes } = editor.nodes;
-
-  let rerenderSmartSelect = false;
-  let smartSelectOpen = false;
   
   export let store: {
     id: number | undefined;
@@ -29,7 +27,7 @@
     id: undefined,
   };
 
-  let input: Omit<SurveyTemplateInput, 'id'> & {
+  let input: TemplateType['sections'][number]['inputs'][number] & {
     sectionIndex: number;
     index: number;
   } | undefined;
@@ -39,7 +37,7 @@
   outputs.Value.disabled = !$Value;
 
   const changeInput = () => {
-    input = inputs.find((input) => input.calculationId === store?.id);
+    input = inputs.find((input) => input.id === store?.id);
   };
 
   const reevaluateConnections = () => {
@@ -102,45 +100,36 @@
   $: if (input && !prevType) prevType = $Template.sections[input.sectionIndex].inputs[input.index].type;
 
   $: inputs, reevaluateConnections();
-  
-  // Rerendering bug with key to preserve smartSelect instance when open
-  $: inputs, (() => {
-    if (!smartSelectOpen) rerenderSmartSelect =  !rerenderSmartSelect;
-  })();
 </script>
 
 {#if input}
   <div style="min-width: 430px">
-    <Select
-      title={$_('generics.type')}
-      placeholder={$_('examples.text')}
-      options={templateInputSelectOptions}
-      bind:value={$Template.sections[input.sectionIndex].inputs[input.index].type}
-    />
+    {#if $Template.sections[input.sectionIndex].inputs[input.index]?.type}
+      <Select
+        title={$_('generics.type')}
+        placeholder={$_('examples.text')}
+        options={templateInputSelectOptions}
+        bind:value={$Template.sections[input.sectionIndex].inputs[input.index].type}
+      />
+    {/if}
     <p />
     <Input title="Input" disabled={inputs.length < 1}>
-      {#key rerenderSmartSelect}
-        <ListItem
-          class="input-select"
-          smartSelect
-          smartSelectParams={{
-            openIn: 'popover',
-            closeOnSelect: true,
-            on: {
-              open: () => (smartSelectOpen = true),
-              close: () => (smartSelectOpen = false),
-            },
-          }}
-          title=""
-          slot="content"
-        >
-          <select name="input" bind:value={store.id}>
-            {#each inputs as i}
-              <option value={i.calculationId}>{i.label}</option>
-            {/each}
-          </select>
-        </ListItem>
-      {/key}
+      <ListItem
+        class="input-select"
+        smartSelect
+        smartSelectParams={{
+          openIn: 'popover',
+          closeOnSelect: true,
+        }}
+        title=""
+        slot="content"
+      >
+        <select name="input" bind:value={store.id}>
+          {#each inputs as i}
+            <option value={i.id}>{i.label}</option>
+          {/each}
+        </select>
+      </ListItem>
     </Input>
   </div>
 {:else}
@@ -152,10 +141,6 @@
       smartSelectParams={{
         openIn: 'popover',
         closeOnSelect: true,
-        on: {
-          open: () => (smartSelectOpen = true),
-          close: () => (smartSelectOpen = false),
-        },
       }}
     >
       <Button
@@ -167,7 +152,7 @@
         <select name="input" bind:value={store.id}>
           <option value="" selected disabled>Eg. Input A</option>
           {#each inputs as i}
-            <option value={i.calculationId}>{i.label}</option>
+            <option value={i.id}>{i.label}</option>
           {/each}
         </select>
       </Button>
