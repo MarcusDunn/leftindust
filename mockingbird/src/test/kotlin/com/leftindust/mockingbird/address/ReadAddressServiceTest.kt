@@ -21,9 +21,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 internal class ReadAddressServiceTest {
 
     @MockK
-    private lateinit var addressRepository: AddressRepository
-
-    @MockK
     private lateinit var readDoctorService: ReadDoctorService
 
     @MockK
@@ -34,7 +31,7 @@ internal class ReadAddressServiceTest {
         coEvery { readDoctorService.getByDoctorId(DoctorMother.Jenny.graphqlId) } returns DoctorMother.Jenny.entityPersisted
         val readAddressServiceImpl =
             withContext(Dispatchers.IO) {
-                ReadAddressServiceImpl(addressRepository, readDoctorService, readPatientService)
+                ReadAddressServiceImpl(readDoctorService, readPatientService)
             }
         val addresses = readAddressServiceImpl.getByDoctorId(DoctorMother.Jenny.graphqlId)
 
@@ -50,7 +47,7 @@ internal class ReadAddressServiceTest {
             coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityPersisted
             val readAddressServiceImpl =
                 withContext(Dispatchers.IO) {
-                    ReadAddressServiceImpl(addressRepository, readDoctorService, readPatientService)
+                    ReadAddressServiceImpl(readDoctorService, readPatientService)
                 }
             val addresses = readAddressServiceImpl.getByPatientId(PatientMother.Dan.graphqlId)
 
