@@ -15,6 +15,8 @@
   let globalIndex = 1;
 
   export let sections: TemplateType['sections'];
+
+  export let data: ReturnType<typeof templateForm>['data'];
         
   const handleConsider = (e: CustomEvent<DndEvent>) => {
     const { items: newItems, info: { source, trigger } } = e.detail;
@@ -73,6 +75,7 @@
         bind:globalIndex
         bind:section
         {errors}
+        {data}
       />
     </div>
   {/each}

@@ -2,7 +2,7 @@
   import { _ } from '@/language';
   import { Col, Row } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
-  import { SurveyTemplateCategory, type CreateSurveyTemplateSection, SurveyTemplateInputType } from '@/api/server';
+  import { SurveyTemplateCategory, SurveyTemplateInputType } from '@/api/server';
   import type { Template } from '../..';
   
   export let sections: Template['sections'];

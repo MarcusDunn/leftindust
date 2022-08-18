@@ -1,0 +1,7 @@
+mutation surveyTemplateMutation($surveyTemplate: CreateSurveyTemplate!) {
+  addSurveyTemplate(surveyTemplate: $surveyTemplate) {
+    id {
+      value
+    }
+  }
+}

@@ -175,6 +175,7 @@
                 <Toggle
                   color="deeppurple"
                   bind:checked={required}
+                  name={`sections.${sectionIndex}.inputs.${index}.required`}
                 />
               </ListItem>
             </Input>

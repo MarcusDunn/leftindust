@@ -20,6 +20,8 @@
   export let globalIndex: number;
 
   export let dragger: ((event: Event) => void)| undefined = undefined;
+  
+  export let data: ReturnType<typeof templateForm>['data'];
 
   // TODO: Focus was disabled because it causes issues with the way active indexing is handled 
   // when sections are re-ordered
@@ -63,6 +65,7 @@
           bind:inputs={section.inputs}
           bind:globalIndex
           {index}
+          {data}
           {errors}
         />
       </Section>
@@ -79,6 +82,7 @@
         bind:subtitle={$Template.subtitle}
         bind:inputs={section.inputs}
         bind:globalIndex
+        {data}
         {errors}
       />
     </div>

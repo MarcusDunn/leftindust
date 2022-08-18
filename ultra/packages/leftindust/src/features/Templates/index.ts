@@ -12,10 +12,13 @@ import { _ } from '@/language';
 import * as yup from 'yup';
 import { createForm } from 'felte';
 import { validator } from '@felte/validator-yup';
-import { type CreateSurveyTemplateCalculation, SurveyTemplateInputType, SurveyTemplateCategory, TemplateInputUploadType } from '@/api/server';
+import { type CreateSurveyTemplateCalculation, SurveyTemplateInputType, SurveyTemplateCategory, TemplateInputUploadType, client, SurveyTemplateMutationDocument } from '@/api/server';
+import { Template, TemplateCalculations } from './store';
+import getNativeAPI from '@/api/bridge';
 
 const language = get(_);
-
+const { Dialog } = getNativeAPI();
+ 
 export type TemplateCalculationWithInstance = Omit<CreateSurveyTemplateCalculation, 'calculation'> & {
   editor?: Editor;
   deserializedCalculation: EditorState;
@@ -51,12 +54,6 @@ export type Template = {
       value: unknown;
     }[];
   }[];
-  calculations: {
-    label: string;
-    inputType: SurveyTemplateInputType;
-    showOnComplete: boolean;
-    calculation: EditorState;
-  }[];
 }
 
 export const templatesSchema = yup.object({
@@ -70,7 +67,9 @@ export const templatesSchema = yup.object({
       label: yup.string().required(),
       options: yup.array().of(yup.string().required()),
       placeholder: yup.string(),
-      required: yup.boolean(),
+      // TODO: weird bug that causes felte to bind to some toggles and retrieve the value as ['', '', '']
+      // Probably will move to a different lib in the future
+      required: yup.mixed(),
       category: yup.mixed<keyof typeof SurveyTemplateCategory>().oneOf(Object.values(SurveyTemplateCategory)),
       uploadMultiple: yup.boolean(),
       uploadAccept: yup.mixed<keyof typeof TemplateInputUploadType>().oneOf([null, ...Object.values(TemplateInputUploadType)]),
@@ -93,6 +92,16 @@ export const defaultTemplate: Template = {
     subtitle: undefined,
     inputs: [],
     id: 0,
+  }],
+};
+
+export const defaultTemplateSchema: TemplateSchema = {
+  title: '',
+  subtitle: undefined,
+  sections: [{
+    title: '',
+    subtitle: undefined,
+    inputs: [],
   }],
   calculations: [],
 };
@@ -170,10 +179,63 @@ export const templateInputSelectOptions = [
   },
 ];
 
-export const templateForm = () => createForm<TemplateSchema>({
-  initialValues: defaultTemplate,
-  onSubmit: (form) => {
-    console.log(form);
+export const templateForm = (closeWizardHandler: () => void) => createForm<TemplateSchema>({
+  initialValues: defaultTemplateSchema,
+  onSubmit: () => {
+    const form = get(Template);
+    const formCalculations = get(TemplateCalculations);
+
+    const surveyTemplate = {
+      title: form.title,
+      subtitle: form.subtitle,
+      sections: form.sections.map((section) => ({
+        title: section.title,
+        subtitle: section.subtitle,
+        calculationId: section.id,
+        inputs: section.inputs.map((input) => ({
+          calculationId: input.id,
+          category: input.category as SurveyTemplateCategory,
+          label: input.label,
+          options: input.options,
+          placeholder: input.placeholder,
+          required: input.required || false,
+          type: input.type,
+          uploadAccept: input.uploadAccept,
+          uploadMultiple: input.uploadMultiple,
+        })),
+      })),
+      calculations: formCalculations.map((calculation) => ({
+        label: calculation.label,
+        calculation: JSON.stringify(calculation.deserializedCalculation),
+        inputType: calculation.inputType,
+        showOnComplete: calculation.showOnComplete,
+      })),
+    };
+
+    console.log(surveyTemplate);
+
+    const showTemplateError = (error: string) => {
+      void Dialog.alert({
+        message: 'Something went wrong',
+        detail: error,
+        buttons: [language('generics.ok')],
+        defaultId: 0,
+      });
+    };
+
+    client.mutation(SurveyTemplateMutationDocument, {
+      surveyTemplate,
+    })
+      .toPromise()
+      .then(({ data, error }) => {
+        if (data?.addSurveyTemplate) {
+          closeWizardHandler();
+          return;
+        }
+        
+        showTemplateError(error?.message ?? 'Unknown error');
+      })
+      .catch((error) => showTemplateError(error));
   },
   extend: [
     validator({ schema: templatesSchema }),

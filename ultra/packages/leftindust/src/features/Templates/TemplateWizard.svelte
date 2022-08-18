@@ -15,16 +15,18 @@
   import TemplateSectionInputs from './components/TemplateSection/TemplateSectionInputs.svelte';
   import TemplateCalculations from './components/TemplateCalculations/TemplateCalculations.svelte';
   import { templateForm } from '.';
+  import TemplateCategoryInputs from './components/TemplateInputs/TemplateCategoryInputs.svelte';
+  import { closeWizard } from '../Wizard';
 
-  const { form, errors, data } = templateForm();
+  const closeWizardHandler = () => {
+    $Template = JSON.parse(JSON.stringify($Template));
+    $TemplateCalculationsStore = [];
+    closeWizard();
+  };
+
+  const { form, errors, data } = templateForm(closeWizardHandler);
 
   let ref: HTMLFormElement;
-
-  $: console.log($errors);
-  $: console.log({
-    data: $data,
-    template: $Template,
-  });
 </script>
 
 <WizardSplit
@@ -32,6 +34,7 @@
   subtitle="Create a new template"
   color="deeppurple"
   on:submit={() => ref?.requestSubmit()}
+  on:close={() => closeWizardHandler()}
 >
   <svelte:fragment slot="appbar">
     {#if !$TemplateNodesModalOpen}
@@ -64,6 +67,7 @@
           <TemplateSectionInputs
             bind:title={$Template.title}
             bind:subtitle={$Template.subtitle}
+            {data}
             {errors}
           />
           <br />
@@ -72,24 +76,23 @@
         <TemplateSections
           bind:sections={$Template.sections}
           {errors}
+          {data}
         />
         <TemplateCalculations
           bind:calculations={$TemplateCalculationsStore}
           {errors}
         />
       </Tab>
-      <Tab tabActive={$TemplateSelectedTab === 'output'}>
-        <!--          
-          <TemplateSectionInputs
-            bind:title={$Template.title}
-            bind:subtitle={$Template.subtitle}
-            {errors}
-            {data}
-          />
-          <br />
-          <br />
-          <TemplateCategoryInputs bind:sections={$Template.sections} />
-        -->
+      <Tab tabActive={$TemplateSelectedTab === 'output'}>       
+        <TemplateSectionInputs
+          bind:title={$Template.title}
+          bind:subtitle={$Template.subtitle}
+          {data}
+          {errors}
+        />
+        <br />
+        <br />
+        <TemplateCategoryInputs bind:sections={$Template.sections} />
       </Tab>
     </Tabs>
   </form>

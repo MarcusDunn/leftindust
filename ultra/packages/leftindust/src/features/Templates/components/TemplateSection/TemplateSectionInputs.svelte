@@ -14,6 +14,9 @@
   export let index: number | undefined = undefined;
 
   export let errors: ReturnType<typeof templateForm>['errors'];
+  export let data: ReturnType<typeof templateForm>['data'];
+
+  $: if (typeof index !== 'number') $data.sections[0].title = title;
 </script>
 
 <Input

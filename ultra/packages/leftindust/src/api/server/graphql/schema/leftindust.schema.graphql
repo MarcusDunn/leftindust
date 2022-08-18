@@ -84,7 +84,7 @@ input CreateCompleteSurveyInput {
 }
 
 input CreateCompleteSurveySection {
-  completedSurveyInputs: [CreateCompleteSurveyInput!]!
+  completedSurveyInputs: [CreateCompleteSurveyInput!]! = []
   surveyTemplateSectionId: SurveyTemplateSectionIdInput!
 }
 
@@ -109,14 +109,14 @@ input CreateSurveyTemplateCalculation {
 }
 
 input CreateSurveyTemplateSection {
-  calculationId: Int
+  calculationId: Int!
   inputs: [CreateSurveyTemplateSectionInput!]!
   subtitle: String
   title: String!
 }
 
 input CreateSurveyTemplateSectionInput {
-  calculationId: Int
+  calculationId: Int!
   category: SurveyTemplateCategory!
   label: String!
   options: [String!]
@@ -335,7 +335,7 @@ input SurveyTemplateIdInput {
 }
 
 type SurveyTemplateInput {
-  calculationId: Int
+  calculationId: Int!
   category: SurveyTemplateCategory
   id: SurveyTemplateInputId!
   label: String!
@@ -367,7 +367,7 @@ input SurveyTemplateLinkIdInput {
 }
 
 type SurveyTemplateSection {
-  calculationId: Int
+  calculationId: Int!
   id: SurveyTemplateSectionId!
   inputs: [SurveyTemplateInput!]!
   subtitle: String
@@ -379,7 +379,6 @@ type SurveyTemplateSectionId {
 }
 
 input SurveyTemplateSectionIdInput {
-  calculationId: Int
   value: UUID!
 }
 

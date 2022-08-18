@@ -108,7 +108,7 @@ export type CreateCompleteSurveyInput = {
 };
 
 export type CreateCompleteSurveySection = {
-  completedSurveyInputs: Array<CreateCompleteSurveyInput>;
+  completedSurveyInputs?: Array<CreateCompleteSurveyInput>;
   surveyTemplateSectionId: SurveyTemplateSectionIdInput;
 };
 
@@ -133,14 +133,14 @@ export type CreateSurveyTemplateCalculation = {
 };
 
 export type CreateSurveyTemplateSection = {
-  calculationId?: InputMaybe<Scalars['Int']>;
+  calculationId: Scalars['Int'];
   inputs: Array<CreateSurveyTemplateSectionInput>;
   subtitle?: InputMaybe<Scalars['String']>;
   title: Scalars['String'];
 };
 
 export type CreateSurveyTemplateSectionInput = {
-  calculationId?: InputMaybe<Scalars['Int']>;
+  calculationId: Scalars['Int'];
   category: SurveyTemplateCategory;
   label: Scalars['String'];
   options?: InputMaybe<Array<Scalars['String']>>;
@@ -437,7 +437,7 @@ export type SurveyTemplateIdInput = {
 
 export type SurveyTemplateInput = {
   __typename?: 'SurveyTemplateInput';
-  calculationId?: Maybe<Scalars['Int']>;
+  calculationId: Scalars['Int'];
   category?: Maybe<SurveyTemplateCategory>;
   id: SurveyTemplateInputId;
   label: Scalars['String'];
@@ -471,7 +471,7 @@ export type SurveyTemplateLinkIdInput = {
 
 export type SurveyTemplateSection = {
   __typename?: 'SurveyTemplateSection';
-  calculationId?: Maybe<Scalars['Int']>;
+  calculationId: Scalars['Int'];
   id: SurveyTemplateSectionId;
   inputs: Array<SurveyTemplateInput>;
   subtitle?: Maybe<Scalars['String']>;
@@ -484,7 +484,6 @@ export type SurveyTemplateSectionId = {
 };
 
 export type SurveyTemplateSectionIdInput = {
-  calculationId?: InputMaybe<Scalars['Int']>;
   value: Scalars['UUID'];
 };
 

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { SurveyTemplateInputType, TemplateInputUploadType, type SurveyTemplateInput } from '@/api/server';
+  import { SurveyTemplateInputType, TemplateInputUploadType } from '@/api/server';
+  import type { Template } from '../..';
 
   import { _ } from '@/language';
   
@@ -8,7 +9,7 @@
   import Add from '@/features/Input/components/Add/Add.svelte';
   import Checkbox from '@/features/Input/components/Checkbox/Checkbox.svelte';
 
-  export let inputs: SurveyTemplateInput[];
+  export let inputs: Template['sections'][number]['inputs'];
 
   const getUploadLabel = (accept?: TemplateInputUploadType, multiple?: boolean) => $_('generics.uploadWithLabel', {
     values: {
