@@ -13,7 +13,7 @@ class PatientEmailQueryController(
     private val readEmailService: ReadEmailService,
     private val emailToEmailDtoConverter: InfallibleConverter<Email, EmailDto>,
 ) {
-    @SchemaMapping(typeName = PatientDto.GRAPHQL_TYPE, field = PatientDto.GRAPHQL_EMAIL_FIELD_NAME)
+    @SchemaMapping(typeName = PatientDto.GRAPHQL_TYPE, field = "emails")
     suspend fun addresses(patientDto: PatientDto): List<EmailDto> {
         val emails = readEmailService.getPatientEmails(patientDto.id)
             ?: throw NullSubQueryException(patientDto, ReadEmailService::getPatientEmails)
