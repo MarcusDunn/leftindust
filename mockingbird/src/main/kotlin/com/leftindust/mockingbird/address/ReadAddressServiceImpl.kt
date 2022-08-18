@@ -1,10 +1,7 @@
 package com.leftindust.mockingbird.address
 
-import com.leftindust.mockingbird.contact.ContactDto
-import com.leftindust.mockingbird.contact.ReadContactService
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
-import com.leftindust.mockingbird.email.Email
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import org.springframework.stereotype.Repository
@@ -13,19 +10,18 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Repository
 class ReadAddressServiceImpl(
-    val addressRepository: AddressRepository,
     val readDoctorService: ReadDoctorService,
     val readPatientService: ReadPatientService,
 ) : ReadAddressService {
     override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Address>? {
         val doctor = readDoctorService.getByDoctorId(doctorId)
             ?: return null
-        return doctor.addresses.toList()
+        return doctor.addresses.sortedBy { it.id }
     }
 
     override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<Address>? {
         val byPatientId = readPatientService.getByPatientId(patientId)
             ?: return null
-        return byPatientId.addresses.toList()
+        return byPatientId.addresses.sortedBy { it.id }
     }
 }

@@ -22,7 +22,7 @@ object PatientMother {
 
     object Dan {
         const val firstName = "Dan"
-        val middleName = "TheGoat"
+        val middleName = "TheMan"
         const val lastName = "Shervershani"
         val dateOfBirth = LocalDate.of(2014, Month.MARCH, 12)
         val id = UUID.fromString("62d2344c-1dc5-11ed-861d-0242ac120002")
