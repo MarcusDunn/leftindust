@@ -56,7 +56,6 @@ internal class DoctorAddressQueryControllerTest(
             .errors()
             .verify()
             .path("doctorsByDoctorIds[0].addresses[*].id.value")
-//            .matchesJson("{\"bruh\": \"bruh\"}")
             .entity(object : ParameterizedTypeReference<List<UUID>>() {})
             .matches { it.contains(AddressMother.JennysHouse.id) }
             .path("doctorsByDoctorIds[0].addresses[0]")
