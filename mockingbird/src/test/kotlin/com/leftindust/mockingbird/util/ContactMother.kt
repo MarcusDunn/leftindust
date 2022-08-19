@@ -13,7 +13,7 @@ object ContactMother {
         const val firstName = "Aydan"
         val middleName: String? = null
         const val lastName = "White"
-        val id = UUID.fromString("77941cfc-7808-4c7a-bbbe-62c6a637d5f8")
+        val id = UUID.fromString("180f97ca-1dbf-11ed-861d-0242ac120002")
         val graphqlId = ContactDto.ContactDtoId(id)
         val phone = emptySet<Phone>()
         val email = setOf(EmailMother.jennysEmail)

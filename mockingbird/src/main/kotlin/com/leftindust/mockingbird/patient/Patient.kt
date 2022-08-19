@@ -12,12 +12,7 @@ import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Lob
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
+import javax.persistence.*
 
 @Entity
 class Patient(

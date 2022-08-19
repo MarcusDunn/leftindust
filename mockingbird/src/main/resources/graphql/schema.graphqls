@@ -75,6 +75,9 @@ type Doctor {
     firstName: String!
     middleName: String
     lastName: String!
+    phoneNumbers: [Phone!]!
+    emails: [Email!]!
+    addresses: [Address!]!
     thumbnail: Base64
     title: String
     dateOfBirth: LocalDate
@@ -240,12 +243,64 @@ type Patient {
     firstName: String!
     middleName: String
     lastName: String!
+    phoneNumbers: [Phone!]!
+    emails: [Email!]!
+    addresses: [Address!]!
     thumbnail: Base64
     dateOfBirth: LocalDate!
     insuranceNumber: String
     sex: Sex!
     gender: String!
     ethnicity: Ethnicity
+}
+
+enum PhoneType {
+    Work,
+    Cell,
+    Home,
+    Pager,
+    Other,
+}
+
+type Phone {
+    id: PhoneId!
+    number: String!
+    type: PhoneType!
+}
+
+type PhoneId {
+    value: UUID!
+}
+
+type Address {
+    id: AddressId!
+    type: AddressType
+    address: String!
+    city: String!
+    country: Countries!
+    province: String!
+    postalCode: String!
+}
+
+type AddressId {
+    value: UUID!
+}
+
+type Email {
+    id: EmailId!
+    type: EmailType!
+    email: String!
+}
+
+type EmailId {
+    value: UUID!
+}
+
+enum EmailType {
+    Work,
+    Personal,
+    School,
+    Other,
 }
 
 enum Ethnicity {
@@ -273,6 +328,7 @@ type SurveyTemplateInputId {
 
 type SurveyTemplateSection {
     id: SurveyTemplateSectionId!
+
     title: String!
     subtitle: String
     inputs: [SurveyTemplateInput!]!
