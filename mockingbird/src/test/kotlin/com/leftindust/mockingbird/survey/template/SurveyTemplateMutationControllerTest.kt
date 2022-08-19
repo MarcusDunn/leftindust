@@ -107,7 +107,7 @@ internal class SurveyTemplateMutationControllerWebTest(
     internal fun `check creating an input and section with calculationIds returns them`() {
         coEvery { readSurveyTemplateSectionService.surveyTemplateSectionServiceBySurveySectionId(KoosKneeSurvey.graphqlId) } returns listOf(HowMuchPainAreYouInSection.domain)
         coEvery { readSurveyTemplateSectionInputService.surveyTemplateSectionInputBySurveySection(HowMuchPainAreYouInSection.graphqlId) } returns listOf(HowMuchPainAreYouInSectionInput.domain)
-
+        @Language("graphql")
         val mutation = """mutation { addSurveyTemplate(surveyTemplate: { 
             |    title: "COOS knee survey"
             |    sections: [{
@@ -121,14 +121,113 @@ internal class SurveyTemplateMutationControllerWebTest(
             |            calculationId: 1
             |        }]
             |    }]
-            |}) {
+            |})  {
+            |  id { value } 
             |  sections {
             |    calculationId
             |    inputs {
             |       calculationId            
             |    }
             |  }
+            | 
             | } }""".trimMargin()
+
+        coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns KoosKneeSurvey.domain
+
+        graphQlTester
+            .document(mutation)
+            .execute()
+            .errors()
+            .verify()
+            .path("addSurveyTemplate.sections[0].calculationId")
+            .hasValue()
+            .entity(Int::class.java)
+            .isEqualTo(HowMuchPainAreYouInSection.calculationId)
+            .path("addSurveyTemplate.sections[0].inputs[0].calculationId")
+            .hasValue()
+            .entity(Int::class.java)
+            .isEqualTo(HowMuchPainAreYouInSectionInput.calculationId)
+    }
+
+    @Test
+    internal fun `check creating an insput and section with calculationIds returns them`() {
+        coEvery { readSurveyTemplateSectionService.surveyTemplateSectionServiceBySurveySectionId(KoosKneeSurvey.graphqlId) } returns listOf(HowMuchPainAreYouInSection.domain)
+        coEvery { readSurveyTemplateSectionInputService.surveyTemplateSectionInputBySurveySection(HowMuchPainAreYouInSection.graphqlId) } returns listOf(HowMuchPainAreYouInSectionInput.domain)
+
+        @Language("graphql")
+        val mutation = """mutation { addSurveyTemplate(surveyTemplate: {
+        |   title: "Test"
+        |   subtitle: "Survey Template Test"
+        |   sections: [{
+        |       title: "Information"
+        |       calculationId: 0,
+        |       inputs: [{
+        |           calculationId: 1
+        |           category: Body
+        |           label: "Whats you name?"
+        |           options: [
+        |           "" 
+        |           ],
+        |           placeholder: "Eg. John Doe",
+        |           required: false,
+        |           type: Text,
+        |           uploadAccept: All,
+        |           uploadMultiple: true,
+        |           },
+        |           {
+        |            calculationId: 5,
+        |             category: Body,
+        |             label: "How old are you?",
+        |             options:[
+        |                ""
+        |             ],
+        |             placeholder: "Eg. 20",
+        |             required: false,
+        |             type: Number,
+        |             uploadAccept: All,
+        |             uploadMultiple: true
+        |          }
+        |       ]
+        |    },
+        |    {
+        |       title: "Occupation"
+        |       calculationId: 3
+        |       inputs:[
+        |          {
+        |             calculationId: 4
+        |             category: Body
+        |             label: "What do you do?"
+        |             options:[
+        |                ""
+        |             ],
+        |             placeholder: "Eg. Engineer",
+        |             required: false,
+        |             type: Text,
+        |             uploadAccept: All,
+        |             uploadMultiple: true
+        |          }
+        |       ]
+        |    }
+        | ]
+        | calculations:[
+        |     {
+        |       label: "Name",
+        |       calculation:"{\"nodes\":{\"0\":{\"type\":\"output\",\"x\":846,\"y\":140,\"store\":{\"index\":0},\"inputs\":{\"Value\":{\"type\":\"text\",\"connection\":{\"connectedNodeId\":\"1\",\"connectedSocketId\":\"Value\"}}},\"outputs\":{}},\"1\":{\"type\":\"Input\",\"x\":41,\"y\":456.5,\"store\":{\"id\":1},\"outputs\":{\"Value\":{\"type\":\"text\",\"value\":\"John\"}},\"inputs\":{}}},\"position\":{\"originX\":0,\"originY\":0,\"translateX\":0,\"translateY\":0,\"scale\":1"
+        |       inputType: Text,
+        |       showOnComplete: true
+        |     }
+        |   ]
+        | })
+        |  {
+        |    id { value }
+        |    sections {
+        |        calculationId
+        |            inputs {
+        |                calculationId 
+        |            }
+        |    }
+        |  }
+        | }""".trimMargin()
 
         coEvery { createSurveyTemplateService.createSurveyTemplate(any()) } returns KoosKneeSurvey.domain
 
