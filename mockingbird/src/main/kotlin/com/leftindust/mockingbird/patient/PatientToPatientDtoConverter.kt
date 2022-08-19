@@ -1,6 +1,16 @@
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.address.AddressDto
+import com.leftindust.mockingbird.address.AddressToAddressDtoConverter
+import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.email.EmailDto
+import com.leftindust.mockingbird.email.EmailToEmailDtoConverter
+import com.leftindust.mockingbird.phone.Phone
+import com.leftindust.mockingbird.phone.PhoneDto
+import com.leftindust.mockingbird.phone.PhoneToPhoneDtoConverter
+import com.leftindust.mockingbird.phone.Phone_
 import org.springframework.stereotype.Component
 
 @Component
@@ -11,7 +21,6 @@ class PatientToPatientDtoConverter : InfallibleConverter<Patient, PatientDto> {
             firstName = source.nameInfo.firstName,
             middleName = source.nameInfo.middleName,
             lastName = source.nameInfo.lastName,
-            thumbnail = source.thumbnail,
             dateOfBirth = source.dateOfBirth,
             insuranceNumber = source.insuranceNumber,
             sex = source.sex,

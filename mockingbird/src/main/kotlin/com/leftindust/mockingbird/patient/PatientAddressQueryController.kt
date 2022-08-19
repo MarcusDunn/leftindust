@@ -1,4 +1,4 @@
-package com.leftindust.mockingbird.doctor
+package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullSubQueryException
@@ -9,14 +9,14 @@ import org.springframework.graphql.data.method.annotation.SchemaMapping
 import org.springframework.stereotype.Controller
 
 @Controller
-class DoctorAddressesQueryController(
+class PatientAddressQueryController(
     private val readAddressService: ReadAddressService,
     private val addressToAddressDtoConverter: InfallibleConverter<Address, AddressDto>,
 ) {
-    @SchemaMapping(typeName = DoctorDto.GRAPHQL_TYPE, field = "addresses")
-    suspend fun addresses(doctorDto: DoctorDto): List<AddressDto> {
-        val addresses = readAddressService.getByDoctorId(doctorDto.id)
-            ?: throw NullSubQueryException(doctorDto, ReadAddressService::getByDoctorId)
+    @SchemaMapping(typeName = PatientDto.GRAPHQL_TYPE, field = "addresses")
+    suspend fun addresses(patientDto: PatientDto): List<AddressDto> {
+        val addresses = readAddressService.getByPatientId(patientDto.id)
+            ?: throw NullSubQueryException(patientDto, ReadAddressService::getByPatientId)
         return addresses.map { addressToAddressDtoConverter.convert(it) }
     }
 }

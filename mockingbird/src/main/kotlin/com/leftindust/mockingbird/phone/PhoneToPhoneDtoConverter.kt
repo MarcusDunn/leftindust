@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 class PhoneToPhoneDtoConverter : InfallibleConverter<Phone, PhoneDto> {
     override fun convert(source: Phone): PhoneDto {
         return PhoneDto(
-            PhoneDto.Id(source.id ?: throw IllegalArgumentException("Source ${Phone::class.simpleName} must have an id but was $source")),
+            PhoneDto.PhoneDtoId(source.id ?: throw IllegalArgumentException("Source ${Phone::class.simpleName} must have an id but was $source")),
             source.number,
             source.type
         )
