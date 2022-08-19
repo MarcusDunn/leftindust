@@ -9,6 +9,7 @@
   
   export let inputs: TemplateInputT[] = [];
   export let globalIndex = 0;
+  export let sectionIndex = 0;
 			
   const flipDurationMs = 200;
   let dragDisabled = true;
