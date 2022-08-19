@@ -17,6 +17,7 @@
   import './TemplateInput.scss';
   import TemplateInputSelect from './TemplateInputSelect.svelte';
   import Add from '@/features/Input/components/Add/Add.svelte';
+  import deepmerge from 'deepmerge';
   
   export let inputs: TemplateType['sections'][number]['inputs'];
   export let index: number;
@@ -191,7 +192,7 @@
               on:click={() => {
                 inputs = [
                   ...inputs.slice(0, index),
-                  {
+                  deepmerge({
                     id: globalIndex,
                     type,
                     label,
@@ -202,7 +203,7 @@
                     uploadAccept,
                     category: SurveyTemplateCategory.Title,
                     value: '',
-                  },
+                  }, {}),
                   ...inputs.slice(index),
                 ];
                 globalIndex += 1;

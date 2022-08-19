@@ -4,9 +4,9 @@
   import type { Editor,  InputSocket, InputSockets } from 'function-junctions/types';
   import type { Writable } from 'svelte/store';
 
-  import { getTemplateSocketType, templateCalculationSockets } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets } from '@/features/Template';
   import { _ } from '@/language';
-  import { TemplateCalculations } from '@/features/Templates/store';
+  import { TemplateCalculations } from '@/features/Template/store';
   import { SurveyTemplateInputType } from '@/api/server';
   import Input from '@/features/Input/Input.svelte';
 

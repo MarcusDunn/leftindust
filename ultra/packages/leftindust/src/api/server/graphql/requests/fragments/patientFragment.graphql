@@ -11,4 +11,29 @@ fragment patient on Patient {
   thumbnail
   insuranceNumber
   ethnicity
+  addresses {
+    address
+    city
+    country
+    id {
+      value
+    }
+    postalCode
+    province
+    type
+  }
+  emails {
+    email
+    id {
+      value
+    }
+    type
+  }
+  phoneNumbers {
+    id {
+      value
+    }
+    number
+    type
+  }
 }

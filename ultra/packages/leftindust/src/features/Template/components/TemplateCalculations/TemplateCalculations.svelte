@@ -41,7 +41,7 @@
 
     inputs.forEach((input) => {
       if (input.type) {
-        const type = getTemplateSocketType(input.type as SurveyTemplateInputType);
+        const type = getTemplateSocketType(input.type);
         
         nodeInputs = {
           ...nodeInputs,

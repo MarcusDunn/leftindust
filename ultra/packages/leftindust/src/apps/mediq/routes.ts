@@ -2,13 +2,14 @@ import DashboardPage from '@/features/Dashboard/DashboardPage.svelte';
 import ClientsPage from '@/features/Clients/ClientsPage.svelte';
 
 import TemplatesPage from '@/features/Templates/TemplatesPage.svelte';
+import TemplatePage from '@/features/Template/TemplatePage.svelte';
 
 import PatientPage from '@/features/Patient/PatientPage.svelte';
 import DoctorPage from '@/features/Doctor/DoctorPage.svelte';
 import PeoplePage from '@/features/People/PeoplePage.svelte';
 
-import TemplatePreviewPage from '@/features/Templates/TemplatePreviewPage.svelte';
-import TemplateWizard from '@/features/Templates/TemplateWizard.svelte';
+import TemplatePreviewPage from '@/features/Template/TemplatePreviewPage.svelte';
+import TemplateWizard from '@/features/Template/TemplateWizard.svelte';
 
 import MedIQLoginPage from '@/features/Account/MedIQLoginPage.svelte';
 
@@ -24,8 +25,9 @@ export type Path =
   | '/doctor/:data/'
   | '/people/:data/'
   | '/templates/'
+  | '/template/:data/'
   | '/wizard/template/'
-  | '/template/preview/'
+  | '/wizard/template/preview/'
   | '/account/login/'
   | '/settings/'
   | '/errors/lifecycle/'
@@ -59,11 +61,15 @@ const routes: Route<Path>[] = [
     component: TemplatesPage,
   },
   {
+    path: '/template/:data/',
+    component: TemplatePage,
+  },
+  {
     path: '/wizard/template/',
     component: TemplateWizard,
   },
   {
-    path: '/template/preview/',
+    path: '/wizard/template/preview/',
     component: TemplatePreviewPage,
   },
   {

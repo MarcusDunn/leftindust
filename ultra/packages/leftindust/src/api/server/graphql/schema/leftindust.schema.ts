@@ -17,6 +17,22 @@ export type Scalars = {
   UUID: any;
 };
 
+export type Address = {
+  __typename?: 'Address';
+  address: Scalars['String'];
+  city: Scalars['String'];
+  country: Countries;
+  id: AddressId;
+  postalCode: Scalars['String'];
+  province: Scalars['String'];
+  type?: Maybe<AddressType>;
+};
+
+export type AddressId = {
+  __typename?: 'AddressId';
+  value: Scalars['UUID'];
+};
+
 export enum AddressType {
   Apartment = 'Apartment',
   Home = 'Home',
@@ -159,11 +175,14 @@ export type CreateUser = {
 
 export type Doctor = {
   __typename?: 'Doctor';
+  addresses: Array<Address>;
   dateOfBirth?: Maybe<Scalars['LocalDate']>;
+  emails: Array<Email>;
   firstName: Scalars['String'];
   id?: Maybe<DoctorId>;
   lastName: Scalars['String'];
   middleName?: Maybe<Scalars['String']>;
+  phoneNumbers: Array<Phone>;
   thumbnail?: Maybe<Scalars['Base64']>;
   title?: Maybe<Scalars['String']>;
 };
@@ -183,6 +202,25 @@ export type EditClinic = {
   doctors?: Array<DoctorIdInput>;
   name?: InputMaybe<Scalars['String']>;
 };
+
+export type Email = {
+  __typename?: 'Email';
+  email: Scalars['String'];
+  id: EmailId;
+  type: EmailType;
+};
+
+export type EmailId = {
+  __typename?: 'EmailId';
+  value: Scalars['UUID'];
+};
+
+export enum EmailType {
+  Other = 'Other',
+  Personal = 'Personal',
+  School = 'School',
+  Work = 'Work'
+}
 
 export enum Ethnicity {
   AmericanAboriginal = 'AmericanAboriginal',
@@ -275,7 +313,9 @@ export type NameInfo = {
 
 export type Patient = {
   __typename?: 'Patient';
+  addresses: Array<Address>;
   dateOfBirth: Scalars['LocalDate'];
+  emails: Array<Email>;
   ethnicity?: Maybe<Ethnicity>;
   firstName: Scalars['String'];
   gender: Scalars['String'];
@@ -283,6 +323,7 @@ export type Patient = {
   insuranceNumber?: Maybe<Scalars['String']>;
   lastName: Scalars['String'];
   middleName?: Maybe<Scalars['String']>;
+  phoneNumbers: Array<Phone>;
   sex: Sex;
   thumbnail?: Maybe<Scalars['Base64']>;
 };
@@ -295,6 +336,26 @@ export type PatientId = {
 export type PatientIdInput = {
   value?: InputMaybe<Scalars['UUID']>;
 };
+
+export type Phone = {
+  __typename?: 'Phone';
+  id: PhoneId;
+  number: Scalars['String'];
+  type: PhoneType;
+};
+
+export type PhoneId = {
+  __typename?: 'PhoneId';
+  value: Scalars['UUID'];
+};
+
+export enum PhoneType {
+  Cell = 'Cell',
+  Home = 'Home',
+  Other = 'Other',
+  Pager = 'Pager',
+  Work = 'Work'
+}
 
 export type Query = {
   __typename?: 'Query';

@@ -16,4 +16,10 @@ fragment partialTemplateFragment on SurveyTemplate {
       label
     }
   }
+  calculations {
+    id {
+      value
+    }
+    label
+  }
 }

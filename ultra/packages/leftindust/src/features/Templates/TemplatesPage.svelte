@@ -8,7 +8,10 @@
   import { WidgetType } from '../Widgets';
   import { operationStore, query } from '@urql/svelte';
   import { defaultRangeInput, PartialSurveyTemplateByRangeQueryDocument, type PartialTemplateFragmentFragment } from '@/api/server';
+  import type { Router } from 'framework7/types';
 
+  export let f7router: Router.Router;
+  
   let templates: PartialTemplateFragmentFragment[];
 
   const request = operationStore(PartialSurveyTemplateByRangeQueryDocument, {
@@ -18,9 +21,6 @@
   query(request);
   
   $: templates = $request.data?.surveyTemplateByRange ?? [];
-
-  $: console.log(templates);
-
 </script>
 
 <Page>
@@ -31,8 +31,10 @@
       icon: { f7: 'plus_circle_fill', color: 'deeppurple' },
       onClick: () => openWizard('/wizard/template/'),
     }]}
+    history
+    {f7router}
   />
-  <Block class="no-margin-top">
+  <Block>
     {#if templates.length > 0}
       <SpecificGrid
         props={templates.map((template) => ({
@@ -43,6 +45,7 @@
           },
         }))}
         type={WidgetType.Card}
+        fixed
       />
     {/if}
   </Block>

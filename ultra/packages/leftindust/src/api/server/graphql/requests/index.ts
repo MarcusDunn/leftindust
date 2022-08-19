@@ -15,11 +15,11 @@ export type PartialDoctorFragment = { __typename: 'Doctor', title: string | unde
 
 export type PartialPatientFragment = { __typename: 'Patient', firstName: string, middleName: string | undefined, lastName: string, dateOfBirth: any, gender: string, sex: Schema.Sex, thumbnail: any | undefined, id: { __typename: 'PatientId', value: any } };
 
-export type PartialTemplateFragmentFragment = { __typename: 'SurveyTemplate', title: string, subtitle: string | undefined, id: { __typename: 'SurveyTemplateId', value: any }, sections: Array<{ __typename: 'SurveyTemplateSection', title: string, id: { __typename: 'SurveyTemplateSectionId', value: any }, inputs: Array<{ __typename: 'SurveyTemplateInput', label: string, id: { __typename: 'SurveyTemplateInputId', value: any } }> }> };
+export type PartialTemplateFragmentFragment = { __typename: 'SurveyTemplate', title: string, subtitle: string | undefined, id: { __typename: 'SurveyTemplateId', value: any }, sections: Array<{ __typename: 'SurveyTemplateSection', title: string, id: { __typename: 'SurveyTemplateSectionId', value: any }, inputs: Array<{ __typename: 'SurveyTemplateInput', label: string, id: { __typename: 'SurveyTemplateInputId', value: any } }> }>, calculations: Array<{ __typename: 'SurveyTemplateCalculation', label: string | undefined, id: { __typename: 'SurveyTemplateCalculationId', value: any } }> };
 
 export type PartialUserFragment = { __typename: 'MediqUser', id: { __typename: 'MediqUserId', value: string }, group: { __typename: 'MediqGroup', name: string | undefined } | undefined, accountDetails: { __typename: 'UserAccountDetails', email: string | undefined, isRegistered: boolean } | undefined, name: { __typename: 'NameInfo', firstName: string, middleName: string | undefined, lastName: string } };
 
-export type PatientFragment = { __typename: 'Patient', firstName: string, middleName: string | undefined, lastName: string, dateOfBirth: any, gender: string, sex: Schema.Sex, thumbnail: any | undefined, insuranceNumber: string | undefined, ethnicity: Schema.Ethnicity | undefined, id: { __typename: 'PatientId', value: any } };
+export type PatientFragment = { __typename: 'Patient', firstName: string, middleName: string | undefined, lastName: string, dateOfBirth: any, gender: string, sex: Schema.Sex, thumbnail: any | undefined, insuranceNumber: string | undefined, ethnicity: Schema.Ethnicity | undefined, id: { __typename: 'PatientId', value: any }, addresses: Array<{ __typename: 'Address', address: string, city: string, country: Schema.Countries, postalCode: string, province: string, type: Schema.AddressType | undefined, id: { __typename: 'AddressId', value: any } }>, emails: Array<{ __typename: 'Email', email: string, type: Schema.EmailType, id: { __typename: 'EmailId', value: any } }>, phoneNumbers: Array<{ __typename: 'Phone', number: string, type: Schema.PhoneType, id: { __typename: 'PhoneId', value: any } }> };
 
 export type TemplateFragmentFragment = { __typename: 'SurveyTemplate', title: string, subtitle: string | undefined, id: { __typename: 'SurveyTemplateId', value: any }, sections: Array<{ __typename: 'SurveyTemplateSection', title: string, subtitle: string | undefined, id: { __typename: 'SurveyTemplateSectionId', value: any }, inputs: Array<{ __typename: 'SurveyTemplateInput', category: Schema.SurveyTemplateCategory | undefined, label: string, options: Array<string> | undefined, placeholder: string | undefined, required: boolean, type: Schema.SurveyTemplateInputType, uploadAccept: Schema.TemplateInputUploadType | undefined, uploadMultiple: boolean | undefined, id: { __typename: 'SurveyTemplateInputId', value: any } }> }>, calculations: Array<{ __typename: 'SurveyTemplateCalculation', calculation: string | undefined, index: number, inputType: Schema.SurveyTemplateInputType | undefined, label: string | undefined, showOnComplete: boolean | undefined, id: { __typename: 'SurveyTemplateCalculationId', value: any } }> };
 
@@ -72,6 +72,20 @@ export type PartialPatientsByRangeQueryQueryVariables = Schema.Exact<{
 
 export type PartialPatientsByRangeQueryQuery = { __typename: 'Query', patientsByRange: Array<{ __typename: 'Patient', firstName: string, middleName: string | undefined, lastName: string, dateOfBirth: any, gender: string, sex: Schema.Sex, thumbnail: any | undefined, id: { __typename: 'PatientId', value: any } }> };
 
+export type PartialSurveyTemplateByIdQueryQueryVariables = Schema.Exact<{
+  surveyTemplateId: Schema.SurveyTemplateIdInput;
+}>;
+
+
+export type PartialSurveyTemplateByIdQueryQuery = { __typename: 'Query', surveyTemplateById: { __typename: 'SurveyTemplate', title: string, subtitle: string | undefined, id: { __typename: 'SurveyTemplateId', value: any }, sections: Array<{ __typename: 'SurveyTemplateSection', title: string, id: { __typename: 'SurveyTemplateSectionId', value: any }, inputs: Array<{ __typename: 'SurveyTemplateInput', label: string, id: { __typename: 'SurveyTemplateInputId', value: any } }> }>, calculations: Array<{ __typename: 'SurveyTemplateCalculation', label: string | undefined, id: { __typename: 'SurveyTemplateCalculationId', value: any } }> } | undefined };
+
+export type PartialSurveyTemplateByRangeQueryQueryVariables = Schema.Exact<{
+  range: Schema.Range;
+}>;
+
+
+export type PartialSurveyTemplateByRangeQueryQuery = { __typename: 'Query', surveyTemplateByRange: Array<{ __typename: 'SurveyTemplate', title: string, subtitle: string | undefined, id: { __typename: 'SurveyTemplateId', value: any }, sections: Array<{ __typename: 'SurveyTemplateSection', title: string, id: { __typename: 'SurveyTemplateSectionId', value: any }, inputs: Array<{ __typename: 'SurveyTemplateInput', label: string, id: { __typename: 'SurveyTemplateInputId', value: any } }> }>, calculations: Array<{ __typename: 'SurveyTemplateCalculation', label: string | undefined, id: { __typename: 'SurveyTemplateCalculationId', value: any } }> }> };
+
 export type PartialUserByUserUniqueIdQueryQueryVariables = Schema.Exact<{
   uniqueId: Schema.Scalars['String'];
 }>;
@@ -84,7 +98,14 @@ export type PatientsByPatientIdQueryQueryVariables = Schema.Exact<{
 }>;
 
 
-export type PatientsByPatientIdQueryQuery = { __typename: 'Query', patientsByPatientId: Array<{ __typename: 'Patient', firstName: string, middleName: string | undefined, lastName: string, dateOfBirth: any, gender: string, sex: Schema.Sex, thumbnail: any | undefined, insuranceNumber: string | undefined, ethnicity: Schema.Ethnicity | undefined, id: { __typename: 'PatientId', value: any } } | undefined> };
+export type PatientsByPatientIdQueryQuery = { __typename: 'Query', patientsByPatientId: Array<{ __typename: 'Patient', firstName: string, middleName: string | undefined, lastName: string, dateOfBirth: any, gender: string, sex: Schema.Sex, thumbnail: any | undefined, insuranceNumber: string | undefined, ethnicity: Schema.Ethnicity | undefined, id: { __typename: 'PatientId', value: any }, addresses: Array<{ __typename: 'Address', address: string, city: string, country: Schema.Countries, postalCode: string, province: string, type: Schema.AddressType | undefined, id: { __typename: 'AddressId', value: any } }>, emails: Array<{ __typename: 'Email', email: string, type: Schema.EmailType, id: { __typename: 'EmailId', value: any } }>, phoneNumbers: Array<{ __typename: 'Phone', number: string, type: Schema.PhoneType, id: { __typename: 'PhoneId', value: any } }> } | undefined> };
+
+export type SurveyTemplateByIdQueryQueryVariables = Schema.Exact<{
+  surveyTemplateId: Schema.SurveyTemplateIdInput;
+}>;
+
+
+export type SurveyTemplateByIdQueryQuery = { __typename: 'Query', surveyTemplateById: { __typename: 'SurveyTemplate', title: string, subtitle: string | undefined, id: { __typename: 'SurveyTemplateId', value: any }, sections: Array<{ __typename: 'SurveyTemplateSection', title: string, subtitle: string | undefined, id: { __typename: 'SurveyTemplateSectionId', value: any }, inputs: Array<{ __typename: 'SurveyTemplateInput', category: Schema.SurveyTemplateCategory | undefined, label: string, options: Array<string> | undefined, placeholder: string | undefined, required: boolean, type: Schema.SurveyTemplateInputType, uploadAccept: Schema.TemplateInputUploadType | undefined, uploadMultiple: boolean | undefined, id: { __typename: 'SurveyTemplateInputId', value: any } }> }>, calculations: Array<{ __typename: 'SurveyTemplateCalculation', calculation: string | undefined, index: number, inputType: Schema.SurveyTemplateInputType | undefined, label: string | undefined, showOnComplete: boolean | undefined, id: { __typename: 'SurveyTemplateCalculationId', value: any } }> } | undefined };
 
 
 
@@ -155,6 +176,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Address: ResolverTypeWrapper<Schema.Address>;
+  AddressId: ResolverTypeWrapper<Schema.AddressId>;
   AddressType: Schema.AddressType;
   Base64: ResolverTypeWrapper<Schema.Scalars['Base64']>;
   Boolean: ResolverTypeWrapper<Schema.Scalars['Boolean']>;
@@ -185,6 +208,9 @@ export type ResolversTypes = {
   DoctorIdInput: Schema.DoctorIdInput;
   Duration: ResolverTypeWrapper<Schema.Scalars['Duration']>;
   EditClinic: Schema.EditClinic;
+  Email: ResolverTypeWrapper<Schema.Email>;
+  EmailId: ResolverTypeWrapper<Schema.EmailId>;
+  EmailType: Schema.EmailType;
   Ethnicity: Schema.Ethnicity;
   Int: ResolverTypeWrapper<Schema.Scalars['Int']>;
   LocalDate: ResolverTypeWrapper<Schema.Scalars['LocalDate']>;
@@ -199,6 +225,9 @@ export type ResolversTypes = {
   Patient: ResolverTypeWrapper<Schema.Patient>;
   PatientId: ResolverTypeWrapper<Schema.PatientId>;
   PatientIdInput: Schema.PatientIdInput;
+  Phone: ResolverTypeWrapper<Schema.Phone>;
+  PhoneId: ResolverTypeWrapper<Schema.PhoneId>;
+  PhoneType: Schema.PhoneType;
   Query: ResolverTypeWrapper<{}>;
   Range: Schema.Range;
   Sex: Schema.Sex;
@@ -227,6 +256,8 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Address: Schema.Address;
+  AddressId: Schema.AddressId;
   Base64: Schema.Scalars['Base64'];
   Boolean: Schema.Scalars['Boolean'];
   Clinic: Schema.Clinic;
@@ -255,6 +286,8 @@ export type ResolversParentTypes = {
   DoctorIdInput: Schema.DoctorIdInput;
   Duration: Schema.Scalars['Duration'];
   EditClinic: Schema.EditClinic;
+  Email: Schema.Email;
+  EmailId: Schema.EmailId;
   Int: Schema.Scalars['Int'];
   LocalDate: Schema.Scalars['LocalDate'];
   LocalDateTime: Schema.Scalars['LocalDateTime'];
@@ -268,6 +301,8 @@ export type ResolversParentTypes = {
   Patient: Schema.Patient;
   PatientId: Schema.PatientId;
   PatientIdInput: Schema.PatientIdInput;
+  Phone: Schema.Phone;
+  PhoneId: Schema.PhoneId;
   Query: {};
   Range: Schema.Range;
   String: Schema.Scalars['String'];
@@ -288,6 +323,22 @@ export type ResolversParentTypes = {
   SurveyTemplateSectionInputIdInput: Schema.SurveyTemplateSectionInputIdInput;
   UUID: Schema.Scalars['UUID'];
   UserAccountDetails: Schema.UserAccountDetails;
+};
+
+export type AddressResolvers<ContextType = any, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  country?: Resolver<ResolversTypes['Countries'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['AddressId'], ParentType, ContextType>;
+  postalCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  province?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<Schema.Maybe<ResolversTypes['AddressType']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AddressIdResolvers<ContextType = any, ParentType extends ResolversParentTypes['AddressId'] = ResolversParentTypes['AddressId']> = {
+  value?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export interface Base64ScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Base64'], any> {
@@ -340,11 +391,14 @@ export type CompleteSurveySectionInputIdResolvers<ContextType = any, ParentType 
 };
 
 export type DoctorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Doctor'] = ResolversParentTypes['Doctor']> = {
+  addresses?: Resolver<Array<ResolversTypes['Address']>, ParentType, ContextType>;
   dateOfBirth?: Resolver<Schema.Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+  emails?: Resolver<Array<ResolversTypes['Email']>, ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<Schema.Maybe<ResolversTypes['DoctorId']>, ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   middleName?: Resolver<Schema.Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  phoneNumbers?: Resolver<Array<ResolversTypes['Phone']>, ParentType, ContextType>;
   thumbnail?: Resolver<Schema.Maybe<ResolversTypes['Base64']>, ParentType, ContextType>;
   title?: Resolver<Schema.Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -358,6 +412,18 @@ export type DoctorIdResolvers<ContextType = any, ParentType extends ResolversPar
 export interface DurationScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Duration'], any> {
   name: 'Duration';
 }
+
+export type EmailResolvers<ContextType = any, ParentType extends ResolversParentTypes['Email'] = ResolversParentTypes['Email']> = {
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['EmailId'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['EmailType'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type EmailIdResolvers<ContextType = any, ParentType extends ResolversParentTypes['EmailId'] = ResolversParentTypes['EmailId']> = {
+  value?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export interface LocalDateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LocalDate'], any> {
   name: 'LocalDate';
@@ -408,7 +474,9 @@ export type NameInfoResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type PatientResolvers<ContextType = any, ParentType extends ResolversParentTypes['Patient'] = ResolversParentTypes['Patient']> = {
+  addresses?: Resolver<Array<ResolversTypes['Address']>, ParentType, ContextType>;
   dateOfBirth?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+  emails?: Resolver<Array<ResolversTypes['Email']>, ParentType, ContextType>;
   ethnicity?: Resolver<Schema.Maybe<ResolversTypes['Ethnicity']>, ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   gender?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -416,12 +484,25 @@ export type PatientResolvers<ContextType = any, ParentType extends ResolversPare
   insuranceNumber?: Resolver<Schema.Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   middleName?: Resolver<Schema.Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  phoneNumbers?: Resolver<Array<ResolversTypes['Phone']>, ParentType, ContextType>;
   sex?: Resolver<ResolversTypes['Sex'], ParentType, ContextType>;
   thumbnail?: Resolver<Schema.Maybe<ResolversTypes['Base64']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type PatientIdResolvers<ContextType = any, ParentType extends ResolversParentTypes['PatientId'] = ResolversParentTypes['PatientId']> = {
+  value?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PhoneResolvers<ContextType = any, ParentType extends ResolversParentTypes['Phone'] = ResolversParentTypes['Phone']> = {
+  id?: Resolver<ResolversTypes['PhoneId'], ParentType, ContextType>;
+  number?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['PhoneType'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PhoneIdResolvers<ContextType = any, ParentType extends ResolversParentTypes['PhoneId'] = ResolversParentTypes['PhoneId']> = {
   value?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -525,6 +606,8 @@ export type UserAccountDetailsResolvers<ContextType = any, ParentType extends Re
 };
 
 export type Resolvers<ContextType = any> = {
+  Address?: AddressResolvers<ContextType>;
+  AddressId?: AddressIdResolvers<ContextType>;
   Base64?: GraphQLScalarType;
   Clinic?: ClinicResolvers<ContextType>;
   ClinicId?: ClinicIdResolvers<ContextType>;
@@ -537,6 +620,8 @@ export type Resolvers<ContextType = any> = {
   Doctor?: DoctorResolvers<ContextType>;
   DoctorId?: DoctorIdResolvers<ContextType>;
   Duration?: GraphQLScalarType;
+  Email?: EmailResolvers<ContextType>;
+  EmailId?: EmailIdResolvers<ContextType>;
   LocalDate?: GraphQLScalarType;
   LocalDateTime?: GraphQLScalarType;
   MediqGroup?: MediqGroupResolvers<ContextType>;
@@ -547,6 +632,8 @@ export type Resolvers<ContextType = any> = {
   NameInfo?: NameInfoResolvers<ContextType>;
   Patient?: PatientResolvers<ContextType>;
   PatientId?: PatientIdResolvers<ContextType>;
+  Phone?: PhoneResolvers<ContextType>;
+  PhoneId?: PhoneIdResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   SurveyLink?: SurveyLinkResolvers<ContextType>;
   SurveyLinkId?: SurveyLinkIdResolvers<ContextType>;
@@ -568,10 +655,10 @@ export const CompleteSurveyFragmentFragmentDoc = { 'kind':'Document','definition
 export const DoctorFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'doctor' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Doctor' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'title' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'dateOfBirth' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'thumbnail' } }] } }] } as unknown as DocumentNode<DoctorFragment, unknown>;
 export const PartialDoctorFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'partialDoctor' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Doctor' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'title' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'dateOfBirth' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'thumbnail' } }] } }] } as unknown as DocumentNode<PartialDoctorFragment, unknown>;
 export const PartialPatientFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'partialPatient' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Patient' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'dateOfBirth' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'gender' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'sex' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'thumbnail' } }] } }] } as unknown as DocumentNode<PartialPatientFragment, unknown>;
-export const PartialTemplateFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'partialTemplateFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'SurveyTemplate' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'title' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'subtitle' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'sections' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'title' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'inputs' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'label' } }] } }] } }] } }] } as unknown as DocumentNode<PartialTemplateFragmentFragment, unknown>;
+export const PartialTemplateFragmentFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'partialTemplateFragment' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'SurveyTemplate' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'title' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'subtitle' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'sections' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'title' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'inputs' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'label' } }] } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'calculations' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'label' } }] } }] } }] } as unknown as DocumentNode<PartialTemplateFragmentFragment, unknown>;
 export const NameFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'name' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'NameInfo' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } }] } }] } as unknown as DocumentNode<NameFragment, unknown>;
 export const PartialUserFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'partialUser' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'MediqUser' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'group' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'name' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'accountDetails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'email' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'isRegistered' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'name' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'name' } }] } }] } }] } as unknown as DocumentNode<PartialUserFragment, unknown>;
-export const PatientFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'patient' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Patient' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'dateOfBirth' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'gender' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'sex' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'thumbnail' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'insuranceNumber' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'ethnicity' } }] } }] } as unknown as DocumentNode<PatientFragment, unknown>;
+export const PatientFragmentDoc = { 'kind':'Document','definitions':[{ 'kind':'FragmentDefinition','name':{ 'kind':'Name','value':'patient' },'typeCondition':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Patient' } },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'firstName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'middleName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'lastName' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'dateOfBirth' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'gender' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'sex' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'thumbnail' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'insuranceNumber' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'ethnicity' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'addresses' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'address' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'city' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'country' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'postalCode' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'province' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'type' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'emails' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'email' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'type' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'phoneNumbers' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } },{ 'kind':'Field','name':{ 'kind':'Name','value':'number' } },{ 'kind':'Field','name':{ 'kind':'Name','value':'type' } }] } }] } }] } as unknown as DocumentNode<PatientFragment, unknown>;
 export const SurveyTemplateMutationDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'mutation','name':{ 'kind':'Name','value':'surveyTemplateMutation' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'surveyTemplate' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'CreateSurveyTemplate' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'addSurveyTemplate' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'surveyTemplate' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'surveyTemplate' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'id' },'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'value' } }] } }] } }] } }] } as unknown as DocumentNode<SurveyTemplateMutationMutation, SurveyTemplateMutationMutationVariables>;
 export const CompleteSurveyByIdQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'completeSurveyByIdQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'completeSurveyId' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'CompleteSurveyIdInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'completeSurveyById' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'completeSurveyId' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'completeSurveyId' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'completeSurveyFragment' } }] } }] } },...CompleteSurveyFragmentFragmentDoc.definitions,...TemplateFragmentFragmentDoc.definitions] } as unknown as DocumentNode<CompleteSurveyByIdQueryQuery, CompleteSurveyByIdQueryQueryVariables>;
 export const DoctorsByDoctorIdQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'doctorsByDoctorIdQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'doctorIds' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'DoctorIdInput' } } } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'doctorsByDoctorIds' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'doctorIds' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'doctorIds' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'doctor' } }] } }] } },...DoctorFragmentDoc.definitions] } as unknown as DocumentNode<DoctorsByDoctorIdQueryQuery, DoctorsByDoctorIdQueryQueryVariables>;
@@ -579,8 +666,11 @@ export const PartialDoctorsByDoctorIdQueryDocument = { 'kind':'Document','defini
 export const PartialDoctorsByRangeQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'partialDoctorsByRangeQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Range' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'doctorsByRange' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'partialDoctor' } }] } }] } },...PartialDoctorFragmentDoc.definitions] } as unknown as DocumentNode<PartialDoctorsByRangeQueryQuery, PartialDoctorsByRangeQueryQueryVariables>;
 export const PartialPatientsByPatientIdQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'partialPatientsByPatientIdQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patientIds' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientIdInput' } } } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'patientsByPatientId' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'patientIds' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patientIds' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'partialPatient' } }] } }] } },...PartialPatientFragmentDoc.definitions] } as unknown as DocumentNode<PartialPatientsByPatientIdQueryQuery, PartialPatientsByPatientIdQueryQueryVariables>;
 export const PartialPatientsByRangeQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'partialPatientsByRangeQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Range' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'patientsByRange' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'partialPatient' } }] } }] } },...PartialPatientFragmentDoc.definitions] } as unknown as DocumentNode<PartialPatientsByRangeQueryQuery, PartialPatientsByRangeQueryQueryVariables>;
+export const PartialSurveyTemplateByIdQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'partialSurveyTemplateByIdQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'surveyTemplateId' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'SurveyTemplateIdInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'surveyTemplateById' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'surveyTemplateId' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'surveyTemplateId' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'partialTemplateFragment' } }] } }] } },...PartialTemplateFragmentFragmentDoc.definitions] } as unknown as DocumentNode<PartialSurveyTemplateByIdQueryQuery, PartialSurveyTemplateByIdQueryQueryVariables>;
+export const PartialSurveyTemplateByRangeQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'partialSurveyTemplateByRangeQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'Range' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'surveyTemplateByRange' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'range' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'range' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'partialTemplateFragment' } }] } }] } },...PartialTemplateFragmentFragmentDoc.definitions] } as unknown as DocumentNode<PartialSurveyTemplateByRangeQueryQuery, PartialSurveyTemplateByRangeQueryQueryVariables>;
 export const PartialUserByUserUniqueIdQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'partialUserByUserUniqueIdQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'uniqueId' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'String' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'userByUserUniqueId' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'uniqueId' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'uniqueId' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'partialUser' } }] } }] } },...PartialUserFragmentDoc.definitions,...NameFragmentDoc.definitions] } as unknown as DocumentNode<PartialUserByUserUniqueIdQueryQuery, PartialUserByUserUniqueIdQueryQueryVariables>;
 export const PatientsByPatientIdQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'patientsByPatientIdQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patientIds' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'ListType','type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'PatientIdInput' } } } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'patientsByPatientId' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'patientIds' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'patientIds' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'patient' } }] } }] } },...PatientFragmentDoc.definitions] } as unknown as DocumentNode<PatientsByPatientIdQueryQuery, PatientsByPatientIdQueryQueryVariables>;
+export const SurveyTemplateByIdQueryDocument = { 'kind':'Document','definitions':[{ 'kind':'OperationDefinition','operation':'query','name':{ 'kind':'Name','value':'surveyTemplateByIdQuery' },'variableDefinitions':[{ 'kind':'VariableDefinition','variable':{ 'kind':'Variable','name':{ 'kind':'Name','value':'surveyTemplateId' } },'type':{ 'kind':'NonNullType','type':{ 'kind':'NamedType','name':{ 'kind':'Name','value':'SurveyTemplateIdInput' } } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'Field','name':{ 'kind':'Name','value':'surveyTemplateById' },'arguments':[{ 'kind':'Argument','name':{ 'kind':'Name','value':'surveyTemplateId' },'value':{ 'kind':'Variable','name':{ 'kind':'Name','value':'surveyTemplateId' } } }],'selectionSet':{ 'kind':'SelectionSet','selections':[{ 'kind':'FragmentSpread','name':{ 'kind':'Name','value':'templateFragment' } }] } }] } },...TemplateFragmentFragmentDoc.definitions] } as unknown as DocumentNode<SurveyTemplateByIdQueryQuery, SurveyTemplateByIdQueryQueryVariables>;
 export type SurveyTemplateMutationMutationStore = OperationStore<SurveyTemplateMutationMutation, SurveyTemplateMutationMutationVariables>;
 export type CompleteSurveyByIdQueryQueryStore = OperationStore<CompleteSurveyByIdQueryQuery, CompleteSurveyByIdQueryQueryVariables>;
 export type DoctorsByDoctorIdQueryQueryStore = OperationStore<DoctorsByDoctorIdQueryQuery, DoctorsByDoctorIdQueryQueryVariables>;
@@ -588,5 +678,8 @@ export type PartialDoctorsByDoctorIdQueryQueryStore = OperationStore<PartialDoct
 export type PartialDoctorsByRangeQueryQueryStore = OperationStore<PartialDoctorsByRangeQueryQuery, PartialDoctorsByRangeQueryQueryVariables>;
 export type PartialPatientsByPatientIdQueryQueryStore = OperationStore<PartialPatientsByPatientIdQueryQuery, PartialPatientsByPatientIdQueryQueryVariables>;
 export type PartialPatientsByRangeQueryQueryStore = OperationStore<PartialPatientsByRangeQueryQuery, PartialPatientsByRangeQueryQueryVariables>;
+export type PartialSurveyTemplateByIdQueryQueryStore = OperationStore<PartialSurveyTemplateByIdQueryQuery, PartialSurveyTemplateByIdQueryQueryVariables>;
+export type PartialSurveyTemplateByRangeQueryQueryStore = OperationStore<PartialSurveyTemplateByRangeQueryQuery, PartialSurveyTemplateByRangeQueryQueryVariables>;
 export type PartialUserByUserUniqueIdQueryQueryStore = OperationStore<PartialUserByUserUniqueIdQueryQuery, PartialUserByUserUniqueIdQueryQueryVariables>;
 export type PatientsByPatientIdQueryQueryStore = OperationStore<PatientsByPatientIdQueryQuery, PatientsByPatientIdQueryQueryVariables>;
+export type SurveyTemplateByIdQueryQueryStore = OperationStore<SurveyTemplateByIdQueryQuery, SurveyTemplateByIdQueryQueryVariables>;

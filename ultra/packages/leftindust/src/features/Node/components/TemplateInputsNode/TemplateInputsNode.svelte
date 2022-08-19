@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Template } from '@/features/Templates/store';
+  import { Template } from '@/features/Template/store';
 
-  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, type TemplateCalculationSockets } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, type TemplateCalculationSockets } from '@/features/Template';
   import type { Editor, OutputSocket, OutputSockets } from 'function-junctions/types';
   import { _ } from '@/language';
   import { ListItem } from 'framework7-svelte';
@@ -12,11 +12,13 @@
 
   export let outputs: OutputSockets<{
     Values: OutputSocket<unknown[]>;
+    Indexes: OutputSocket<number[]>;
   }>;
 
   export let editor: Editor;
   
   const { value: Values } = outputs.Values;
+  const { value: Indexes } = outputs.Indexes;
 
   let rerenderSmartSelect = false;
   let smartSelectOpen = false;
@@ -63,6 +65,24 @@
     }
 
     prevType = store.type;
+  }
+
+  $: {
+    if (store.type === SurveyTemplateInputType.SingleSelect) {
+      const indexes: number[] = store.ids.map((id) => {
+        const index = inputs.findIndex((input) => input.id === parseInt(id, 10));
+        const value = editor.inputs?.[id]?.value ? get(editor.inputs[id].value) as string[] : undefined;
+
+        if (index === -1 || !value) return undefined;
+
+        return inputs[index].options.findIndex((option) => option === value[0]) + 1;
+      }).filter((value): value is number => value !== undefined);
+
+      $Indexes = indexes;
+      outputs.Indexes.disabled = false;
+    } else {
+      outputs.Indexes.disabled = true;
+    }
   }
 
   // Rerendering bug with key to preserve smartSelect instance when open

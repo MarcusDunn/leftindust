@@ -1,3 +1,17 @@
+type Address {
+  address: String!
+  city: String!
+  country: Countries!
+  id: AddressId!
+  postalCode: String!
+  province: String!
+  type: AddressType
+}
+
+type AddressId {
+  value: UUID!
+}
+
 enum AddressType {
   Apartment
   Home
@@ -134,11 +148,14 @@ input CreateUser {
 }
 
 type Doctor {
+  addresses: [Address!]!
   dateOfBirth: LocalDate
+  emails: [Email!]!
   firstName: String!
   id: DoctorId
   lastName: String!
   middleName: String
+  phoneNumbers: [Phone!]!
   thumbnail: Base64
   title: String
 }
@@ -159,6 +176,23 @@ input EditClinic {
   cid: ClinicIdInput!
   doctors: [DoctorIdInput!]! = []
   name: String
+}
+
+type Email {
+  email: String!
+  id: EmailId!
+  type: EmailType!
+}
+
+type EmailId {
+  value: UUID!
+}
+
+enum EmailType {
+  Other
+  Personal
+  School
+  Work
 }
 
 enum Ethnicity {
@@ -225,7 +259,9 @@ type NameInfo {
 }
 
 type Patient {
+  addresses: [Address!]!
   dateOfBirth: LocalDate!
+  emails: [Email!]!
   ethnicity: Ethnicity
   firstName: String!
   gender: String!
@@ -233,6 +269,7 @@ type Patient {
   insuranceNumber: String
   lastName: String!
   middleName: String
+  phoneNumbers: [Phone!]!
   sex: Sex!
   thumbnail: Base64
 }
@@ -243,6 +280,24 @@ type PatientId {
 
 input PatientIdInput {
   value: UUID
+}
+
+type Phone {
+  id: PhoneId!
+  number: String!
+  type: PhoneType!
+}
+
+type PhoneId {
+  value: UUID!
+}
+
+enum PhoneType {
+  Cell
+  Home
+  Other
+  Pager
+  Work
 }
 
 type Query {

@@ -8,6 +8,7 @@ import DoctorsBundle from '@/features/Doctors/components/DoctorsBundle/DoctorsBu
 import PatientCard from '@/features/Patient/components/PatientCard/PatientCard.svelte';
 import DoctorCard from '@/features/Doctor/components/DoctorCard/DoctorCard.svelte';
 import UserCard from '@/features/User/components/UserCard/UserCard.svelte';
+import TemplateCard from '@/features/Template/components/TemplateCard/TemplateCard.svelte';
 // import IcdCard from '@/features/Icd/components/IcdCard/IcdCard.svelte';
 import PatientsBundle from '../Patients/components/PatientsBundle/PatientsBundle.svelte';
 
@@ -89,6 +90,11 @@ const Widgets: Widgets = {
     user: {
       type: ['MediqUser'],
       component: UserCard,
+      category: [WidgetCategory.Document],
+    },
+    template: {
+      type: ['SurveyTemplate'],
+      component: TemplateCard,
       category: [WidgetCategory.Document],
     },
     /*

@@ -25,6 +25,13 @@
     let value = input.value;
     if (input.type === SurveyTemplateInputType.Text && typeof value === 'number') value = value.toString();
     if (input.type === SurveyTemplateInputType.Number && typeof value === 'string') value = parseInt(value, 10);
+    if (
+      (input.type === SurveyTemplateInputType.SingleSelect
+        || input.type === SurveyTemplateInputType.MultiSelect)
+        && !Array.isArray(value)
+    ) {
+      value = [''];
+    }
 
     return {
       ...input,
@@ -67,12 +74,16 @@
       {:else if type === SurveyTemplateInputType.MultiSelect || type === SurveyTemplateInputType.SingleSelect}
         {#if options}
           <div style="margin-top: 10px; margin-bottom: -10px; font-size: 14px">{label}</div>
-          {#each options as option}
-            <Checkbox
-              title={option}
-              multiple={type === SurveyTemplateInputType.MultiSelect}
-              slot="content"
-            />
+          {#each options as option, index}
+            {#if Array.isArray(value)}
+              <Checkbox
+                title={option}
+                multiple={type === SurveyTemplateInputType.MultiSelect}
+                slot="content"
+                bind:selected={value}
+                value={options[index]}
+              />
+            {/if}
           {/each}
         {/if}
       {/if}

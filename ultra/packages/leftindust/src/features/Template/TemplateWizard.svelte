@@ -101,7 +101,7 @@
     <IFrame
       views={[
         {
-          url: '/template/preview/',
+          url: '/wizard/template/preview/',
           selected: true,
         },
       ]}

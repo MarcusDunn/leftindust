@@ -19,7 +19,7 @@
   import DateNode from '@/features/Node/components/DateNode';
   import { SurveyTemplateInputType } from '@/api/server';
   import type { MenuNodes } from '@/features/Nodes';
-  import { Template } from '../../store';
+  import { TemplateCalculations } from '../../store';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -134,8 +134,8 @@
   $: calculation.editor = editor;
   $: console.log($value);
 
-  $: if ($Template?.calculations?.[index] && $Template.calculations[index].calculation !== JSON.stringify(calculation.deserializedCalculation))
-    $Template.calculations[index].calculation = calculation.deserializedCalculation;
+  $: if ($TemplateCalculations?.[index] && JSON.stringify($TemplateCalculations[index].deserializedCalculation) !== JSON.stringify(calculation.deserializedCalculation))
+    $TemplateCalculations[index].deserializedCalculation = calculation.deserializedCalculation;
 </script>
 
 <NodesModal

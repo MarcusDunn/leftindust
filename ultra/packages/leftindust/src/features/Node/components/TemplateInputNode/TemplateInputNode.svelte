@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Template } from '@/features/Templates/store';
-  import type { Template as TemplateType } from '@/features/Templates';
+  import { Template } from '@/features/Template/store';
+  import type { Template as TemplateType } from '@/features/Template';
 
-  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions } from '@/features/Template';
   import type { Editor, OutputSocket, OutputSockets, Node } from 'function-junctions/types';
   import { _ } from '@/language';
   import { BlockFooter, Button, Link, ListItem } from 'framework7-svelte';

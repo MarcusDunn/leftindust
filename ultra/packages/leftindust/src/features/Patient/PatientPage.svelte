@@ -124,7 +124,7 @@
       </Boxed>
       <PatientTags slot="tags" {...patient} />
       <EntityTable
-        phones={patient?.phones}
+        phones={patient?.phoneNumbers}
         emails={patient?.emails}
         addresses={patient?.addresses}
       />

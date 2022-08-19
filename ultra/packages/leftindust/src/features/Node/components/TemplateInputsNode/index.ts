@@ -3,10 +3,14 @@ import TemplateInputsNode from './TemplateInputsNode.svelte';
 
 const node: NodeBlueprint<never, {
   Values: SocketBlueprint<unknown>,
+  Indexes: SocketBlueprint<number>,
 }> = {
   outputs: {
     Values: {
       type: '',
+    },
+    Indexes: {
+      type: 'number_array',
     },
   },
   component: TemplateInputsNode,
