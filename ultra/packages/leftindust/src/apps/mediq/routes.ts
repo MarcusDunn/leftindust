@@ -1,5 +1,3 @@
-import type { SvelteComponentDev } from 'svelte/internal';
-
 import DashboardPage from '@/features/Dashboard/DashboardPage.svelte';
 import ClientsPage from '@/features/Clients/ClientsPage.svelte';
 
@@ -11,6 +9,9 @@ import PeoplePage from '@/features/People/PeoplePage.svelte';
 
 import TemplatePreviewPage from '@/features/Templates/TemplatePreviewPage.svelte';
 import TemplateWizard from '@/features/Templates/TemplateWizard.svelte';
+
+import PatientWizard from '@/features/Patient/PatientWizard.svelte';
+import DoctorWizard from '@/features/Doctor/DoctorWizard.svelte';
 
 import MedIQLoginPage from '@/features/Account/MedIQLoginPage.svelte';
 
@@ -27,6 +28,8 @@ export type Path =
   | '/people/:data/'
   | '/templates/'
   | '/wizard/template/'
+  | '/wizard/patient/'
+  | '/wizard/doctor/'
   | '/template/preview/'
   | '/account/login/'
   | '/settings/'
@@ -62,6 +65,14 @@ const routes: Route<Path>[] = [
   {
     path: '/wizard/template/',
     component: TemplateWizard,
+  },
+  {
+    path: '/wizard/patient/',
+    component: PatientWizard,
+  },
+  {
+    path: '/wizard/doctor/',
+    component: DoctorWizard,
   },
   {
     path: '/template/preview/',

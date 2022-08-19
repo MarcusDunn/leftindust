@@ -23,6 +23,7 @@
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import Page from '@/features/UI/components/Page/Page.svelte';
   import Menu from '@/features/UI/components/Menu/Menu.svelte';
+  import { openWizard } from '../Wizard';
 
   import PatientsTab from '@/features/Patients/components/PatientsTab/PatientsTab.svelte';
   import DoctorsTab from '../Doctors/components/DoctorsTab/DoctorsTab.svelte';
@@ -45,6 +46,7 @@
             f7: 'person_2_alt',
             color: 'purple',
           },
+          onClick: () => openWizard('/wizard/patient/'),
         },
         {
           title: $_('generics.doctor'),
@@ -53,6 +55,7 @@
             f7: 'briefcase_fill',
             color: 'blue',
           },
+          onClick: () => openWizard('/wizard/doctor/'),
         },
       ]}
       bind:instance={createMenuRef}
