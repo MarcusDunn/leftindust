@@ -29,7 +29,7 @@ class ReadPatientServiceImpl(
     }
 
     override suspend fun getMany(range: Range): List<Patient> {
-        return patientRepository.findAll(range.toPageable(Sort.sort(Patient::class.java).by(Patient::id))).toList()
+        return patientRepository.findAll(range.toPageable(Sort.by(Patient_.ID))).toList()
     }
 
     override suspend fun getByEvent(eventId: EventDto.EventDtoId): List<Patient>? {
