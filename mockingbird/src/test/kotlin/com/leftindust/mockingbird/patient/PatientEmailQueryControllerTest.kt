@@ -30,7 +30,7 @@ internal class PatientEmailQueryControllerTest(
 
     @Test
     internal fun `check can query for patient emails fields`() {
-        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityPersisted
+        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityDetached
         coEvery { readEmailService.getPatientEmails(PatientMother.Dan.graphqlId) } returns listOf(EmailMother.DansEmail.entityPersisted)
 
         @Language("graphql")

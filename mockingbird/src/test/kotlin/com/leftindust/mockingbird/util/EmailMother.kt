@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.util
 import com.leftindust.mockingbird.email.Email
 import com.leftindust.mockingbird.email.EmailToEmailDtoConverter
 import com.leftindust.mockingbird.email.EmailType
-import java.util.*
+import java.util.UUID
 
 object EmailMother {
     val emailToEmailDtoConverter = EmailToEmailDtoConverter()
