@@ -71,7 +71,7 @@ internal class ReadEmailServiceImplUnitTest {
             val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, readDoctorService, readPatientService, readContactService)
             val emails = readEmailServiceImpl.getPatientEmails(Dan.graphqlId)
 
-            assertThat(emails, containsInAnyOrder(Dan.emails.map { equalTo(it) }))
+            assertThat(emails, containsInAnyOrder(Dan.emailsDetached.map { equalTo(it) }))
         }
 
     @Test

@@ -39,12 +39,19 @@ object PatientMother {
             get() = mutableSetOf()
         val doctors: MutableSet<DoctorPatientEntity>
             get() = mutableSetOf()
-        val emails: MutableSet<Email>
-            get() = mutableSetOf(DansEmail.entityPersisted)
-        val phones: MutableSet<Phone>
-            get() = mutableSetOf(PhoneMother.DansCell.entityPersisted)
-        val addresses: MutableSet<Address>
-            get() = mutableSetOf(DansHouse.entityPersisted)
+        val emailsDetached: MutableSet<Email>
+            get() = mutableSetOf(DansEmail.entityDetached)
+        val emailsTransient: MutableSet<Email>
+            get() = mutableSetOf(DansEmail.entityTransient)
+        val phonesDetached: MutableSet<Phone>
+            get() = mutableSetOf(PhoneMother.DansCell.entityDetached)
+        val phonesTransient: MutableSet<Phone>
+            get() = mutableSetOf(PhoneMother.DansCell.entityTransient)
+        val addressesDetached: MutableSet<Address>
+            get() = mutableSetOf(DansHouse.entityDetached)
+
+        val addressesTransient: MutableSet<Address>
+            get() = mutableSetOf(DansHouse.entityTransient)
         val events: MutableSet<PatientEventEntity>
             get() = mutableSetOf()
         val nameInfoId = UUID.fromString("e257f4f5-15c5-4375-a99b-da6354e4d0b5")
@@ -55,9 +62,9 @@ object PatientMother {
                         lastName = lastName,
                         middleName = middleName
                     ).apply { id = nameInfoId },
-                    addresses = addresses,
-                    emails = emails,
-                    phones = phones,
+                    addresses = addressesDetached,
+                    emails = emailsDetached,
+                    phones = phonesDetached,
                     events = events,
                     user = user,
                     thumbnail = thumbnail,
@@ -70,14 +77,27 @@ object PatientMother {
                     doctors = doctors,
                 ).apply { id = this@Dan.id }
 
-        val entityTransient = entityDetached.apply {
-            id = null
-            nameInfo.id = null
-            addresses.forEach { it.id = null }
-            emails.forEach { it.id = null }
-            phones.forEach { it.id = null }
-            events.forEach { it.event.id = null }
-        }
+        val entityTransient: Patient
+            get() =  Patient(
+                nameInfo = NameInfo(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = middleName
+                ),
+                addresses = addressesTransient,
+                emails = emailsTransient,
+                phones = phonesTransient,
+                events = events,
+                user = user,
+                thumbnail = thumbnail,
+                sex = sex,
+                dateOfBirth = dateOfBirth,
+                gender = gender,
+                ethnicity = ethnicity,
+                insuranceNumber = insuranceNumber,
+                contacts = contacts,
+                doctors = doctors,
+            )
 
         val dto: PatientDto = patientToPatientDtoConverter.convert(entityDetached)
     }
@@ -89,7 +109,7 @@ object PatientMother {
         val dateOfBirth = LocalDate.of(1924, Month.APRIL, 17)
         val id = UUID.fromString("a6341c8e-1dcd-11ed-861d-0242ac120002")
         val graphqlId = PatientDto.PatientDtoId(id)
-        val emails = mutableSetOf(DansEmail.entityPersisted)
+        val emails = mutableSetOf(DansEmail.entityDetached)
         val phones = mutableSetOf(PhoneMother.JennysWorkPhone.entityPersisted)
         val addresses = mutableSetOf(AddressMother.JennysHouse.entityPersisted)
         val user: MediqUser? = null

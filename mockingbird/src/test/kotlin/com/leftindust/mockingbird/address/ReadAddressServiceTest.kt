@@ -53,7 +53,7 @@ internal class ReadAddressServiceTest {
 
             MatcherAssert.assertThat(
                 addresses,
-                Matchers.containsInAnyOrder(PatientMother.Dan.addresses.map { Matchers.equalTo(it) })
+                Matchers.containsInAnyOrder(PatientMother.Dan.addressesDetached.map { Matchers.equalTo(it) })
             )
         }
 
