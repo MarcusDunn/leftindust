@@ -7,16 +7,24 @@ import java.util.UUID
 
 object EmailMother {
     val emailToEmailDtoConverter = EmailToEmailDtoConverter()
+
     object DansEmail {
         val id = UUID.fromString("10845c82-1d17-11ed-861d-0242ac120002")
         val emailType = EmailType.Work
         val address = "dan.shervershani@example.com"
-        val entityPersisted = Email(
-            type = emailType,
-            address = address
-        ).apply { id = this@DansEmail.id }
+        val entityDetached: Email
+            get() = Email(
+                type = emailType,
+                address = address
+            ).apply { id = this@DansEmail.id }
 
-        val dto = emailToEmailDtoConverter.convert(entityPersisted)
+        val entityTransient: Email
+            get() = Email(
+                type = emailType,
+                address = address
+            )
+
+        val dto = emailToEmailDtoConverter.convert(entityDetached)
     }
 
     val dansEmail = Email(
