@@ -25,4 +25,4 @@ icd:
     url: localhost:80/icd
 logging:
   level:
-    root: debug
+    root: trace
