@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.contact.Contact
-import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.PatientDto
@@ -61,16 +60,26 @@ object PatientMother {
                 doctors = doctors,
             ).apply { id = this@Dan.id }
 
-//        val entityUnpersisted
-//            get() = entityPersisted.apply {
-//                id = null
-//                addresses.forEach { it.id = null }
-//                emails.forEach { it.id = null }
-//                phones.forEach { it.id = null }
-//                events.clear()
-//                doctors.clear()
-//                contacts.forEach { it.id = null }
-//            }
+        val entityNotPersisted = Patient(
+            nameInfo = NameInfo(
+                firstName = firstName,
+                lastName = lastName,
+                middleName = middleName
+            ),
+            addresses = addresses,
+            emails = emails,
+            phones = phones,
+            events = events,
+            user = user,
+            thumbnail = thumbnail,
+            sex = sex,
+            dateOfBirth = dateOfBirth,
+            gender = gender,
+            ethnicity = ethnicity,
+            insuranceNumber = insuranceNumber,
+            contacts = contacts,
+            doctors = doctors,
+        )
 
         val dto: PatientDto = patientToPatientDtoConverter.convert(entityPersisted)
     }

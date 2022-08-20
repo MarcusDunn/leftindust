@@ -3,10 +3,10 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.address.AddressDto
 import com.leftindust.mockingbird.address.ReadAddressService
 import com.leftindust.mockingbird.util.AddressMother
-import com.leftindust.mockingbird.util.DoctorMother
 import com.leftindust.mockingbird.util.PatientMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
+import java.util.UUID
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
-import java.util.*
 
 
 @GraphQlTest(controllers = [PatientQueryController::class, PatientAddressQueryController::class])
@@ -27,7 +26,7 @@ internal class PatientAddressQueryControllerTest(
     @MockkBean
     private lateinit var readAddressService: ReadAddressService
 
-    @MockkBean()
+    @MockkBean
     private lateinit var readPatientService: ReadPatientService
 
     @Test
