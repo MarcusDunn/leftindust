@@ -46,7 +46,7 @@ internal class ReadEventServiceImplUnitTest {
 
     @Test
     internal fun `check getByPatientId returns a patient's event when patient exists`() = runTest {
-        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityPersisted
+        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityDetached
         val readEventServiceImpl =
             ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
         val events = readEventServiceImpl.getByPatientId(PatientMother.Dan.graphqlId)

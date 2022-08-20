@@ -67,7 +67,7 @@ internal class ReadEmailServiceImplUnitTest {
     @Test
     internal fun `check getPatientEmails returns a list of email addresses corresponding to a patient's Id`() =
         runTest {
-            coEvery { readPatientService.getByPatientId(Dan.graphqlId) } returns Dan.entityPersisted
+            coEvery { readPatientService.getByPatientId(Dan.graphqlId) } returns Dan.entityDetached
             val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, readDoctorService, readPatientService, readContactService)
             val emails = readEmailServiceImpl.getPatientEmails(Dan.graphqlId)
 

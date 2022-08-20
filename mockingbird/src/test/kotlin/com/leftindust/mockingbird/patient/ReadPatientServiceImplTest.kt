@@ -25,7 +25,7 @@ internal class ReadPatientServiceImplJpaTest(
 
     @Test
     internal fun `recreate issue 145`() = runTest {
-        patientRepository.save(PatientMother.Dan.entityNotPersisted)
+        patientRepository.save(PatientMother.Dan.entityTransient)
 
         val patients = readPatientServiceImpl.getMany(object : Range {
             override val from = 0

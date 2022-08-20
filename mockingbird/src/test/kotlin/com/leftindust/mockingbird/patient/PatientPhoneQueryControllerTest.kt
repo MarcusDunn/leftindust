@@ -30,7 +30,7 @@ internal class PatientPhoneQueryControllerTest(
 
     @Test
     internal fun `check can query for patient phone fields`() {
-        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityPersisted
+        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityDetached
         coEvery { readPhoneService.getByPatientId(PatientMother.Dan.graphqlId) } returns listOf(PhoneMother.DansCell.entityPersisted)
 
         @Language("graphql")

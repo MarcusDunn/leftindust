@@ -31,7 +31,7 @@ internal class PatientAddressQueryControllerTest(
 
     @Test
     internal fun `check can query for patient address fields`() {
-        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityPersisted
+        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityDetached
         coEvery { readAddressService.getByPatientId(PatientMother.Dan.graphqlId) } returns listOf(AddressMother.JennysHouse.entityPersisted)
 
         @Language("graphql")
