@@ -955,4 +955,7 @@
     <changeSet id="" author="boris (manual)">
         <modifyDataType tableName="survey_template_calculation_entity" columnName="calculation" newDataType="VARCHAR(10000)"/>
     </changeSet>
+    <changeSet id="" author="marcus (manual)">
+        <modifyDataType tableName="survey_template_section_entity" columnName="subtitle" newDataType="VARCHAR(1000)"/>
+    </changeSet>
 </databaseChangeLog>
