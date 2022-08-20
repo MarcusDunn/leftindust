@@ -52,6 +52,9 @@ type Mutation {
 
     # user
     createMediqUser(createUser: CreateUser): MediqUser
+
+    # patient
+    createPatient(createUser: CreatePatient): Patient
 }
 
 input CreateUser {
@@ -238,6 +241,20 @@ type SurveyTemplateInput {
     calculationId: Int!
 }
 
+input CreatePatient {
+    firstName: String!
+    middleName: String
+    lastName: String!
+    addresses: [CreateAddress!]
+    phones: [CreatePhone!]
+    emails: [CreateEmail!]
+    dateOfBirth: LocalDate
+    insuranceNumber: String
+    sex: Sex
+    gender: String
+    ethnicity: Ethnicity
+}
+
 type Patient {
     id: PatientId!
     firstName: String!
@@ -254,18 +271,23 @@ type Patient {
     ethnicity: Ethnicity
 }
 
-enum PhoneType {
-    Work,
-    Cell,
-    Home,
-    Pager,
-    Other,
+input CreatePhone {
+    number: String!
+    type: PhoneType!
 }
 
 type Phone {
     id: PhoneId!
     number: String!
     type: PhoneType!
+}
+
+enum PhoneType {
+    Work,
+    Cell,
+    Home,
+    Pager,
+    Other,
 }
 
 type PhoneId {
@@ -284,6 +306,11 @@ type Address {
 
 type AddressId {
     value: UUID!
+}
+
+input CreateEmail {
+    email: String!
+    type: EmailType!
 }
 
 type Email {
