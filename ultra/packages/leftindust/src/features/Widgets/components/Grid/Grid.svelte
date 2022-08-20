@@ -156,8 +156,6 @@
     });
     return `padding-left: ${((items.indexOf(item) + 1) % col === 1 || col === 1) ? '0' : `${widthOffset}px`}`;
   };
-
-  console.log(items);
 </script>
 
 <div class="widgets-grid">

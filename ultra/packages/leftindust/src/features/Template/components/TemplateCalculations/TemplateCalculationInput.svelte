@@ -146,7 +146,7 @@
   bind:state={calculation.deserializedCalculation}
   bind:open={modalOpen}
   on:close={() => $TemplateNodesModalOpen = false}
-  bind:editor={editor}
+  bind:editor={calculation.editor}
 />
 
 <div>

@@ -177,6 +177,7 @@ export const client = createClient({
         return null;
       },
     }),
+    /*
     authExchange<{ token: string | undefined } | undefined>({
       getAuth: async () => {
         const user: User = await new Promise((resolve, reject) => {
@@ -212,6 +213,7 @@ export const client = createClient({
         });
       },
     }),
+    */
     fetchExchange,
   ],
 });

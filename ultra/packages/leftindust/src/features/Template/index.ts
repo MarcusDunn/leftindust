@@ -241,3 +241,19 @@ export const templateForm = (closeWizardHandler: () => void) => createForm<Templ
     validator({ schema: templatesSchema }),
   ],
 });
+
+export const getYupInputTypeFromTemplateCategory = (type: SurveyTemplateInputType) => {
+  switch (type) {
+    case SurveyTemplateInputType.Text:
+    case SurveyTemplateInputType.Paragraph:
+      return yup.string();
+    case SurveyTemplateInputType.Number:
+    case SurveyTemplateInputType.Date:
+      return yup.number();
+    case SurveyTemplateInputType.SingleSelect:
+    case SurveyTemplateInputType.MultiSelect:
+      return yup.array(yup.string());
+    default:
+      return yup.string();
+  }
+};

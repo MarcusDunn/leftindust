@@ -91,7 +91,7 @@
   })();
 </script>
 
-<div style="min-width: 430px">
+<div style="min-width: 430px; max-width: 430px">
   <Select
     title={$_('generics.type')}
     placeholder={$_('examples.text')}

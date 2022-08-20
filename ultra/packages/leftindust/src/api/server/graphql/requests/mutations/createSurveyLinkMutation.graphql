@@ -1,0 +1,7 @@
+mutation createSurveyLinkMutation($surveyTemplateId: SurveyTemplateIdInput!) {
+  createSurveyLink(surveyTemplateId: $surveyTemplateId) {
+    id {
+      value
+    }
+  }
+}

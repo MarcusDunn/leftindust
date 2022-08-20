@@ -1,5 +1,32 @@
 <script lang="ts">
+  import { Block } from 'framework7-svelte';
   import type { SurveyTemplateSection } from '@/api/server';
+  import RecordInputs from '../RecordInputs/RecordInputs.svelte';
+  import type { RecordForm, RecordValues } from '../..';
 
   export let section: SurveyTemplateSection;
+  export let values: RecordValues['inputs'] | undefined;
+
+  export let form: RecordForm;
+
+  const { form: felteForm } = form;
+
+  const { form: consumableForm, errors } = felteForm;
+
+  console.log(values);
 </script>
+
+<form bind:this={form.ref} use:consumableForm>
+  <Block class="no-margin-top" style="margin-bottom: 100px">
+    <h2>{section.title}</h2>
+    <p>{section.subtitle ?? ''}</p>
+    <br />
+    {#if values}
+      <RecordInputs
+        inputs={section.inputs}
+        {errors}
+        bind:values
+      />
+    {/if}
+  </Block>
+</form>

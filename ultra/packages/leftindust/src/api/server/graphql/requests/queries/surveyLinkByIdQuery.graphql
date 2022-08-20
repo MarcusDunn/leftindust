@@ -1,0 +1,7 @@
+#import "../fragments/surveyLinkFragment.graphql"
+
+query surveyLinkByIdQuery($surveyLinkId: SurveyLinkIdInput!) {
+  surveyLinkById(surveyLinkId: $surveyLinkId) {
+    ...surveyLinkFragment
+  }
+}

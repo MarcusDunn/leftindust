@@ -20,9 +20,12 @@
   });
 
   export let input: SurveyTemplateInput;
-  export let value: string | number | boolean;
+  export let value: string | number | boolean | string[] | undefined;
+  export let id: number;
 
   const { type, label, options, placeholder, uploadAccept, uploadMultiple } = input;
+
+  export let errors: Record<string, string>;
 </script>
 
 
@@ -31,32 +34,36 @@
 {:else}
   <div style="margin-bottom: 20px;">
     {#if type === SurveyTemplateInputType.Text}
-      <Input title={label} clear>
-        <input type="text" {placeholder} bind:value />
+      <Input title={label} clear error={errors[id]}>
+        <input name={id.toString()} type="text" {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Number}
-      <Input title={label} clear>
-        <input type="number" {placeholder} bind:value />
+      <Input title={label} clear error={errors[id]}>
+        <input name={id.toString()} type="number" {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Date}
       {#if typeof value === 'number' || typeof value === 'undefined'}
-        <Date title={label} {placeholder} bind:value />
+        <Date name={id.toString()} title={label} {placeholder} bind:value />
       {/if}
     {:else if type === SurveyTemplateInputType.Paragraph}
-      <Input title={label} clear>
-        <textarea {placeholder} bind:value />
+      <Input title={label} clear error={errors[id]}>
+        <textarea name={id.toString()} {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Upload}
       <Add title={label} placeholder={placeholder || getUploadLabel(uploadAccept, uploadMultiple)} />
     {:else if type === SurveyTemplateInputType.MultiSelect || type === SurveyTemplateInputType.SingleSelect}
       {#if options}
         <div style="margin-top: 10px; margin-bottom: -10px; font-size: 14px">{label}</div>
-        {#each options as option}
-          <Checkbox
-            title={option}
-            multiple={type === SurveyTemplateInputType.MultiSelect}
-            slot="content"
-          />
+        {#each options as option, index}
+          {#if Array.isArray(value)}
+            <Checkbox
+              title={option}
+              multiple={type === SurveyTemplateInputType.MultiSelect}
+              slot="content"
+              bind:selected={value}
+              value={options[index]}
+            />
+          {/if}
         {/each}
       {/if}
     {/if}

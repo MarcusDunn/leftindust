@@ -38,7 +38,7 @@ const routes: Route<Path>[] = [
     path: '/dashboard/',
     component: DashboardPage,
   },
-  /*{
+  {
     path: '/clients/',
     component: ClientsPage,
     master: true,
@@ -55,7 +55,6 @@ const routes: Route<Path>[] = [
     path: '/people/:data/',
     component: PeoplePage,
   },
-  */
   {
     path: '/templates/',
     component: TemplatesPage,

@@ -1,24 +1,46 @@
 <script lang="ts">
-  import { PartialSurveyTemplateByIdQueryDocument, type PartialTemplateFragmentFragment } from '@/api/server';
+  import { client, CreateSurveyLinkMutationDocument, PartialSurveyTemplateByIdQueryDocument, type PartialTemplateFragmentFragment } from '@/api/server';
   import { Button, Chip, Col, Icon, Row } from 'framework7-svelte';
-  import { operationStore, query } from '@urql/svelte';
+  import { mutation, operationStore, query } from '@urql/svelte';
   
   import Card from '@/features/Widgets/components/Card/Card.svelte';
 
   import { _ } from '@/language';
   import type { CardProps } from '@/features/Widgets';
-  import type { Popup } from 'framework7/types';
+  import type { Popup, Popover } from 'framework7/types';
   import Quicklook from '@/features/View/components/Quicklook/Quicklook.svelte';
   import { AppViews } from '@/features/App';
-  import { openPopup } from '@/features/View';
+  import { openPopover, openPopup } from '@/features/View';
+  import type { MenuItem } from '@/features/UI/components/Menu';
+  import Menu from '@/features/UI/components/Menu/Menu.svelte';
 
-  const { data, dragger, reference, attachments, quicklook } = $$props as CardProps;
+  const { data, dragger } = $$props as CardProps;
   
   let quicklookPopup: Popup.Popup;
+  let menuPopup: Popover.Popover;
   
   const request = operationStore(PartialSurveyTemplateByIdQueryDocument, {
     surveyTemplateId: { value: data.id },
   });
+
+  const menuItems: MenuItem[] = [{
+    title: 'Send Link',
+    text: 'Generate a link to send to somebody outside of this clinic',
+    icon: {
+      f7: 'link_circle_fill',
+      color: 'blue',
+    },
+    onClick: () => {
+      client.mutation(CreateSurveyLinkMutationDocument, {
+        surveyTemplateId: { value: data.id },
+      }).toPromise()
+        .then(({ data }) => {
+          console.log(data);
+        }).catch((error) => {
+          console.log(error);
+        });
+    },
+  }];
 
   query(request);
 
@@ -37,12 +59,19 @@
   bind:instance={quicklookPopup}
 />
 
+<Menu
+  items={menuItems}
+  bind:instance={menuPopup}
+/>
+
 <Card
   title={template?.title}
   color="deeppurple"
   shadow
   {dragger}
   loading={!template}
+  menu
+  on:menu={({ detail: event }) => openPopover(menuPopup, event)}
 >
   <div style="margin-top: 6px" slot="subtitle">
     <Chip text={`${template?.sections.length} sections`} mediaBgColor="purple">

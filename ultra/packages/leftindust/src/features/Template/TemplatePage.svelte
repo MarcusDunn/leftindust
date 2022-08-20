@@ -2,7 +2,6 @@
   import AppBar from '@/features/UI/components/Appbar/Appbar.svelte';
   import Page from '@/features/UI/components/Page/Page.svelte';
   import { _ } from 'svelte-i18n';
-  import { Block } from 'framework7-svelte';
   import type { Router } from 'framework7/types';
   import { operationStore, query } from '@urql/svelte';
   import { PartialSurveyTemplateByIdQueryDocument, type Data, type PartialTemplateFragmentFragment } from '@/api/server';
