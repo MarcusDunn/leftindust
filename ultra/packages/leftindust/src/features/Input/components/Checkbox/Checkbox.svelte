@@ -34,8 +34,6 @@
       selected = [];
     }
   };
-
-  $: console.log(value);
 </script>
 
 <div class="input-checkbox">

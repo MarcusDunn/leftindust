@@ -1,4 +1,4 @@
-import type { Editor, EditorState } from 'function-junctions/types';
+import type { Editor, EditorState, NodeBlueprint } from 'function-junctions/types';
 import type { SocketBlueprint } from 'function-junctions/types';
 import { get } from 'svelte/store';
 import dateSocket from '../Socket/components/DateSocket';
@@ -15,6 +15,14 @@ import { validator } from '@felte/validator-yup';
 import { type CreateSurveyTemplateCalculation, SurveyTemplateInputType, SurveyTemplateCategory, TemplateInputUploadType, client, SurveyTemplateMutationDocument } from '@/api/server';
 import { Template, TemplateCalculations } from './store';
 import getNativeAPI from '@/api/bridge';
+import TemplateOutputNode from '../Node/components/TemplateOutputNode';
+import TemplateInputsNode from '../Node/components/TemplateInputsNode';
+import TemplateInputNode from '../Node/components/TemplateInputNode';
+import MathNode from '../Node/components/MathNode';
+import NumberNode from '../Node/components/NumberNode';
+import TextNode from '../Node/components/TextNode';
+import DateNode from '../Node/components/DateNode';
+import AverageNode from '../Node/components/AverageNode';
 
 const language = get(_);
 const { Dialog } = getNativeAPI();
@@ -116,6 +124,18 @@ export const templateCalculationSockets: TemplateCalculationSockets = {
   text_array_array: twoDimensionalTextArraySocket,
 };
 
+export const templateCalculationNodes: Record<string, NodeBlueprint> = {
+  output: TemplateOutputNode,
+  Group: TemplateInputsNode,
+  Input: TemplateInputNode,
+  Math: MathNode,
+  Number: NumberNode,
+  Text: TextNode,
+  Date: DateNode,
+  Average: AverageNode,
+};
+
+
 export const getTemplateSocketType = (inputType: SurveyTemplateInputType) => {
   let type: 'text' | 'number' | 'date' | 'text_array';
 
@@ -212,7 +232,6 @@ export const templateForm = (closeWizardHandler: () => void) => createForm<Templ
       })),
     };
 
-    console.log(surveyTemplate);
 
     const showTemplateError = (error: string) => {
       void Dialog.alert({
@@ -246,13 +265,13 @@ export const getYupInputTypeFromTemplateCategory = (type: SurveyTemplateInputTyp
   switch (type) {
     case SurveyTemplateInputType.Text:
     case SurveyTemplateInputType.Paragraph:
-      return yup.string();
+      return yup.string().required();
     case SurveyTemplateInputType.Number:
     case SurveyTemplateInputType.Date:
-      return yup.number();
+      return yup.number().required();
     case SurveyTemplateInputType.SingleSelect:
     case SurveyTemplateInputType.MultiSelect:
-      return yup.array(yup.string());
+      return yup.array(yup.string()).min(1).required();
     default:
       return yup.string();
   }

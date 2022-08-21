@@ -9,7 +9,7 @@
   import Select from '@/features/Input/components/Select/Select.svelte';
   import Input from '@/features/Input/Input.svelte';
   import { get } from 'svelte/store';
-  import type { SurveyTemplateInput, SurveyTemplateInputType } from '@/api/server';
+  import type { SurveyTemplateInputType } from '@/api/server';
 
   export let outputs: OutputSockets<{
     Value: OutputSocket<unknown>;

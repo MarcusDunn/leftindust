@@ -10,10 +10,12 @@ fragment templateFragment on SurveyTemplate {
     }
     title
     subtitle
+    calculationId
     inputs {
       id {
         value
       }
+      calculationId
       category
       label
       options

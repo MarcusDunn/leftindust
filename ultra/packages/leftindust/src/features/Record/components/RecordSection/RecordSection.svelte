@@ -11,19 +11,18 @@
 
   const { form: felteForm } = form;
 
-  const { form: consumableForm, errors } = felteForm;
-
-  console.log(values);
+  const { form: consumableForm, errors, data } = felteForm;
 </script>
 
 <form bind:this={form.ref} use:consumableForm>
-  <Block class="no-margin-top" style="margin-bottom: 100px">
+  <Block class="no-margin-top" style="margin-bottom: 100px;padding: 0 25px;padding-top: 5px;">
     <h2>{section.title}</h2>
     <p>{section.subtitle ?? ''}</p>
     <br />
     {#if values}
       <RecordInputs
         inputs={section.inputs}
+        {data}
         {errors}
         bind:values
       />

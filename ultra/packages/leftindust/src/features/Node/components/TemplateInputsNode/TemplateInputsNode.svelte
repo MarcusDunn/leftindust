@@ -26,9 +26,11 @@
   export let store: {
     type: SurveyTemplateInputType;
     ids: string[];
+    indexes: number[] | undefined;
   } = {
     type: SurveyTemplateInputType.Text,
     ids: [],
+    indexes: undefined,
   };
 
   let prevType = store.type;

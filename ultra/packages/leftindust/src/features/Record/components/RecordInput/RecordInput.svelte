@@ -6,8 +6,10 @@
   import Date from '@/features/Input/components/Date/Date.svelte';
 
   import Input from '@/features/Input/Input.svelte';
+  import InputError from '@/features/Input/InputError.svelte';
 
   import { _ } from '@/language';
+  import type { Writable } from 'svelte/store';
 
   const getUploadLabel = (accept?: TemplateInputUploadType, multiple?: boolean) => $_('generics.uploadWithLabel', {
     values: {
@@ -25,7 +27,17 @@
 
   const { type, label, options, placeholder, uploadAccept, uploadMultiple } = input;
 
-  export let errors: Record<string, string>;
+  export let data: Omit<Writable<Record<string, unknown>>, 'subscribe'> & {
+    subscribe(subscriber: (values: {
+      [x: string]: any;
+    }) => any): () => void;
+  } & Record<string, any>;
+  export let errors: Writable<Record<string, string>>;
+
+  $: $data[id] = value;
+
+  $: console.log($errors);
+
 </script>
 
 
@@ -34,20 +46,20 @@
 {:else}
   <div style="margin-bottom: 20px;">
     {#if type === SurveyTemplateInputType.Text}
-      <Input title={label} clear error={errors[id]}>
-        <input name={id.toString()} type="text" {placeholder} bind:value />
+      <Input title={label} clear error={$errors[id]}>
+        <input type="text" {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Number}
-      <Input title={label} clear error={errors[id]}>
-        <input name={id.toString()} type="number" {placeholder} bind:value />
+      <Input title={label} clear error={$errors[id]}>
+        <input type="number" {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Date}
       {#if typeof value === 'number' || typeof value === 'undefined'}
-        <Date name={id.toString()} title={label} {placeholder} bind:value />
+        <Date title={label} {placeholder} bind:value />
       {/if}
     {:else if type === SurveyTemplateInputType.Paragraph}
-      <Input title={label} clear error={errors[id]}>
-        <textarea name={id.toString()} {placeholder} bind:value />
+      <Input title={label} clear error={$errors[id]}>
+        <textarea {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Upload}
       <Add title={label} placeholder={placeholder || getUploadLabel(uploadAccept, uploadMultiple)} />
@@ -65,6 +77,17 @@
             />
           {/if}
         {/each}
+        {#if $errors[id]}
+          {#if Array.isArray($errors[id])}
+            {#each $errors[id] as e}
+              {#if typeof e === 'string'}
+                <InputError message={e} />
+              {/if}
+            {/each}
+          {:else}
+            <InputError message={$errors[id]} />
+          {/if}
+        {/if}
       {/if}
     {/if}
   </div>

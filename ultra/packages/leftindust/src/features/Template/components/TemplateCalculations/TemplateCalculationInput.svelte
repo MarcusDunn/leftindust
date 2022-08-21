@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { templateForm, TemplateCalculationWithInstance } from '../..';
+  import { type templateForm, type TemplateCalculationWithInstance, templateCalculationNodes } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
@@ -7,10 +7,9 @@
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
   import { TemplateNodesModalOpen } from '../../store';
-  import type { Editor, NodeBlueprint } from 'function-junctions/types';
+  import type { Editor } from 'function-junctions/types';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import TemplateInputNode from '@/features/Node/components/TemplateInputNode';
-  import TemplateOutputNode from '@/features/Node/components/TemplateOutputNode';
   import MathNode from '@/features/Node/components/MathNode';
   import TemplateInputsNode from '@/features/Node/components/TemplateInputsNode';
   import AverageNode from '@/features/Node/components/AverageNode';
@@ -41,17 +40,6 @@
   const { value } = nodeOutputs.Value;
 
   let editor: Editor;
-
-  const nodes: Record<string, NodeBlueprint> = {
-    output: TemplateOutputNode,
-    Group: TemplateInputsNode,
-    Input: TemplateInputNode,
-    Math: MathNode,
-    Number: NumberNode,
-    Text: TextNode,
-    Date: DateNode,
-    Average: AverageNode,
-  };
 
   const menuNodes: MenuNodes = [
     {
@@ -139,7 +127,7 @@
 </script>
 
 <NodesModal
-  {nodes}
+  nodes={templateCalculationNodes}
   {menuNodes}
   inputs={nodeInputs}
   outputs={nodeOutputs}

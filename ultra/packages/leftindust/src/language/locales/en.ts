@@ -154,6 +154,8 @@ const language: Dictionary = {
     export: 'Export',
     share: 'Share',
     poweredByDust: 'Powered by leftindust',
+    complete: 'Complete',
+    submit: 'Submit',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',

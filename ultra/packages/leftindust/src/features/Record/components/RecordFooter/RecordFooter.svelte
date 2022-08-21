@@ -15,6 +15,8 @@
   export let currentSectionIndex: number;
   export let forms: RecordForm[];
 
+  export let complete: boolean;
+
   let progressbar: Progressbar | undefined;
 
   $: if (template.sections.length > 1) {
@@ -36,44 +38,61 @@
     {#if template.sections.length > 1}
       <div class="record-record_footer-progress">
         <Progressbar {color} progress={0} bind:this={progressbar} />
-        <SegmentedText
-          text={template.sections.map(({ title }) => title)}
-          index={currentSectionIndex}
-          {color}
-          style="margin-top: 15px;"
-        />
+        {#if !complete}
+          <SegmentedText
+            text={template.sections.map(({ title }) => title)}
+            index={currentSectionIndex}
+            {color}
+            style="margin-top: 15px;"
+          />
+        {/if}
       </div>
     {/if}
     <div class="flex-grow" />
     <div class="record-record_footer-controls">
-      <Row>
-        <Col width="50">
-          <Button
-            {color}
-            round
-            outline
-            on:click={() => {
-              if (currentSectionIndex > 0) {
-                currentSectionIndex--;
-              }
-            }}
-          >
-            {$_('generics.back')}
-          </Button>
-        </Col>
-        <Col width="50">
-          <Button
-            {color}
-            round
-            fill
-            on:click={() => {
-              forms[currentSectionIndex].ref?.requestSubmit();
-            }}
-          >
-            {$_('generics.next')}
-          </Button>
-        </Col>
-      </Row>
+      {#if !complete}
+        <Row>
+          <Col width="50">
+            <Button
+              {color}
+              round
+              outline
+              on:click={() => {
+                if (currentSectionIndex > 0) {
+                  currentSectionIndex--;
+                }
+              }}
+            >
+              {$_('generics.back')}
+            </Button>
+          </Col>
+          <Col width="50">
+            {#if currentSectionIndex < (template.sections.length - 1)}
+              <Button
+                {color}
+                round
+                fill
+                on:click={() => {
+                  forms[currentSectionIndex].ref?.requestSubmit();
+                }}
+              >
+                {$_('generics.next')}
+              </Button>
+            {:else}
+              <Button
+                {color}
+                round
+                fill
+                on:click={() => {
+                  forms[currentSectionIndex].ref?.requestSubmit();
+                }}
+              >
+                {$_('generics.complete')}
+              </Button>
+            {/if}
+          </Col>
+        </Row>
+      {/if}
     </div>
   </div>
 </Footer>
