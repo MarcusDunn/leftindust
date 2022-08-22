@@ -4,7 +4,7 @@
 
 <script lang="ts">
   import type { SurveyTemplateCalculation } from '@/api/server';
-  import { templateCalculationNodes } from '@/features/Template';
+  import { calculationNodes } from '@/features/Nodes';
   import { Preloader } from 'framework7-svelte';
   import { Compute } from 'function-junctions';
   import type { EditorState } from 'function-junctions/types';
@@ -26,7 +26,7 @@
 </script>
 
 <Compute
-  nodes={templateCalculationNodes}
+  nodes={calculationNodes}
   {state}
   {inputs}
   {outputs}
@@ -42,7 +42,7 @@
     {#if typeof $value === 'undefined'}
       <Preloader />
     {:else if typeof $value === 'number'}
-      <div class="record-record_calculation_number">{$value}</div>
+      <div class="record-record_calculation_number">{Math.round($value)}</div>
     {/if}
   </div>
 </div>

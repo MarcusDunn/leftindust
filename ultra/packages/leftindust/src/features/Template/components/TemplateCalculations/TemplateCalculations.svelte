@@ -53,7 +53,6 @@
         
         nodeInputs[input.id].value.update(() => input.value);
       }
-  
     });
   }
 </script>

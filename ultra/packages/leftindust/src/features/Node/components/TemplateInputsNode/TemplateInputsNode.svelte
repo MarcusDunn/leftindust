@@ -25,28 +25,40 @@
   
   export let store: {
     type: SurveyTemplateInputType;
-    ids: string[];
-    indexes: number[] | undefined;
+    ids: number[];
+    options: Record<string, string[] | undefined>;
   } = {
     type: SurveyTemplateInputType.Text,
     ids: [],
-    indexes: undefined,
+    options: {},
   };
 
   let prevType = store.type;
 
   $: inputs = $Template.sections.flatMap((section, index) =>
-    section.inputs.map((input, inputIndex) => ({
-      ...input,
-      sectionIndex: index,
-      index: inputIndex,
-      label: `${input.label}${
-        $Template.sections.length > 1
-          // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-          ? ` (${$_('generics.sectionIndexed', { values: { number: index + 1 } })})`
-          : ''
-      }`,
-    })),
+    section.inputs.map((input, inputIndex) => {
+      if (
+        (input.type === SurveyTemplateInputType.SingleSelect
+          || input.type === SurveyTemplateInputType.MultiSelect)
+          && store.ids.includes(input.id)
+      ) {
+        store.options[input.id] = input.options;
+      } else {
+        if (store.options[input.id]) delete store.options[input.id];
+      }
+
+      return {
+        ...input,
+        sectionIndex: index,
+        index: inputIndex,
+        label: `${input.label}${
+          $Template.sections.length > 1
+            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+            ? ` (${$_('generics.sectionIndexed', { values: { number: index + 1 } })})`
+            : ''
+        }`,
+      };
+    }),
   ).filter((input) => input.type === store.type);
 
   $: $Values = store.ids.map(
@@ -72,7 +84,7 @@
   $: {
     if (store.type === SurveyTemplateInputType.SingleSelect) {
       const indexes: number[] = store.ids.map((id) => {
-        const index = inputs.findIndex((input) => input.id === parseInt(id, 10));
+        const index = inputs.findIndex((input) => input.id === id);
         const value = editor.inputs?.[id]?.value ? get(editor.inputs[id].value) as string[] : undefined;
 
         if (index === -1 || !value) return undefined;
@@ -83,6 +95,7 @@
       $Indexes = indexes;
       outputs.Indexes.disabled = false;
     } else {
+      $Indexes = [];
       outputs.Indexes.disabled = true;
     }
   }
@@ -91,6 +104,8 @@
   $: inputs, (() => {
     if (!smartSelectOpen) rerenderSmartSelect =  !rerenderSmartSelect;
   })();
+
+  $: console.log(store);
 </script>
 
 <div style="min-width: 430px; max-width: 430px">

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SurveyTemplateInputType, type SurveyTemplate, type SurveyTemplateCalculation } from '@/api/server';
+  import { client, SurveyTemplateInputType, type SurveyTemplate, type SurveyTemplateCalculation } from '@/api/server';
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
   import Page from '../UI/components/Page/Page.svelte';
   import RecordSections from './components/RecordSections/RecordSections.svelte';
@@ -20,7 +20,7 @@
   let pageRef: HTMLDivElement;
 
   let currentSectionIndex = 0;
-  let complete = true;
+  let complete = false;
 
   const getValueFromType = (type: SurveyTemplateInputType) => {
     switch (type) {
@@ -59,7 +59,12 @@
         initialValues,
         onSubmit: () => {
           currentSectionIndex += 1;
-          console.log('submit');
+
+          const isComplete = currentSectionIndex === (template.sections.length);
+
+          if (isComplete) {
+            complete = isComplete;
+          }
         },
         extend: [
           validator({ schema }),
@@ -74,7 +79,6 @@
   };
 
   $: currentSectionIndex, scrollTop();
-  $: complete = currentSectionIndex > (template.sections.length - 1);
 
   console.log(template);
 </script>

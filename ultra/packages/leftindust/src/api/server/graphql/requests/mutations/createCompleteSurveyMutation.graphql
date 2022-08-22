@@ -1,0 +1,7 @@
+mutation createSurveyLinkMutation($createCompleteSurvey: CreateCompleteSurvey!) {
+  createCompleteSurvey(createCompleteSurvey: $createCompleteSurvey) {
+    id {
+      value
+    }
+  }
+}

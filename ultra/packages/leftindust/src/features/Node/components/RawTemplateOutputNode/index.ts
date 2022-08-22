@@ -1,16 +1,18 @@
 import type { NodeBlueprint, SocketBlueprint } from 'function-junctions/types';
-import RawInputNode from './RawInputNode.svelte';
+import RawTemplateOutputNode from './RawTemplateOutputNode.svelte';
 
-const node: NodeBlueprint<never, {
+const node: NodeBlueprint<{
   Value: SocketBlueprint<unknown>,
 }> = {
-  outputs: {
+  inputs: {
     Value: {
       type: '',
     },
   },
-  component: RawInputNode,
+  component: RawTemplateOutputNode,
   className: 'node-transparent',
+  cloneable: false,
+  deletable: false,
 };
 
 export default node;

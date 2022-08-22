@@ -23,8 +23,12 @@
 </script>
 
 {#each calculations as calculation}
-  <RecordCalculation
-    {calculation}
-    {inputs}
-  />
+  {#if !calculation.showOnComplete}
+    <div style="margin-bottom: 10px">
+      <RecordCalculation
+        {calculation}
+        {inputs}
+      />
+    </div>
+  {/if}
 {/each}

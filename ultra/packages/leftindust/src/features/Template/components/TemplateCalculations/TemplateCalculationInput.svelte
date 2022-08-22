@@ -19,6 +19,7 @@
   import { SurveyTemplateInputType } from '@/api/server';
   import type { MenuNodes } from '@/features/Nodes';
   import { TemplateCalculations } from '../../store';
+  import deepmerge from 'deepmerge';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -124,6 +125,7 @@
 
   $: if ($TemplateCalculations?.[index] && JSON.stringify($TemplateCalculations[index].deserializedCalculation) !== JSON.stringify(calculation.deserializedCalculation))
     $TemplateCalculations[index].deserializedCalculation = calculation.deserializedCalculation;
+
 </script>
 
 <NodesModal
@@ -226,16 +228,40 @@
           color: 'gray',
         }}
         on:click={() => {
+          /*
           calculations = [
             ...calculations.slice(0, index),
-            {
+            deepmerge({
               label: calculation.label,
               inputType: calculation.inputType,
               showOnComplete: false,
               deserializedCalculation: calculation.deserializedCalculation,
-            },
+            }, {}),
             ...calculations.slice(index),
           ];
+          */
+          if (calculation.deserializedCalculation.nodes?.['0']) {
+            calculations = [
+              ...calculations,
+              deepmerge({
+                label: calculation.label,
+                inputType: calculation.inputType,
+                showOnComplete: false,
+                deserializedCalculation: {
+                  ...calculation.deserializedCalculation,
+                  nodes: {
+                    ...calculation.deserializedCalculation.nodes,
+                    '0': {
+                      ...calculation.deserializedCalculation.nodes['0'],
+                      store: {
+                        index: calculations.length,
+                      },
+                    },
+                  },
+                },
+              }, {}),
+            ];
+          }
         }}
       />
       <MenuButton
