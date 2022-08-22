@@ -958,4 +958,16 @@
     <changeSet id="1659685626559-1" author="marcus (manual)">
         <modifyDataType tableName="survey_template_section_entity" columnName="subtitle" newDataType="VARCHAR(1000)"/>
     </changeSet>
+    <changeSet id="1659685626560-1" author="marcus (manual)">
+        <modifyDataType tableName="survey_template_entity" columnName="subtitle" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="1659685626559-2" author="marcus (manual)">
+        <modifyDataType tableName="survey_template_section_entity" columnName="subtitle" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="1659685626558-3" author="boris (manual)">
+        <modifyDataType tableName="survey_template_calculation_entity" columnName="calculation" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="1659685626558-4" author="boris (manual)">
+        <modifyDataType tableName="survey_template_calculation_entity" columnName="label" newDataType="TEXT"/>
+    </changeSet>
 </databaseChangeLog>
