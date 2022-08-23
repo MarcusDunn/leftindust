@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 @Transactional
 class ReadClinicServiceImpl(
+    private val clinicEntityToClinicConverter: FallibleConverter<ClinicEntity, Clinic>,
     private val clinicRepository: ClinicRepository,
     private val doctorService: ReadDoctorService,
 ) : ReadClinicService {
