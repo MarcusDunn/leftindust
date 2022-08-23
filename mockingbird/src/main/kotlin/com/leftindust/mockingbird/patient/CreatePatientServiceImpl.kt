@@ -32,7 +32,7 @@ class CreatePatientServiceImpl(
             phones = patient.phones.map { createPhoneService.createPhone(it) }.toMutableSet(),
             events = mutableSetOf(),
             user = null,
-            thumbnail = Base64.decode(patient.thumbnail),
+            thumbnail = patient.thumbnail?.let { Base64.decode(patient.thumbnail) },
             sex = patient.sex,
             dateOfBirth = patient.dateOfBirth,
             gender = patient.gender,
@@ -48,7 +48,10 @@ class CreatePatientServiceImpl(
 
         patient.doctors
             .map { it to readDoctorService.getByDoctorId(it) }
-            .forEach { it.second?.addPatient(newPatient) ?: logger.debug { "did not add a doctor in addNewPatient with ${it.first}" } }
+            .forEach {
+                it.second?.addPatient(newPatient)
+                    ?: logger.debug { "did not add a doctor in addNewPatient with ${it.first}" }
+            }
 
         return patientRepository.save(newPatient)
     }
