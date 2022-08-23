@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.NullEntityIdInConverterException
 import com.leftindust.mockingbird.clinic.ClinicDto.ClinicDtoId
 import org.springframework.stereotype.Component
 
