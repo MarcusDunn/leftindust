@@ -1,9 +1,6 @@
 package com.leftindust.mockingbird.clinic
 
-import com.leftindust.mockingbird.AddedElementMessage
-import com.leftindust.mockingbird.NoOpUpdatedEntityFieldMessage
-import com.leftindust.mockingbird.NoUpdatesOccurredNoEntityWithId
-import com.leftindust.mockingbird.SetEntityFieldMessage
+
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.doctor.DoctorDto
@@ -44,7 +41,7 @@ class ClinicUpdaterServiceImpl(
     ) {
         return when (nameEdit) {
             is Updatable.Ignore -> {
-                logger.trace { NoOpUpdatedEntityFieldMessage(clinic, clinic::name) }
+//                logger.trace { NoOpUpdatedEntityFieldMessage(clinic, clinic::name) }
             }
             is Updatable.Update -> {
                 clinic.name = nameEdit.value
