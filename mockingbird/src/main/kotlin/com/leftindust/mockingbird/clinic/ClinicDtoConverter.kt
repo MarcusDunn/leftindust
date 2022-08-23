@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 class ClinicDtoConverter : InfallibleConverter<Clinic, ClinicDto> {
     override fun convert(source: Clinic): ClinicDto {
         return ClinicDto(
-            id = ClinicDtoId(source.id ?: throw NullEntityIdInConverterException(source)),
+            id = ClinicDtoId(source.id),
             name = source.name
         )
     }
