@@ -1,9 +1,11 @@
 package com.leftindust.mockingbird.clinic
 
+import com.leftindust.mockingbird.FallibleConverter
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
 import org.springframework.transaction.annotation.Transactional
 import mu.KotlinLogging
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 
@@ -22,8 +24,9 @@ class ReadClinicServiceImpl(
     }
 
     override suspend fun getByClinicId(clinicDtoId: ClinicDto.ClinicDtoId): Clinic? {
-        return clinicRepository.findById(clinicDtoId.value).orElse(null) ?: null.also {
+        val clinicEntity = clinicRepository.findByIdOrNull(clinicDtoId.value) ?: return null.also {
             logger.trace("Returning null from getByClinicId. Could not find a clinic with id $clinicDtoId")
         }
+        return clinicEntityToClinicConverter.convert(clinicEntity)
     }
 }
