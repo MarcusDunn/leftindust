@@ -25,13 +25,11 @@ class Clinic(
 ) {
     fun clearDoctors() {
         doctors.forEach { removeDoctor(it.doctor) }
-        logger.trace { ClearedEntityCollectionMessage(this, this::doctors) }
     }
 
     fun addDoctor(doctor: Doctor) {
         val clinicDoctor = ClinicDoctorEntity(this, doctor)
         doctors.add(clinicDoctor)
-        logger.trace { AddedElementMessage(this, this::doctors, clinicDoctor) }
         doctor.clinics.add(clinicDoctor)
         logger.trace { AddedElementMessage(doctor, doctor::clinics, clinicDoctor) }
     }
@@ -39,7 +37,6 @@ class Clinic(
     fun removeDoctor(doctor: Doctor) {
         val clinicDoctor = ClinicDoctorEntity(this, doctor)
         doctors.remove(clinicDoctor)
-        logger.trace { RemovedElementMessage(this, this::doctors, clinicDoctor) }
         doctor.clinics.remove(clinicDoctor)
         logger.trace { RemovedElementMessage(doctor, doctor::clinics, clinicDoctor) }
     }
