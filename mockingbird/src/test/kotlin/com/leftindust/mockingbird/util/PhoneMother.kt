@@ -15,7 +15,7 @@ object PhoneMother {
         val entityPersisted = Phone(
             number = number,
             type = type
-        ).apply { id = this@JennysHomePhone.id  }
+        ).apply { id = this@JennysHomePhone.id }
 
         val dto = phoneToPhoneDtoConverter.convert(entityPersisted)
     }
@@ -24,12 +24,19 @@ object PhoneMother {
         val id = UUID.fromString("7e84bcfa-1d3e-11ed-861d-0242ac120002")
         val type = PhoneType.Cell
         const val number = "(778) 211-1992"
-        val entityPersisted = Phone(
-            number = number,
-            type = type
-        ).apply { id = this@DansCell.id  }
+        val entityDetached: Phone
+            get() = Phone(
+                number = number,
+                type = type
+            ).apply { id = this@DansCell.id }
 
-        val dto = phoneToPhoneDtoConverter.convert(entityPersisted)
+        val entityTransient: Phone
+            get() = Phone(
+                number = number,
+                type = type
+            )
+
+        val dto = phoneToPhoneDtoConverter.convert(entityDetached)
     }
 
 

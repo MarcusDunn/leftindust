@@ -9,7 +9,7 @@ object ClinicMother {
 
         const val dansClinicName = "Dan's Clinic"
         val id = UUID.fromString("981c2f6d-5dfd-49a3-b7a1-bb0e01b93f20")
-        val address = DansHouse.entityPersisted
+        val address = DansHouse.entityDetached
         val entityPersisted: Clinic
             get() = Clinic(
                 name = dansClinicName,

@@ -949,10 +949,60 @@
     <changeSet id="1659685626556-2" author="marcus (manual)">
         <addNotNullConstraint tableName="survey_template_section_entity" columnName="calculation_id"/>
     </changeSet>
-    <changeSet id="" author="marcus (manual)">
+    <changeSet id="1659685626557-3" author="marcus (manual)">
         <addNotNullConstraint tableName="survey_template_section_input_entity" columnName="calculation_id"/>
     </changeSet>
-    <changeSet id="" author="boris (manual)">
+    <changeSet id="1659685626558-1" author="boris (manual)">
         <modifyDataType tableName="survey_template_calculation_entity" columnName="calculation" newDataType="VARCHAR(10000)"/>
+    </changeSet>
+    <changeSet id="1659685626559-1" author="marcus (manual)">
+        <modifyDataType tableName="survey_template_section_entity" columnName="subtitle" newDataType="VARCHAR(1000)"/>
+    </changeSet>
+    <changeSet id="1659685626560-1" author="marcus (manual)">
+        <modifyDataType tableName="survey_template_entity" columnName="subtitle" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="1659685626559-2" author="marcus (manual)">
+        <modifyDataType tableName="survey_template_section_entity" columnName="subtitle" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="1659685626558-3" author="boris (manual)">
+        <modifyDataType tableName="survey_template_calculation_entity" columnName="calculation" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="1659685626558-4" author="boris (manual)">
+        <modifyDataType tableName="survey_template_calculation_entity" columnName="label" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="16596856211-1" author="marcus (manual)">
+        <modifyDataType tableName="doctor" columnName="title" newDataType="TEXT"/>
+        <modifyDataType tableName="clinic" columnName="name" newDataType="TEXT"/>
+        <modifyDataType tableName="visit" columnName="description" newDataType="TEXT"/>
+        <modifyDataType tableName="visit" columnName="title" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="address" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="city" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="country" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="province" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="postal_code" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="type" newDataType="TEXT"/>
+        <modifyDataType tableName="contact" columnName="relationship" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_input_entity" columnName="label" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_input_entity" columnName="placeholder" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_input_entity_options" columnName="options" newDataType="TEXT"/>
+        <modifyDataType tableName="email" columnName="address" newDataType="TEXT"/>
+        <modifyDataType tableName="event" columnName="ical" newDataType="TEXT"/>
+        <modifyDataType tableName="mediq_group" columnName="name" newDataType="TEXT"/>
+        <modifyDataType tableName="mediq_record" columnName="json_blob" newDataType="TEXT"/>
+        <modifyDataType tableName="mediq_record" columnName="type" newDataType="TEXT"/>
+        <modifyDataType tableName="name_info" columnName="first_name" newDataType="TEXT"/>
+        <modifyDataType tableName="name_info" columnName="last_name" newDataType="TEXT"/>
+        <modifyDataType tableName="name_info" columnName="middle_name" newDataType="TEXT"/>
+        <modifyDataType tableName="patient" columnName="gender" newDataType="TEXT"/>
+        <modifyDataType tableName="patient" columnName="insurance_number" newDataType="TEXT"/>
+        <modifyDataType tableName="phone" columnName="number" newDataType="TEXT"/>
+        <modifyDataType tableName="phone" columnName="type" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_input_entity" columnName="label" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_entity" columnName="title" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_entity" columnName="title" newDataType="TEXT"/>
+        <modifyDataType tableName="visit_icds" columnName="icds" newDataType="TEXT"/>
+        <modifyDataType tableName="complete_survey_section_input_entity" columnName="value" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_input_entity" columnName="placeholder" newDataType="TEXT"/>
+        <modifyDataType tableName="visit" columnName="title" newDataType="TEXT"/>
     </changeSet>
 </databaseChangeLog>

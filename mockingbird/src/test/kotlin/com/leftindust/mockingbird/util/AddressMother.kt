@@ -28,18 +28,31 @@ object AddressMother {
             province = province,
             postalCode = postalCode
         )
-        val entityPersisted = Address(
-            type = addressType,
-            address = address,
-            city = city,
-            countryState = CountryState(
-                country = country,
-                province = province
-            ),
-            postalCode = postalCode
-        ).apply { id = this@DansHouse.id }
+        val entityDetached: Address
+            get() = Address(
+                type = addressType,
+                address = address,
+                city = city,
+                countryState = CountryState(
+                    country = country,
+                    province = province
+                ),
+                postalCode = postalCode
+            ).apply { id = this@DansHouse.id }
 
-        val dto = addressToAddressDto.convert(entityPersisted)
+        val entityTransient: Address
+            get() = Address(
+                type = addressType,
+                address = address,
+                city = city,
+                countryState = CountryState(
+                    country = country,
+                    province = province
+                ),
+                postalCode = postalCode
+            )
+
+        val dto = addressToAddressDto.convert(entityDetached)
     }
 
 

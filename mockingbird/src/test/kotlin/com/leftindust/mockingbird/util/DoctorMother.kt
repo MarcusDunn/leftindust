@@ -62,9 +62,9 @@ object DoctorMother {
         val dateOfBirth = LocalDate.of(2016, Month.APRIL, 17)
         val id = UUID.fromString("c7c89079-ee58-4187-9d31-1fab272aa7f0")
         val graphqlId = DoctorDto.DoctorDtoId(id)
-        val addresses = mutableSetOf(AddressMother.DansHouse.entityPersisted)
+        val addresses = mutableSetOf(AddressMother.DansHouse.entityDetached)
         val emails = mutableSetOf(EmailMother.dansEmail)
-        val phones = mutableSetOf(PhoneMother.DansCell.entityPersisted)
+        val phones = mutableSetOf(PhoneMother.DansCell.entityDetached)
         val user: MediqUser? = null
         val events = mutableSetOf<DoctorEventEntity>()
         val thumbnail: ByteArray? = null

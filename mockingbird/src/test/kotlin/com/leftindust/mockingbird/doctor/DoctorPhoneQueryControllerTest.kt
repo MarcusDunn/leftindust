@@ -31,7 +31,7 @@ internal class DoctorPhoneQueryControllerTest(
     @Test
     internal fun `check can query for doctor phone fields`() {
         coEvery { readDoctorService.getByDoctorId(DoctorMother.Dan.graphqlId) } returns DoctorMother.Dan.entityPersisted
-        coEvery { readPhoneService.getByDoctorId(DoctorMother.Dan.graphqlId) } returns listOf(PhoneMother.DansCell.entityPersisted)
+        coEvery { readPhoneService.getByDoctorId(DoctorMother.Dan.graphqlId) } returns listOf(PhoneMother.DansCell.entityDetached)
 
         @Language("graphql")
         val query = """

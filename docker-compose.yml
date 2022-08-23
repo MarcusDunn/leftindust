@@ -1,5 +1,9 @@
 version: '3.2'
 
+volumes:
+  pg-data: {}
+  mockingbird-logs: {}
+
 services:
   mockingbird-postgres:
     environment:
@@ -7,11 +11,10 @@ services:
       POSTGRES_USER: mediq
       POSTGRES_PASSWORD: mediq
     image: postgres
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    volumes:
+      - source: pg-data
+        target: /var/lib/postgresql/data
+        type: volume
   mockingbird:
     ports:
       - "8080:8080"
@@ -21,5 +24,9 @@ services:
       - SPRING_DATASOURCE_USERNAME=mediq
       - SPRING_DATASOURCE_PASSWORD=mediq
     image: ghcr.io/marcusdunn/mockingbird:latest
+    volumes:
+      - source: mockingbird-logs
+        target: /logs
+        type: volume
     depends_on:
       - mockingbird-postgres

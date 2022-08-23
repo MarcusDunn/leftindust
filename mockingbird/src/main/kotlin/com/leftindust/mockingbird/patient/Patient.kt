@@ -12,20 +12,25 @@ import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Lob
+import javax.persistence.OneToMany
+import javax.persistence.OneToOne
 
 @Entity
 class Patient(
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.PERSIST])
     var nameInfo: NameInfo,
-    @OneToMany
-    var addresses: MutableSet<Address>,
-    @OneToMany
-    var emails: MutableSet<Email>,
-    @OneToMany
-    var phones: MutableSet<Phone>,
+    @OneToMany(cascade = [CascadeType.PERSIST])
+    val addresses: MutableSet<Address>,
+    @OneToMany(cascade = [CascadeType.PERSIST])
+    val emails: MutableSet<Email>,
+    @OneToMany(cascade = [CascadeType.PERSIST])
+    val phones: MutableSet<Phone>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var events: MutableSet<PatientEventEntity> = mutableSetOf(),
+    val events: MutableSet<PatientEventEntity> = mutableSetOf(),
     @OneToOne
     var user: MediqUser?,
     @Lob
@@ -48,7 +53,6 @@ class Patient(
         events.add(patientEvent)
         patientEvent.event.patients.add(patientEvent)
     }
-
     fun removeEvent(event: Event) {
         val patientEvent = PatientEventEntity(this, event)
         events.remove(patientEvent)
