@@ -54,7 +54,7 @@ type Mutation {
     createMediqUser(createUser: CreateUser): MediqUser
 
     # patient
-    createPatient(createUser: CreatePatient): Patient
+    createPatient(createPatient: CreatePatient): Patient
 }
 
 input CreateUser {
@@ -242,17 +242,39 @@ type SurveyTemplateInput {
 }
 
 input CreatePatient {
-    firstName: String!
-    middleName: String
-    lastName: String!
-    addresses: [CreateAddress!]
-    phones: [CreatePhone!]
-    emails: [CreateEmail!]
-    dateOfBirth: LocalDate
+    nameInfo: CreateNameInfo!
+    phones: [CreatePhone!]!
+    dateOfBirth: LocalDate!
+    emails: [CreateEmail!]!
+    addresses: [CreateAddress!]!
     insuranceNumber: String
-    sex: Sex
-    gender: String
+    sex: Sex!
+    gender: String!
     ethnicity: Ethnicity
+    emergencyContacts: [CreateContact!]! = []
+    doctors: [DoctorIdInput!]! = []
+    thumbnail: Base64
+}
+
+input CreateContact {
+    nameInfo: CreateNameInfo!
+    relationship: Relationship
+    phones: [CreatePhone!]!
+    emails: [CreateEmail!]!
+}
+
+enum Relationship {
+    Parent,
+    Child,
+    Guardian,
+    Grandparent,
+    Grandchild,
+    Aunt,
+    Uncle,
+    Cousin,
+    Sibling,
+    Partner,
+    Other,
 }
 
 type Patient {
