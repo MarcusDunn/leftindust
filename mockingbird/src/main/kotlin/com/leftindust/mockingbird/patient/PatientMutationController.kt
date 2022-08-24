@@ -11,10 +11,9 @@ import org.springframework.stereotype.Controller
 
 @Controller
 class PatientMutationController(
-    private val updatePatientService: UpdatePatientService,
-    private val createPatientService: CreatePatientService,
     private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>,
-    private val createPatientDtoToCreatePatient: FallibleConverter<CreatePatientDto, CreatePatient>
+    private val createPatientDtoToCreatePatient: FallibleConverter<CreatePatientDto, CreatePatient>,
+    private val createPatientService: CreatePatientService,
 ) {
 
     suspend fun updatePatient(patient: UpdatePatientDto): PatientDto {
