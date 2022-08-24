@@ -20,7 +20,7 @@ object AddressMother {
         const val province = "BC"
         const val postalCode = "H8L210"
         val id = UUID.fromString("670ec435-682a-4563-b612-59a36e46f4a8")
-        val createDto = CreateAddressDto(
+        val createAddressDto = CreateAddressDto(
             addressType = addressType,
             address = address,
             city = city,

@@ -4,10 +4,13 @@ import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.patient.CreatePatientDto
+import com.leftindust.mockingbird.patient.CreatePatientDtoToCreatePatientConverter
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.PatientEventEntity
 import com.leftindust.mockingbird.patient.PatientToPatientDtoConverter
+import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.person.Sex
@@ -21,6 +24,7 @@ import java.util.UUID
 
 object PatientMother {
     val patientToPatientDtoConverter = PatientToPatientDtoConverter()
+    val createPatientDtoToCreatePatientConverter = CreatePatientDtoToCreatePatientConverter()
 
     object Dan {
         const val firstName = "Dan"
@@ -57,28 +61,49 @@ object PatientMother {
         val nameInfoId = UUID.fromString("e257f4f5-15c5-4375-a99b-da6354e4d0b5")
         val entityDetached: Patient
             get() = Patient(
-                    nameInfo = NameInfo(
-                        firstName = firstName,
-                        lastName = lastName,
-                        middleName = middleName
-                    ).apply { id = nameInfoId },
-                    addresses = addressesDetached,
-                    emails = emailsDetached,
-                    phones = phonesDetached,
-                    events = events,
-                    user = user,
-                    thumbnail = thumbnail,
-                    sex = sex,
-                    dateOfBirth = dateOfBirth,
-                    gender = gender,
-                    ethnicity = ethnicity,
-                    insuranceNumber = insuranceNumber,
-                    contacts = contacts,
-                    doctors = doctors,
-                ).apply { id = this@Dan.id }
+                nameInfo = NameInfo(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = middleName
+                ).apply { id = nameInfoId },
+                addresses = addressesDetached,
+                emails = emailsDetached,
+                phones = phonesDetached,
+                events = events,
+                user = user,
+                thumbnail = thumbnail,
+                sex = sex,
+                dateOfBirth = dateOfBirth,
+                gender = gender,
+                ethnicity = ethnicity,
+                insuranceNumber = insuranceNumber,
+                contacts = contacts,
+                doctors = doctors,
+            ).apply { id = this@Dan.id }
+
+        val entityPersisted = Patient(
+                nameInfo = NameInfo(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = middleName
+                ).apply { id = nameInfoId },
+                addresses = addressesDetached,
+                emails = emailsDetached,
+                phones = phonesDetached,
+                events = events,
+                user = user,
+                thumbnail = thumbnail,
+                sex = sex,
+                dateOfBirth = dateOfBirth,
+                gender = gender,
+                ethnicity = ethnicity,
+                insuranceNumber = insuranceNumber,
+                contacts = contacts,
+                doctors = doctors,
+            ).apply { id = this@Dan.id }
 
         val entityTransient: Patient
-            get() =  Patient(
+            get() = Patient(
                 nameInfo = NameInfo(
                     firstName = firstName,
                     lastName = lastName,
@@ -100,6 +125,36 @@ object PatientMother {
             )
 
         val dto: PatientDto = patientToPatientDtoConverter.convert(entityDetached)
+
+
+        val createNameInfo = CreateNameInfoDto(
+            firstName = MediqUserMother.Marcus.firstName,
+            middleName = MediqUserMother.Marcus.middleName,
+            lastName = MediqUserMother.Marcus.lastName
+        )
+
+        //
+        val createAddress = DansHouse.createAddressDto
+        val createPhone = PhoneMother.DansCell.createPhoneDto
+        val createEmail = EmailMother.DansEmail.createEmail
+
+        val createPatientDto = CreatePatientDto(
+            nameInfo = createNameInfo,
+            addresses = listOf(createAddress),
+            phones = listOf(createPhone),
+            emails = listOf(createEmail),
+            insuranceNumber = insuranceNumber,
+            dateOfBirth = dateOfBirth,
+            sex = sex,
+            gender = gender,
+            ethnicity = ethnicity,
+            emergencyContacts = listOf(),
+            doctors = listOf(),
+            thumbnail = thumbnail.toString()
+        )
+
+        val createPatient = createPatientDtoToCreatePatientConverter.convert(createPatientDto)
+
     }
 
     object Jenny {
@@ -143,16 +198,16 @@ object PatientMother {
             doctors = doctors,
         ).apply { id = this@Jenny.id }
 
-//        val entityUnpersisted
-//            get() = entityPersisted.apply {
-//                id = null
-//                addresses.forEach { it.id = null }
-//                emails.forEach { it.id = null }
-//                phones.forEach { it.id = null }
-//                events.clear()
-//                doctors.clear()
-//                contacts.forEach { it.id = null }
-//            }
+        val entityUnpersisted
+            get() = entityPersisted.apply {
+                id = null
+                addresses.forEach { it.id = null }
+                emails.forEach { it.id = null }
+                phones.forEach { it.id = null }
+                events.clear()
+                doctors.clear()
+                contacts.forEach { it.id = null }
+            }
 
         val dto: PatientDto = patientToPatientDtoConverter.convert(entityPersisted)
     }
