@@ -44,7 +44,8 @@ internal class ReadAddressServiceTest {
     @Test
     internal fun `check getByPatientId returns a list of addresses corresponding to a patient's Id`() =
         runTest {
-            coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityDetached
+            val answer = PatientMother.Dan.entityDetached
+            coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns answer
             val readAddressServiceImpl =
                 withContext(Dispatchers.IO) {
                     ReadAddressServiceImpl(readDoctorService, readPatientService)
