@@ -1,38 +1,32 @@
+version: '3.2'
+
+volumes:
+  pg-data: {}
+  mockingbird-logs: {}
+
 services:
-  mockingbird-icd-api:
-    image: whoicd/icd-api
-    environment:
-      - acceptLicense=true
-      - saveAnalytics=true
-      - include=2021-05_en
-    ports:
-      - 81:80
   mockingbird-postgres:
     environment:
       POSTGRES_DB: mediq
       POSTGRES_USER: mediq
       POSTGRES_PASSWORD: mediq
     image: postgres
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    volumes:
+      - source: pg-data
+        target: /var/lib/postgresql/data
+        type: volume
   mockingbird:
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
       - WHO_ICD_API=http://mockingbird-icd-api:81/icd
       - SPRING_DATASOURCE_URL=jdbc:postgresql://mockingbird-postgres:5432/mediq
       - SPRING_DATASOURCE_USERNAME=mediq
       - SPRING_DATASOURCE_PASSWORD=mediq
-    build:
-      context: mockingbird
+    image: ghcr.io/marcusdunn/mockingbird:latest
+    volumes:
+      - source: mockingbird-logs
+        target: /logs
+        type: volume
     depends_on:
-      mockingbird-postgres:
-        condition: service_healthy
-  ultra:
-    ports:
-      - 80:80
-    build:
-      context: ultra
+      - mockingbird-postgres

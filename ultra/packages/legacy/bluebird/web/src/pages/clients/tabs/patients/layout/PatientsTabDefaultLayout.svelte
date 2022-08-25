@@ -27,10 +27,6 @@
     sortBy: SortableField.LastName,
   });
 
-  const { request: recentsRequest, patients: recents } = PatientsSpecificEngine({
-    pids: ($ACCOUNT.database.recents.Patient ??= []).map((id) => ({ id })),
-  });
-
   const navigate = () => {
     if ($ClientsSelected.length > 1) {
       f7router.navigate(`/people/${JSON.stringify($ClientsSelected)}/`);
@@ -39,29 +35,10 @@
     }
   };
 
-
-  $: void recentsRequest.setVariables({
-    pids: ($ACCOUNT.database.recents.Patient).map((id) => ({ id })),
-  });
-
 </script>
 
 <PageContent style="padding-top: 10px" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}>
   <MasterListLayout>
-    <RequestLayout {...$recentsRequest} refetch={recentsRequest.refetch} slot="recents">
-      {#if $recents.length > 0}
-        <PatientsTabSelectableList
-          patients={$recents || []}
-          selected={ClientsSelected}
-          on:navigate={navigate}
-        />
-        <br />
-      {:else}
-        <CollapsableContentPlaceholderUI center>
-          {language().placeholders.noRecents.text}
-        </CollapsableContentPlaceholderUI>
-      {/if}
-    </RequestLayout>
 
     <RequestLayout {...$request} refetch={request.refetch}>
       <PatientsTabSelectableList

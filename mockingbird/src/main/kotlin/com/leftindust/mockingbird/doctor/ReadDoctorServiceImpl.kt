@@ -2,10 +2,13 @@ package com.leftindust.mockingbird.doctor
 
 import com.leftindust.mockingbird.clinic.ClinicDto
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
+import com.leftindust.mockingbird.graphql.types.input.toPageable
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
 import mu.KotlinLogging
+import org.springframework.data.domain.Sort
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -22,7 +25,7 @@ class ReadDoctorServiceImpl(
     }
 
     override suspend fun getByDoctorId(doctorDtoId: DoctorDto.DoctorDtoId): Doctor? {
-        TODO("Not yet implemented")
+        return doctorRepository.findByIdOrNull(doctorDtoId.value)
     }
 
     override suspend fun getByClinicId(clinicDtoId: ClinicDto.ClinicDtoId): List<Doctor>? {
@@ -34,7 +37,7 @@ class ReadDoctorServiceImpl(
     }
 
     override suspend fun getMany(range: RangeDto): List<Doctor> {
-        TODO("Not yet implemented")
+        return doctorRepository.findAll(range.toPageable(Sort.sort(Doctor::class.java).by(Doctor::id))).toList()
     }
 
     override suspend fun searchByExample(example: GraphQLDoctorExample): List<Doctor> {

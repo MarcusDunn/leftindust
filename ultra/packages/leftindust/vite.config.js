@@ -22,6 +22,7 @@ export default defineConfig({
         main: path.resolve(__dirname, 'src/index.html'),
         mediq: path.resolve(__dirname,'src/apps/mediq/index.html'),
         queue: path.resolve(__dirname, 'src/apps/queue/index.html'),
+        intake: path.resolve(__dirname, 'src/apps/intake/index.html'),
       },
     },
     assetsInlineLimit: 0,

@@ -13,10 +13,10 @@ class DoctorPatientsQueryController(
     private val patientService: ReadPatientService,
     private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>,
 ) {
-    @SchemaMapping
+    @SchemaMapping(field = "patients", typeName = DoctorDto.GRAPHQL_TYPE)
     suspend fun patients(doctorDto: DoctorDto): List<PatientDto> {
-        val patients = patientService.getByDoctor(doctorDto.id)
-            ?: throw NullSubQueryException(doctorDto, ReadPatientService::getByDoctor)
+        val patients = patientService.getByDoctorId(doctorDto.id)
+            ?: throw NullSubQueryException(doctorDto, ReadPatientService::getByDoctorId)
         return patients.map { patientToPatientDtoConverter.convert(it) }
     }
 }

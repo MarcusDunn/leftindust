@@ -2,8 +2,8 @@ package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
-import com.leftindust.mockingbird.util.ClinicMother
-import com.leftindust.mockingbird.util.DoctorMother
+import com.leftindust.mockingbird.util.ClinicMother.DansClinic
+import com.leftindust.mockingbird.util.DoctorMother.Jenny
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -12,6 +12,7 @@ import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.nullValue
 import org.junit.jupiter.api.Test
@@ -21,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.security.web.server.SecurityWebFilterChain
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
 internal class ReadClinicServiceImplUnitTest {
     @MockK
@@ -31,12 +33,11 @@ internal class ReadClinicServiceImplUnitTest {
 
     @Test
     internal fun `check getByDoctorId returns a doctor's clinics when the doctor exists`() = runTest {
-        val jennyTheDoctor = DoctorMother.jennyTheDoctorPersisted
-        coEvery { doctorService.getByDoctorId(match { it.value == jennyTheDoctor.id }) } returns jennyTheDoctor
+        coEvery { doctorService.getByDoctorId(Jenny.graphqlId) } returns Jenny.entityPersisted
         val readClinicServiceImpl = ReadClinicServiceImpl(clinicRepository, doctorService)
-        val clinics = readClinicServiceImpl.getByDoctorId(DoctorDto.DoctorDtoId(jennyTheDoctor.id!!))
+        val clinics = readClinicServiceImpl.getByDoctorId(Jenny.graphqlId)
 
-        assertThat(clinics, equalTo(jennyTheDoctor.clinics.map { it.clinic }))
+        assertThat(clinics, containsInAnyOrder(Jenny.clinics.map { equalTo(it.clinic) }))
     }
 
     @Test
@@ -73,7 +74,7 @@ internal class ReadClinicServiceImplDataTest(
     @Test
     internal fun `check returns a clinic when the database has a matching clinic`() = runTest {
         // set up the test by adding a clinic to the database
-        val dansClinic = testEntityManager.persist(ClinicMother.dansClinicWithoutId)
+        val dansClinic = testEntityManager.persist(DansClinic.entityUnpersisted)
 
         // create the service under test using the *real* ClinicRepository and a fake ReadDoctorService
         val readClinicService = ReadClinicServiceImpl(clinicRepository, doctorService)

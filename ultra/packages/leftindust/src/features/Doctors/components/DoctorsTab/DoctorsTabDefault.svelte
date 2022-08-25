@@ -39,10 +39,8 @@
     }
   };
 
-  $: $recentsRequest = {
-    variables: {
-      dids: getTimestampedValues($account.database.recents.Doctor ?? []).map((id) => ({ id })),
-    }, 
+  $: $recentsRequest.variables = {
+    dids: getTimestampedValues($account.database.recents.Doctor ?? []).map((id) => ({ id })),
   };
 
   $: doctors = $request.data?.doctors ?? [];
@@ -58,7 +56,8 @@
 
 </script>
 
-<PageContent style="padding: 10px;overflow-y:auto" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}>
+<PageContent style="overflow-y:auto" infinite infiniteDistance={50} infinitePreloader={false} onInfinite={undefined}>
+  <br />
   <MasterListLayout>
     <Request {...$recentsRequest} reexecute={recentsRequest.reexecute} slot="recents">
       {#if recents.length > 0}

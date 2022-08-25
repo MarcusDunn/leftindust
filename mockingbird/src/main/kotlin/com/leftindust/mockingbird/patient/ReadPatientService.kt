@@ -8,7 +8,7 @@ import com.leftindust.mockingbird.visit.VisitDto
 
 interface ReadPatientService {
     suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): Patient?
-    suspend fun getByDoctor(doctorId: DoctorDto.DoctorDtoId): List<Patient>?
+    suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Patient>?
     suspend fun getVisitPatients(visitId: VisitDto.VisitDtoId): List<Patient>
     suspend fun getMany(range: Range): List<Patient>
     suspend fun getByEvent(eventId: EventDto.EventDtoId): List<Patient>?

@@ -1,0 +1,95 @@
+.nodes-nodes_modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 100000;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+  transition: -webkit-backdrop-filter 300ms ease-out 0s, backdrop-filter 300ms ease-in 300ms, opacity 300ms ease-in 300ms;
+  
+  pointer-events: none;
+  opacity: 0;
+
+  &.nodes-nodes_modal-open {
+    pointer-events: all;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 1;
+    transition: -webkit-backdrop-filter 300ms ease-out 0s, backdrop-filter 300ms ease-out 0s, opacity 300ms ease-out 0s;
+  }
+
+  .function-junctions-editor {
+    background-image: none !important;
+    background-color: initial !important;
+  }
+
+  .nodes-nodes_modal-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    bottom: 70px;
+
+    transition: opacity 200ms ease-in 0s;
+
+    opacity: 0;
+
+    width: 100%;
+
+    &.nodes-nodes_modal-controls-open {
+      opacity: 1;
+      transition: opacity 200ms ease-out 400ms;
+
+      .nodes-nodes_modal-controls-content {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+    }
+
+    .nodes-nodes_modal-controls-content {
+      display: flex;
+      align-items: center;
+
+      border-radius: 40px;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(0);
+      -webkit-backdrop-filter: blur(0);
+
+      transition: -webkit-backdrop-filter 300ms ease-in-out, backdrop-filter 300ms ease-in-out;
+
+      height: 70px;
+      width: 500px;
+      padding: 0 25px;
+      margin: 0 25px;
+
+      z-index: 10;
+
+      box-shadow: 0 10px 28px 0 rgba(0, 0, 0, .2);
+    }
+  }
+}
+
+.dark {
+  .nodes-nodes_modal {
+    background: rgba(28, 28, 28, 0.2);
+
+    .nodes-nodes_modal-controls {
+      .nodes-nodes_modal-controls-content {
+        background: rgb(42, 42, 42);
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .nodes-nodes_modal {
+    .nodes-nodes_modal-controls {
+      bottom: 30px;
+    }
+  }
+}

@@ -1,3 +1,6 @@
 Dockerfile
 .dockerignore
 build
+logs
+README.md
+.graphqlconfig

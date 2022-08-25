@@ -4,7 +4,7 @@
 
   import { AppPopups, AppViews, AppRootRoutes } from '../../';
   import { getFirebaseUserDatabaseAndSignIn } from '@/features/Account';
-  import { auth, client, database } from '@/api/server';
+  import { auth, client, database, Month, Sex } from '@/api/server';
   import { account, signInStatus } from '@/features/Account/store';
   
   import { onAuthStateChanged } from 'firebase/auth';
@@ -35,6 +35,8 @@
   export let items: (AppLayoutItem | AppLayoutSidebarTitle)[];
   export let sidebar = true;
 
+  export let showLoginScreen = true;
+
   const { id, theme, routes, autoDarkMode } = f7params;
 
   onAuthStateChanged(auth, (user) => {
@@ -58,14 +60,13 @@
   let width = window.innerWidth;
 
   setClient(client);
-  
 </script>
 
 <svelte:window bind:innerWidth={width} />
 
 <App {...{ id, theme, routes, autoDarkMode }}>
   <Dragbar />
-  <LoginScreen opened={!$account?.isRegistered}>
+  <LoginScreen opened={!$account?.isRegistered && showLoginScreen}>
     <View url="/account/login/" />
   </LoginScreen>
   
@@ -73,7 +74,7 @@
     <View url={AppRootRoutes.LifeCycleError} iosSwipeBack={false} />
   </Popup>
 
-  {#if $account?.isRegistered}
+  {#if $account?.isRegistered || !showLoginScreen}
     <Popup id={AppPopups.Default} closeByBackdropClick={false}>
       <View id={AppViews.Popup} iosSwipeBack={false} />
     </Popup>

@@ -3,7 +3,7 @@
   import { DoctorQueryDocument, type Data, type DoctorFragment } from '@/api/server';
   
   import { account } from '../Account/store';
-  import { DoctorTab } from '.';
+  import { ClientTab } from '../Client';
   import { Layout } from '../App';
 
   import { Tab, Tabs, Block } from 'framework7-svelte';
@@ -35,7 +35,7 @@
   let doctor: DoctorFragment | undefined;
 
   let layout: Layout = $account.database.settings.options.layout || Layout.Bundled;
-  let tab: DoctorTab = DoctorTab.Documents;
+  let tab: ClientTab = ClientTab.Records;
 
   const data: Data = JSON.parse(f7route.params.data ?? '{}');
 
@@ -97,16 +97,12 @@
         <SelectButton
           options={[
             {
-              text: $_('generics.documents'),
-              value: DoctorTab.Documents,
-            },
-            {
               text: $_('generics.records'),
-              value: DoctorTab.Records,
+              value: ClientTab.Records,
             },
             {
               text: $_('generics.contacts'),
-              value: DoctorTab.Contacts,
+              value: ClientTab.Contacts,
             },
           ]}
           bind:value={tab}
@@ -152,19 +148,15 @@
               type={WidgetType.Card}
             />
           {:else}
-            <div style="max-width: 690px">
-              <br />
-              <br />
-              <DescriptivePlaceholder
-                title={$_('generics.noPinned')}
-                description={$_('descriptions.addPinned')}
-                link={{
-                  label: $_('descriptions.learnMorePinning'),
-                  href: '#',
-                }}
-              />
-              <br />
-            </div>
+            <DescriptivePlaceholder
+              title={$_('generics.noPinned')}
+              description={$_('descriptions.addPinned')}
+              link={{
+                label: $_('descriptions.learnMorePinning'),
+                href: '#',
+              }}
+            />
+            <br />
           {/if}
         {/key}
       </div>
@@ -175,26 +167,11 @@
           <Tabs>
             <Tab tabActive={tab === DoctorTab.Contacts}>
               <GenericGrid 
-                props={{ id:'Doctor', data, quicklook }}
-                type={WidgetType.Bundle}
-                dataType={['Doctor']}
-                category={[WidgetCategory.Contact]}
-                store
-              />
-            </Tab>
-          </Tabs>
-        </Block>
-      </Tab>
-      <Tab tabActive={layout === Layout.Stacked && tab !== DoctorTab.Overview}>
-        <Block style="margin-left: 25px;margin-right: 25px">
-          <Tabs>
-            <Tab tabActive={tab === DoctorTab.Contacts}>
-              <GenericGrid 
-                props={{ id:'Doctor', data, quicklook }}
-                type={WidgetType.Stack}
-                dataType={['Doctor']}
-                category={[WidgetCategory.Contact]}
-                store
+              props={{ id:'Doctor', data, quicklook }}
+              type={WidgetType.Bundle}
+              dataType={['Doctor']}
+              category={[WidgetCategory.Contact]}
+              store
               />
             </Tab>
           </Tabs>

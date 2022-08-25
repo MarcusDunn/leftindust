@@ -7,6 +7,8 @@ const language: Dictionary = {
     patientsSearch: 'Search for registered patients in this clinic',
     addPatient: 'Add a new patient to this clinic',
     addDoctor: 'Add a new doctor to this clinic',
+    addDoctorDescription: 'Add a new doctor to this clinic',
+    addPatientDescription: 'Add a new patient to this clinic',
     noRecents: 'No recents found...',
     noPatients: 'No patients found...',
     noDoctors: 'No doctors found...',
@@ -21,7 +23,7 @@ const language: Dictionary = {
     addPinned: 'Any data that you pin to this file will show up here.',
     learnMorePinning: 'Learn more about pinning...',
     learnMorePatients: 'Learn more about adding patients...',
-    learnMoreDoctors: 'Learn more about adding doctors...'
+    learnMoreDoctors: 'Learn more about adding doctors...',
   },
   errors: {
     connectionError: 'We\'re having issues connecting to MedIQ. If your clinic is registered to a VPN, ensure you are connected and try again.',
@@ -51,6 +53,8 @@ const language: Dictionary = {
     options: 'Options',
     about: 'About',
     edit: 'Edit',
+    editDoctor: 'Edit Doctor',
+    editPatient: 'Edit Patient',
     pinned: 'Pinned',
     viewFile: 'View File',
     learnMore: 'Learn More',
@@ -150,12 +154,17 @@ const language: Dictionary = {
     viewAll: 'View All',
     newDoctor: 'New Doctor',
     newPatient: 'New Patient',
+    compute: 'Compute',
+    export: 'Export',
+    share: 'Share',
+    poweredByDust: 'Powered by leftindust',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',
     mcl: 'Eg. mcL',
     text: 'Eg. Text',
     section: 'Eg. Section {number}',
+    calculation: 'Eg. Average Calculation',
   },
 };
 

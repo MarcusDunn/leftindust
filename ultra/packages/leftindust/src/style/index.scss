@@ -313,8 +313,10 @@ html.with-panel-left-reveal .views, html.with-panel-left-reveal .framework7-root
   ul {
     margin-left: 20px;
 
-    .item-inner {
-      padding-right: 0 !important;
+    .item-input {
+      .item-inner {
+        padding-right: 0 !important;
+      }
     }
   }
 
@@ -707,8 +709,56 @@ input:-internal-autofill-selected {
   background-color: var(--f7-page-bg-color) !important;
 }
 
+.function-junctions-node {
+  &.node-transparent {
+    background: transparent !important;
+    opacity: 1 !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    .function-junctions-node-title  {
+      display: none;
+    }
+  }
+
+  &.node-no-title {
+    opacity: 1 !important;
+    .function-junctions-node-title  {
+      display: none;
+    }
+  }
+}
+
 .dark {
   .no-vibrancy {
     background-color: rgb(44, 44, 46) !important;
   }
+}
+
+.function-junctions-node-content {
+  .list {
+    ul {
+      background: transparent;
+    }
+  }
+}
+
+.smart-select-popover {
+  li:first-child {
+    &.disabled {
+      display: none;
+    }
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

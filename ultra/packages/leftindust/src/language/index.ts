@@ -16,6 +16,8 @@ export type Dictionary = {
     patientsSearch: string;
     addPatient: string;
     addDoctor: string;
+    addDoctorDescription: string;
+    addPatientDescription: string;
     noRecents: string;
     noPatients: string;
     noDoctors: string;
@@ -57,6 +59,8 @@ export type Dictionary = {
     options: string;
     about: string;
     edit: string;
+    editDoctor: string;
+    editPatient: string;
     pinned: string;
     viewFile: string;
     learnMore: string;
@@ -156,12 +160,17 @@ export type Dictionary = {
     viewAll: string;
     newDoctor: string;
     newPatient: string;
+    compute: string;
+    export: string;
+    share: string;
+    poweredByDust: string;
   };
   examples: {
     totalPlateletCount: string;
     mcl: string;
     text: string;
     section: string;
+    calculation: string;
   };
 }
 

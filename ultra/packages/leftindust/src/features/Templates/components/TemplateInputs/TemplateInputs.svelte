@@ -6,9 +6,10 @@
   import { flip } from 'svelte/animate';
   import { Button } from 'framework7-svelte';
   import TemplateInput from '../TemplateInput/TemplateInput.svelte';
-	
+  
   export let inputs: TemplateInputT[] = [];
   export let globalIndex = 0;
+  export let sectionIndex = 0;
 			
   const flipDurationMs = 200;
   let dragDisabled = true;

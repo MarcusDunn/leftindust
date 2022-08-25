@@ -45,7 +45,7 @@
         {:else}
           <h2>{$TemplateInputItems.title}</h2>
           <p>{$TemplateInputItems.subtitle ?? ''}</p>
-          <p />
+          <br />
           <TemplateInputsPreview
             bind:inputs={$TemplateInputItems.sections[0].inputs}
           />

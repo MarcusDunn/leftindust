@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 @Service
 @Transactional
 class ReadGroupServiceImpl(
-    private val mediqGroupRepository: HibernateGroupRepository,
+    private val mediqGroupRepository: GroupRepository,
 ) : ReadGroupService {
     override suspend fun getGroupById(gid: MediqGroupDto.MediqGroupId): MediqGroup? {
         return mediqGroupRepository.findById(gid.value).orElse(null)

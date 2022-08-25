@@ -39,6 +39,7 @@ import { _ } from '@/language';
 
 import getNativeAPI from '@/api/bridge';
 import type { TimestampedRecents } from '../Recents';
+import config from '@/../config.json';
 
 export type AccountRecentsTemplate = Record<keyof ResolversTypes, TimestampedRecents>;
 
@@ -172,8 +173,8 @@ export const signOut = (): void => {
         signedIn: false,
       }));
 
-      account.update(() => ({
-        ...get(account),
+      account.update((prevAccount) => ({
+        ...prevAccount,
         isRegistered: false,
       }));
 
@@ -210,8 +211,39 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
             console.log(`User database updated to version ${accountDatabaseTemplate.version}`);
           });
       } else {
-        // Sign-in user and authenticate with leftindust servers
-        signIn({ user, database: data });
+        if (config.development.skipLoginValidation) {
+          console.warn('You are skipping login validation. This is not recommended and may cause issues during production.');
+          signInStatus.update((prev) => ({
+            ...prev,
+            user,
+            signedIn: true,
+          }));
+          
+          account.update(() => ({
+            __typename: 'User',
+            isRegistered: true,
+            uid: user.uid,
+            patient: undefined,
+            doctor: undefined,
+            firebaseUserInfo: {
+              email: user.email ?? '',
+              displayName: user.displayName,
+            },
+            names: {
+              __typename: 'NameInfo',
+              firstName: 'John',
+              lastName: 'Doe',
+            },
+            group: {
+              __typename: 'Group',
+              name: 'Development',
+            },
+            database: data,
+          }));
+        } else {
+          // Sign-in user and authenticate with leftindust servers
+          signIn({ user, database: data });
+        }
         off(realtime);
       }
     } else {

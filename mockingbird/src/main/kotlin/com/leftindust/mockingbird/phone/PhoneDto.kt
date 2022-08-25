@@ -4,9 +4,9 @@ import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
 import java.util.UUID
 
 data class PhoneDto(
-    override val id: Id,
+    override val id: PhoneDtoId,
     val number: String,
     val type: PhoneType,
-) : AbstractGraphQLDto<PhoneDto.Id>() {
-    data class Id(override val value: UUID) : GraphQLID<UUID>
+) : AbstractGraphQLDto<PhoneDto.PhoneDtoId>() {
+    data class PhoneDtoId(override val value: UUID) : GraphQLID<UUID>
 }

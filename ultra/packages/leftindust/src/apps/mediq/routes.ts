@@ -1,5 +1,3 @@
-import type { SvelteComponentDev } from 'svelte/internal';
-
 import DashboardPage from '@/features/Dashboard/DashboardPage.svelte';
 import ClientsPage from '@/features/Clients/ClientsPage.svelte';
 
@@ -12,11 +10,15 @@ import PeoplePage from '@/features/People/PeoplePage.svelte';
 import TemplatePreviewPage from '@/features/Templates/TemplatePreviewPage.svelte';
 import TemplateWizard from '@/features/Templates/TemplateWizard.svelte';
 
+import PatientWizard from '@/features/Patient/PatientWizard.svelte';
+import DoctorWizard from '@/features/Doctor/DoctorWizard.svelte';
+
 import MedIQLoginPage from '@/features/Account/MedIQLoginPage.svelte';
 
 import SettingsPage from '@/features/Settings/SettingsPage.svelte';
 
 import LifecycleErrorPage from '@/features/Errors/LifecycleErrorPage.svelte';
+import type { Route } from '@/features/View';
 
 export type Path =
   | '/dashboard/'
@@ -26,22 +28,15 @@ export type Path =
   | '/people/:data/'
   | '/templates/'
   | '/wizard/template/'
+  | '/wizard/patient/'
+  | '/wizard/doctor/'
   | '/template/preview/'
   | '/account/login/'
   | '/settings/'
   | '/errors/lifecycle/'
   | '(.*)';
 
-export interface Route {
-  path: Path;
-  component: typeof SvelteComponentDev;
-  routes?: Array<Route>;
-  detailRoutes?: Array<Route>;
-
-  [key: string]: unknown;
-}
-
-const routes: Route[] = [
+const routes: Route<Path>[] = [
   {
     path: '/dashboard/',
     component: DashboardPage,
@@ -70,6 +65,14 @@ const routes: Route[] = [
   {
     path: '/wizard/template/',
     component: TemplateWizard,
+  },
+  {
+    path: '/wizard/patient/',
+    component: PatientWizard,
+  },
+  {
+    path: '/wizard/doctor/',
+    component: DoctorWizard,
   },
   {
     path: '/template/preview/',

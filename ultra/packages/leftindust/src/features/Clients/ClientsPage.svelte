@@ -11,6 +11,7 @@
     Button,
     Icon,
     Searchbar,
+    PageContent,
   } from 'framework7-svelte';
 
   import { wizardOpen } from '@/features/Wizard/store';
@@ -22,6 +23,7 @@
   import MenuButton from '@/features/UI/components/MenuButton/MenuButton.svelte';
   import Page from '@/features/UI/components/Page/Page.svelte';
   import Menu from '@/features/UI/components/Menu/Menu.svelte';
+  import { openWizard } from '../Wizard';
 
   import PatientsTab from '@/features/Patients/components/PatientsTab/PatientsTab.svelte';
   import DoctorsTab from '../Doctors/components/DoctorsTab/DoctorsTab.svelte';
@@ -33,7 +35,7 @@
 
 </script>
 
-<Page style="overflow: hidden">
+<Page style="overflow: hidden" pageContent={false}>
   <svelte:fragment slot="fixed">
     <Menu
       items={[
@@ -44,6 +46,7 @@
             f7: 'person_2_alt',
             color: 'purple',
           },
+          onClick: () => openWizard('/wizard/patient/'),
         },
         {
           title: $_('generics.doctor'),
@@ -52,6 +55,7 @@
             f7: 'briefcase_fill',
             color: 'blue',
           },
+          onClick: () => openWizard('/wizard/doctor/'),
         },
       ]}
       bind:instance={createMenuRef}
@@ -101,12 +105,14 @@
       </svelte:fragment>
     </AppBar>
   </svelte:fragment>
-  <Tabs style="height: 100%">
-    <Tab tabActive={$clientsSelectedTab === ClientsTab.Patients}>
-      <PatientsTab {f7router} {f7route}/>
-    </Tab>
-    <Tab tabActive={$clientsSelectedTab === ClientsTab.Doctors}>
-      <DoctorsTab {f7router} {f7route} />
-    </Tab>
-  </Tabs>
+  <PageContent style="padding: 0; overflow: hidden">
+    <Tabs style="height: 100%">
+      <Tab tabActive={$clientsSelectedTab === ClientsTab.Patients}>
+        <PatientsTab {f7router} {f7route}/>
+      </Tab>
+      <Tab tabActive={$clientsSelectedTab === ClientsTab.Doctors}>
+        <DoctorsTab {f7router} {f7route} />
+      </Tab>
+    </Tabs>
+  </PageContent>
 </Page>

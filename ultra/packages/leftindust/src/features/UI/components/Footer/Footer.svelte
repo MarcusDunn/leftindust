@@ -12,9 +12,8 @@
         .addClass('ui-footer-scroll');
     }
   };
-
 </script>
 
-<div class="ui-footer" use:scroll>
+<div class={`ui-footer ${$$restProps.class}`} use:scroll >
   <slot />
 </div>

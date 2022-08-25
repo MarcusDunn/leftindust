@@ -1,8 +1,10 @@
 name: Ultra
 on: 
-  push:
+  pull_request:
     paths:
       - 'ultra/**'
+    branches:
+      - main
   workflow_dispatch:
       
 concurrency: 
@@ -10,10 +12,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
- build:
+ build-ultra:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2

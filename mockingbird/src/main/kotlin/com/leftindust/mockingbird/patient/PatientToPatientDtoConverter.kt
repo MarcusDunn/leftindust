@@ -1,23 +1,27 @@
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.graphql.types.LocalDateDto
-import java.time.LocalDate
-import org.apache.commons.codec.binary.Base64
+import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.address.AddressDto
+import com.leftindust.mockingbird.address.AddressToAddressDtoConverter
+import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.email.EmailDto
+import com.leftindust.mockingbird.email.EmailToEmailDtoConverter
+import com.leftindust.mockingbird.phone.Phone
+import com.leftindust.mockingbird.phone.PhoneDto
+import com.leftindust.mockingbird.phone.PhoneToPhoneDtoConverter
+import com.leftindust.mockingbird.phone.Phone_
 import org.springframework.stereotype.Component
 
 @Component
-class PatientToPatientDtoConverter(
-    private val localDateToLocalDateDtoConverter: InfallibleConverter<LocalDate, LocalDateDto>,
-) : InfallibleConverter<Patient, PatientDto> {
+class PatientToPatientDtoConverter : InfallibleConverter<Patient, PatientDto> {
     override fun convert(source: Patient): PatientDto {
         return PatientDto(
             id = PatientDto.PatientDtoId(source.id!!),
             firstName = source.nameInfo.firstName,
             middleName = source.nameInfo.middleName,
             lastName = source.nameInfo.lastName,
-            thumbnail = source.thumbnail?.let { Base64.encodeBase64String(it) },
-            dateOfBirth = source.dateOfBirth.let { localDateToLocalDateDtoConverter.convert(it) },
+            dateOfBirth = source.dateOfBirth,
             insuranceNumber = source.insuranceNumber,
             sex = source.sex,
             gender = source.gender,

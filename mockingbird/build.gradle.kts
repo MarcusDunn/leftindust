@@ -5,10 +5,10 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    application
     kotlin("jvm") version "1.7.0"
     kotlin("kapt") version "1.7.0"
     kotlin("plugin.spring") version "1.7.0"
-    kotlin("plugin.allopen") version "1.7.0"
     kotlin("plugin.jpa") version "1.7.0"
     id("org.jetbrains.kotlinx.kover") version "0.5.0"
     id("org.springframework.boot") version "2.7.0"
@@ -16,6 +16,10 @@ plugins {
 
     // liquibase
     id("org.liquibase.gradle") version "2.1.1"
+}
+
+application {
+    mainClass.set("com.leftindust.mockingbird.MockingbirdApplicationKt")
 }
 
 repositories {
@@ -44,7 +48,10 @@ dependencies {
     implementation("io.ktor", "ktor-client")
     implementation("io.ktor", "ktor-client-cio")
     implementation("io.ktor", "ktor-client-content-negotiation")
-    implementation("io.ktor", "ktor-serialization-gson")
+    implementation("io.ktor", "ktor-serialization-jackson")
+
+    // jackson
+    implementation("com.fasterxml.jackson.module", "jackson-module-kotlin")
 
     // hibernate model code generation
     implementation("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
@@ -65,7 +72,7 @@ dependencies {
     // liquibase runtime dependencies
     liquibaseRuntime("org.postgresql", "postgresql")
     liquibaseRuntime("org.liquibase", "liquibase-core")
-    liquibaseRuntime("org.liquibase.ext", "liquibase-hibernate5")
+    liquibaseRuntime("org.liquibase.ext", "liquibase-hibernate5", "4.12.0")
     liquibaseRuntime("org.springframework.boot", "spring-boot-starter-data-jpa")
     liquibaseRuntime("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
     liquibaseRuntime(sourceSets.main.get().output)
@@ -84,20 +91,17 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.2")
 }
 
-// liquibase plugin config
 liquibase {
     activities.register("main") {
         arguments = mapOf(
             "logLevel" to "info",
-            "changeLogFile" to "dbchangelog.xml",
+            "changeLogFile" to "src/main/resources/dbchangelog.xml",
             "url" to "jdbc:postgresql://127.0.0.1:5432/mediq",
             "username" to "mediq",
             "password" to "mediq",
-            "referenceDriver" to "liquibase.ext.hibernate.database.connection.HibernateDriver",
-            "referenceUrl" to "hibernate:spring:com.leftindust.mockingbird.dao.entity?" +
-                    "dialect=org.hibernate.dialect.PostgreSQLDialect&" +
-                    "hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&" +
-                    "hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+            "referenceUrl" to "jdbc:postgresql://127.0.0.1:5433/mediq",
+            "referenceUsername" to "mediq",
+            "referencePassword" to "mediq",
         )
     }
     runList = "main"
