@@ -4,12 +4,15 @@ import type { SvelteComponentDev } from 'svelte/internal';
 import type { Writable } from 'svelte/store';
 
 import DoctorsBundle from '@/features/Doctors/components/DoctorsBundle/DoctorsBundle.svelte';
+import PatientsBundle from '../Patients/components/PatientsBundle/PatientsBundle.svelte';
 
 import PatientCard from '@/features/Patient/components/PatientCard/PatientCard.svelte';
 import DoctorCard from '@/features/Doctor/components/DoctorCard/DoctorCard.svelte';
 import UserCard from '@/features/User/components/UserCard/UserCard.svelte';
 import IcdCard from '@/features/Icd/components/IcdCard/IcdCard.svelte';
-import PatientsBundle from '../Patients/components/PatientsBundle/PatientsBundle.svelte';
+
+import DoctorsStack from '@/features/Doctors/components/DoctorsStack/DoctorsStack.svelte';
+import PatientsStack from '@/features/Patients/components/PatientsStack/PatientsStack.svelte';
 
 export enum WidgetType {
   Attachment = 'attachment',
@@ -77,12 +80,12 @@ const Widgets: Widgets = {
   },
   card: {
     patient: {
-      type: ['Patient'],
+      type: ['Doctor'],
       component: PatientCard,
       category: [WidgetCategory.Document],
     },
     doctor: {
-      type: ['Doctor'],
+      type: ['Patient'],
       component: DoctorCard,
       category: [WidgetCategory.Document],
     },
@@ -99,7 +102,18 @@ const Widgets: Widgets = {
   },
   cluster: {},
   comparable: {},
-  stack: {},
+  stack: {
+    doctors: {
+      type: ['Patient'],
+      component: DoctorsStack,
+      category: [WidgetCategory.Contact],
+    },
+    patients: {
+      type: ['Doctor'],
+      component: PatientsStack,
+      category: [WidgetCategory.Contact],
+    },
+  },
 };
 
 export default Widgets;

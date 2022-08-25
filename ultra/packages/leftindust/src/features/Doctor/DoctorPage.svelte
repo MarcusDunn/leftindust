@@ -162,16 +162,16 @@
       </div>
     </Profile>
     <Tabs>
-      <Tab tabActive={layout === Layout.Bundled}>
+      <Tab tabActive={layout === Layout.Bundled && tab !== DoctorTab.Overview}>
         <Block style="margin-left: 25px;margin-right: 25px">
           <Tabs>
-            <Tab tabActive={tab === ClientTab.Contacts}>
+            <Tab tabActive={tab === DoctorTab.Contacts}>
               <GenericGrid 
-                props={{ id:'Doctor', data, quicklook }}
-                type={WidgetType.Bundle}
-                dataType={['Doctor']}
-                category={[WidgetCategory.Contact]}
-                store
+              props={{ id:'Doctor', data, quicklook }}
+              type={WidgetType.Bundle}
+              dataType={['Doctor']}
+              category={[WidgetCategory.Contact]}
+              store
               />
             </Tab>
           </Tabs>
