@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TemplateIndex, Template, TemplateSelectedTab } from './store';
+  import { TemplateIndex, TemplateSelectedTab } from './store';
   import TemplatePreviewCard from './components/TemplateCard/TemplatePreviewCard.svelte';
   import {
     Block,
@@ -11,13 +11,17 @@
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
   import Page from '../UI/components/Page/Page.svelte';
   import TemplateInputsPreview from './components/TemplateInputs/TemplateInputsPreview.svelte';
+  import type { Template } from '.';
+  import type { Writable } from 'svelte/store';
+
+  export let template: Writable<Template>;
 
   let progressbar: Progressbar | undefined;
 
-  $: if ($Template.sections.length > 1) {
+  $: if ($template.sections.length > 1) {
     f7.progressbar.set(
       progressbar?.$$.ctx[1],
-      ($TemplateIndex / $Template.sections.length) * 100,
+      ($TemplateIndex / $template.sections.length) * 100,
     );
   }
 </script>
@@ -27,10 +31,10 @@
   <p />
   <Tabs style="height: 100%">
     <Tab tabActive={$TemplateSelectedTab === 'input'}>
-      <Block class="no-margin-top">
-        {#if $Template.sections.length > 1}
-          <h2>{$Template.sections[$TemplateIndex].title}</h2>
-          <p>{$Template.sections[$TemplateIndex].subtitle ?? ''}</p>
+      <Block class="no-margin-top" style="overflow-y: scroll; height: 100%; padding-bottom: 20px;">
+        {#if $template.sections.length > 1}
+          <h2>{$template.sections[$TemplateIndex].title}</h2>
+          <p>{$template.sections[$TemplateIndex].subtitle ?? ''}</p>
           <p />
           <Progressbar
             bind:this={progressbar}
@@ -39,14 +43,14 @@
           />
           <br />
           <TemplateInputsPreview
-            bind:inputs={$Template.sections[$TemplateIndex].inputs}
+            bind:inputs={$template.sections[$TemplateIndex].inputs}
           />
         {:else}
-          <h2>{$Template.title}</h2>
-          <p>{$Template.subtitle ?? ''}</p>
+          <h2>{$template.title}</h2>
+          <p>{$template.subtitle ?? ''}</p>
           <br />
           <TemplateInputsPreview
-            bind:inputs={$Template.sections[0].inputs}
+            bind:inputs={$template.sections[0].inputs}
           />
         {/if}
       </Block>

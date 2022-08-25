@@ -21,7 +21,7 @@
     <br />
     {#if values}
       <RecordInputs
-        inputs={section.inputs}
+        bind:inputs={section.inputs}
         {data}
         {errors}
         bind:values

@@ -103,6 +103,9 @@
         {
           url: '/wizard/template/preview/',
           selected: true,
+          props: {
+            template: Template,
+          },
         },
       ]}
     />

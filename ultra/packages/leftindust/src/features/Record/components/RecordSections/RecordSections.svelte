@@ -19,7 +19,7 @@
 {#each sections as section, index}
   <div style={`display: ${index === currentSectionIndex ? 'block' : 'none'}`}>
     <RecordSection
-      {section}
+      bind:section
       form={forms[index]}
       bind:values={values[index].inputs}
     />
@@ -28,7 +28,7 @@
 {#if complete}
   <div>
     <RecordComplete
-      {sections}
+      bind:sections
       {calculations}
       bind:values
     />
