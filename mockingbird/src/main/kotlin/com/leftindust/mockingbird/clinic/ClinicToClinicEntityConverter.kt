@@ -9,7 +9,7 @@ class ClinicToClinicEntityConverter: InfallibleConverter<Clinic,ClinicEntity> {
         return ClinicEntity(
             name = source.name,
             address = source.address,
-            doctors = source.doctors
+            doctors = source.doctors.toMutableSet()
         )
     }
 }
