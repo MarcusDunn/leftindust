@@ -1,10 +1,11 @@
 package com.leftindust.mockingbird.clinic
 
+import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.doctor.ReadDoctorService
 import javax.transaction.Transactional
 import org.springframework.stereotype.Service
-import java.util.UUID
+
 
 @Service
 @Transactional
@@ -12,13 +13,11 @@ class CreateClinicServiceImpl(
     private val clinicRepository: ClinicRepository,
     private val readDoctorService: ReadDoctorService,
     private val createAddressService: CreateAddressService,
-    private val clinicToClinicEntityConverter: ClinicToClinicEntityConverter,
-    private val clinicEntityToClinicConverter: ClinicEntityToClinicConverter
+    private val clinicEntityToClinicConverter: InfallibleConverter<ClinicEntity,Clinic>
 ) : CreateClinicService {
     override suspend fun addClinic(createClinic: CreateClinic): Clinic {
         val address = createAddressService.createAddress(createClinic.address)
-        val clinic = Clinic(
-            id = UUID.randomUUID(),
+        val clinic = ClinicEntity(
             name = createClinic.name,
             address = address
         )
