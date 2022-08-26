@@ -54,7 +54,7 @@ type Mutation {
     createMediqUser(createUser: CreateUser): MediqUser
 
     # patient
-    createPatient(createPatient: CreatePatient): Patient
+    addPatient(createPatient: CreatePatient): Patient
 }
 
 input CreateUser {
@@ -243,10 +243,10 @@ type SurveyTemplateInput {
 
 input CreatePatient {
     nameInfo: CreateNameInfo!
-    phones: [CreatePhone!]!
+    phones: [CreatePhone!]! = []
     dateOfBirth: LocalDate!
-    emails: [CreateEmail!]!
-    addresses: [CreateAddress!]!
+    emails: [CreateEmail!]! = []
+    addresses: [CreateAddress!]! = []
     insuranceNumber: String
     sex: Sex!
     gender: String!
@@ -259,8 +259,8 @@ input CreatePatient {
 input CreateContact {
     nameInfo: CreateNameInfo!
     relationship: Relationship
-    phones: [CreatePhone!]!
-    emails: [CreateEmail!]!
+    phones: [CreatePhone!]! = []
+    emails: [CreateEmail!]! = []
 }
 
 enum Relationship {

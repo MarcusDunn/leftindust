@@ -76,28 +76,6 @@ object PatientMother {
                 contacts = contacts,
                 doctors = doctors,
             ).apply { id = this@Dan.id }
-
-        val entityPersisted = Patient(
-                nameInfo = NameInfo(
-                    firstName = firstName,
-                    lastName = lastName,
-                    middleName = middleName
-                ).apply { id = nameInfoId },
-                addresses = addressesDetached,
-                emails = emailsDetached,
-                phones = phonesDetached,
-                events = events,
-                user = user,
-                thumbnail = thumbnail,
-                sex = sex,
-                dateOfBirth = dateOfBirth,
-                gender = gender,
-                ethnicity = ethnicity,
-                insuranceNumber = insuranceNumber,
-                contacts = contacts,
-                doctors = doctors,
-            ).apply { id = this@Dan.id }
-
         val entityTransient: Patient
             get() = Patient(
                 nameInfo = NameInfo(
