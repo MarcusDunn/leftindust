@@ -11,11 +11,18 @@ import java.util.UUID
 @Component
 class ClinicEntityToClinicConverter : InfallibleConverter<ClinicEntity, Clinic> {
     override fun convert(source: ClinicEntity): Clinic {
-        return Clinic(
+        return ClinicImpl(
             id = source.id ?: throw NullEntityIdInConverterException(source),
             name = source.name,
             address = source.address,
             doctors = source.doctors
         )
     }
+
+    private data class ClinicImpl(
+        override val id: UUID,
+        override val name: String,
+        override val address: Address,
+        override val doctors: Set<ClinicDoctorEntity>
+    ) : Clinic
 }
