@@ -3,7 +3,10 @@ package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullEntityIdInConverterException
+import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.doctor.ClinicDoctorEntity
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 @Component
 class ClinicEntityToClinicConverter : InfallibleConverter<ClinicEntity, Clinic> {

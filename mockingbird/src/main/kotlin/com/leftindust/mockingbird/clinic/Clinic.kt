@@ -12,32 +12,9 @@ import javax.persistence.Column
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 
-private val logger = KotlinLogging.logger { }
-
-class Clinic(
-    val id: UUID,
-    @Column(nullable = false)
-    var name: String,
-    @OneToOne(optional = false, cascade = [CascadeType.PERSIST])
-    var address: Address,
-    @OneToMany(mappedBy = "clinic")
-    var doctors: MutableSet<ClinicDoctorEntity> = mutableSetOf()
-) {
-    fun clearDoctors() {
-        doctors.forEach { removeDoctor(it.doctor) }
-    }
-
-    fun addDoctor(doctor: Doctor) {
-        val clinicDoctor = ClinicDoctorEntity(this, doctor)
-        doctors.add(clinicDoctor)
-        doctor.clinics.add(clinicDoctor)
-        logger.trace { AddedElementMessage(doctor, doctor::clinics, clinicDoctor) }
-    }
-
-    fun removeDoctor(doctor: Doctor) {
-        val clinicDoctor = ClinicDoctorEntity(this, doctor)
-        doctors.remove(clinicDoctor)
-        doctor.clinics.remove(clinicDoctor)
-        logger.trace { RemovedElementMessage(doctor, doctor::clinics, clinicDoctor) }
-    }
+interface Clinic {
+    val id: UUID
+    val name: String
+    val address: Address
+    val doctors: Set<ClinicDoctorEntity>
 }
