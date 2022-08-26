@@ -29,7 +29,7 @@ class CreateClinicServiceImpl(
                     ?: throw IllegalArgumentException("Did not add a doctor with id $it to $clinic because no such doctor exists")
             }
             .forEach { clinic.addDoctor(it) }
-        val newClinic = clinicRepository.save(clinicToClinicEntityConverter.convert(clinic))
+        val newClinic = clinicRepository.save(clinic)
         return clinicEntityToClinicConverter.convert(newClinic)
     }
 }

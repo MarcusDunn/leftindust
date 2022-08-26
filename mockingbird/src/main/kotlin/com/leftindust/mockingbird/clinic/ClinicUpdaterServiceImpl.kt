@@ -30,22 +30,19 @@ class ClinicUpdaterServiceImpl(
         val clinicId = clinicEdit.cid.value
         val existingClinic = clinicRepository.findByIdOrNull(clinicId)
 
-        return if (existingClinic == null) {
-//            logger.warn { NoUpdatesOccurredNoEntityWithId(Clinic::class, clinicId) }
-            null
-        } else {
-            val clinic = clinicEntityToClinicConverter.convert(existingClinic)
-            updateAddress(clinicEdit.address, clinic)
-            updateDoctors(clinicEdit.doctors, clinic)
-            updateName(clinicEdit.name, clinic)
-            val updatedClinic = clinicToClinicEntityConverter.convert(clinic)
-            clinicEntityToClinicConverter.convert(clinicRepository.save(updatedClinic))
+        return if (existingClinic == null) null
+        else {
+            updateAddress(clinicEdit.address, existingClinic)
+            updateDoctors(clinicEdit.doctors, existingClinic)
+            updateName(clinicEdit.name, existingClinic)
+            clinicRepository.save(existingClinic)
+            return clinicEntityToClinicConverter.convert(existingClinic)
         }
     }
 
     private fun updateName(
         nameEdit: Updatable<String>,
-        clinic: Clinic,
+        clinic: ClinicEntity,
     ) {
         return when (nameEdit) {
             is Updatable.Ignore -> {
@@ -87,7 +84,7 @@ class ClinicUpdaterServiceImpl(
 
     private suspend fun updateAddress(
         addressEdit: Updatable<CreateAddressDto>,
-        clinic: Clinic,
+        clinic: ClinicEntity,
     ) {
         when (addressEdit) {
             is Updatable.Ignore -> {
