@@ -29,14 +29,14 @@ internal class PatientMutationControllerTest(
 
     @Test
     internal fun `check can create patient`() {
-        val answer = Dan.entityPersisted
+        val answer = Dan.entityTransient
         coEvery { createPatientService.addNewPatient(any()) } returns answer
 
 
         @Language("graphql")
         val mutation = """
             mutation {
-                createPatient(createPatient: {
+                addPatient(createPatient: {
                     nameInfo: {
                         firstName: "${Dan.firstName}"
                         middleName: "${Dan.middleName}"
@@ -91,11 +91,10 @@ internal class PatientMutationControllerTest(
             .execute()
             .errors()
             .verify()
-            .path("createPatient.id.value")
+            .path("addPatient.id.value")
             .entity(object : ParameterizedTypeReference<UUID>() {})
             .matches { it.equals(Dan.dto.id.value) }
-            .path("createPatient")
-//            .matchesJson("{}")
+            .path("addPatient")
             .entity(PatientDto::class.java)
             .isEqualTo(Dan.dto)
     }
