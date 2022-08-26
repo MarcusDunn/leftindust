@@ -76,8 +76,7 @@ object PatientMother {
                 contacts = contacts,
                 doctors = doctors,
             ).apply { id = this@Dan.id }
-        val entityTransient: Patient
-            get() = Patient(
+        val entityTransient: Patient = Patient(
                 nameInfo = NameInfo(
                     firstName = firstName,
                     lastName = lastName,

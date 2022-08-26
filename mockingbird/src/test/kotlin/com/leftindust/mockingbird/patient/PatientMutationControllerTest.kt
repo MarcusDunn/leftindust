@@ -6,6 +6,7 @@ import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.leftindust.mockingbird.util.PhoneMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
@@ -29,9 +30,7 @@ internal class PatientMutationControllerTest(
 
     @Test
     internal fun `check can create patient`() {
-        val answer = Dan.entityTransient
-        coEvery { createPatientService.addNewPatient(any()) } returns answer
-
+        coEvery { createPatientService.addNewPatient(any()) } returns Dan.entityDetached
 
         @Language("graphql")
         val mutation = """
@@ -71,7 +70,7 @@ internal class PatientMutationControllerTest(
                     ethnicity: null
                     emergencyContacts: []
                     doctors: []
-
+                    thumbnail: null
                 })  
                 {
                     id { value }
@@ -84,7 +83,7 @@ internal class PatientMutationControllerTest(
                     gender
                     ethnicity                    
                 }                        
-            }            
+            }
         """.trimIndent()
 
         graphQlTester.document(mutation)
