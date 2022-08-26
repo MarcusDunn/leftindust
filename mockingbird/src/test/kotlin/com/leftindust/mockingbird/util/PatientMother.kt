@@ -4,13 +4,10 @@ import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.Email
-import com.leftindust.mockingbird.patient.CreatePatientDto
-import com.leftindust.mockingbird.patient.CreatePatientDtoToCreatePatientConverter
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.PatientEventEntity
 import com.leftindust.mockingbird.patient.PatientToPatientDtoConverter
-import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.person.Sex
@@ -24,7 +21,6 @@ import java.util.UUID
 
 object PatientMother {
     val patientToPatientDtoConverter = PatientToPatientDtoConverter()
-    val createPatientDtoToCreatePatientConverter = CreatePatientDtoToCreatePatientConverter()
 
     object Dan {
         const val firstName = "Dan"
@@ -125,36 +121,6 @@ object PatientMother {
             )
 
         val dto: PatientDto = patientToPatientDtoConverter.convert(entityDetached)
-
-
-        val createNameInfo = CreateNameInfoDto(
-            firstName = MediqUserMother.Marcus.firstName,
-            middleName = MediqUserMother.Marcus.middleName,
-            lastName = MediqUserMother.Marcus.lastName
-        )
-
-        //
-        val createAddress = DansHouse.createAddressDto
-        val createPhone = PhoneMother.DansCell.createPhoneDto
-        val createEmail = EmailMother.DansEmail.createEmail
-
-        val createPatientDto = CreatePatientDto(
-            nameInfo = createNameInfo,
-            addresses = listOf(createAddress),
-            phones = listOf(createPhone),
-            emails = listOf(createEmail),
-            insuranceNumber = insuranceNumber,
-            dateOfBirth = dateOfBirth,
-            sex = sex,
-            gender = gender,
-            ethnicity = ethnicity,
-            emergencyContacts = listOf(),
-            doctors = listOf(),
-            thumbnail = thumbnail.toString()
-        )
-
-        val createPatient = createPatientDtoToCreatePatientConverter.convert(createPatientDto)
-
     }
 
     object Jenny {

@@ -1,7 +1,5 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.patient.CreatePatientDtoToCreatePatientConverter
-import com.leftindust.mockingbird.phone.CreatePhoneDto
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.phone.PhoneToPhoneDtoConverter
 import com.leftindust.mockingbird.phone.PhoneType
@@ -39,12 +37,6 @@ object PhoneMother {
             )
 
         val dto = phoneToPhoneDtoConverter.convert(entityDetached)
-
-        val createPhoneDto = CreatePhoneDto(
-            number = number,
-            type = type
-        )
-
     }
 
 
