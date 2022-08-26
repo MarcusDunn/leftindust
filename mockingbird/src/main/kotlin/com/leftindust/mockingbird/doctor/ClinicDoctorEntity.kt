@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.doctor
 
 import com.google.common.base.Objects
-import com.leftindust.mockingbird.clinic.Clinic
+import com.leftindust.mockingbird.clinic.ClinicEntity
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.ManyToOne
@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne
 class ClinicDoctorEntity(
     @Id
     @ManyToOne
-    val clinic: Clinic,
+    val clinic: ClinicEntity,
     @Id
     @ManyToOne
     val doctor: Doctor,
