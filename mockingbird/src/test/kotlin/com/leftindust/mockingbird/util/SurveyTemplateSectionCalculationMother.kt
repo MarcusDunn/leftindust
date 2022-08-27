@@ -27,7 +27,7 @@ object SurveyTemplateSectionCalculationMother {
             calculation = calculation,
         )
 
-        val entityPersisted = SurveyTemplateCalculationEntity(
+        val entityDetached = SurveyTemplateCalculationEntity(
             index = 0,
             label = label,
             inputType = inputType,
@@ -35,7 +35,16 @@ object SurveyTemplateSectionCalculationMother {
             calculation = calculation,
         ).apply { id = this@FirstCalculation.id }
 
-        val domain = surveyTemplateCalculationEntityToSurveyTemplateCalculationConverter.convert(entityPersisted)
+        val entityTransient = SurveyTemplateCalculationEntity(
+            index = 0,
+            label = label,
+            inputType = inputType,
+            showOnComplete = showOnComplete,
+            calculation = calculation,
+        )
+
+
+        val domain = surveyTemplateCalculationEntityToSurveyTemplateCalculationConverter.convert(entityDetached)
 
         val dto = surveyTemplateCalculationToSurveyTemplateCalculationDtoConverter.convert(domain)
     }

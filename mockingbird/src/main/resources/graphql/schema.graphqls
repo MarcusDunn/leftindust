@@ -45,7 +45,7 @@ type Mutation {
     addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate!
 
     # survey link
-    createSurveyLink(surveyTemplateId: SurveyTemplateIdInput): SurveyLink!
+    createSurveyLink(createSurveyLink: CreateSurveyLink): SurveyLink!
 
     # complete survey
     createCompleteSurvey(createCompleteSurvey: CreateCompleteSurvey): CompleteSurvey
@@ -55,6 +55,11 @@ type Mutation {
 
     # patient
     addPatient(createPatient: CreatePatient): Patient
+}
+
+input CreateSurveyLink {
+    surveyTemplateId: SurveyTemplateIdInput
+    patientId: PatientIdInput
 }
 
 input CreateUser {
@@ -217,7 +222,8 @@ type SurveyTemplateCalculation {
 type SurveyLink {
     id: SurveyLinkId!
     surveyTemplate: SurveyTemplate!
-    completedSurveys: [CompleteSurvey!]!
+    completedSurvey: CompleteSurvey!
+    patient: Patient
 }
 
 type SurveyLinkId {

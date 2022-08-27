@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.graphql.types.input.Range
+import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import com.leftindust.mockingbird.util.PatientMother
 import com.ninjasquad.springmockk.MockkBean
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,12 +17,13 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 @OptIn(ExperimentalCoroutinesApi::class)
 @DataJpaTest
 internal class ReadPatientServiceImplJpaTest(
-    @Autowired private val patientRepository: PatientRepository
+    @Autowired private val patientRepository: PatientRepository,
+    @Autowired private val surveyLinkRepository: SurveyLinkRepository,
 ) {
     @MockkBean
     private lateinit var httpSecurity: SecurityWebFilterChain
     
-    private val readPatientServiceImpl = ReadPatientServiceImpl(patientRepository)
+    private val readPatientServiceImpl = ReadPatientServiceImpl(patientRepository, surveyLinkRepository)
 
     @Test
     internal fun `recreate issue 145`() = runTest {

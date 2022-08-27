@@ -12,6 +12,7 @@ import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.Phone
+import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.DansHouse
 import com.leftindust.mockingbird.util.EmailMother.DansEmail
@@ -50,6 +51,11 @@ object PatientMother {
         val addressesDetached: MutableSet<Address>
             get() = mutableSetOf(DansHouse.entityDetached)
 
+        val assignedSurveysTransient: MutableSet<SurveyLinkEntity>
+            get() = mutableSetOf()
+        val assignedSurveysDetached: MutableSet<SurveyLinkEntity>
+            get() = mutableSetOf()
+
         val addressesTransient: MutableSet<Address>
             get() = mutableSetOf(DansHouse.entityTransient)
         val events: MutableSet<PatientEventEntity>
@@ -75,60 +81,17 @@ object PatientMother {
                 insuranceNumber = insuranceNumber,
                 contacts = contacts,
                 doctors = doctors,
+                assignedSurveys = assignedSurveysDetached
             ).apply { id = this@Dan.id }
         val entityTransient: Patient = Patient(
-                nameInfo = NameInfo(
-                    firstName = firstName,
-                    lastName = lastName,
-                    middleName = middleName
-                ),
-                addresses = addressesTransient,
-                emails = emailsTransient,
-                phones = phonesTransient,
-                events = events,
-                user = user,
-                thumbnail = thumbnail,
-                sex = sex,
-                dateOfBirth = dateOfBirth,
-                gender = gender,
-                ethnicity = ethnicity,
-                insuranceNumber = insuranceNumber,
-                contacts = contacts,
-                doctors = doctors,
-            )
-
-        val dto: PatientDto = patientToPatientDtoConverter.convert(entityDetached)
-    }
-
-    object Jenny {
-        const val firstName = "Jenny"
-        const val middleName = "Ellis"
-        const val lastName = "White"
-        val dateOfBirth = LocalDate.of(1924, Month.APRIL, 17)
-        val id = UUID.fromString("a6341c8e-1dcd-11ed-861d-0242ac120002")
-        val graphqlId = PatientDto.PatientDtoId(id)
-        val emails = mutableSetOf(DansEmail.entityDetached)
-        val phones = mutableSetOf(PhoneMother.JennysWorkPhone.entityPersisted)
-        val addresses = mutableSetOf(AddressMother.JennysHouse.entityPersisted)
-        val user: MediqUser? = null
-        val thumbnail: ByteArray? = null
-        val sex = Sex.Male
-        val gender: String = "female"
-        val ethnicity: Ethnicity? = null
-        val insuranceNumber: String? = null
-        val contacts: MutableSet<Contact> = mutableSetOf()
-        val doctors: MutableSet<DoctorPatientEntity> = mutableSetOf()
-        val events: MutableSet<PatientEventEntity> = mutableSetOf()
-
-        val entityPersisted = Patient(
             nameInfo = NameInfo(
                 firstName = firstName,
                 lastName = lastName,
                 middleName = middleName
             ),
-            addresses = addresses,
-            emails = emails,
-            phones = phones,
+            addresses = addressesTransient,
+            emails = emailsTransient,
+            phones = phonesTransient,
             events = events,
             user = user,
             thumbnail = thumbnail,
@@ -139,20 +102,9 @@ object PatientMother {
             insuranceNumber = insuranceNumber,
             contacts = contacts,
             doctors = doctors,
-        ).apply { id = this@Jenny.id }
+            assignedSurveys = assignedSurveysTransient
+        )
 
-        val entityUnpersisted
-            get() = entityPersisted.apply {
-                id = null
-                addresses.forEach { it.id = null }
-                emails.forEach { it.id = null }
-                phones.forEach { it.id = null }
-                events.clear()
-                doctors.clear()
-                contacts.forEach { it.id = null }
-            }
-
-        val dto: PatientDto = patientToPatientDtoConverter.convert(entityPersisted)
+        val dto: PatientDto = patientToPatientDtoConverter.convert(entityDetached)
     }
-
 }

@@ -35,7 +35,7 @@ object SurveyTemplateSectionMother {
             inputs = listOf(HowMuchPainAreYouInSectionInput.inputDto),
             calculationId = calculationId,
         )
-        val entityPersisted: SurveyTemplateSectionEntity = SurveyTemplateSectionEntity(
+        val entityDetached = SurveyTemplateSectionEntity(
             index = 0,
             title = title,
             subtitle = "The first section",
@@ -43,7 +43,15 @@ object SurveyTemplateSectionMother {
             calculationId = calculationId,
         ).apply { this.id = this@HowMuchPainAreYouInSection.id }
 
-        val domain: SurveyTemplateSection = surveyTemplateSectionEntityToSurveyTemplateSectionConverter.convert(entityPersisted)
+        val entityTransient = SurveyTemplateSectionEntity(
+            index = 0,
+            title = title,
+            subtitle = "The first section",
+            inputs = listOf(HowMuchPainAreYouInSectionInput.entityDetached).toMutableSet(),
+            calculationId = calculationId,
+        )
+
+        val domain: SurveyTemplateSection = surveyTemplateSectionEntityToSurveyTemplateSectionConverter.convert(entityDetached)
 
         val dto: SurveyTemplateSectionDto = surveyTemplateToSurveyTemplateDtoConverter.convert(domain)
     }

@@ -30,7 +30,7 @@ internal class CreateSurveyTemplateServiceImplUnitTest {
 
     @Test
     internal fun `check saves a new entity`() = runTest {
-        every { surveyTemplateRepository.save(any()) } returns SurveyTemplateMother.KoosKneeSurvey.entityPersisted
+        every { surveyTemplateRepository.save(any()) } returns SurveyTemplateMother.KoosKneeSurvey.entityDetached
         val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, surveyTemplateEntityToSurveyTemplateConverter)
         createSurveyTemplateServiceImpl.createSurveyTemplate(SurveyTemplateMother.KoosKneeSurvey.createDomain)
         verify(exactly = 1) { surveyTemplateRepository.save(any()) }

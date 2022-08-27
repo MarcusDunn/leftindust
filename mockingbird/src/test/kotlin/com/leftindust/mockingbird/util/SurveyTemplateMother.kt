@@ -18,16 +18,26 @@ object SurveyTemplateMother {
         val graphqlId = SurveyTemplateDto.SurveyTemplateDtoId(id)
         val title = "KOOS knee survey"
         val subtitle = "the knee'd to know about knees"
-        val sectionEntities = mutableSetOf(SurveyTemplateSectionMother.HowMuchPainAreYouInSection.entityPersisted)
-        val calculationEntities = mutableSetOf(SurveyTemplateSectionCalculationMother.FirstCalculation.entityPersisted)
-        val entityPersisted = SurveyTemplateEntity(
+        val sectionEntitiesDetached = mutableSetOf(SurveyTemplateSectionMother.HowMuchPainAreYouInSection.entityDetached)
+        val sectionEntitiesTransient = mutableSetOf(SurveyTemplateSectionMother.HowMuchPainAreYouInSection.entityTransient)
+        val calculationEntitiesDetached = mutableSetOf(SurveyTemplateSectionCalculationMother.FirstCalculation.entityDetached)
+        val calculationEntitiesTransient = mutableSetOf(SurveyTemplateSectionCalculationMother.FirstCalculation.entityTransient)
+
+        val entityDetached = SurveyTemplateEntity(
             title = title,
             subtitle = subtitle,
-            sections = sectionEntities,
-            calculations = calculationEntities,
+            sections = sectionEntitiesDetached,
+            calculations = calculationEntitiesDetached,
         ).apply { id = this@KoosKneeSurvey.id }
 
-        val domain = surveyTemplateEntityToSurveyTemplateConverter.convert(entityPersisted)
+        val entityTransient = SurveyTemplateEntity(
+            title = title,
+            subtitle = subtitle,
+            sections = sectionEntitiesTransient,
+            calculations = calculationEntitiesTransient,
+        ).apply { id = this@KoosKneeSurvey.id }
+
+        val domain = surveyTemplateEntityToSurveyTemplateConverter.convert(entityDetached)
 
         val dto = surveyTemplateToSurveyTemplateDtoConverter.convert(domain)
 

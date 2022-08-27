@@ -5,8 +5,12 @@ import com.leftindust.mockingbird.event.EventDto
 import com.leftindust.mockingbird.graphql.types.input.Range
 import com.leftindust.mockingbird.graphql.types.input.toPageable
 import com.leftindust.mockingbird.graphql.types.search.Example
+import com.leftindust.mockingbird.survey.link.SurveyLinkDto
+import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import com.leftindust.mockingbird.visit.VisitDto
 import javax.transaction.Transactional
+import mu.KotlinLogging
+import org.hibernate.Hibernate
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -14,8 +18,10 @@ import org.springframework.stereotype.Service
 @Service
 @Transactional
 class ReadPatientServiceImpl(
-    private val patientRepository: PatientRepository
+    private val patientRepository: PatientRepository,
+    private val surveyLinkRepository: SurveyLinkRepository,
 ) : ReadPatientService {
+    private val logger = KotlinLogging.logger {  }
     override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): Patient? {
         return patientRepository.findByIdOrNull(patientId.value)
     }
@@ -42,5 +48,11 @@ class ReadPatientServiceImpl(
 
     override suspend fun getByUser(uid: String): Patient? {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun getBySurveyLink(surveyLinkId: SurveyLinkDto.SurveyLinkDtoId): Patient? {
+        val surveyLink = surveyLinkRepository.findByIdOrNull(surveyLinkId.value)
+            ?: return null.also { logger.debug { "Could not find a Patient by surveyLink because could not find a surveyLink with id $surveyLinkId" } }
+        return surveyLink.patient.also { Hibernate.initialize(it) } // todo remove when Patient domain object comes about
     }
 }

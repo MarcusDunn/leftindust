@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.survey.link
 
+import com.leftindust.mockingbird.util.PatientMother
 import com.leftindust.mockingbird.util.SurveyLinkMother.KoosKneeSurveyLink
 import com.leftindust.mockingbird.util.SurveyTemplateMother.KoosKneeSurvey
 import com.ninjasquad.springmockk.MockkBean
@@ -24,12 +25,15 @@ internal class SurveyLinkMutationControllerWebTest(
 
     @Test
     internal fun `check can create a survey link`() {
-        coEvery { createSurveyLinkService.createSurveyLinkFromSurveyTemplateId(KoosKneeSurvey.graphqlId) } returns KoosKneeSurveyLink.domain
+        coEvery { createSurveyLinkService.createSurveyLink(KoosKneeSurveyLink.createDto) } returns KoosKneeSurveyLink.domain
 
         @Language("graphql")
         val mutation = """
             mutation {
-                createSurveyLink(surveyTemplateId: { value: "${KoosKneeSurvey.id}" }) {
+                createSurveyLink(createSurveyLink: { 
+                    surveyTemplateId: { value: "${KoosKneeSurvey.id}"}
+                    patientId: {value: "${PatientMother.Dan.id}"} 
+                }) {
                     id { value }
                 }
             }

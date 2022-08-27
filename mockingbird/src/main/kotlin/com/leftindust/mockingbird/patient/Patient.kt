@@ -10,6 +10,7 @@ import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.Phone
+import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
 import javax.persistence.CascadeType
@@ -31,6 +32,8 @@ class Patient(
     val phones: MutableSet<Phone>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
     val events: MutableSet<PatientEventEntity> = mutableSetOf(),
+    @OneToMany(mappedBy = "patient")
+    val assignedSurveys: MutableSet<SurveyLinkEntity>,
     @OneToOne
     var user: MediqUser?,
     @Lob

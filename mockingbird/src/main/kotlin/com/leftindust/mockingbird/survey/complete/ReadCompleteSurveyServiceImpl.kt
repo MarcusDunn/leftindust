@@ -20,8 +20,9 @@ class ReadCompleteSurveyServiceImpl(
         return completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity)
     }
 
-    override suspend fun getBySurveyLink(surveyLinkDtoId: SurveyLinkDto.SurveyLinkDtoId): List<CompleteSurvey>? {
-        val completeSurveyEntities = completeSurveyRepository.findBySurveyLink_Id(surveyLinkDtoId.value)
-        return completeSurveyEntities.map { completeSurveyEntityToCompleteSurvey.convert(it) }
+    override suspend fun getBySurveyLink(surveyLinkDtoId: SurveyLinkDto.SurveyLinkDtoId): CompleteSurvey? {
+        val completeSurveyEntity = completeSurveyRepository.findBySurveyLink_Id(surveyLinkDtoId.value)
+            ?: return null
+        return completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity)
     }
 }
