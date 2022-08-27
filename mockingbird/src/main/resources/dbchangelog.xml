@@ -1005,4 +1005,18 @@
         <modifyDataType tableName="survey_template_section_input_entity" columnName="placeholder" newDataType="TEXT"/>
         <modifyDataType tableName="visit" columnName="title" newDataType="TEXT"/>
     </changeSet>
+    <changeSet author="marcus (generated)" id="1661568761512-35">
+        <addColumn tableName="survey_link_entity">
+            <column name="patient_id" type="uuid"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1661568761512-36">
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="survey_link_entity" constraintName="fkku7hm59dg4q6c9dwsmiso9gwa" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1661568761512-37">
+        <dropForeignKeyConstraint baseTableName="complete_survey_entity" constraintName="fk1xih1bubu6j2aiomde9q978a6"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1661568761512-38">
+        <dropColumn columnName="survey_template_id" tableName="complete_survey_entity"/>
+    </changeSet>
 </databaseChangeLog>

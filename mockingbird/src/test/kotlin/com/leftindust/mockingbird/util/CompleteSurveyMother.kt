@@ -19,7 +19,7 @@ object CompleteSurveyMother {
 
         val entityPersisted = CompleteSurveyEntity(
             sections = setOf(CompleteHowMuchPainAreYouInSection.entityPersisted),
-            surveyLink = KoosKneeSurveyLink.entityPersisted
+            surveyLink = KoosKneeSurveyLink.entityDetached
         )
             .apply { id = this@FilledOutKoosKneeSurvey.id }
 

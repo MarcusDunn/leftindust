@@ -10,7 +10,6 @@ import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
 
@@ -28,15 +27,15 @@ internal class SurveyLinkCompleteSurveyQueryControllerTest(
     private lateinit var readCompleteSurveyService: ReadCompleteSurveyService
 
     @Test
-    internal fun `check can create a survey link`() {
+    internal fun `check can get a survey link by id`() {
         coEvery { readSurveyLinkService.surveyLinkBySurveyLinkId(KoosKneeSurveyLink.graphqlId) } returns KoosKneeSurveyLink.domain
-        coEvery { readCompleteSurveyService.getBySurveyLink(KoosKneeSurveyLink.graphqlId) } returns listOf(FilledOutKoosKneeSurvey.domain, FilledOutKoosKneeSurvey.domain)
+        coEvery { readCompleteSurveyService.getBySurveyLink(KoosKneeSurveyLink.graphqlId) } returns FilledOutKoosKneeSurvey.domain
 
         @Language("graphql")
         val query = """
             query {
                 surveyLinkById(surveyLinkId: { value: "${KoosKneeSurveyLink.id}" }) {
-                    completedSurveys {
+                    completedSurvey {
                         id { value }
                     }
                 }
@@ -47,8 +46,8 @@ internal class SurveyLinkCompleteSurveyQueryControllerTest(
             .execute()
             .errors()
             .verify()
-            .path("surveyLinkById.completedSurveys")
-            .entity(object : ParameterizedTypeReference<List<CompleteSurveyDto>>() {})
-            .isEqualTo(listOf(FilledOutKoosKneeSurvey.dto, FilledOutKoosKneeSurvey.dto))
+            .path("surveyLinkById.completedSurvey")
+            .entity(CompleteSurveyDto::class.java)
+            .isEqualTo(FilledOutKoosKneeSurvey.dto)
     }
 }

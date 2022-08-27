@@ -50,6 +50,18 @@ object SurveyTemplateSectionInputMother {
             calculationId = calculationId
         ).apply { this.id = this@HowMuchPainAreYouInSectionInput.id }
 
+        val entityDetached = SurveyTemplateSectionInputEntity(
+            type = inputDto.type,
+            label = label,
+            options = options,
+            placeholder = placeholder,
+            required = required,
+            category = category,
+            uploadMultiple = uploadMultiple,
+            uploadAccept = uploadAccept,
+            calculationId = calculationId
+        )
+
         val domain = surveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter.convert(entityPersisted)!!
 
         val dto = surveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter.convert(domain)

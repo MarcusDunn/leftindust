@@ -40,6 +40,7 @@ class CreatePatientServiceImpl(
             insuranceNumber = patient.insuranceNumber,
             contacts = mutableSetOf(),
             doctors = mutableSetOf(),
+            assignedSurveys = mutableSetOf(),
         )
 
         patient.contacts
