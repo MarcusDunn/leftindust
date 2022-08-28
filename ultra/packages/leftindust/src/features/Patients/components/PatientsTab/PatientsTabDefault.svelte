@@ -25,6 +25,8 @@
 
   export let f7router: Router.Router;
 
+  console.log('AAA');
+
   let patients: PartialPatientFragment[];
   let recents: PartialPatientFragment[];
 
@@ -58,6 +60,8 @@
     (patient): patient is PartialPatientFragment => !!patient,
   ) ?? [];
 
+  $: console.log($request, patients);
+
   query(request);
   query(recentsRequest);
 </script>
@@ -81,14 +85,20 @@
     </Request>
 
     <Request {...$request} reexecute={request.reexecute}>
-      <PatientsCells
-        patients={patients || []}
-        selected={clientsSelected}
-        on:navigate={() => {
-          if ($clientsSelected.length === 1) updateRecents('Patient', $clientsSelected.filter((client) => client.type === 'Patient')[0].id);
-          navigate($clientsSelected.length > 1);
-        }}
-      />
+      {#if patients.length > 0}
+        <PatientsCells
+          {patients}
+          selected={clientsSelected}
+          on:navigate={() => {
+            if ($clientsSelected.length === 1) updateRecents('Patient', $clientsSelected.filter((client) => client.type === 'Patient')[0].id);
+            navigate($clientsSelected.length > 1);
+          }}
+        />
+      {:else}
+        <CollapsableContentPlaceholder center>
+          No patients found...
+        </CollapsableContentPlaceholder>
+      {/if}
     </Request>
   </MasterListLayout>
 </PageContent>

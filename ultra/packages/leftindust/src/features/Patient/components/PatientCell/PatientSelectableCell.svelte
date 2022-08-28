@@ -3,7 +3,7 @@
 
   import type { Data, PartialPatientFragment } from '@/api/server';
 
-  import { createEventDispatcher, tick } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
 
   import { click } from '@/features/Select';
 
@@ -27,7 +27,7 @@
   selected={$selected.some((selectable) => selectable.id === patient.id.value)}
   on:click={(event) => {
     let selectable = { id: patient.id.value, type: patient.__typename };
-    let reference = patients.map((item) => ({ id: item.pid.id, type: item.__typename }));
+    let reference = patients.map((item) => ({ id: item.id.value, type: item.__typename }));
 
     $selected = click(event, { selectable, multiselect: multiselect ? { selected: $selected, reference } : undefined });
 

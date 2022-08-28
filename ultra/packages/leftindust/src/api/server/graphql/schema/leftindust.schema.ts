@@ -128,10 +128,47 @@ export type CreateCompleteSurveySection = {
   surveyTemplateSectionId: SurveyTemplateSectionIdInput;
 };
 
+export type CreateContact = {
+  emails?: Array<CreateEmail>;
+  nameInfo: CreateNameInfo;
+  phones?: Array<CreatePhone>;
+  relationship?: InputMaybe<Relationship>;
+};
+
+export type CreateEmail = {
+  email: Scalars['String'];
+  type: EmailType;
+};
+
 export type CreateNameInfo = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   middleName?: InputMaybe<Scalars['String']>;
+};
+
+export type CreatePatient = {
+  addresses?: Array<CreateAddress>;
+  dateOfBirth: Scalars['LocalDate'];
+  doctors?: Array<DoctorIdInput>;
+  emails?: Array<CreateEmail>;
+  emergencyContacts?: Array<CreateContact>;
+  ethnicity?: InputMaybe<Ethnicity>;
+  gender: Scalars['String'];
+  insuranceNumber?: InputMaybe<Scalars['String']>;
+  nameInfo: CreateNameInfo;
+  phones?: Array<CreatePhone>;
+  sex: Sex;
+  thumbnail?: InputMaybe<Scalars['Base64']>;
+};
+
+export type CreatePhone = {
+  number: Scalars['String'];
+  type: PhoneType;
+};
+
+export type CreateSurveyLink = {
+  patientId?: InputMaybe<PatientIdInput>;
+  surveyTemplateId?: InputMaybe<SurveyTemplateIdInput>;
 };
 
 export type CreateSurveyTemplate = {
@@ -263,6 +300,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   /**  clinic */
   addClinic: Clinic;
+  /**  patient */
+  addPatient?: Maybe<Patient>;
   /**  survey template */
   addSurveyTemplate: SurveyTemplate;
   /**  complete survey */
@@ -277,6 +316,11 @@ export type Mutation = {
 
 export type MutationAddClinicArgs = {
   clinic: CreateClinic;
+};
+
+
+export type MutationAddPatientArgs = {
+  createPatient?: InputMaybe<CreatePatient>;
 };
 
 
@@ -296,7 +340,7 @@ export type MutationCreateMediqUserArgs = {
 
 
 export type MutationCreateSurveyLinkArgs = {
-  surveyTemplateId?: InputMaybe<SurveyTemplateIdInput>;
+  createSurveyLink?: InputMaybe<CreateSurveyLink>;
 };
 
 
@@ -435,6 +479,20 @@ export type Range = {
   to?: InputMaybe<Scalars['Int']>;
 };
 
+export enum Relationship {
+  Aunt = 'Aunt',
+  Child = 'Child',
+  Cousin = 'Cousin',
+  Grandchild = 'Grandchild',
+  Grandparent = 'Grandparent',
+  Guardian = 'Guardian',
+  Other = 'Other',
+  Parent = 'Parent',
+  Partner = 'Partner',
+  Sibling = 'Sibling',
+  Uncle = 'Uncle'
+}
+
 export enum Sex {
   Female = 'Female',
   Intersex = 'Intersex',
@@ -443,8 +501,9 @@ export enum Sex {
 
 export type SurveyLink = {
   __typename?: 'SurveyLink';
-  completedSurveys: Array<CompleteSurvey>;
+  completedSurvey: CompleteSurvey;
   id: SurveyLinkId;
+  patient?: Maybe<Patient>;
   surveyTemplate: SurveyTemplate;
 };
 

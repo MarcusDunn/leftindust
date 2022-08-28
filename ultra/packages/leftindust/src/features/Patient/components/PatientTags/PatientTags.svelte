@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { DateInput, Ethnicity, Sex } from '@/api/server';
+  import type { Ethnicity, Sex } from '@/api/server';
   import intervalToDuration from 'date-fns/intervalToDuration';
   import format from 'date-fns/format';
 
@@ -7,7 +7,7 @@
 
   import SexTag from '../../../Clients/components/SexTag/SexTag.svelte';
 
-  export let dateOfBirth: DateInput | undefined = undefined;
+  export let dateOfBirth: string | undefined = undefined;
   export let ethnicity: Ethnicity | undefined = undefined;
   export let sex: Sex | undefined = undefined;
   export let gender: string | undefined = undefined;
@@ -18,7 +18,7 @@
   let birthday: Date | undefined;
 
   if (dateOfBirth)
-    birthday = new Date(`${dateOfBirth.month} ${dateOfBirth.day} ${dateOfBirth.year}`);
+    birthday = new Date(dateOfBirth);
 
 </script>
 

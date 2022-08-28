@@ -27,17 +27,14 @@
 
   const { type, label, options, placeholder, uploadAccept, uploadMultiple } = input;
 
-  export let data: Omit<Writable<Record<string, unknown>>, 'subscribe'> & {
+  export let data: (Omit<Writable<Record<string, unknown>>, 'subscribe'> & {
     subscribe(subscriber: (values: {
       [x: string]: any;
     }) => any): () => void;
-  } & Record<string, any>;
-  export let errors: Writable<Record<string, string>>;
+  } & Record<string, any>) | undefined;
+  export let errors: Writable<Record<string, string>> | undefined = undefined;
 
-  $: $data[id] = value;
-
-  $: console.log($errors);
-
+  $: if (data != null && $data != null && 'subscribe' in $data) $data[id] = value;
 </script>
 
 
@@ -46,11 +43,11 @@
 {:else}
   <div style="margin-bottom: 20px;">
     {#if type === SurveyTemplateInputType.Text}
-      <Input title={label} clear error={$errors[id]}>
+      <Input title={label} clear error={$errors?.[id]}>
         <input type="text" {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Number}
-      <Input title={label} clear error={$errors[id]}>
+      <Input title={label} clear error={$errors?.[id]}>
         <input type="number" {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Date}
@@ -58,7 +55,7 @@
         <Date title={label} {placeholder} bind:value />
       {/if}
     {:else if type === SurveyTemplateInputType.Paragraph}
-      <Input title={label} clear error={$errors[id]}>
+      <Input title={label} clear error={$errors?.[id]}>
         <textarea {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Upload}
@@ -77,15 +74,15 @@
             />
           {/if}
         {/each}
-        {#if $errors[id]}
-          {#if Array.isArray($errors[id])}
-            {#each $errors[id] as e}
+        {#if $errors?.[id]}
+          {#if Array.isArray($errors?.[id])}
+            {#each $errors?.[id] as e}
               {#if typeof e === 'string'}
                 <InputError message={e} />
               {/if}
             {/each}
           {:else}
-            <InputError message={$errors[id]} />
+            <InputError message={$errors?.[id]} />
           {/if}
         {/if}
       {/if}

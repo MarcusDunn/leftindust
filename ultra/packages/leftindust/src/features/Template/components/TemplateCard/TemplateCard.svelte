@@ -13,6 +13,7 @@
   import { openPopover, openPopup } from '@/features/View';
   import type { MenuItem } from '@/features/UI/components/Menu';
   import Menu from '@/features/UI/components/Menu/Menu.svelte';
+  import TemplateTags from '../TemplateTags/TemplateTags.svelte';
 
   const { data, dragger } = $$props as CardProps;
   
@@ -74,12 +75,7 @@
   on:menu={({ detail: event }) => openPopover(menuPopup, event)}
 >
   <div style="margin-top: 6px" slot="subtitle">
-    <Chip text={`${template?.sections.length} sections`} mediaBgColor="purple">
-      <span slot="media"><Icon f7="square_fill_on_square_fill" /></span>
-    </Chip>
-    <Chip text={`${template?.calculations.length} calculations`} mediaBgColor="teal">
-      <span slot="media"><Icon f7="sum" /></span>
-    </Chip>
+    <TemplateTags {template} />
   </div>
 
   <svelte:fragment slot="controls">

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import AppBar from '@/features/UI/components/Appbar/Appbar.svelte';
+  import Appbar from '@/features/UI/components/Appbar/Appbar.svelte';
   import Page from '@/features/UI/components/Page/Page.svelte';
   import { _ } from 'svelte-i18n';
   import { Block } from 'framework7-svelte';
@@ -24,7 +24,7 @@
 </script>
 
 <Page>
-  <AppBar
+  <Appbar
     slot="fixed"
     right={[{
       title: $_('generics.create'),

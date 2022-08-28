@@ -5,7 +5,7 @@ fragment surveyLinkFragment on SurveyLink {
   id {
     value
   }
-  completedSurveys {
+  completedSurvey {
     ...completeSurveyFragment
   }
   surveyTemplate {

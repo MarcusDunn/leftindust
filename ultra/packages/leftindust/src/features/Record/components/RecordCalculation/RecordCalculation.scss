@@ -1,9 +1,12 @@
 .record-record_calculation {
   display: flex;
   align-items: center;
-  height: 40px;
+
+  width: 100%;
+  padding: 10px 0;
 
   .record-record_calculation_text {
+    width: 100%;
     .record-record_calculation_type {
       font-size: 12px;
     }

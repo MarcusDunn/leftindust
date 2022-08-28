@@ -102,10 +102,47 @@ input CreateCompleteSurveySection {
   surveyTemplateSectionId: SurveyTemplateSectionIdInput!
 }
 
+input CreateContact {
+  emails: [CreateEmail!]! = []
+  nameInfo: CreateNameInfo!
+  phones: [CreatePhone!]! = []
+  relationship: Relationship
+}
+
+input CreateEmail {
+  email: String!
+  type: EmailType!
+}
+
 input CreateNameInfo {
   firstName: String!
   lastName: String!
   middleName: String
+}
+
+input CreatePatient {
+  addresses: [CreateAddress!]! = []
+  dateOfBirth: LocalDate!
+  doctors: [DoctorIdInput!]! = []
+  emails: [CreateEmail!]! = []
+  emergencyContacts: [CreateContact!]! = []
+  ethnicity: Ethnicity
+  gender: String!
+  insuranceNumber: String
+  nameInfo: CreateNameInfo!
+  phones: [CreatePhone!]! = []
+  sex: Sex!
+  thumbnail: Base64
+}
+
+input CreatePhone {
+  number: String!
+  type: PhoneType!
+}
+
+input CreateSurveyLink {
+  patientId: PatientIdInput
+  surveyTemplateId: SurveyTemplateIdInput
 }
 
 input CreateSurveyTemplate {
@@ -238,6 +275,9 @@ type Mutation {
   """ clinic"""
   addClinic(clinic: CreateClinic!): Clinic!
 
+  """ patient"""
+  addPatient(createPatient: CreatePatient): Patient
+
   """ survey template"""
   addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate!
 
@@ -248,7 +288,7 @@ type Mutation {
   createMediqUser(createUser: CreateUser): MediqUser
 
   """ survey link"""
-  createSurveyLink(surveyTemplateId: SurveyTemplateIdInput): SurveyLink!
+  createSurveyLink(createSurveyLink: CreateSurveyLink): SurveyLink!
   editClinic(clinic: EditClinic!): Clinic
 }
 
@@ -334,6 +374,20 @@ input Range {
   to: Int
 }
 
+enum Relationship {
+  Aunt
+  Child
+  Cousin
+  Grandchild
+  Grandparent
+  Guardian
+  Other
+  Parent
+  Partner
+  Sibling
+  Uncle
+}
+
 enum Sex {
   Female
   Intersex
@@ -341,8 +395,9 @@ enum Sex {
 }
 
 type SurveyLink {
-  completedSurveys: [CompleteSurvey!]!
+  completedSurvey: CompleteSurvey!
   id: SurveyLinkId!
+  patient: Patient
   surveyTemplate: SurveyTemplate!
 }
 

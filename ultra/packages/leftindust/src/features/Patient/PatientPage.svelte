@@ -148,14 +148,16 @@
               type={WidgetType.Card}
             />
           {:else}
-            <DescriptivePlaceholder
-              title={$_('generics.noPinned')}
-              description={$_('descriptions.addPinned')}
-              link={{
-                label: $_('descriptions.learnMorePinning'),
-                href: '#',
-              }}
-            />
+            <div style="margin-top: 40px">
+              <DescriptivePlaceholder
+                title={$_('generics.noPinned')}
+                description={$_('descriptions.addPinned')}
+                link={{
+                  label: $_('descriptions.learnMorePinning'),
+                  href: '#',
+                }}
+              />
+            </div>
             <br />
           {/if}
         {/key}

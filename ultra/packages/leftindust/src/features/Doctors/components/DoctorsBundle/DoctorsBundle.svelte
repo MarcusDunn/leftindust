@@ -52,13 +52,15 @@
         {/each}
       </Cells>
     {:else}
-      <DescriptivePlaceholder 
-        title={$_('generics.noDoctors')}
-        description={$_('descriptions.noDoctors')}
-        link = {{
-          label: $_('descriptions.learnMoreDoctors'),
-        }}
-      />
+      <div style="margin-top: 40px">
+        <DescriptivePlaceholder 
+          title={$_('generics.noDoctors')}
+          description={$_('descriptions.noDoctors')}
+          link = {{
+            label: $_('descriptions.learnMoreDoctors'),
+          }}
+        />
+      </div>
     {/if}
   </Request>
   <Row slot="controls">
