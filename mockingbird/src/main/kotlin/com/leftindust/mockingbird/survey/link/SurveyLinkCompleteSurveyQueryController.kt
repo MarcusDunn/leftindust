@@ -13,9 +13,9 @@ class SurveyLinkCompleteSurveyQueryController(
     private val completeSurveyToCompleteSurveyDtoConverter: CompleteSurveyToCompleteSurveyDtoConverter,
 ) {
     @SchemaMapping(field = "completedSurvey", typeName = SurveyLinkDto.GRAPHQL_TYPE)
-    suspend fun completedSurveyBySurveyLink(surveyLinkDto: SurveyLinkDto): CompleteSurveyDto {
+    suspend fun completedSurveyBySurveyLink(surveyLinkDto: SurveyLinkDto): CompleteSurveyDto? {
         val completeSurveys = readCompletedSurveyService.getBySurveyLink(surveyLinkDto.id)
-            ?: throw NullSubQueryException(surveyLinkDto, ReadCompleteSurveyService::getBySurveyLink)
+            ?: return null
         return completeSurveyToCompleteSurveyDtoConverter.convert(completeSurveys)
     }
 }
