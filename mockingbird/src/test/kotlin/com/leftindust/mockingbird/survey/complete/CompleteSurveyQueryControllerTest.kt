@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.survey.complete
 
+import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.util.CompleteSurveyMother.FilledOutKoosKneeSurvey
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -38,6 +39,28 @@ internal class CompleteSurveyQueryControllerWebTest(
             .errors()
             .verify()
             .path("completeSurveyById")
+            .entity(CompleteSurveyDto::class.java)
+            .isEqualTo(FilledOutKoosKneeSurvey.dto)
+    }
+
+    @Test
+    internal fun `check can query by range`() {
+        coEvery { readCompleteSurveyService.getMany(RangeDto(0, 1)) } returns listOf(FilledOutKoosKneeSurvey.domain)
+
+        @Language("graphql")
+        val query = """
+            query {
+                completeSurveyByRange(range: {from: 0 to : 1}) {
+                    id { value }
+                }
+            }
+        """.trimIndent()
+
+        graphQlTester.document(query)
+            .execute()
+            .errors()
+            .verify()
+            .path("completeSurveyByRange[0]")
             .entity(CompleteSurveyDto::class.java)
             .isEqualTo(FilledOutKoosKneeSurvey.dto)
     }
