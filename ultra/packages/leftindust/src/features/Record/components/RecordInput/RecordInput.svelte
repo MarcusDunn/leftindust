@@ -34,7 +34,8 @@
   } & Record<string, any>) | undefined;
   export let errors: Writable<Record<string, string>> | undefined = undefined;
 
-  $: if (data != null && $data != null && 'subscribe' in $data) $data[id] = value;
+  // TODO: DEMO got no time to debug this
+  $: $data![id] = value;
 </script>
 
 

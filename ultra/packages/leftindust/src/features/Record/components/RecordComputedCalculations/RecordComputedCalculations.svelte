@@ -13,7 +13,6 @@
 
   sections.forEach(({ inputs: templateInputs }, sectionIndex) => {
     templateInputs.forEach((input, inputIndex) => {
-      console.log(input);
       inputs[input.calculationId] = {
         type: input.type,
         value: writable(values[sectionIndex].inputs[inputIndex].value),

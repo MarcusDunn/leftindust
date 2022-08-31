@@ -3,7 +3,7 @@
   
   import { Block, BlockFooter, Icon } from 'framework7-svelte';
   import type { RecordValues } from '../..';
-  import RecordCalculations from '../RecordCalculations/RecordCalculations.svelte';
+  import RecordComputedCalculations from '../RecordComputedCalculations/RecordComputedCalculations.svelte';
 
   export let calculations: SurveyTemplateCalculation[];
   export let sections: SurveyTemplateSection[];
@@ -23,7 +23,7 @@
   </div>
   <br />
   <br />
-  <RecordCalculations
+  <RecordComputedCalculations
     {sections}
     {calculations}
     {values}

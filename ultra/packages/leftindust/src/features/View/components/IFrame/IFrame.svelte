@@ -22,6 +22,8 @@
 
   export let props: Record<string, unknown> = {};
 
+  export let style = '';
+
   let viewRefs: (View | undefined)[] = views.map(() => undefined);
   let viewInstances: (ViewType.View | undefined)[] = views.map(() => undefined);
 
@@ -78,7 +80,7 @@
 </script>
 
 <div class="view-iframe">
-  <div class="view-iframe-container">
+  <div class="view-iframe-container" {style}>
     {#if views.length > 1}
       <Link
         class={`view-iframe-up ${isBeginning ? 'disabled' : ''}`}
@@ -95,12 +97,12 @@
       initialSlide={index}
       on:swiper={setSwiper}
     >
-      {#each views as v, index}
+      {#each views as _, index}
         <SwiperSlide>
           <View
             stackPages
             iosSwipeBack
-            animate
+            animate={false}
             bind:this={viewRefs[index]}
           />
         </SwiperSlide>

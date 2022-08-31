@@ -17,7 +17,7 @@
 
 {#each inputs as input, index}
   <RecordInput
-    bind:input
+    {input}
     {data}
     id={input.calculationId}
     {errors}

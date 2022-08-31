@@ -6,7 +6,7 @@
     Tab,
   } from 'framework7-svelte';
   import { _ } from 'svelte-i18n';
-  import { Template, TemplateNodesModalOpen, TemplateSelectedTab, TemplateCalculations as TemplateCalculationsStore } from './store';
+  import { Template, TemplateNodesModalOpen, TemplateSelectedTab, TemplateCalculations as TemplateCalculationsStore, TemplateIndex } from './store';
   import { fade } from 'svelte/transition';
 
   import IFrame from '../View/components/IFrame/IFrame.svelte';
@@ -14,12 +14,12 @@
   import TemplateSections from './components/TemplateSections/TemplateSections.svelte';
   import TemplateSectionInputs from './components/TemplateSection/TemplateSectionInputs.svelte';
   import TemplateCalculations from './components/TemplateCalculations/TemplateCalculations.svelte';
-  import { templateForm } from '.';
+  import { defaultTemplate, templateForm } from '.';
   import TemplateCategoryInputs from './components/TemplateInputs/TemplateCategoryInputs.svelte';
   import { closeWizard } from '../Wizard';
 
   const closeWizardHandler = () => {
-    $Template = JSON.parse(JSON.stringify($Template));
+    $Template = JSON.parse(JSON.stringify(defaultTemplate));
     $TemplateCalculationsStore = [];
     closeWizard();
   };
@@ -105,6 +105,7 @@
           selected: true,
           props: {
             template: Template,
+            selectedSectionIndex: TemplateIndex,
           },
         },
       ]}

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TemplateIndex, TemplateSelectedTab } from './store';
+  import { TemplateSelectedTab } from './store';
   import TemplatePreviewCard from './components/TemplateCard/TemplatePreviewCard.svelte';
   import {
     Block,
@@ -15,13 +15,14 @@
   import type { Writable } from 'svelte/store';
 
   export let template: Writable<Template>;
+  export let selectedSectionIndex: Writable<number>;
 
   let progressbar: Progressbar | undefined;
 
   $: if ($template.sections.length > 1) {
     f7.progressbar.set(
       progressbar?.$$.ctx[1],
-      ($TemplateIndex / $template.sections.length) * 100,
+      ($selectedSectionIndex / $template.sections.length) * 100,
     );
   }
 </script>
@@ -33,8 +34,8 @@
     <Tab tabActive={$TemplateSelectedTab === 'input'}>
       <Block class="no-margin-top" style="overflow-y: scroll; height: 100%; padding-bottom: 20px;">
         {#if $template.sections.length > 1}
-          <h2>{$template.sections[$TemplateIndex].title}</h2>
-          <p>{$template.sections[$TemplateIndex].subtitle ?? ''}</p>
+          <h2>{$template.sections[$selectedSectionIndex].title}</h2>
+          <p>{$template.sections[$selectedSectionIndex].subtitle ?? ''}</p>
           <p />
           <Progressbar
             bind:this={progressbar}
@@ -43,7 +44,7 @@
           />
           <br />
           <TemplateInputsPreview
-            bind:inputs={$template.sections[$TemplateIndex].inputs}
+            bind:inputs={$template.sections[$selectedSectionIndex].inputs}
           />
         {:else}
           <h2>{$template.title}</h2>
