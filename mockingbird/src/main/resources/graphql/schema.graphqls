@@ -222,7 +222,7 @@ type SurveyTemplateCalculation {
 type SurveyLink {
     id: SurveyLinkId!
     surveyTemplate: SurveyTemplate!
-    completedSurvey: CompleteSurvey!
+    completedSurvey: CompleteSurvey
     patient: Patient
 }
 
