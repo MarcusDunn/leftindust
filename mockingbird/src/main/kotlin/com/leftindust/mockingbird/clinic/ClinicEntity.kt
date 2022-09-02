@@ -24,7 +24,7 @@ class ClinicEntity(
     @OneToOne(optional = false, cascade = [CascadeType.PERSIST])
     var address: Address,
     @OneToMany(mappedBy = "clinic")
-    var doctors: MutableSet<ClinicDoctorEntity> = mutableSetOf(),
+    var doctors: MutableSet<ClinicDoctorEntity>,
 ) : AbstractJpaPersistable() {
     fun clearDoctors() {
         doctors.forEach { removeDoctor(it.doctor) }
