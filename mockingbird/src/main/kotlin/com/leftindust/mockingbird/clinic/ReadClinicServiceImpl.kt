@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.clinic
 
-import com.leftindust.mockingbird.FallibleConverter
+import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
 import org.springframework.transaction.annotation.Transactional
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 @Service
 @Transactional
 class ReadClinicServiceImpl(
-    private val clinicEntityToClinicConverter: FallibleConverter<ClinicEntity, Clinic>,
+    private val clinicEntityToClinicConverter: InfallibleConverter<ClinicEntity, Clinic>,
     private val clinicRepository: ClinicRepository,
     private val doctorService: ReadDoctorService,
 ) : ReadClinicService {
