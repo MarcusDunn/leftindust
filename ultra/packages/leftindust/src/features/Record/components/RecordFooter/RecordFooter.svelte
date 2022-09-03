@@ -33,7 +33,7 @@
 
 <svelte:window bind:innerWidth={width} />
 
-<Footer class="record-record_footer">
+<Footer class="record-record_footer" style={`display: ${!complete ? 'block' : 'none'} !important`}>
   <div class="record-record_footer-content">
     {#if template.sections.length > 1}
       <div class="record-record_footer-progress">
@@ -62,6 +62,7 @@
                   currentSectionIndex--;
                 }
               }}
+              disabled={currentSectionIndex < 1}
             >
               {$_('generics.back')}
             </Button>

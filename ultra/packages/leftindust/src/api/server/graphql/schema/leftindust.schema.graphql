@@ -346,6 +346,7 @@ type Query {
 
   """ complete survey"""
   completeSurveyById(completeSurveyId: CompleteSurveyIdInput): CompleteSurvey
+  completeSurveyByRange(range: Range!): [CompleteSurvey!]!
 
   """ doctor"""
   doctorsByDoctorIds(doctorIds: [DoctorIdInput!]!): [Doctor]!
@@ -395,7 +396,7 @@ enum Sex {
 }
 
 type SurveyLink {
-  completedSurvey: CompleteSurvey!
+  completedSurvey: CompleteSurvey
   id: SurveyLinkId!
   patient: Patient
   surveyTemplate: SurveyTemplate!

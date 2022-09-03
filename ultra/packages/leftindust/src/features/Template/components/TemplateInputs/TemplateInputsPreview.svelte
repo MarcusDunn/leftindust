@@ -62,9 +62,7 @@
           <input type="number" {placeholder} bind:value />
         </Input>
       {:else if type === SurveyTemplateInputType.Date}
-        {#if typeof value === 'number' || typeof value === 'undefined'}
-          <Date title={label} {placeholder} bind:value />
-        {/if}
+        <Date title={label} {placeholder} bind:value />
       {:else if type === SurveyTemplateInputType.Paragraph}
         <Input title={label} clear>
           <textarea {placeholder} bind:value />

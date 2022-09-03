@@ -33,7 +33,10 @@
   title="New Template"
   subtitle="Create a new template"
   color="deeppurple"
-  on:submit={() => ref?.requestSubmit()}
+  on:submit={() => {
+    ref?.requestSubmit();
+    console.log($errors);
+  }}
   on:close={() => closeWizardHandler()}
 >
   <svelte:fragment slot="appbar">

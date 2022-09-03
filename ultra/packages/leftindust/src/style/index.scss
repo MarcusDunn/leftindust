@@ -186,6 +186,13 @@ html.with-panel .framework7-root > .views .page-content, html.with-panel .framew
   }
 }
 
+.with-panel-left-reveal {
+  .function-junctions-editor {
+    margin-left: calc(-1 * var(--f7-panel-width)) !important;
+    width: calc(100% + var(--f7-panel-width));
+  }
+}
+
 /* Wizard influence bug fix */
 .wizard-open {
   .views.tabs {

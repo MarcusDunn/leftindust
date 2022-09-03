@@ -167,6 +167,15 @@
       <Tab tabActive={layout === Layout.Bundled}>
         <Block style="margin-left: 25px;margin-right: 25px">
           <Tabs>
+            <Tab tabActive={tab === ClientTab.Records}>
+              <GenericGrid
+                props={{ id: 'CompleteSurvey', data, quicklook }}
+                type={WidgetType.Bundle}
+                dataType={['CompleteSurvey']}
+                category={[WidgetCategory.Record]}
+                store
+              />
+            </Tab>
             <Tab tabActive={tab === ClientTab.Contacts}>
               <GenericGrid
                 props={{ id: 'Patient', data, quicklook }}

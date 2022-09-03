@@ -1,4 +1,3 @@
-/** eslint-disable no-undef */
 <script lang="ts">
   import type { Editor } from 'function-junctions';
   import type { InputSockets, InputSocket } from 'function-junctions/types';

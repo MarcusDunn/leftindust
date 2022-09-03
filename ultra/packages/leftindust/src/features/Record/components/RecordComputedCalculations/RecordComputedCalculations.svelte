@@ -3,6 +3,8 @@
   import type { SurveyTemplateCalculation, SurveyTemplateSection } from '@/api/server';
   import type { RecordValues } from '../..';
   import RecordCalculation from '../RecordCalculation/RecordCalculation.svelte';
+  import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
+  import { rawCalculationNodes } from '@/features/Nodes';
 
   export let values: RecordValues[];
 
@@ -19,14 +21,29 @@
       };
     });
   });
+
+  const mappedCalculations = calculations.map((calculation) => ({
+    ...calculation,
+    calculationModalOpen: false,
+    editor: undefined,
+  })) ?? [];
 </script>
 
-{#each calculations as calculation}
+{#each mappedCalculations as calculation}
   {#if !calculation.showOnComplete}
+    <NodesModal
+      nodes={rawCalculationNodes}
+      state={JSON.parse(calculation.calculation ?? '{}')}
+      bind:open={calculation.calculationModalOpen}
+      bind:editor={calculation.editor}
+      editable={false}
+      {inputs}
+    />
     <div style="margin-bottom: 10px">
       <RecordCalculation
         {calculation}
         {inputs}
+        on:click={() => calculation.calculationModalOpen = true}
       />
     </div>
   {/if}

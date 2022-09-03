@@ -15,6 +15,9 @@
   import { writable, type Writable } from 'svelte/store';
   import Cells from '../UI/components/Cells/Cells.svelte';
   import IFrame from '../View/components/IFrame/IFrame.svelte';
+  import CollapsableContentPlaceholder from '../UI/components/Collapsable/CollapsableContentPlaceholder.svelte';
+  import { rawCalculationNodes } from '../Nodes';
+  import NodesModal from '../Nodes/components/NodesModal/NodesModal.svelte';
 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
@@ -38,6 +41,12 @@
   const request = operationStore(SurveyTemplateByIdQueryDocument, {
     surveyTemplateId: { value: data.id },
   });
+
+  $: calculations = $template?.calculations.map((calculation) => ({
+    ...calculation,
+    calculationModalOpen: false,
+    editor: undefined,
+  })) ?? [];
 
   $: $template = $request.data?.surveyTemplateById;
 
@@ -124,9 +133,25 @@
         </CollapsableContent>
         <p />
         <CollapsableContent title="Calculations">
-          {#each $template.calculations as calculation}
-            <RecordCalculation {calculation} />
-          {/each}
+          {#if $template.calculations.length > 0}
+            {#each calculations as calculation}
+              <NodesModal
+                nodes={rawCalculationNodes}
+                state={JSON.parse(calculation.calculation ?? '{}')}
+                bind:open={calculation.calculationModalOpen}
+                bind:editor={calculation.editor}
+                editable={false}
+              />
+              <RecordCalculation
+                {calculation}
+                on:click={() => (calculation.calculationModalOpen = true)}
+              />
+            {/each}
+          {:else}
+            <CollapsableContentPlaceholder center>
+              No calculations found...
+            </CollapsableContentPlaceholder>
+          {/if}
         </CollapsableContent>
       </Block>
     {/if}

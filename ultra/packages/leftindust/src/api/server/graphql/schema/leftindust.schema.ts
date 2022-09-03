@@ -407,6 +407,7 @@ export type Query = {
   clinicByClinicId?: Maybe<Clinic>;
   /**  complete survey */
   completeSurveyById?: Maybe<CompleteSurvey>;
+  completeSurveyByRange: Array<CompleteSurvey>;
   /**  doctor */
   doctorsByDoctorIds: Array<Maybe<Doctor>>;
   doctorsByRange: Array<Doctor>;
@@ -432,6 +433,11 @@ export type QueryClinicByClinicIdArgs = {
 
 export type QueryCompleteSurveyByIdArgs = {
   completeSurveyId?: InputMaybe<CompleteSurveyIdInput>;
+};
+
+
+export type QueryCompleteSurveyByRangeArgs = {
+  range: Range;
 };
 
 
@@ -501,7 +507,7 @@ export enum Sex {
 
 export type SurveyLink = {
   __typename?: 'SurveyLink';
-  completedSurvey: CompleteSurvey;
+  completedSurvey?: Maybe<CompleteSurvey>;
   id: SurveyLinkId;
   patient?: Maybe<Patient>;
   surveyTemplate: SurveyTemplate;

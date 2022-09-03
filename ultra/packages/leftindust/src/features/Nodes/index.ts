@@ -25,7 +25,7 @@ export type MenuNodeSection = {
 
 export type MenuNodes = MenuNodeSection[];
 
-export const calculationNodes: Record<string, NodeBlueprint> = {
+export const rawCalculationNodes: Record<string, NodeBlueprint> = {
   output: RawTemplateOutputNode,
   Group: RawTemplateInputsNode,
   Input: RawTemplateInputNode,
