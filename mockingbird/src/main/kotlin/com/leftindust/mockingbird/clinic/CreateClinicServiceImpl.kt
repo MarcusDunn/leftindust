@@ -19,7 +19,8 @@ class CreateClinicServiceImpl(
         val address = createAddressService.createAddress(createClinic.address)
         val clinic = ClinicEntity(
             name = createClinic.name,
-            address = address
+            address = address,
+            doctors = mutableSetOf()
         )
 
         createClinic
