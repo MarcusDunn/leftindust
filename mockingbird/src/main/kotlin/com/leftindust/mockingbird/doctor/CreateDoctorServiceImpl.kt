@@ -1,8 +1,10 @@
 package com.leftindust.mockingbird.doctor
 
 import com.leftindust.mockingbird.address.CreateAddressService
-import com.leftindust.mockingbird.clinic.ReadClinicService
+import com.leftindust.mockingbird.clinic.*
 import com.leftindust.mockingbird.email.CreateEmailService
+import com.leftindust.mockingbird.graphql.types.Updatable
+import com.leftindust.mockingbird.graphql.types.ignore
 import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.person.CreateNameInfoService
@@ -28,6 +30,7 @@ class CreateDoctorServiceImpl(
     private val createPhoneService: CreatePhoneService,
     private val readClinicService: ReadClinicService,
     private val readPatientService: ReadPatientService,
+    private val updateClinicService: UpdateClinicService
 ) : CreateDoctorService {
 
     override suspend fun addDoctor(createDoctor: CreateDoctor): Doctor {
@@ -64,12 +67,34 @@ class CreateDoctorServiceImpl(
                         ?: throw IllegalArgumentException("No such patient with id $it")
                 }.forEach { addPatient(it) }
 
-            createDoctor.clinic.map {
-                readClinicService.getByClinicId(it)
-                    ?: throw IllegalArgumentException("No such clinic with id $it")
-            }.forEach { it.addDoctor(this) }
+            updateClinics(createDoctor.clinic, this)
         }
         return doctorRepository.save(doctor)
+    }
+
+    private suspend fun updateClinics(
+        clinicsEdit: List<ClinicDto.ClinicDtoId>,
+        doctor: Doctor
+    ) {
+        val newDoctorId = DoctorDto.DoctorDtoId(doctor.id ?: return)
+
+        val clinicIdToClinicDoctors = clinicsEdit
+            .map {
+                val clinic = readClinicService.getByClinicId(it)
+                    ?: throw IllegalArgumentException("No such clinic with id $it")
+                clinic.id to clinic.doctors.toMutableSet()
+            }
+        clinicIdToClinicDoctors.forEach { clinicIdToDoctors ->
+            val editClinic = ClinicEditDto(
+                ClinicDto.ClinicDtoId(clinicIdToDoctors.first),
+                ignore(),
+                ignore(),
+                Updatable.Update(listOf(newDoctorId, *clinicIdToDoctors.second.toTypedArray()))
+            )
+            updateClinicService.editClinic(editClinic)
+        }
+
+        TODO("Add the clinic to the doctor. Clinic cannot currently be converted to ClinicEntity for ClinicDoctorEntity")
     }
 
     data class CreateMediqUserImpl(
