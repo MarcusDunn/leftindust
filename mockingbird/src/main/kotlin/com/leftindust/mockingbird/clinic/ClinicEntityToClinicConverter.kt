@@ -2,7 +2,6 @@ package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullEntityIdInConverterException
-import com.leftindust.mockingbird.doctor.DoctorDto
 import org.springframework.stereotype.Component
 import java.util.UUID
 

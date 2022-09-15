@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.clinic
 
-import com.leftindust.mockingbird.doctor.DoctorDto
+
 import java.util.UUID
 
 interface Clinic {
