@@ -43,7 +43,8 @@ class UpdateDoctorServiceImpl(
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,
     private val readPatientService: ReadPatientService,
-    private val updateClinicService: UpdateClinicService
+    private val updateClinicService: UpdateClinicService,
+    private val readDoctorService: ReadDoctorService
 ) : UpdateDoctorService {
     private val logger = KotlinLogging.logger { }
 

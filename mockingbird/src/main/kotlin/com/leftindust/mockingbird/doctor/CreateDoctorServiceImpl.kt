@@ -30,7 +30,8 @@ class CreateDoctorServiceImpl(
     private val createPhoneService: CreatePhoneService,
     private val readClinicService: ReadClinicService,
     private val readPatientService: ReadPatientService,
-    private val updateClinicService: UpdateClinicService
+    private val updateClinicService: UpdateClinicService,
+    private val readDoctorService: ReadDoctorService
 ) : CreateDoctorService {
 
     override suspend fun addDoctor(createDoctor: CreateDoctor): Doctor {
@@ -79,19 +80,26 @@ class CreateDoctorServiceImpl(
         val newDoctorId = DoctorDto.DoctorDtoId(doctor.id ?: return)
 
         val clinicIdToClinicDoctors = clinicsEdit
-            .map {
-                val clinic = readClinicService.getByClinicId(it)
-                    ?: throw IllegalArgumentException("No such clinic with id $it")
-                clinic.id to clinic.doctors.toMutableSet()
+            .map { clinicId ->
+                val clinic = readClinicService.getByClinicId(clinicId)
+                    ?: throw IllegalArgumentException("No such clinic with id $clinicId")
+                val doctorIds = readDoctorService.getByClinicId(clinicId)
+                    ?.mapNotNull { it.id }
+                    ?.map { DoctorDto.DoctorDtoId(it) }
+                clinic.id to doctorIds
             }
         clinicIdToClinicDoctors.forEach { clinicIdToDoctors ->
-            val editClinic = ClinicEditDto(
-                ClinicDto.ClinicDtoId(clinicIdToDoctors.first),
-                ignore(),
-                ignore(),
-                Updatable.Update(listOf(newDoctorId, *clinicIdToDoctors.second.toTypedArray()))
-            )
-            updateClinicService.editClinic(editClinic)
+            clinicIdToDoctors.second?.toTypedArray()
+            val clinicDoctors = clinicIdToDoctors.second ?: emptyList()
+            if(!clinicDoctors.isNullOrEmpty()) {
+                val editClinic = ClinicEditDto(
+                    ClinicDto.ClinicDtoId(clinicIdToDoctors.first),
+                    ignore(),
+                    ignore(),
+                    Updatable.Update(listOf(newDoctorId, *clinicDoctors.toTypedArray()))
+                )
+                updateClinicService.editClinic(editClinic)
+            }
         }
 
         TODO("Add the clinic to the doctor. Clinic cannot currently be converted to ClinicEntity for ClinicDoctorEntity")
