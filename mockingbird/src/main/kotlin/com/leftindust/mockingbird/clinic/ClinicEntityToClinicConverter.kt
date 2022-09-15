@@ -12,16 +12,11 @@ class ClinicEntityToClinicConverter : InfallibleConverter<ClinicEntity, Clinic> 
         return ClinicImpl(
             id = source.id ?: throw NullEntityIdInConverterException(source),
             name = source.name,
-            doctors = source.doctors
-                .mapNotNull { it.doctor.id }
-                .map { DoctorDto.DoctorDtoId(it) }
-                .toSet()
         )
     }
 
     private data class ClinicImpl(
         override val id: UUID,
         override val name: String,
-        override val doctors: Set<DoctorDto.DoctorDtoId>
     ) : Clinic
 }
