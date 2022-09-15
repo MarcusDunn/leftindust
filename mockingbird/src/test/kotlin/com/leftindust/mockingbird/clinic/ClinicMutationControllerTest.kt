@@ -3,6 +3,10 @@ package com.leftindust.mockingbird.clinic
 import com.leftindust.mockingbird.util.ClinicMother.DansClinic
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Test

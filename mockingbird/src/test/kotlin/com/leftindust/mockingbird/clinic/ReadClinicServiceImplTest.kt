@@ -24,7 +24,9 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
-internal class ReadClinicServiceImplUnitTest {
+internal class ReadClinicServiceImplUnitTest (
+    @Autowired private val clinicEntityToClinicConverter: ClinicEntityToClinicConverter
+        ) {
     @MockK
     private lateinit var clinicRepository: ClinicRepository
 
@@ -34,7 +36,7 @@ internal class ReadClinicServiceImplUnitTest {
     @Test
     internal fun `check getByDoctorId returns a doctor's clinics when the doctor exists`() = runTest {
         coEvery { doctorService.getByDoctorId(Jenny.graphqlId) } returns Jenny.entityPersisted
-        val readClinicServiceImpl = ReadClinicServiceImpl(clinicRepository, doctorService)
+        val readClinicServiceImpl = ReadClinicServiceImpl(clinicEntityToClinicConverter, clinicRepository, doctorService)
         val clinics = readClinicServiceImpl.getByDoctorId(Jenny.graphqlId)
 
         assertThat(clinics, containsInAnyOrder(Jenny.clinics.map { equalTo(it.clinic) }))

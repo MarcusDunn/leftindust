@@ -30,6 +30,7 @@ import java.time.LocalDate
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 @Transactional
@@ -126,10 +127,21 @@ class UpdateDoctorServiceImpl(
                 val newDoctorId = DoctorDto.DoctorDtoId(doctor.id ?: return)
                 doctor.clinics.forEach { it.clinic.removeDoctor(doctor) }
                 clinics.value
-                    .map { it to readClinicService.getByClinicId(it) }
-                    .forEach { (id, clinic) ->
-                        if (clinic != null) {
-                            val editClinic = ClinicEditDto(id, ignore(), ignore(), Updatable.Update(listOf(newDoctorId, *clinic.doctors.toTypedArray())))
+                    .map { clinicId ->
+                        val clinic = readClinicService.getByClinicId(clinicId) ?: throw IllegalArgumentException("No such clinic with id $clinicId")
+                        clinicId
+                    }
+                    .forEach { id ->
+                        val doctorIds = readDoctorService.getByClinicId(id)
+                            ?.mapNotNull { it.id }
+                            ?.map { DoctorDto.DoctorDtoId(it) }
+
+                        if (doctorIds != null) {
+                            val editClinic = ClinicEditDto(
+                                id,
+                                ignore(),
+                                ignore(),
+                                Updatable.Update(listOf(newDoctorId, *doctorIds.toTypedArray())))
                             updateClinicService.editClinic(editClinic)
 
                             TODO("Add the clinic to the doctor. Clinic cannot currently be converted to ClinicEntity for ClinicDoctorEntity")
