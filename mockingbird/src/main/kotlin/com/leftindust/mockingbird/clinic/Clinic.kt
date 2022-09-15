@@ -6,5 +6,4 @@ import java.util.UUID
 interface Clinic {
     val id: UUID
     val name: String
-    val doctors: Set<DoctorDto.DoctorDtoId>
 }
