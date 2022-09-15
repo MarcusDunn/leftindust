@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.clinic
 
-import com.leftindust.mockingbird.doctor.DoctorDto
+
 import com.leftindust.mockingbird.doctor.ReadDoctorService
 import com.leftindust.mockingbird.util.ClinicMother.DansClinic
 import com.leftindust.mockingbird.util.DoctorMother.Jenny
