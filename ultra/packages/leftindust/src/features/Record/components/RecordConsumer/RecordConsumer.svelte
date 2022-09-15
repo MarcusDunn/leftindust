@@ -1,14 +1,12 @@
 <script lang="ts">
-  import { client, SurveyTemplateInputType, type SurveyTemplate, type SurveyTemplateCalculation } from '@/api/server';
+  import { SurveyTemplateInputType, type SurveyTemplate } from '@/api/server';
   import Appbar from '@/features/UI/components/Appbar/Appbar.svelte';
   import Page from '@/features/UI/components/Page/Page.svelte';
   import RecordSections from '../RecordSections/RecordSections.svelte';
   import type { AnySchema } from 'yup';
   import type Lazy from 'yup/lib/Lazy';
 
-  import { _ } from '@/language';
   import RecordFooter from '../RecordFooter/RecordFooter.svelte';
-  import RecordPoweredBy from '../RecordPoweredBy/RecordPoweredBy.svelte';
   import { getYupInputTypeFromTemplateCategory } from '@/features/Template';
   import * as yup from 'yup';
   import { createForm } from 'felte';
@@ -36,8 +34,10 @@
     }
   };
 
-  let values: RecordValues[] = template.sections.map(({ inputs }) => ({
-    inputs: inputs.map(({ type }) => ({
+  let values: RecordValues = template.sections.map(({ inputs, id }) => ({
+    id,
+    inputs: inputs.map(({ type, id }) => ({
+      id,
       value: getValueFromType(type),
     })),
   }));
@@ -62,9 +62,7 @@
 
           const isComplete = currentSectionIndex === (template.sections.length);
 
-          if (isComplete) {
-            complete = isComplete;
-          }
+          if (isComplete) complete = isComplete;
         },
         extend: [
           validator({ schema }),
@@ -79,14 +77,18 @@
   };
 
   $: currentSectionIndex, scrollTop();
-
-  console.log(template);
 </script>
 
 <Page bind:instance={pageRef}>
   <svelte:fragment slot="fixed">
     <Appbar />
-    <RecordFooter {template} {forms} {complete} bind:currentSectionIndex />
+    <RecordFooter
+      {template}
+      {forms}
+      {complete}
+      bind:values
+      bind:currentSectionIndex
+    />
     <!--<RecordPoweredBy />-->
   </svelte:fragment>
 

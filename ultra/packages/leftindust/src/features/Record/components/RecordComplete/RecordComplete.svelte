@@ -8,7 +8,7 @@
   export let calculations: SurveyTemplateCalculation[];
   export let sections: SurveyTemplateSection[];
   
-  export let values: RecordValues[];
+  export let values: RecordValues;
 </script>
 
 <Block class="no-margin-top" style="margin-bottom: 100px;padding: 0 45px;">

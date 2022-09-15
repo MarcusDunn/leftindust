@@ -6,7 +6,7 @@
   import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
   import { rawCalculationNodes } from '@/features/Nodes';
 
-  export let values: RecordValues[];
+  export let values: RecordValues;
 
   export let calculations: SurveyTemplateCalculation[];
   export let sections: SurveyTemplateSection[];

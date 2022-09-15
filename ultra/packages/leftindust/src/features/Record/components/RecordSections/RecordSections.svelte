@@ -7,7 +7,7 @@
   export let sections: SurveyTemplateSection[];
   export let calculations: SurveyTemplateCalculation[];
   
-  export let values: RecordValues[];
+  export let values: RecordValues;
 
   export let complete: boolean;
 

@@ -7,7 +7,7 @@
   import SegmentedText from '@/features/UI/components/SegmentedText/SegmentedText.svelte';
   import { Progressbar, Row, Col, Button, f7 } from 'framework7-svelte';
 
-  import type { RecordForm } from '../..';
+  import type { RecordForm, RecordValues } from '../..';
   import { _ } from '@/language';
   import type { SurveyTemplate } from '@/api/server';
 
@@ -16,6 +16,8 @@
   export let forms: RecordForm[];
 
   export let complete: boolean;
+
+  export let values: RecordValues;
 
   let progressbar: Progressbar | undefined;
 

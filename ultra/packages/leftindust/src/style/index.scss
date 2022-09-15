@@ -186,7 +186,7 @@ html.with-panel .framework7-root > .views .page-content, html.with-panel .framew
   }
 }
 
-.with-panel-left-reveal {
+.with-panel-left-reveal:not(.wizard-open) {
   .function-junctions-editor {
     margin-left: calc(-1 * var(--f7-panel-width)) !important;
     width: calc(100% + var(--f7-panel-width));
