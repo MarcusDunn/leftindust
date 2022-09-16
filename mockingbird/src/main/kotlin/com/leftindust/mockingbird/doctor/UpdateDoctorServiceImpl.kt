@@ -129,7 +129,7 @@ class UpdateDoctorServiceImpl(
                 doctor.clinics.forEach { it.clinic.removeDoctor(doctor) }
                 clinics.value
                     .map { clinicId ->
-                        val clinic = readClinicService.getByClinicId(clinicId) ?: throw IllegalArgumentException("No such clinic with id $clinicId")
+                        readClinicService.getByClinicId(clinicId) ?: throw IllegalArgumentException("No such clinic with id $clinicId")
                         clinicId
                     }
                     .forEach { id ->
