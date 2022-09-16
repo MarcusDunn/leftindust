@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SurveyTemplateInputType, type SurveyTemplate } from '@/api/server';
+  import { client, CreateCompleteSurveyMutationDocument, SurveyTemplateInputType, type SurveyTemplate } from '@/api/server';
   import Appbar from '@/features/UI/components/Appbar/Appbar.svelte';
   import Page from '@/features/UI/components/Page/Page.svelte';
   import RecordSections from '../RecordSections/RecordSections.svelte';
@@ -12,6 +12,13 @@
   import { createForm } from 'felte';
   import type { RecordForm, RecordValues } from '../..';
   import { validator } from '@felte/validator-yup';
+  import { mapRecordToCompleteSurveyInput } from '../..';
+  import getNativeAPI from '@/api/bridge';
+  import { _ } from '@/language';
+  import { get } from 'svelte/store';
+  
+  const { Dialog } = getNativeAPI();
+  const language = get(_);
 
   export let template: SurveyTemplate;
 
@@ -62,7 +69,32 @@
 
           const isComplete = currentSectionIndex === (template.sections.length);
 
-          if (isComplete) complete = isComplete;
+          if (isComplete) {
+            client.mutation(CreateCompleteSurveyMutationDocument, {
+              createCompleteSurvey: {
+                completeSurveyTemplateSections: mapRecordToCompleteSurveyInput(values),
+                surveyLinkId: template.id,
+              },
+            }).toPromise().then(({ data, error }) => {
+              if (data) {
+                complete = true;
+              } else {
+                if (error) void Dialog.alert({
+                  message: language('errors.internalError'),
+                  detail: error.message,
+                  buttons: [language('generics.ok')],
+                  defaultId: 0,
+                });
+              }
+            }).catch((error) => {
+              void Dialog.alert({
+                message: language('errors.internalError'),
+                detail: (error as Error).message,
+                buttons: [language('generics.ok')],
+                defaultId: 0,
+              });
+            });
+          }
         },
         extend: [
           validator({ schema }),

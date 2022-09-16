@@ -16,24 +16,18 @@ export type RecordValues = ({
 
 export const mapRecordToCompleteSurveyInput = (
   values: RecordValues,
-  surveyLinkId: Scalars['UUID'],
-): CreateCompleteSurvey => {
-  const mappedRecord = {
-    surveyLinkId: {
-      value: surveyLinkId,
+): CreateCompleteSurvey['completeSurveyTemplateSections'] => {
+  const mappedRecord = values.map((section) => ({
+    surveyTemplateSectionId: {
+      value: section.id.value,
     },
-    completeSurveyTemplateSections: values.map((section) => ({
-      surveyTemplateSectionId: {
-        value: section.id.value,
+    completedSurveyInputs: section.inputs.map((input) => ({
+      surveyTemplateSectionInputId: {
+        value: input.id.value,
       },
-      completedSurveyInputs: section.inputs.map((input) => ({
-        surveyTemplateSectionInputId: {
-          value: input.id.value,
-        },
-        value: input.value as string,
-      })),
+      value: input.value as string,
     })),
-  };
+  }));
 
   return mappedRecord;
 };
