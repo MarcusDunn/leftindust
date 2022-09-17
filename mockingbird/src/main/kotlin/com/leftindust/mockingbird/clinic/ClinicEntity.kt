@@ -1,5 +1,3 @@
-@file:JvmName("ClinicKt")
-
 package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.AddedElementMessage
