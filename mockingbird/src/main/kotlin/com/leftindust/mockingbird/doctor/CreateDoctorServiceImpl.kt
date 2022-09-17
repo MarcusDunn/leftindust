@@ -90,7 +90,6 @@ class CreateDoctorServiceImpl(
                 clinic.id to doctorIds
             }
         clinicIdToClinicDoctors.forEach { clinicIdToDoctors ->
-            clinicIdToDoctors.second?.toTypedArray()
             val clinicDoctors = clinicIdToDoctors.second ?: emptyList()
             if(!clinicDoctors.isNullOrEmpty()) {
                 val editClinic = ClinicEditDto(
