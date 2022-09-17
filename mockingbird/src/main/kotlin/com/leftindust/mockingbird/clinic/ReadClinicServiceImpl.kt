@@ -20,13 +20,11 @@ class ReadClinicServiceImpl(
 
     override suspend fun getByDoctorId(doctorDtoId: DoctorDto.DoctorDtoId): List<Clinic>? {
         val doctor = doctorService.getByDoctorId(doctorDtoId) ?: return null
-        return doctor.clinics.mapNotNull { clinicEntityToClinicConverter.convert(it.clinic) }
+        return doctor.clinics.map { clinicEntityToClinicConverter.convert(it.clinic) }
     }
 
     override suspend fun getByClinicId(clinicDtoId: ClinicDto.ClinicDtoId): Clinic? {
-        val clinicEntity = clinicRepository.findByIdOrNull(clinicDtoId.value) ?: return null.also {
-            logger.trace("Returning null from getByClinicId. Could not find a clinic with id $clinicDtoId")
-        }
+        val clinicEntity = clinicRepository.findByIdOrNull(clinicDtoId.value) ?: return null
         return clinicEntityToClinicConverter.convert(clinicEntity)
     }
 }
