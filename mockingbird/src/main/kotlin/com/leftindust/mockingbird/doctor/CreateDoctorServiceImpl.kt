@@ -77,7 +77,8 @@ class CreateDoctorServiceImpl(
         clinicsEdit: List<ClinicDto.ClinicDtoId>,
         doctor: Doctor
     ) {
-        val newDoctorId = DoctorDto.DoctorDtoId(doctor.id ?: return)
+        if ( doctor.id == null) throw IllegalArgumentException("Clinic is missing a doctor id")
+        val newDoctorId = DoctorDto.DoctorDtoId(doctor.id!!)
 
         val clinicIdToClinicDoctors = clinicsEdit
             .map { clinicId ->
