@@ -3,8 +3,6 @@ package com.leftindust.mockingbird.doctor
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.clinic.*
 import com.leftindust.mockingbird.email.CreateEmailService
-import com.leftindust.mockingbird.graphql.types.Updatable
-import com.leftindust.mockingbird.graphql.types.ignore
 import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.person.CreateNameInfoService
@@ -22,16 +20,14 @@ import org.springframework.stereotype.Service
 @Service
 class CreateDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
+    private val clinicRepository: ClinicRepository,
     private val createMediqUserService: CreateMediqUserService,
     private val readMediqUserService: ReadMediqUserService,
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,
     private val createNameInfoService: CreateNameInfoService,
     private val createPhoneService: CreatePhoneService,
-    private val readClinicService: ReadClinicService,
     private val readPatientService: ReadPatientService,
-    private val updateClinicService: UpdateClinicService,
-    private val readDoctorService: ReadDoctorService
 ) : CreateDoctorService {
 
     override suspend fun addDoctor(createDoctor: CreateDoctor): Doctor {
@@ -78,31 +74,15 @@ class CreateDoctorServiceImpl(
         doctor: Doctor
     ) {
         doctor.id ?: throw IllegalArgumentException("Clinic is missing a doctor id")
-        val newDoctorId = DoctorDto.DoctorDtoId(doctor.id!!)
 
-        val clinicIdToClinicDoctors = clinicsEdit
-            .map { clinicId ->
-                val clinic = readClinicService.getByClinicId(clinicId)
-                    ?: throw IllegalArgumentException("No such clinic with id $clinicId")
-                val doctorIds = readDoctorService.getByClinicId(clinicId)
-                    ?.mapNotNull { it.id }
-                    ?.map { DoctorDto.DoctorDtoId(it) }
-                clinic.id to doctorIds
+        clinicsEdit.map {
+            val clinicEntity = clinicRepository.findById(it.value).orElseThrow {
+                IllegalArgumentException("No such clinic with id ${it.value}")
             }
-        clinicIdToClinicDoctors.forEach { clinicIdToDoctors ->
-            val clinicDoctors = clinicIdToDoctors.second ?: emptyList()
-            if(!clinicDoctors.isNullOrEmpty()) {
-                val editClinic = ClinicEditDto(
-                    ClinicDto.ClinicDtoId(clinicIdToDoctors.first),
-                    ignore(),
-                    ignore(),
-                    Updatable.Update(listOf(newDoctorId, *clinicDoctors.toTypedArray()))
-                )
-                updateClinicService.editClinic(editClinic)
-            }
+            clinicEntity.addDoctor(doctor)
+            clinicRepository.save(clinicEntity)
+            doctor.clinics.add(ClinicDoctorEntity(clinicEntity, doctor))
         }
-
-        TODO("Add the clinic to the doctor. Clinic cannot currently be converted to ClinicEntity for ClinicDoctorEntity")
     }
 
     data class CreateMediqUserImpl(
