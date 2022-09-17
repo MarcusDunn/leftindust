@@ -1,10 +1,7 @@
 package com.leftindust.mockingbird.clinic
 
 
-import com.leftindust.mockingbird.AddedElementMessage
-import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.NoOpUpdatedEntityFieldMessage
-import com.leftindust.mockingbird.SetEntityFieldMessage
+import com.leftindust.mockingbird.*
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.doctor.DoctorDto
@@ -30,7 +27,10 @@ class ClinicUpdaterServiceImpl(
         val clinicId = clinicEdit.cid.value
         val existingClinic = clinicRepository.findByIdOrNull(clinicId)
 
-        return if (existingClinic == null) null
+        return if (existingClinic == null) {
+            logger.warn { NoUpdatesOccurredNoEntityWithId(ClinicEntity::class, clinicId) }
+            null
+        }
         else {
             updateAddress(clinicEdit.address, existingClinic)
             updateDoctors(clinicEdit.doctors, existingClinic)
