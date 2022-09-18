@@ -34,7 +34,7 @@ export const createDoctorForm = (onSubmit: CreateDoctorFormOnSubmit<CreateDoctor
   return createForm<CreateDoctorFormSchema>({
     initialValues: defaultDoctorForm,
     onSubmit,
-    onError: (error) => console.log('error', error),
+    onError: (error) => console.log(error),
     extend: [validator({ schema: createDoctorFormSchema })]
   });
 };
