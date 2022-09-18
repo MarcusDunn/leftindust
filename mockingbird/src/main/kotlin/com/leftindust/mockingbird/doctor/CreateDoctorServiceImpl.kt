@@ -81,7 +81,6 @@ class CreateDoctorServiceImpl(
             }
             clinicEntity.addDoctor(doctor)
             clinicRepository.save(clinicEntity)
-            doctor.clinics.add(ClinicDoctorEntity(clinicEntity, doctor))
         }
     }
 
