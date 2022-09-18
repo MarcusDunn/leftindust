@@ -1,7 +1,7 @@
 import { validator } from '@felte/validator-yup';
+import type { SubmitContext } from '@felte/common';
 import { createForm } from 'felte';
 import * as yup from 'yup';
-import { doctorCreate } from "./store"
 
 export type CreateDoctor = {
   firstName: string,
@@ -17,20 +17,24 @@ const defaultDoctorForm: CreateDoctor = {
   title: '',
 };
 
-export const createDoctorFormValidator = () => {
-  const schema = yup.object({
-    firstName: yup.string().required(),
-    middleName: yup.string(),
-    lastName: yup.string().required(),
-    title: yup.string(),
-  });
+const createDoctorFormSchema = yup.object({
+  firstName: yup.string().required(),
+  middleName: yup.string(),
+  lastName: yup.string().required(),
+  title: yup.string(),
+});
 
-  // !!! onSubmit to server here
-  return createForm<yup.InferType<typeof schema>>({
+type CreateDoctorFormSchema = yup.InferType<typeof createDoctorFormSchema>;
+type CreateDoctorFormOnSubmit<Data extends Record<string, unknown>> = (
+  values: Data,
+  context: SubmitContext<Data>
+) => Promise<unknown> | unknown;
+
+export const createDoctorForm = (onSubmit: CreateDoctorFormOnSubmit<CreateDoctorFormSchema>) => {
+  return createForm<CreateDoctorFormSchema>({
     initialValues: defaultDoctorForm,
-    onSubmit: (form) => console.log('form', form),
-    // onSubmit: (form) => doctorCreate.set(form),
+    onSubmit,
     onError: (error) => console.log('error', error),
-    extend: [validator({ schema })]
+    extend: [validator({ schema: createDoctorFormSchema })]
   });
 };

@@ -1,18 +1,28 @@
 <script lang="ts">
-  import type { Data } from '@/api/server/graphql' 
-
+  import type { Data } from '@/api/server/graphql';
+  
   import { _ } from '@/language';
 
   import { Row, Col, Block } from 'framework7-svelte';
+  import doctorMutateEngine from '../Engines/Doctor/DoctorMutateEngine';
 
   import Input from '../Input/Input.svelte';
   import Wizard from '../Wizard/Wizard.svelte';
-
-  import { createDoctorFormValidator } from './';
+  
+  import { createDoctorForm } from './';
 
   export let data: Data<'Doctor'> | undefined = undefined;
 
-  const { form, data: formData, handleSubmit } = createDoctorFormValidator();
+  const { form, data: formData, handleSubmit } = createDoctorForm((form) => {
+    doctorMutateEngine({
+      nameInfo: {
+        firstName: form.firstName,
+        lastName: form.firstName,
+        middleName: form.middleName, 
+      },
+      title: form.title
+    })
+  });
 
   let ref: HTMLFormElement;
 </script>
