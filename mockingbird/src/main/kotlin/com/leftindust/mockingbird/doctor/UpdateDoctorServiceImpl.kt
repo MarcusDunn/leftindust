@@ -10,12 +10,15 @@ import com.leftindust.mockingbird.SetToNullEntityFieldMessage
 import com.leftindust.mockingbird.address.CreateAddress
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.clinic.ClinicDto
+import com.leftindust.mockingbird.clinic.ClinicEditDto
 import com.leftindust.mockingbird.clinic.ReadClinicService
+import com.leftindust.mockingbird.clinic.UpdateClinicService
 import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.graphql.types.Deletable
 import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.applyDeletable
+import com.leftindust.mockingbird.graphql.types.ignore
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.person.UpdateNameInfo
@@ -28,6 +31,7 @@ import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
+
 @Service
 @Transactional
 class UpdateDoctorServiceImpl(
@@ -39,6 +43,8 @@ class UpdateDoctorServiceImpl(
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,
     private val readPatientService: ReadPatientService,
+    private val updateClinicService: UpdateClinicService,
+    private val readDoctorService: ReadDoctorService
 ) : UpdateDoctorService {
     private val logger = KotlinLogging.logger { }
 
@@ -119,12 +125,27 @@ class UpdateDoctorServiceImpl(
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::clinics) }
             }
             is Updatable.Update -> {
+                val newDoctorId = DoctorDto.DoctorDtoId(doctor.id ?: return)
                 doctor.clinics.forEach { it.clinic.removeDoctor(doctor) }
                 clinics.value
-                    .map { it to readClinicService.getByClinicId(it) }
-                    .map { (id, clinic) ->
-                        if (clinic != null) {
-                            clinic.addDoctor(doctor)
+                    .map { clinicId ->
+                        readClinicService.getByClinicId(clinicId) ?: throw IllegalArgumentException("No such clinic with id $clinicId")
+                        clinicId
+                    }
+                    .forEach { id ->
+                        val doctorIds = readDoctorService.getByClinicId(id)
+                            ?.mapNotNull { it.id }
+                            ?.map { DoctorDto.DoctorDtoId(it) }
+
+                        if (doctorIds != null) {
+                            val editClinic = ClinicEditDto(
+                                id,
+                                ignore(),
+                                ignore(),
+                                Updatable.Update(listOf(newDoctorId, *doctorIds.toTypedArray())))
+                            updateClinicService.editClinic(editClinic)
+
+                            TODO("Add the clinic to the doctor. Clinic cannot currently be converted to ClinicEntity for ClinicDoctorEntity")
                         } else {
                             logger.warn { MissedCollectionAddNoEntityWithId(doctor, doctor::clinics, id.value) }
                         }

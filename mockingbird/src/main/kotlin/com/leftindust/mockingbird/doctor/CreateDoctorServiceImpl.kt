@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.doctor
 
 import com.leftindust.mockingbird.address.CreateAddressService
-import com.leftindust.mockingbird.clinic.ReadClinicService
+import com.leftindust.mockingbird.clinic.*
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.person.CreateNameInfo
@@ -20,13 +20,13 @@ import org.springframework.stereotype.Service
 @Service
 class CreateDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
+    private val clinicRepository: ClinicRepository,
     private val createMediqUserService: CreateMediqUserService,
     private val readMediqUserService: ReadMediqUserService,
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,
     private val createNameInfoService: CreateNameInfoService,
     private val createPhoneService: CreatePhoneService,
-    private val readClinicService: ReadClinicService,
     private val readPatientService: ReadPatientService,
 ) : CreateDoctorService {
 
@@ -64,12 +64,24 @@ class CreateDoctorServiceImpl(
                         ?: throw IllegalArgumentException("No such patient with id $it")
                 }.forEach { addPatient(it) }
 
-            createDoctor.clinic.map {
-                readClinicService.getByClinicId(it)
-                    ?: throw IllegalArgumentException("No such clinic with id $it")
-            }.forEach { it.addDoctor(this) }
+            updateClinics(createDoctor.clinic, this)
         }
         return doctorRepository.save(doctor)
+    }
+
+    private suspend fun updateClinics(
+        clinicsEdit: List<ClinicDto.ClinicDtoId>,
+        doctor: Doctor
+    ) {
+        doctor.id ?: throw IllegalArgumentException("Clinic is missing a doctor id")
+
+        clinicsEdit.map {
+            val clinicEntity = clinicRepository.findById(it.value).orElseThrow {
+                IllegalArgumentException("No such clinic with id ${it.value}")
+            }
+            clinicEntity.addDoctor(doctor)
+            clinicRepository.save(clinicEntity)
+        }
     }
 
     data class CreateMediqUserImpl(
