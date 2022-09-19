@@ -5,4 +5,6 @@ import org.springframework.data.repository.PagingAndSortingRepository
 
 interface CompleteSurveyRepository : PagingAndSortingRepository<CompleteSurveyEntity, UUID> {
     fun findBySurveyLinkId(surveyLink_id: UUID): CompleteSurveyEntity?
+
+    fun findByPatientId(patient_id: UUID): CompleteSurveyEntity?
 }

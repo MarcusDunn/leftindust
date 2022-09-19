@@ -23,6 +23,7 @@ type Query {
     # complete survey
     completeSurveyById(completeSurveyId: CompleteSurveyIdInput): CompleteSurvey
     completeSurveyByRange(range: Range!): [CompleteSurvey!]!
+    completeSurveyByPatientId(patientId: PatientIdInput): CompleteSurvey
 
     # patient
     patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!

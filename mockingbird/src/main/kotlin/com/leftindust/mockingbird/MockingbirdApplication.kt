@@ -25,6 +25,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ResourceServerSpec
+import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.web.cors.reactive.CorsUtils
 import org.springframework.web.server.ServerWebExchange
@@ -92,7 +93,11 @@ class MockingbirdApplication {
     @Bean
     fun firebaseAuth(firebaseConfiguration: FirebaseConfiguration): FirebaseAuth {
         firebaseApp(firebaseConfiguration)
+
+
         return FirebaseAuth.getInstance()
+
+
     }
 
     @Bean
