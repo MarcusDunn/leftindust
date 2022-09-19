@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { Data } from '@/api/server/graphql';
+  import type { Data } from '@/api/server';
+  import { PatientQueryDocument, type PatientFragment } from '@/api/server';
 
   import { _ } from '@/language';
 
@@ -17,8 +18,11 @@
   import Wizard from '../Wizard/Wizard.svelte';
 
   import { createPatientForm } from './';
-
-  export let data: Data<'Patient'> | undefined = undefined;
+  import Date from '../Input/components/Date/Date.svelte';
+  import type { Router } from 'framework7/types';
+  import { operationStore } from '@urql/svelte';
+  import { getTime } from 'date-fns';
+  import { writable } from 'svelte/store';
 
   const { form, data: formData, handleSubmit } = createPatientForm((form) => {
     patientMutateEngine({
@@ -38,6 +42,19 @@
     })
   });
 
+  export let f7router: Router.Router;
+  export let f7route: Router.Route;
+
+  const data: Data = JSON.parse(f7route.params.data ?? '{}');
+
+  let patient: PatientFragment | undefined = writable();
+
+  const request = operationStore(PatientQueryDocument, {
+    pids: [{ id: data.id }],
+  });
+
+$: patient = $request.data?.patients[0];
+
   let ref: HTMLFormElement;
 </script>
 
@@ -49,7 +66,7 @@
   on:submit={() => ref?.requestSubmit()}
 >
   <form use:form on:submit="{handleSubmit}" bind:this="{ref}">
-      <Block style="margin-top: 60px">
+      <Block style="margin-top: 100px">
         <Block>
           <h4>Identification</h4>
           <Row>
@@ -70,77 +87,7 @@
                     <input type="text" name="lastName" placeholder="Last Name" />
                   </Input>
                 </Col>
-              </Row>
-              <Row class="align-items-flex-end">
-                <Col width="33">
-                  <Select
-                    title="Date of Birth"
-                    options={[
-                      {
-                        text: 'January',
-                        value: Month.Jan,
-                      },
-                      {
-                        text: 'February',
-                        value: Month.Feb,
-                      },
-                      {
-                        text: 'March',
-                        value: Month.Mar,
-                      },
-                      {
-                        text: 'April',
-                        value: Month.Apr,
-                      },
-                      {
-                        text: 'May',
-                        value: Month.May,
-                      },
-                      {
-                        text: 'June',
-                        value: Month.Jun,
-                      },
-                      {
-                        text: 'July',
-                        value: Month.Jul,
-                      },
-                      {
-                        text: 'August',
-                        value: Month.Aug,
-                      },
-                      {
-                        text: 'September',
-                        value: Month.Sep,
-                      },
-                      {
-                        text: 'October',
-                        value: Month.Oct,
-                      },
-                      {
-                        text: 'November',
-                        value: Month.Nov,
-                      },
-                      {
-                        text: 'December',
-                        value: Month.Dec,
-                      },
-                    ]}
-                    bind:value={$formData.month}
-                    />
-                </Col>
-                <Col width="33">
-                  <Input>
-                    <input type="number" name="day" placeholder="Day" />
-                  </Input>
-                </Col>
-                <Col width="33">
-                  <Input>
-                    <input type="number" name="year" placeholder="Year" />
-                  </Input>
-                </Col>
-              </Row>
-              <Row>
-                <Col width="100">
+                <Col width="100" medium="50">
                   <Select
                     title="Ethnicity"
                     options={[
@@ -170,9 +117,33 @@
                       },
                     ]}
                     bind:value={$formData.ethnicity}
-                    />
-                  </Col>
-                </Row>
+                  />
+                </Col>
+                <Col width="100" medium="50">
+                  <Date
+                    placeholder="Birth Date"
+                    title="Select Birth Date"
+                    pastOnly
+                    value={$patient ? new Date(
+                        `${$patient.dateOfBirth.month} ${$patient.dateOfBirth.day} ${$patient.dateOfBirth.year}`
+                      ).getTime() : undefined
+                    }
+                    on:change={({ detail }) => {
+                      const date = new Date(detail);
+
+                      const day = date.getDate();
+                      const month = Object.values(Month)[date.getMonth()];
+                      const year = date.getFullYear();
+
+                      formData.dateOfBith = {
+                        day,
+                        month,
+                        year,
+                      };
+                    }}
+                  />
+                </Col>
+              </Row>
               <Row class="align-items-flex-end">
                 <Col width="50">
                   <Select

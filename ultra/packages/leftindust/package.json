@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "scripts": {
     "start": "npm run serve",
-    "build": "node_modules/.bin/cross-env NODE_ENV=development vite build",
-    "serve": "node_modules/.bin/cross-env NODE_ENV=development vite",
-    "check": "node_modules/.bin/svelte-check --tsconfig ./tsconfig.json --threshold error",
+    "build": "vite build",
+    "serve": "vite",
+    "check": "--tsconfig ./tsconfig.json --threshold error",
     "check:warnings": "node_modules/.bin/svelte-check --tsconfig ./tsconfig.json",
     "generate": "graphql-codegen",
     "lint": "eslint --fix",
