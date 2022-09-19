@@ -1,16 +1,16 @@
-import { client, DoctorMutationDocument, type Doctor, type DoctorEditInput, type DoctorInput } from "@/api/server";
-import { sendTrigger } from "@/features/Triggers";
+import { client, DoctorEditMutationDocument, DoctorMutationDocument, type Doctor, type DoctorEditInput, type DoctorInput } from '@/api/server';
+import { sendTrigger } from '@/features/Triggers';
 
-const doctorMutateEngine = async (doctor: DoctorInput): Promise<boolean> => {
+const doctorMutateEngine = async (doctor: DoctorInput | DoctorEditInput, edit = false): Promise<boolean> => {
   const result = await client
-    .mutation<Record<'addDoctor', Doctor>>(DoctorMutationDocument, {
+    .mutation<Record<'addDoctor' | 'editDoctor', Doctor>>(edit ? DoctorEditMutationDocument : DoctorMutationDocument, {
       variables: {
         doctor,
       },
     })
     .toPromise();
 
-  if (result.data?.addDoctor?.did?.id) {
+  if (result.data?.addDoctor?.did?.id || result.data?.editDoctor?.did?.id) {
     sendTrigger('refreshDoctors');
     return true;
   }
