@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.doctor
 
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
-import com.leftindust.mockingbird.util.DoctorMother.Jenny
+import com.leftindust.mockingbird.util.DoctorMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import org.intellij.lang.annotations.Language
@@ -23,12 +23,12 @@ internal class DoctorQueryControllerTest(
 
     @Test
     internal fun `check can query all basic fields`() {
-        coEvery { readDoctorService.getByDoctorId(Jenny.graphqlId) } returns Jenny.entityPersisted
+        coEvery { readDoctorService.getByDoctorId(DoctorMother.Jenny.graphqlId) } returns DoctorMother.Jenny.domain
 
         @Language("graphql")
         val query = """
             query {
-                doctorsByDoctorIds(doctorIds: [{ value: "${Jenny.id}" }]) {
+                doctorsByDoctorIds(doctorIds: [{ value: "${DoctorMother.Jenny.id}" }]) {
                     id { value }
                     firstName
                     middleName
@@ -46,12 +46,12 @@ internal class DoctorQueryControllerTest(
             .verify()
             .path("doctorsByDoctorIds[0]")
             .entity(DoctorDto::class.java)
-            .isEqualTo(Jenny.dto)
+            .isEqualTo(DoctorMother.Jenny.dto)
     }
 
     @Test
     internal fun `check can query by range`() {
-        coEvery { readDoctorService.getMany(RangeDto(0, 1)) } returns listOf(Jenny.entityPersisted)
+        coEvery { readDoctorService.getMany(RangeDto(0, 1)) } returns listOf(DoctorMother.Jenny.domain)
 
         @Language("graphql")
         val query = """
@@ -74,6 +74,6 @@ internal class DoctorQueryControllerTest(
             .verify()
             .path("doctorsByRange[0]")
             .entity(DoctorDto::class.java)
-            .isEqualTo(Jenny.dto)
+            .isEqualTo(DoctorMother.Jenny.dto)
     }
 }
