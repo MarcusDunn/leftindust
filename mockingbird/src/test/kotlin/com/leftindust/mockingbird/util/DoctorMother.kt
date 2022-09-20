@@ -1,11 +1,6 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.doctor.ClinicDoctorEntity
-import com.leftindust.mockingbird.doctor.Doctor
-import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.doctor.DoctorEventEntity
-import com.leftindust.mockingbird.doctor.DoctorPatientEntity
-import com.leftindust.mockingbird.doctor.DoctorToDoctorDtoConverter
+import com.leftindust.mockingbird.doctor.*
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.JennysHouse
@@ -17,6 +12,7 @@ import java.util.UUID
 
 object DoctorMother {
     val doctorToDoctorDto = DoctorToDoctorDtoConverter()
+    val doctorEntityToDoctorConverter = DoctorEntityToDoctorConverter()
 
     object Jenny {
         const val firstName = "Jenny"
@@ -34,7 +30,7 @@ object DoctorMother {
         val title: String? = null
         val clinics = mutableSetOf(ClinicMother.DansClinic.entityPersisted)
         val patients = mutableSetOf<DoctorPatientEntity>()
-        val entityPersisted = Doctor(
+        val entityPersisted = DoctorEntity(
             nameInfo = NameInfo(
                 firstName = firstName,
                 lastName = lastName,
@@ -55,7 +51,8 @@ object DoctorMother {
             clinics = this@Jenny.clinics.map { ClinicDoctorEntity(it, this) }.toMutableSet()
         }
 
-        val dto = doctorToDoctorDto.convert(entityPersisted)
+        val domain = doctorEntityToDoctorConverter.convert(entityPersisted)
+        val dto = doctorToDoctorDto.convert(domain)
     }
 
     object Dan {
@@ -74,7 +71,7 @@ object DoctorMother {
         val title: String? = null
         val clinics = mutableSetOf<ClinicDoctorEntity>()
         val patients = mutableSetOf<DoctorPatientEntity>()
-        val entityPersisted = Doctor(
+        val entityPersisted = DoctorEntity(
             nameInfo = NameInfo(
                 firstName = firstName,
                 lastName = lastName,
@@ -92,7 +89,8 @@ object DoctorMother {
             patients = patients,
         ).apply { id = this@Dan.id }
 
-        val dto = doctorToDoctorDto.convert(entityPersisted)
+        val domain = (doctorEntityToDoctorConverter.convert(entityPersisted))
+        val dto = doctorToDoctorDto.convert(domain)
     }
 
 }
