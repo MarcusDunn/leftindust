@@ -4,7 +4,7 @@ import com.leftindust.mockingbird.AddedElementMessage
 import com.leftindust.mockingbird.RemovedElementMessage
 import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.doctor.ClinicDoctorEntity
-import com.leftindust.mockingbird.doctor.Doctor
+import com.leftindust.mockingbird.doctor.DoctorEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import mu.KotlinLogging
 import javax.persistence.CascadeType
@@ -28,14 +28,14 @@ class ClinicEntity(
         doctors.forEach { removeDoctor(it.doctor) }
     }
 
-    fun addDoctor(doctor: Doctor) {
+    fun addDoctor(doctor: DoctorEntity) {
         val clinicDoctor = ClinicDoctorEntity(this, doctor)
         doctors.add(clinicDoctor)
         doctor.clinics.add(clinicDoctor)
         logger.trace { AddedElementMessage(doctor, doctor::clinics, clinicDoctor) }
     }
 
-    fun removeDoctor(doctor: Doctor) {
+    fun removeDoctor(doctor: DoctorEntity) {
         val clinicDoctor = ClinicDoctorEntity(this, doctor)
         doctors.remove(clinicDoctor)
         doctor.clinics.remove(clinicDoctor)
