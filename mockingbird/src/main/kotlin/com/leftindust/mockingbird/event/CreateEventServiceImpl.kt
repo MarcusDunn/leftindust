@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.event
 
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.patient.ReadPatientService
 import org.springframework.data.repository.findByIdOrNull
 import javax.transaction.Transactional
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service
 class CreateEventServiceImpl(
     private val eventRepository: HibernateEventRepository,
     private val readPatientService: ReadPatientService,
+    private val doctorRepository: DoctorRepository
 ) : CreateEventService {
     override suspend fun addEvent(createEvent: CreateEvent): Event {
         val patients = createEvent.patients.map {

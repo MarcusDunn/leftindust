@@ -28,6 +28,7 @@ class CreateDoctorServiceImpl(
     private val createNameInfoService: CreateNameInfoService,
     private val createPhoneService: CreatePhoneService,
     private val readPatientService: ReadPatientService,
+    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter,
 ) : CreateDoctorService {
 
     override suspend fun addDoctor(createDoctor: CreateDoctor): Doctor {
@@ -66,7 +67,7 @@ class CreateDoctorServiceImpl(
 
             updateClinics(createDoctor.clinic, this)
         }
-        return doctorRepository.save(doctor)
+        return doctorEntityToDoctorConverter.convert(doctorRepository.save(doctor))
     }
 
     private suspend fun updateClinics(

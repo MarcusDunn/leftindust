@@ -44,7 +44,8 @@ class UpdateDoctorServiceImpl(
     private val createEmailService: CreateEmailService,
     private val readPatientService: ReadPatientService,
     private val updateClinicService: UpdateClinicService,
-    private val readDoctorService: ReadDoctorService
+    private val readDoctorService: ReadDoctorService,
+    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter,
 ) : UpdateDoctorService {
     private val logger = KotlinLogging.logger { }
 
@@ -64,7 +65,7 @@ class UpdateDoctorServiceImpl(
         updateAddresses(updateDoctor.addresses, doctor)
         updateEmails(updateDoctor.emails, doctor)
         updatePatients(updateDoctor.patients, doctor)
-        return doctorRepository.save(doctor)
+        return doctorEntityToDoctorConverter.convert(doctorRepository.save(doctor))
     }
 
     private suspend fun updatePatients(patients: Updatable<List<PatientDto.PatientDtoId>>, doctor: DoctorEntity) {

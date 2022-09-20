@@ -3,20 +3,21 @@ package com.leftindust.mockingbird.email
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.contact.ContactDto
 import com.leftindust.mockingbird.contact.ReadContactService
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
 import javax.transaction.Transactional
 import mu.KotlinLogging
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Transactional
 @Repository
 class ReadEmailServiceImpl(
     val emailRepository: EmailRepository,
-    val readDoctorService: ReadDoctorService,
     val readPatientService: ReadPatientService,
     val readContactService: ReadContactService,
+    val doctorRepository: DoctorRepository
 ) : ReadEmailService {
     private val logger = KotlinLogging.logger { }
     override suspend fun getByEmailId(emailId: EmailDto.EmailDtoId): Email? {
@@ -24,7 +25,7 @@ class ReadEmailServiceImpl(
     }
 
     override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Email>? {
-        val doctor = readDoctorService.getByDoctorId(doctorId) ?: return null
+        val doctor = doctorRepository.findByIdOrNull(doctorId.value) ?: return null
         return doctor.emails.toList()
     }
 

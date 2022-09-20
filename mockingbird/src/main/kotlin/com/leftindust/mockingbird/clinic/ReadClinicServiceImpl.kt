@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import org.springframework.transaction.annotation.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service
 class ReadClinicServiceImpl(
     private val clinicEntityToClinicConverter: InfallibleConverter<ClinicEntity, Clinic>,
     private val clinicRepository: ClinicRepository,
-    private val doctorService: ReadDoctorService,
+    private val doctorRepository: DoctorRepository
 ) : ReadClinicService {
     private val logger = KotlinLogging.logger {  }
 
     override suspend fun getByDoctorId(doctorDtoId: DoctorDto.DoctorDtoId): List<Clinic>? {
-        val doctor = doctorService.getByDoctorId(doctorDtoId) ?: return null
+        val doctor = doctorRepository.findByIdOrNull(doctorDtoId.value) ?: return null
         return doctor.clinics.map { clinicEntityToClinicConverter.convert(it.clinic) }
     }
 
