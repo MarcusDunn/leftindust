@@ -9,6 +9,7 @@ import com.leftindust.mockingbird.phone.CreatePhoneService
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -20,7 +21,7 @@ class CreatePatientServiceImpl(
     private val createEmailService: CreateEmailService,
     private val createPhoneService: CreatePhoneService,
     private val createContactService: CreateContactService,
-    private val readDoctorService: ReadDoctorService,
+    private val doctorRepository: DoctorRepository
 ) : CreatePatientService {
     private val logger = KotlinLogging.logger { }
 
