@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Repository
 class ReadAddressServiceImpl(
-    val readDoctorService: ReadDoctorService,
     val readPatientService: ReadPatientService,
 ) : ReadAddressService {
     override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Address>? {
