@@ -2,7 +2,8 @@ package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.address.CreateAddressService
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
+import org.springframework.data.repository.findByIdOrNull
 import javax.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Service
 @Transactional
 class CreateClinicServiceImpl(
     private val clinicRepository: ClinicRepository,
-    private val readDoctorService: ReadDoctorService,
+    private val doctorRepository: DoctorRepository,
     private val createAddressService: CreateAddressService,
-    private val clinicEntityToClinicConverter: InfallibleConverter<ClinicEntity,Clinic>
+    private val clinicEntityToClinicConverter: InfallibleConverter<ClinicEntity,Clinic>,
 ) : CreateClinicService {
     override suspend fun addClinic(createClinic: CreateClinic): Clinic {
         val address = createAddressService.createAddress(createClinic.address)
@@ -26,7 +27,7 @@ class CreateClinicServiceImpl(
         createClinic
             .doctors
             .map {
-                readDoctorService.getByDoctorId(it)
+                doctorRepository.findByIdOrNull(it.value)
                     ?: throw IllegalArgumentException("Did not add a doctor with id $it to $clinic because no such doctor exists")
             }
             .forEach { clinic.addDoctor(it) }

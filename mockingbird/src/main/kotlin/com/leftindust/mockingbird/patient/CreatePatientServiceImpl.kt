@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.contact.CreateContactService
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhoneService
@@ -48,7 +48,7 @@ class CreatePatientServiceImpl(
             .forEach { newPatient.addContact(it) }
 
         patient.doctors
-            .map { it to readDoctorService.getByDoctorId(it) }
+            .map { it to doctorRepository.findByIdOrNull(it.value) }
             .forEach {
                 it.second?.addPatient(newPatient)
                     ?: logger.debug { "did not add a doctor in addNewPatient with ${it.first}" }
