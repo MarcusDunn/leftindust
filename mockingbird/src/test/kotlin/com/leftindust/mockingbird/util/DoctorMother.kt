@@ -32,7 +32,7 @@ object DoctorMother {
         val events = mutableSetOf<DoctorEventEntity>()
         val thumbnail: ByteArray? = null
         val title: String? = null
-        val clinics = mutableSetOf<ClinicDoctorEntity>()
+        val clinics = mutableSetOf(ClinicMother.DansClinic.entityPersisted)
         val patients = mutableSetOf<DoctorPatientEntity>()
         val entityPersisted = Doctor(
             nameInfo = NameInfo(
@@ -48,9 +48,12 @@ object DoctorMother {
             thumbnail = thumbnail,
             title = title,
             dateOfBirth = dateOfBirth,
-            clinics = clinics,
+            clinics = mutableSetOf(),
             patients = patients,
-        ).apply { id = this@Jenny.id }
+        ).apply {
+            id = this@Jenny.id
+            clinics = this@Jenny.clinics.map { ClinicDoctorEntity(it, this) }.toMutableSet()
+        }
 
         val dto = doctorToDoctorDto.convert(entityPersisted)
     }
