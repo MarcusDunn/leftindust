@@ -53,6 +53,9 @@ dependencies {
     // jackson
     implementation("com.fasterxml.jackson.module", "jackson-module-kotlin")
 
+    //hibernate-types
+    implementation("com.vladmihalcea", "hibernate-types-55", "2.19.2")
+
     // hibernate model code generation
     implementation("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
     kapt("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")

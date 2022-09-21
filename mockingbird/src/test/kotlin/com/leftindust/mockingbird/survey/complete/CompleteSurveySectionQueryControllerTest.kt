@@ -36,6 +36,25 @@ internal class CompleteSurveySectionQueryControllerWebTest(
                 completeSurveyById(completeSurveyId: { value: "${FilledOutKoosKneeSurvey.id}" }) {
                     sections {
                         id { value }
+                        inputs {
+                           id { value }
+                           ... on CompleteSurveySectionStringInput {
+                              id { value }
+                              string
+                           }              
+                           ... on CompleteSurveySectionNumberInput {
+                              id { value }
+                              number
+                           }    
+                           ... on CompleteSurveySectionStringArrayInput {
+                              id { value }
+                              stringArray
+                           }    
+                           ... on CompleteSurveySectionNumberArrayInput {
+                              id { value }
+                              numberArray
+                           }    
+                        }
                     }
                 }
             }

@@ -30,6 +30,28 @@ internal class CompleteSurveyQueryControllerWebTest(
             query {
                 completeSurveyById(completeSurveyId: { value: "${FilledOutKoosKneeSurvey.id}" }) {
                     id { value }
+                    sections {
+                        id  { value }
+                        inputs {
+                           id { value }
+                           ... on CompleteSurveySectionStringInput {
+                              id { value }
+                              string
+                           }              
+                           ... on CompleteSurveySectionNumberInput {
+                              id { value }
+                              number
+                           }    
+                           ... on CompleteSurveySectionStringArrayInput {
+                              id { value }
+                              stringArray
+                           }    
+                           ... on CompleteSurveySectionNumberArrayInput {
+                              id { value }
+                              numberArray
+                           }    
+                        }
+                    }
                 }
             }
         """.trimIndent()
@@ -52,6 +74,28 @@ internal class CompleteSurveyQueryControllerWebTest(
             query {
                 completeSurveyByRange(range: {from: 0 to : 1}) {
                     id { value }
+                    sections {
+                        id { value }  
+                        inputs {
+                           id { value }
+                           ... on CompleteSurveySectionStringInput {
+                              id { value }
+                              string
+                           }              
+                           ... on CompleteSurveySectionNumberInput {
+                              id { value }
+                              number
+                           }    
+                           ... on CompleteSurveySectionStringArrayInput {
+                              id { value }
+                              stringArray
+                           }    
+                           ... on CompleteSurveySectionNumberArrayInput {
+                              id { value }
+                              numberArray
+                           }    
+                        }                  
+                    }
                 }
             }
         """.trimIndent()

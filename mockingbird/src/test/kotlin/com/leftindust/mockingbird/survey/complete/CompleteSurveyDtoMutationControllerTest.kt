@@ -24,7 +24,7 @@ internal class CompleteSurveyDtoMutationControllerTest(
 
     @Test
     internal fun `check can create a survey link`() {
-        coEvery { createCompleteSurveyService.createCompleteSurvey(FilledOutKoosKneeSurvey.createDto) } returns FilledOutKoosKneeSurvey.domain
+        coEvery { createCompleteSurveyService.createCompleteSurvey(FilledOutKoosKneeSurvey.createDomain) } returns FilledOutKoosKneeSurvey.domain
 
         @Language("graphql")
         val mutation = """
@@ -37,11 +37,34 @@ internal class CompleteSurveyDtoMutationControllerTest(
                             }
                             completedSurveyInputs: [{
                                 surveyTemplateSectionInputId: { value: "${CompleteRateThePain.surveyTemplateSectionInputId.value}"}
-                                value: "${CompleteRateThePain.value}"
+                                type: String
+                                stringInput: "${CompleteRateThePain.createDto.stringInput}"
                             }]
                         }]
                     }) {
                     id { value }
+                    sections {
+                        id { value }      
+                        inputs {
+                           id { value }
+                           ... on CompleteSurveySectionStringInput {
+                              id { value }
+                              string
+                           }              
+                           ... on CompleteSurveySectionNumberInput {
+                              id { value }
+                              number
+                           }    
+                           ... on CompleteSurveySectionStringArrayInput {
+                              id { value }
+                              stringArray
+                           }    
+                           ... on CompleteSurveySectionNumberArrayInput {
+                              id { value }
+                              numberArray
+                           }    
+                        }
+                    }
                 }
             }
         """.trimIndent()

@@ -4,7 +4,8 @@ import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
 import java.util.UUID
 
 data class CompleteSurveyDto(
-    override val id: CompleteSurveyDtoId
+    override val id: CompleteSurveyDtoId,
+    val sections: List<CompleteSurveySectionDto>
 ): AbstractGraphQLDto<CompleteSurveyDto.CompleteSurveyDtoId>() {
     companion object {
         const val GRAPHQL_TYPE = "CompleteSurvey"

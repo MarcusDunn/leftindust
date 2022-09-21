@@ -3,7 +3,10 @@ package com.leftindust.mockingbird.util
 import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionDto
 import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionEntity
 import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionEntityToCompleteSurveySectionConverter
+import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionInputEntityToCompleteSurveySectionInputConverter
+import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionInputToCompleteSurveySectionInputDtoConverter
 import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionToCompleteSurveySectionDtoConverter
+import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveyDtoToCreateCompleteSurveyConverter
 import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveySectionDto
 import com.leftindust.mockingbird.util.CompleteSurveyInputMother.CompleteRateThePain
 import com.leftindust.mockingbird.util.CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt
@@ -11,8 +14,15 @@ import com.leftindust.mockingbird.util.SurveyTemplateSectionMother.HowMuchPainAr
 import java.util.UUID
 
 object CompleteSurveySectionMother {
-    val completeSurveySectionToCompleteSurveySectionDtoConverter = CompleteSurveySectionToCompleteSurveySectionDtoConverter()
-    val completeSurveySectionEntityToCompleteSurveySectionConverter = CompleteSurveySectionEntityToCompleteSurveySectionConverter()
+    private val completeSurveySectionInputToCompleteSurveySectionInputDtoConverter = CompleteSurveySectionInputToCompleteSurveySectionInputDtoConverter()
+    private val completeSurveySectionInputEntityToCompleteSurveySectionInputConverter = CompleteSurveySectionInputEntityToCompleteSurveySectionInputConverter()
+    val completeSurveySectionToCompleteSurveySectionDtoConverter = CompleteSurveySectionToCompleteSurveySectionDtoConverter(
+        completeSurveySectionInputToCompleteSurveySectionInputDtoConverter
+    )
+    val completeSurveySectionEntityToCompleteSurveySectionConverter = CompleteSurveySectionEntityToCompleteSurveySectionConverter(
+        completeSurveySectionInputEntityToCompleteSurveySectionInputConverter
+    )
+
 
     object CompleteHowMuchPainAreYouInSection {
         val id = UUID.fromString("4ca0f6c1-b2a9-4751-a483-95e87befcbcb")
@@ -24,10 +34,17 @@ object CompleteSurveySectionMother {
         val domain = completeSurveySectionEntityToCompleteSurveySectionConverter.convert(entityPersisted)
         val dto =  completeSurveySectionToCompleteSurveySectionDtoConverter.convert(domain)
         val completedSurveyInputs = listOf(CompleteRateThePain.createDto)
+        val createCompletedSurveyInputs = listOf(CompleteRateThePain.create)
         val surveyTemplateSectionId = HowMuchPainAreYouInSection.graphqlId
         val createDto = CreateCompleteSurveySectionDto(
             surveyTemplateSectionId = surveyTemplateSectionId,
             completedSurveyInputs = completedSurveyInputs
         )
+
+        val create = CreateCompleteSurveyDtoToCreateCompleteSurveyConverter.CreateCompleteSurveySectionImpl(
+            surveyTemplateSectionId = surveyTemplateSectionId,
+            completedSurveyInputs = createCompletedSurveyInputs
+        )
+
     }
 }

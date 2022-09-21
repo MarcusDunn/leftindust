@@ -6,11 +6,18 @@ import java.util.UUID
 import org.springframework.stereotype.Component
 
 @Component
-class CompleteSurveySectionEntityToCompleteSurveySectionConverter : InfallibleConverter<CompleteSurveySectionEntity, CompleteSurveySection> {
+class CompleteSurveySectionEntityToCompleteSurveySectionConverter(
+    private val completeSurveySectionInputEntityToCompleteSurveySectionInputConverter: InfallibleConverter<CompleteSurveySectionInputEntity, CompleteSurveySectionInput>
+) : InfallibleConverter<CompleteSurveySectionEntity, CompleteSurveySection> {
     override fun convert(source: CompleteSurveySectionEntity): CompleteSurveySection {
-        return CompleteSurveySectionImpl(source.id ?: throw NullEntityIdInConverterException(source))
+        return CompleteSurveySectionImpl(
+            id = source.id ?: throw NullEntityIdInConverterException(source),
+            inputs = source.inputs.map {
+                completeSurveySectionInputEntityToCompleteSurveySectionInputConverter.convert(it)
+            }
+        )
     }
 
-    class CompleteSurveySectionImpl(override val id: UUID) : CompleteSurveySection
+    class CompleteSurveySectionImpl(override val id: UUID, override val inputs: List<CompleteSurveySectionInput>) : CompleteSurveySection
 
 }
