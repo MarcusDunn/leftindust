@@ -4,5 +4,5 @@ import java.util.UUID
 
 interface CompleteSurveySectionInput {
     val id: UUID
-    val value: String
+    val value: SurveySectionInput
 }

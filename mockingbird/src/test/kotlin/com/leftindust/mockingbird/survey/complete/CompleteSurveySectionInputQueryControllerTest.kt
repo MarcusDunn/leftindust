@@ -32,18 +32,41 @@ internal class CompleteSurveySectionInputQueryControllerWebTest(
     @Test
     internal fun `check can query by id`() {
         coEvery { readCompleteSurveyService.completeSurveyByCompleteSurveyId(CompleteSurveyMother.FilledOutKoosKneeSurvey.graphqlId) } returns CompleteSurveyMother.FilledOutKoosKneeSurvey.domain
-        coEvery { readCompleteSurveySectionService.completeSurveySectionsByCompleteSurveyId(CompleteSurveyMother.FilledOutKoosKneeSurvey.graphqlId) } returns listOf(CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection.domain)
-        coEvery { readCompleteSurveySectionInputService.completeSurveySectionInputByCompleteSurveySectionId(CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection.graphqlId) } returns listOf(
-            CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt.domain)
+        coEvery { readCompleteSurveySectionService.completeSurveySectionsByCompleteSurveyId(CompleteSurveyMother.FilledOutKoosKneeSurvey.graphqlId) } returns listOf(
+            CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection.domain
+        )
+        coEvery {
+            readCompleteSurveySectionInputService.completeSurveySectionInputByCompleteSurveySectionId(
+                CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection.graphqlId
+            )
+        } returns listOf(
+            CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt.domain
+        )
 
         @Language("graphql")
         val query = """
             query {
-                completeSurveyById(completeSurveyId: { value: "${CompleteSurveyMother.FilledOutKoosKneeSurvey.id}" }) {
+                completeSurveyById(
+                    completeSurveyId: { value: "${CompleteSurveyMother.FilledOutKoosKneeSurvey.id}" }) {
                     sections {
                         inputs {
-                            id { value }
-                            value
+                           id { value }
+                           ... on CompleteSurveySectionStringInput {
+                              id { value }
+                              string
+                           }              
+                           ... on CompleteSurveySectionNumberInput {
+                              id { value }
+                              number
+                           }    
+                           ... on CompleteSurveySectionStringArrayInput {
+                              id { value }
+                              stringArray
+                           }    
+                           ... on CompleteSurveySectionNumberArrayInput {
+                              id { value }
+                              numberArray
+                           }    
                         }
                     }
                 }
