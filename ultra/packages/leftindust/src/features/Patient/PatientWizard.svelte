@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { Data } from '@/api/server';
-  import { PatientQueryDocument, type PatientFragment } from '@/api/server';
+  import type { Data, PatientQueryQuery } from '@/api/server';
 
   import { _ } from '@/language';
 
@@ -8,24 +7,29 @@
     Ethnicity,
     Month,
     Sex,
+    type Patient,
   } from '@/api/server/graphql/schema/leftindust.schema';
 
   import { Row, Col, Block } from 'framework7-svelte';
-  import patientMutateEngine from '../Engines/Patient/PatientMutateEngine';
+  import { mutateAddPatient } from '../Engines/Patient/PatientMutateEngine';
 
   import Input from '../Input/Input.svelte';
   import Select from '../Input/components/Select/Select.svelte'
   import Wizard from '../Wizard/Wizard.svelte';
 
   import { createPatientForm } from './';
-  import Date from '../Input/components/Date/Date.svelte';
+  import DatePicker from '../Input/components/Date/DatePicker.svelte';
   import type { Router } from 'framework7/types';
   import { operationStore } from '@urql/svelte';
-  import { getTime } from 'date-fns';
   import { writable } from 'svelte/store';
+  import { queryPatient } from '../Engines/Patient/PatientQueryEngine'
+  import { onMount } from 'svelte';
+
+  let patient: Patient;
 
   const { form, data: formData, handleSubmit } = createPatientForm((form) => {
-    patientMutateEngine({
+    console.log(`submitted: ${form}`);
+    mutateAddPatient({
       nameInfo: {
         firstName: form.firstName,
         lastName: form.lastName,
@@ -39,7 +43,7 @@
         year: form.year,
       },
       ethnicity: form.ethnicity
-    })
+    });
   });
 
   export let f7router: Router.Router;
@@ -47,13 +51,8 @@
 
   const data: Data = JSON.parse(f7route.params.data ?? '{}');
 
-  let patient: PatientFragment | undefined = writable();
-
-  const request = operationStore(PatientQueryDocument, {
-    pids: [{ id: data.id }],
-  });
-
-$: patient = $request.data?.patients[0];
+  $: console.log(`patient ${JSON.stringify(patient)}`);
+  $: console.log(`formData ${JSON.stringify(formData)}`)
 
   let ref: HTMLFormElement;
 </script>
@@ -120,13 +119,14 @@ $: patient = $request.data?.patients[0];
                   />
                 </Col>
                 <Col width="100" medium="50">
-                  <Date
+                  <DatePicker
                     placeholder="Birth Date"
                     title="Select Birth Date"
                     pastOnly
-                    value={$patient ? new Date(
-                        `${$patient.dateOfBirth.month} ${$patient.dateOfBirth.day} ${$patient.dateOfBirth.year}`
-                      ).getTime() : undefined
+                    value={
+                      patient
+                        ? new Date(formData.dateOfBirth.toUtcTime.unixMilliseconds).getTime()
+                        : undefined
                     }
                     on:change={({ detail }) => {
                       const date = new Date(detail);
@@ -135,10 +135,10 @@ $: patient = $request.data?.patients[0];
                       const month = Object.values(Month)[date.getMonth()];
                       const year = date.getFullYear();
 
-                      formData.dateOfBith = {
+                      formData.dateOfBirth = {
                         day,
                         month,
-                        year,
+                        year
                       };
                     }}
                   />

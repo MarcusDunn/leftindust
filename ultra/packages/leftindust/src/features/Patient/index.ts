@@ -12,14 +12,15 @@ export enum PatientTab {
   Contacts = 'Contacts'
 }
 
-
 export type CreatePatient = {
   firstName: string,
   middleName?: string,
   lastName: string,
-  day?: number,
-  month?: Month,
-  year?: number,
+  dateOfBirth: {
+    day?: number,
+    month?: Month,
+    year?: number,
+  }
   ethnicity?: Ethnicity,
   sex: Sex,
   genderIdentity?: string,
@@ -30,9 +31,11 @@ const defaultPatientForm: CreatePatient = {
   firstName: '',
   middleName: '',
   lastName: '',
-  day: undefined,
-  month: Month.Jan,
-  year: undefined,
+  dateOfBirth: {
+    day: 1,
+    month: Month.Jan,
+    year: new Date().getFullYear(),
+  },
   ethnicity: undefined,
   sex: Sex.Male,
   genderIdentity: '',

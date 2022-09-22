@@ -1,7 +1,7 @@
 <script lang="ts">
   import Add from '@/features/Input/components/Add/Add.svelte';
   import Checkbox from '@/features/Input/components/Checkbox/Checkbox.svelte';
-  import Date from '@/features/Input/components/Date/Date.svelte';
+  import Date from '@/features/Input/components/Date/DatePicker.svelte';
 
   import Input from '@/features/Input/Input.svelte';
 

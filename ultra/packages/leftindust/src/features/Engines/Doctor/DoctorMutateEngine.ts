@@ -13,13 +13,10 @@ const doctorMutateEngine = async (doctor: DoctorInput | DoctorEditInput, edit = 
   if (result.data?.addDoctor?.did?.id || result.data?.editDoctor?.did?.id) {
     sendTrigger('refreshDoctors');
     return true;
-  }
-  
-  if (result.error) {
+  } else {
     console.error(result.error);
+    return false;
   }
-
-  return false;
 };
 
 export default doctorMutateEngine;

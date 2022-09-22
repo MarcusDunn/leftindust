@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Date from '@/features/Input/components/Date/Date.svelte';
+  import Date from '@/features/Input/components/Date/DatePicker.svelte';
   import type { OutputSocket, OutputSockets } from 'function-junctions/types';
 
   export let outputs: OutputSockets<{
