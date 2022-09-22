@@ -6,7 +6,6 @@ import java.util.UUID
 
 data class CompleteSurveySectionDto(
     override val id: CompleteSurveySectionDtoId,
-    val inputs: List<CompleteSurveySectionInputDto>
 ) : AbstractGraphQLDto<CompleteSurveySectionDtoId>() {
     companion object {
         const val GRAPHQL_TYPE = "CompleteSurveySection"

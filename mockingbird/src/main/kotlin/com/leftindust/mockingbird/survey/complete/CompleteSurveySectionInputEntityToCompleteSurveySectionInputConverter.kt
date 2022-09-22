@@ -9,28 +9,65 @@ import org.springframework.stereotype.Component
 class CompleteSurveySectionInputEntityToCompleteSurveySectionInputConverter :
     InfallibleConverter<CompleteSurveySectionInputEntity, CompleteSurveySectionInput> {
     override fun convert(source: CompleteSurveySectionInputEntity): CompleteSurveySectionInput {
+        source.value
         return CompleteSurveySectionInputImpl(
             id = source.id ?: throw NullEntityIdInConverterException(source),
             value = when (source.value) {
                 is JsonData.StringValue -> {
-                    SurveySectionInput.StringInput(source.value.string)
+                    StringInputImpl(source.value.string)
                 }
                 is JsonData.StringArray -> {
-                    SurveySectionInput.StringArrayInput(source.value.stringArray.map { it.string })
+                    StringArrayInputImpl(source.value.stringArray.map { it.string })
                 }
                 is JsonData.NumberValue -> {
-                    SurveySectionInput.NumberInput(source.value.number)
+                    NumberInputImpl(source.value.number)
                 }
                 is JsonData.NumberArray -> {
-                    SurveySectionInput.NumberArrayInput(source.value.numberArray.map { it.number })
+                    NumberArrayInputImpl(source.value.numberArray.map { it.number })
                 }
             }
         )
     }
 
+    private class StringInputImpl(override val string: String) :
+        StringInput {
+        companion object {
+            operator fun invoke(string: String?): StringInputImpl? {
+                return if (string != null) StringInputImpl(string) else null
+            }
+        }
+    }
+
+    private class NumberInputImpl(override val number: Int) :
+        NumberInput {
+        companion object {
+            operator fun invoke(number: Int?): NumberInputImpl? {
+                return if (number != null) NumberInputImpl(number) else null
+            }
+        }
+    }
+
+    private class StringArrayInputImpl(override val stringArray: List<String>) :
+        StringArrayInput {
+        companion object {
+            operator fun invoke(stringArray: List<String>?): StringArrayInputImpl? {
+                return if (stringArray != null) StringArrayInputImpl(stringArray) else null
+            }
+        }
+    }
+
+    private class NumberArrayInputImpl(override val numberArray: List<Int>) :
+        NumberArrayInput {
+        companion object {
+            operator fun invoke(numberArray: List<Int>?): NumberArrayInputImpl? {
+                return if (numberArray != null) NumberArrayInputImpl(numberArray) else null
+            }
+        }
+    }
+
     class CompleteSurveySectionInputImpl(
         override val id: UUID,
-        override val value: SurveySectionInput
+        override val value: CompleteSurveySectionInputValue
     ) : CompleteSurveySectionInput {
     }
 }

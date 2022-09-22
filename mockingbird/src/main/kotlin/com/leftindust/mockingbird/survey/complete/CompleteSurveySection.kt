@@ -4,5 +4,4 @@ import java.util.UUID
 
 interface CompleteSurveySection {
     val id: UUID
-    val inputs: List<CompleteSurveySectionInput>
 }
