@@ -205,8 +205,6 @@ export const templateForm = (closeWizardHandler: () => void) => createForm<Templ
     const form = get(Template);
     const formCalculations = get(TemplateCalculations);
 
-    console.log('ok');
-
     const surveyTemplate = {
       title: form.title,
       subtitle: form.subtitle,

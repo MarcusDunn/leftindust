@@ -10,7 +10,7 @@
   import type { Popup, Popover } from 'framework7/types';
   import Quicklook from '@/features/View/components/Quicklook/Quicklook.svelte';
   import { AppViews } from '@/features/App';
-  import { openPopover, openPopup } from '@/features/View';
+  import { openPopover, openPopup, openPopupUrl } from '@/features/View';
   import type { MenuItem } from '@/features/UI/components/Menu';
   import Menu from '@/features/UI/components/Menu/Menu.svelte';
   import TemplateTags from '../TemplateTags/TemplateTags.svelte';
@@ -32,6 +32,8 @@
       color: 'blue',
     },
     onClick: () => {
+      openPopupUrl('/assign/template/');
+    /*
       client.mutation(CreateSurveyLinkMutationDocument, {
         surveyTemplateId: { value: data.id },
       }).toPromise()
@@ -40,6 +42,7 @@
         }).catch((error) => {
           console.log(error);
         });
+        */
     },
   }];
 

@@ -1,3 +1,5 @@
+import type { Route } from '@/features/View';
+
 import DashboardPage from '@/features/Dashboard/DashboardPage.svelte';
 import ClientsPage from '@/features/Clients/ClientsPage.svelte';
 
@@ -7,6 +9,7 @@ import TemplatePage from '@/features/Template/TemplatePage.svelte';
 import PatientPage from '@/features/Patient/PatientPage.svelte';
 import DoctorPage from '@/features/Doctor/DoctorPage.svelte';
 import PeoplePage from '@/features/People/PeoplePage.svelte';
+import TemplateAssignPage from '@/features/Assign/TemplateAssignPage.svelte';
 
 import TemplateWizard from '@/features/Template/TemplateWizard.svelte';
 import RecordWizard from '@/features/Record/RecordWizard.svelte';
@@ -16,7 +19,6 @@ import MedIQLoginPage from '@/features/Account/MedIQLoginPage.svelte';
 import SettingsPage from '@/features/Settings/SettingsPage.svelte';
 
 import LifecycleErrorPage from '@/features/Errors/LifecycleErrorPage.svelte';
-import type { Route } from '@/features/View';
 import TemplatePreviewPage from '@/features/Template/TemplatePreviewPage.svelte';
 
 export type Path =
@@ -26,6 +28,7 @@ export type Path =
   | '/doctor/:data/'
   | '/people/:data/'
   | '/templates/'
+  | '/assign/template/'
   | '/template/:data/'
   | '/wizard/template/'
   | '/wizard/record/'
@@ -61,6 +64,10 @@ const routes: Route<Path>[] = [
   {
     path: '/templates/',
     component: TemplatesPage,
+  },
+  {
+    path: '/assign/template/',
+    component: TemplateAssignPage,
   },
   {
     path: '/template/:data/',

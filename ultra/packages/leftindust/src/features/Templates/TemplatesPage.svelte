@@ -9,6 +9,7 @@
   import { operationStore, query } from '@urql/svelte';
   import { defaultRangeInput, PartialSurveyTemplateByRangeQueryDocument, type PartialTemplateFragmentFragment } from '@/api/server';
   import type { Router } from 'framework7/types';
+  import CollapsableContentPlaceholder from '../UI/components/Collapsable/CollapsableContentPlaceholder.svelte';
 
   export let f7router: Router.Router;
   
@@ -34,7 +35,7 @@
     history
     {f7router}
   />
-  <Block>
+  <Block style="height: calc(100% - 120px)">
     {#if templates.length > 0}
       <SpecificGrid
         props={templates.map((template) => ({
@@ -47,6 +48,18 @@
         type={WidgetType.Card}
         fixed
       />
+    {:else}
+      <div style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      ">
+        <CollapsableContentPlaceholder center>
+          No templates found...
+        </CollapsableContentPlaceholder>
+      </div>
     {/if}
   </Block>
 </Page>
