@@ -12,15 +12,8 @@ import com.leftindust.mockingbird.util.SurveyLinkMother.KoosKneeSurveyLink
 import java.util.UUID
 
 object CompleteSurveyMother {
-    private val completeSurveySectionInputEntityToCompleteSurveySectionInputConverter =
-        CompleteSurveySectionInputEntityToCompleteSurveySectionInputConverter()
-    private val completeSurveySectionEntityToCompleteSurveySectionConverter =
-        CompleteSurveySectionEntityToCompleteSurveySectionConverter(
-            completeSurveySectionInputEntityToCompleteSurveySectionInputConverter
-        )
-    val completeSurveyEntityToCompleteSurvey = CompleteSurveyEntityToCompleteSurvey(
-        completeSurveySectionEntityToCompleteSurveySectionConverter
-    )
+
+    val completeSurveyEntityToCompleteSurvey = CompleteSurveyEntityToCompleteSurvey()
 
     object FilledOutKoosKneeSurvey {
         val id = UUID.fromString("d30e7ae9-01bc-4027-9825-94709e55b2cd")
@@ -44,8 +37,7 @@ object CompleteSurveyMother {
         )
 
         val dto = CompleteSurveyDto(
-            id = graphqlId,
-            sections = completeSurveyTemplateSections
+            id = graphqlId
         )
 
         val createDto = CreateCompleteSurveyDto(
