@@ -78,11 +78,3 @@ data class CompleteSurveySectionStringArrayInput(
         const val GRAPHQL_TYPE = "CompleteSurveySectionStringArrayInput"
     }
 }
-
-
-sealed class SurveySectionInput {
-    data class StringInput(val string: String) : SurveySectionInput()
-    data class NumberInput(val number: Int) : SurveySectionInput()
-    data class NumberArrayInput(val numberArray: List<Int>) : SurveySectionInput()
-    data class StringArrayInput(val stringArray: List<String>) : SurveySectionInput()
-}

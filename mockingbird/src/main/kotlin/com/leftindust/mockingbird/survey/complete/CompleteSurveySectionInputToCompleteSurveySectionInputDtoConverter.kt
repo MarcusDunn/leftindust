@@ -8,25 +8,25 @@ class CompleteSurveySectionInputToCompleteSurveySectionInputDtoConverter(
 ) : InfallibleConverter<CompleteSurveySectionInput, CompleteSurveySectionInputDto> {
     override fun convert(source: CompleteSurveySectionInput): CompleteSurveySectionInputDto {
         return when (val input = source.value) {
-            is SurveySectionInput.StringInput -> {
+            is StringInput -> {
                 CompleteSurveySectionStringInput(
                     id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(source.id),
                     string = input.string
                 )
             }
-            is SurveySectionInput.NumberInput -> {
+            is NumberInput -> {
                 CompleteSurveySectionNumberInput(
                     id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(source.id),
                     number = input.number
                 )
             }
-            is SurveySectionInput.StringArrayInput -> {
+            is StringArrayInput -> {
                 CompleteSurveySectionStringArrayInput(
                     id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(source.id),
                     stringArray = input.stringArray
                 )
             }
-            is SurveySectionInput.NumberArrayInput -> {
+            is NumberArrayInput -> {
                 CompleteSurveySectionNumberArrayInput(
                     id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(source.id),
                     numberArray = input.numberArray
