@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.survey.complete
 
-import com.leftindust.mockingbird.util.CompleteSurveyMother
-import com.leftindust.mockingbird.util.CompleteSurveySectionInputMother
+import com.leftindust.mockingbird.util.CompleteSurveyMother.FilledOutKoosKneeSurvey
+import com.leftindust.mockingbird.util.CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt
 import com.leftindust.mockingbird.util.CompleteSurveySectionMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -9,9 +9,9 @@ import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
+import java.util.UUID
 
 @GraphQlTest(controllers = [CompleteSurveyQueryController::class, CompleteSurveySectionQueryController::class, CompleteSurveySectionInputQueryController::class])
 internal class CompleteSurveySectionInputQueryControllerWebTest(
@@ -30,9 +30,9 @@ internal class CompleteSurveySectionInputQueryControllerWebTest(
     private lateinit var readCompleteSurveySectionInputService: ReadCompleteSurveySectionInputService
 
     @Test
-    internal fun `check can query by id`() {
-        coEvery { readCompleteSurveyService.completeSurveyByCompleteSurveyId(CompleteSurveyMother.FilledOutKoosKneeSurvey.graphqlId) } returns CompleteSurveyMother.FilledOutKoosKneeSurvey.domain
-        coEvery { readCompleteSurveySectionService.completeSurveySectionsByCompleteSurveyId(CompleteSurveyMother.FilledOutKoosKneeSurvey.graphqlId) } returns listOf(
+    internal fun `check can query for section inputs by id`() {
+        coEvery { readCompleteSurveyService.completeSurveyByCompleteSurveyId(FilledOutKoosKneeSurvey.graphqlId) } returns FilledOutKoosKneeSurvey.domain
+        coEvery { readCompleteSurveySectionService.completeSurveySectionsByCompleteSurveyId(FilledOutKoosKneeSurvey.graphqlId) } returns listOf(
             CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection.domain
         )
         coEvery {
@@ -40,16 +40,16 @@ internal class CompleteSurveySectionInputQueryControllerWebTest(
                 CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection.graphqlId
             )
         } returns listOf(
-            CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt.domain
+            FilledOutHowBadIsThePainWhenIPokeIt.domain
         )
 
         @Language("graphql")
         val query = """
             query {
                 completeSurveyById(
-                    completeSurveyId: { value: "${CompleteSurveyMother.FilledOutKoosKneeSurvey.id}" }) {
+                    completeSurveyId: { value: "${FilledOutKoosKneeSurvey.id}" }) {
                     sections {
-                        inputs {
+                        inputs { 
                            id { value }
                            ... on CompleteSurveySectionStringInput {
                               id { value }
@@ -66,8 +66,8 @@ internal class CompleteSurveySectionInputQueryControllerWebTest(
                            ... on CompleteSurveySectionNumberArrayInput {
                               id { value }
                               numberArray
-                           }    
-                        }
+                           } 
+                        }           
                     }
                 }
             }
@@ -77,8 +77,8 @@ internal class CompleteSurveySectionInputQueryControllerWebTest(
             .execute()
             .errors()
             .verify()
-            .path("completeSurveyById.sections[0].inputs")
-            .entity(object : ParameterizedTypeReference<List<CompleteSurveySectionInputDto>>() {})
-            .isEqualTo(listOf(CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt.dto))
+            .path("completeSurveyById.sections[0].inputs[0].string")
+            .entity(String::class.java)
+            .isEqualTo(FilledOutHowBadIsThePainWhenIPokeIt.value)
     }
 }

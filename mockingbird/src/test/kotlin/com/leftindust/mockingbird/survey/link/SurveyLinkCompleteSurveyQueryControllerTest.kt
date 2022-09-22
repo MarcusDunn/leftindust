@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.survey.link
 
+import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyDto
 import com.leftindust.mockingbird.survey.complete.ReadCompleteSurveyService
 import com.leftindust.mockingbird.util.CompleteSurveyMother.FilledOutKoosKneeSurvey
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
+import java.util.UUID
 
 @GraphQlTest(controllers = [SurveyLinkQueryController::class, SurveyLinkCompleteSurveyQueryController::class])
 internal class SurveyLinkCompleteSurveyQueryControllerTest(
@@ -35,30 +37,9 @@ internal class SurveyLinkCompleteSurveyQueryControllerTest(
         val query = """
             query {
                 surveyLinkById(surveyLinkId: { value: "${KoosKneeSurveyLink.id}" }) {
+                    id { value }
                     completedSurvey {
                         id { value }
-                        sections {
-                            id { value }
-                            inputs {
-                               id { value }
-                               ... on CompleteSurveySectionStringInput {
-                                  id { value }
-                                  string
-                               }              
-                               ... on CompleteSurveySectionNumberInput {
-                                  id { value }
-                                  number
-                               }    
-                               ... on CompleteSurveySectionStringArrayInput {
-                                  id { value }
-                                  stringArray
-                               }    
-                               ... on CompleteSurveySectionNumberArrayInput {
-                                  id { value }
-                                  numberArray
-                               }    
-                        }
-                        }
                     }
                 }
             }
@@ -71,5 +52,8 @@ internal class SurveyLinkCompleteSurveyQueryControllerTest(
             .path("surveyLinkById.completedSurvey")
             .entity(CompleteSurveyDto::class.java)
             .isEqualTo(FilledOutKoosKneeSurvey.dto)
+            .path("surveyLinkById.id.value")
+            .entity(UUID::class.java)
+            .isEqualTo(KoosKneeSurveyLink.dto.id.value)
     }
 }
