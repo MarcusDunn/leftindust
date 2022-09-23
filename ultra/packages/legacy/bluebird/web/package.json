@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "scripts": {
     "start": "npm run serve",
-    "build": "node_modules/.bin/cross-env NODE_ENV=development vite build",
-    "serve": "node_modules/.bin/cross-env NODE_ENV=development vite",
-    "check": "node_modules/.bin/svelte-check --tsconfig ./tsconfig.json"
+    "build": "vite build",
+    "serve": "vite",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
     "@apollo/client": "^3.4.17",
