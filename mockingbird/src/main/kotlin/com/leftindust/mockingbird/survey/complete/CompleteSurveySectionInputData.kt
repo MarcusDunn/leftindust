@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.survey.complete
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     ]
 )
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, include = JsonTypeInfo.As.PROPERTY)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 sealed interface CompleteSurveySectionInputData {
     data class StringValue(
         val string: String
