@@ -8,11 +8,12 @@ import {
 import { retryExchange } from '@urql/exchange-retry';
 import { authExchange } from '@urql/exchange-auth';
 import { devtoolsExchange } from '@urql/devtools';
-import config from '@/../config.json';
+import { config } from '@/features/App';
 import { auth } from '../firebase';
 import type { ResolversTypes } from './requests';
 import type { Range } from './schema/leftindust.schema';
 import type { User } from 'firebase/auth';
+import { get } from 'svelte/store';
 
 export type Data<T = keyof Partial<ResolversTypes>> = {
   type: T;

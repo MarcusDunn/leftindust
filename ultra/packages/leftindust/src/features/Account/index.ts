@@ -39,7 +39,7 @@ import { _ } from '@/language';
 
 import getNativeAPI from '@/api/bridge';
 import type { TimestampedRecents } from '../Recents';
-import config from '@/../config.json';
+import { config } from '@/features/App';
 
 export type AccountRecentsTemplate = Record<keyof ResolversTypes, TimestampedRecents>;
 

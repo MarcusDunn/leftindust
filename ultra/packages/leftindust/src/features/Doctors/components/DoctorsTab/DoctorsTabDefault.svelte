@@ -20,7 +20,7 @@
 
   export let f7router: Router.Router;
 
-  let doctors: PartialDoctorFragment[];
+  let doctors: PartialDoctorFragment[] = [];
   let recents: PartialDoctorFragment[];
 
   const request = operationStore(PartialDoctorsByRangeQueryDocument, {
@@ -75,14 +75,20 @@
     </Request>
 
     <Request {...$request} reexecute={request.reexecute}>
-      <DoctorsCells
-        doctors={doctors || []}
-        selected={clientsSelected}
-        on:navigate={() => {
-          if ($clientsSelected.length === 1) updateRecents('Doctor', $clientsSelected.filter((client) => client.type === 'Doctor')[0].id);
-          navigate($clientsSelected.length > 1);
-        }}
-      />
+      {#if doctors.length > 0}
+        <DoctorsCells
+          doctors={doctors || []}
+          selected={clientsSelected}
+          on:navigate={() => {
+            if ($clientsSelected.length === 1) updateRecents('Doctor', $clientsSelected.filter((client) => client.type === 'Doctor')[0].id);
+            navigate($clientsSelected.length > 1);
+          }}
+        />
+      {:else}
+        <CollapsableContentPlaceholder center>
+          No doctors found...
+        </CollapsableContentPlaceholder>
+      {/if}
     </Request>
   </MasterListLayout>
 </PageContent>
