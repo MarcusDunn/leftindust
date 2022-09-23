@@ -13,16 +13,16 @@ class CompleteSurveySectionInputEntityToCompleteSurveySectionInputConverter :
         return CompleteSurveySectionInputImpl(
             id = source.id ?: throw NullEntityIdInConverterException(source),
             value = when (source.value) {
-                is JsonData.StringValue -> {
+                is CompleteSurveySectionInputData.StringValue -> {
                     StringInputImpl(source.value.string)
                 }
-                is JsonData.StringArray -> {
+                is CompleteSurveySectionInputData.StringArray -> {
                     StringArrayInputImpl(source.value.stringArray.map { it.string })
                 }
-                is JsonData.NumberValue -> {
+                is CompleteSurveySectionInputData.NumberValue -> {
                     NumberInputImpl(source.value.number)
                 }
-                is JsonData.NumberArray -> {
+                is CompleteSurveySectionInputData.NumberArray -> {
                     NumberArrayInputImpl(source.value.numberArray.map { it.number })
                 }
             }

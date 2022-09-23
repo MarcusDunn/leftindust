@@ -5,7 +5,6 @@ import com.leftindust.mockingbird.survey.link.SurveyLinkDto
 import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionDto
 import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputDto
 import org.springframework.stereotype.Component
-import java.time.LocalDate
 
 @Component
 class CreateCompleteSurveyDtoToCreateCompleteSurveyConverter :
@@ -21,23 +20,23 @@ class CreateCompleteSurveyDtoToCreateCompleteSurveyConverter :
                             surveyTemplateSectionInputId = createCompleteSurveySectioInputDto.surveyTemplateSectionInputId,
                             value = when (createCompleteSurveySectioInputDto.type) {
                                 SurveyInputType.Number -> {
-                                    JsonData.NumberValue(
+                                    CompleteSurveySectionInputData.NumberValue(
                                         createCompleteSurveySectioInputDto.numberInput ?: return null
                                     )
                                 }
                                 SurveyInputType.String -> {
-                                    JsonData.StringValue(
+                                    CompleteSurveySectionInputData.StringValue(
                                         createCompleteSurveySectioInputDto.stringInput ?: return null
                                     )
                                 }
                                 SurveyInputType.NumberArray -> {
-                                    JsonData.NumberArray(createCompleteSurveySectioInputDto.numberArrayInput?.map {
-                                        JsonData.NumberValue(it)
+                                    CompleteSurveySectionInputData.NumberArray(createCompleteSurveySectioInputDto.numberArrayInput?.map {
+                                        CompleteSurveySectionInputData.NumberValue(it)
                                     } ?: return null)
                                 }
                                 SurveyInputType.StringArray -> {
-                                    JsonData.StringArray(createCompleteSurveySectioInputDto.stringArrayInput?.map {
-                                        JsonData.StringValue(it)
+                                    CompleteSurveySectionInputData.StringArray(createCompleteSurveySectioInputDto.stringArrayInput?.map {
+                                        CompleteSurveySectionInputData.StringValue(it)
                                     } ?: return null)
                                 }
                             }
@@ -60,6 +59,6 @@ class CreateCompleteSurveyDtoToCreateCompleteSurveyConverter :
 
     data class CreateCompleteSurveyInputImpl(
         override val surveyTemplateSectionInputId: SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId,
-        override val value: JsonData
+        override val value: CompleteSurveySectionInputData
     ) : CreateCompleteSurveyInput
 }
