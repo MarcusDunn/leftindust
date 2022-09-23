@@ -1,9 +1,8 @@
 package com.leftindust.mockingbird.doctor
 
-import java.util.*
-import org.springframework.data.repository.CrudRepository
-import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import java.util.UUID
+import org.springframework.data.repository.PagingAndSortingRepository
 
-interface DoctorRepository : CrudRepository<Doctor, UUID> {
+interface DoctorRepository : PagingAndSortingRepository<DoctorEntity, UUID> {
 
 }

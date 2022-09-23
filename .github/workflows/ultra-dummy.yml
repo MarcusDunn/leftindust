@@ -1,10 +1,12 @@
 name: Ultra
 on:
-  push:
+  pull_request:
     paths-ignore:
       - 'ultra/**'
+    branches:
+      - main
 jobs:
-  build:
+  build-ultra:
     strategy:
       matrix:
         os: [ubuntu-latest]

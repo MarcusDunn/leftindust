@@ -13,7 +13,7 @@ class DoctorAddressesQueryController(
     private val readAddressService: ReadAddressService,
     private val addressToAddressDtoConverter: InfallibleConverter<Address, AddressDto>,
 ) {
-    @SchemaMapping
+    @SchemaMapping(typeName = DoctorDto.GRAPHQL_TYPE, field = "addresses")
     suspend fun addresses(doctorDto: DoctorDto): List<AddressDto> {
         val addresses = readAddressService.getByDoctorId(doctorDto.id)
             ?: throw NullSubQueryException(doctorDto, ReadAddressService::getByDoctorId)

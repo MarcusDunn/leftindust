@@ -1,59 +1,61 @@
 package com.leftindust.mockingbird.doctor
 
 import com.leftindust.mockingbird.address.CreateAddressService
-import com.leftindust.mockingbird.clinic.ReadClinicService
+import com.leftindust.mockingbird.clinic.*
 import com.leftindust.mockingbird.email.CreateEmailService
-import com.leftindust.mockingbird.graphql.types.LocalDateDto
 import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhoneService
-import com.leftindust.mockingbird.user.CreateUserDto
-import com.leftindust.mockingbird.user.CreateUserService
-import com.leftindust.mockingbird.user.ReadUserService
-import java.time.LocalDate
+import com.leftindust.mockingbird.user.CreateMediqUser
+import com.leftindust.mockingbird.user.CreateMediqUserService
+import com.leftindust.mockingbird.user.MediqGroupDto
+import com.leftindust.mockingbird.user.MediqUserDto
+import com.leftindust.mockingbird.user.ProofOfValidUser
+import com.leftindust.mockingbird.user.ReadMediqUserService
 import javax.transaction.Transactional
-import org.slf4j.LoggerFactory
-import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Service
 
 @Transactional
 @Service
 class CreateDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
-    private val createUserService: CreateUserService,
-    private val readUserService: ReadUserService,
+    private val clinicRepository: ClinicRepository,
+    private val createMediqUserService: CreateMediqUserService,
+    private val readMediqUserService: ReadMediqUserService,
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,
     private val createNameInfoService: CreateNameInfoService,
     private val createPhoneService: CreatePhoneService,
-    private val localDateDtoToLocalDateConverter: Converter<LocalDateDto, LocalDate>,
-    private val readClinicService: ReadClinicService,
     private val readPatientService: ReadPatientService,
+    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter,
 ) : CreateDoctorService {
-    private val logger = LoggerFactory.getLogger(CreateDoctorServiceImpl::class.java)
 
     override suspend fun addDoctor(createDoctor: CreateDoctor): Doctor {
         val (user, nameInfo) = when (val user = createDoctor.user) {
-            is CreateDoctor.User.Create -> createUserService.addUser(CreateUserDto(user.uid, user.nameInfo, user.group, null)) to null
-            is CreateDoctor.User.Find -> readUserService.findUserByUid(user.userUid) to null
+            is CreateDoctor.User.Create -> createMediqUserService.addUser(
+                CreateMediqUserImpl(
+                    uid = user.uid,
+                    nameInfo = user.nameInfo,
+                    group = user.group,
+                    doctor = null,
+                    proofOfValidUser = user.proofOfValidUser
+                )
+            ) to null
+            is CreateDoctor.User.Find -> readMediqUserService.getByUserUid(user.userUid) to null
             is CreateDoctor.User.NoUser -> null to createNameInfoService.createNameInfo(user.nameInfo)
         }
         val notNullNameInfo = nameInfo ?: user?.nameInfo!!
-        val doctor = Doctor(
+        val doctor = DoctorEntity(
             nameInfo = notNullNameInfo,
-            addresses = createDoctor.addresses?.map { createAddressService.createAddress(it) }?.toMutableSet() ?: mutableSetOf(),
-            emails = createDoctor.emails?.map { createEmailService.createEmail(it) }?.toMutableSet() ?: mutableSetOf(),
-            phones = createDoctor.phones?.map { createPhoneService.createPhone(it) }?.toMutableSet() ?: mutableSetOf(),
+            addresses = createDoctor.addresses.map { createAddressService.createAddress(it) }.toMutableSet(),
+            emails = createDoctor.emails.map { createEmailService.createEmail(it) }.toMutableSet(),
+            phones = createDoctor.phones.map { createPhoneService.createPhone(it) }.toMutableSet(),
             user = user,
             events = mutableSetOf(), // not currently possible to set on create doctor.
             thumbnail = null,
             title = createDoctor.title,
-            dateOfBirth = createDoctor.dateOfBirth?.let {
-                localDateDtoToLocalDateConverter.convert(it) ?: run {
-                    logger.warn("Set the doctor ${notNullNameInfo.firstName} ${notNullNameInfo.lastName}'s date of birth to null. $localDateDtoToLocalDateConverter failed to convert $it to a LocalDate")
-                    null
-                }
-            },
+            dateOfBirth = createDoctor.dateOfBirth,
             clinics = mutableSetOf(), // set in apply block
             patients = mutableSetOf(), // set in apply block
         ).apply {
@@ -63,11 +65,31 @@ class CreateDoctorServiceImpl(
                         ?: throw IllegalArgumentException("No such patient with id $it")
                 }.forEach { addPatient(it) }
 
-            createDoctor.clinic.map {
-                readClinicService.getByClinicId(it)
-                    ?: throw IllegalArgumentException("No such clinic with id $it")
-            }.forEach { it.addDoctor(this) }
+            updateClinics(createDoctor.clinic, this)
         }
-        return doctorRepository.save(doctor)
+        return doctorEntityToDoctorConverter.convert(doctorRepository.save(doctor))
     }
+
+    private suspend fun updateClinics(
+        clinicsEdit: List<ClinicDto.ClinicDtoId>,
+        doctor: DoctorEntity
+    ) {
+        doctor.id ?: throw IllegalArgumentException("Clinic is missing a doctor id")
+
+        clinicsEdit.map {
+            val clinicEntity = clinicRepository.findById(it.value).orElseThrow {
+                IllegalArgumentException("No such clinic with id ${it.value}")
+            }
+            clinicEntity.addDoctor(doctor)
+            clinicRepository.save(clinicEntity)
+        }
+    }
+
+    data class CreateMediqUserImpl(
+        override val uid: MediqUserDto.MediqUserUniqueId,
+        override val nameInfo: CreateNameInfo,
+        override val group: MediqGroupDto.MediqGroupId,
+        override val doctor: DoctorDto.DoctorDtoId?,
+        override val proofOfValidUser: ProofOfValidUser,
+    ) : CreateMediqUser
 }

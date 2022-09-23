@@ -1,8 +1,8 @@
 package com.leftindust.mockingbird.user
 
-import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.group.MediqGroup
-import javax.persistence.CascadeType
+import com.leftindust.mockingbird.persistance.JpaEntity
+import com.leftindust.mockingbird.person.NameInfo
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.ManyToOne
@@ -13,10 +13,10 @@ class MediqUser(
     @Id
     val uniqueId: String,
     @ManyToOne
-    var group: MediqGroup? = null,
+    var group: MediqGroup?,
     @OneToOne
     var nameInfo: NameInfo,
-) {
+) : JpaEntity {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

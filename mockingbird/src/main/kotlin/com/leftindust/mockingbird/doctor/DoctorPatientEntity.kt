@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne
 class DoctorPatientEntity(
     @Id
     @ManyToOne
-    val doctor: Doctor,
+    val doctor: DoctorEntity,
     @Id
     @ManyToOne
     val patient: Patient,

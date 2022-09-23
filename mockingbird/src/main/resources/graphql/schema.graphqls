@@ -3,10 +3,98 @@ schema {
     mutation: Mutation
 }
 
+type Query {
+    # mockingbirdIsAlive
+    mockingbirdIsAlive: Boolean!
+
+    # clinic
+    clinicByClinicId(clinicId: ClinicIdInput!): Clinic
+
+    # user
+    userByUserUniqueId(uniqueId: String!): MediqUser
+
+    # survey template
+    surveyTemplateById(surveyTemplateId: SurveyTemplateIdInput!): SurveyTemplate
+    surveyTemplateByRange(range: Range!): [SurveyTemplate!]!
+
+    # survey link
+    surveyLinkById(surveyLinkId: SurveyLinkIdInput!): SurveyLink
+
+    # complete survey
+    completeSurveyById(completeSurveyId: CompleteSurveyIdInput): CompleteSurvey
+    completeSurveyByRange(range: Range!): [CompleteSurvey!]!
+
+    # patient
+    patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!
+    patientsByRange(range: Range!): [Patient!]!
+
+    # doctor
+    doctorsByDoctorIds(doctorIds: [DoctorIdInput!]!): [Doctor]!
+    doctorsByRange(range: Range!): [Doctor!]!
+}
+
+input CompleteSurveyIdInput {
+    value: UUID
+}
+
 type Mutation {
+    # clinic
     addClinic(clinic: CreateClinic!): Clinic!
     editClinic(clinic: EditClinic!): Clinic
-    addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate
+
+    # survey template
+    addSurveyTemplate(surveyTemplate: CreateSurveyTemplate!): SurveyTemplate!
+
+    # survey link
+    createSurveyLink(createSurveyLink: CreateSurveyLink): SurveyLink!
+
+    # complete survey
+    createCompleteSurvey(createCompleteSurvey: CreateCompleteSurvey): CompleteSurvey
+
+    # user
+    createMediqUser(createUser: CreateUser): MediqUser
+
+    # patient
+    addPatient(createPatient: CreatePatient): Patient
+}
+
+input CreateSurveyLink {
+    surveyTemplateId: SurveyTemplateIdInput
+    patientId: PatientIdInput
+}
+
+input CreateUser {
+    uid: String!
+    nameInfo: CreateNameInfo!
+    group: MediqGroupIdInput
+}
+
+input MediqGroupIdInput {
+    value: UUID
+}
+
+input CreateNameInfo {
+    firstName: String!
+    middleName: String
+    lastName: String!
+}
+
+type Doctor {
+    id: DoctorId
+    firstName: String!
+    middleName: String
+    lastName: String!
+    phoneNumbers: [Phone!]!
+    emails: [Email!]!
+    addresses: [Address!]!
+    thumbnail: Base64
+    title: String
+    dateOfBirth: LocalDate
+}
+
+input Range {
+    from: Int
+    to: Int
 }
 
 input EditClinic {
@@ -51,10 +139,12 @@ input CreateAddress {
     postalCode: String!
 }
 
-type Query {
-    mockingbirdIsAlive: Boolean!
-    clinicByClinicId(clinicId: ClinicIdInput!): Clinic
-    userByUserUniqueId(uniqueId: String): MediqUser
+input PatientIdInput {
+    value: UUID
+}
+
+input SurveyLinkIdInput {
+    value: UUID
 }
 
 input CreateSurveyTemplate {
@@ -86,6 +176,7 @@ input CreateSurveyTemplateSection {
     title: String!,
     subtitle: String,
     inputs: [CreateSurveyTemplateSectionInput!]!,
+    calculationId: Int!
 }
 
 input CreateSurveyTemplateSectionInput {
@@ -97,6 +188,7 @@ input CreateSurveyTemplateSectionInput {
     category: SurveyTemplateCategory!,
     uploadMultiple: Boolean,
     uploadAccept: TemplateInputUploadType,
+    calculationId: Int!
 }
 
 enum TemplateInputUploadType {
@@ -112,30 +204,222 @@ enum SurveyTemplateCategory {
 }
 
 type SurveyTemplate {
-    id: SurveyTemplateId
+    id: SurveyTemplateId!
+    title: String!
+    subtitle: String
+    sections: [SurveyTemplateSection!]!
+    calculations: [SurveyTemplateCalculation!]!
+}
+
+type SurveyTemplateCalculation {
+    id: SurveyTemplateCalculationId!
+    index: Int!
+    label: String
+    inputType: SurveyTemplateInputType
+    showOnComplete: Boolean
+    calculation: String
+}
+
+type SurveyLink {
+    id: SurveyLinkId!
+    surveyTemplate: SurveyTemplate!
+    completedSurvey: CompleteSurvey
+    patient: Patient
+}
+
+type SurveyLinkId {
+    value: UUID!
+}
+
+type SurveyTemplateCalculationId {
+    value: UUID!
+}
+
+type SurveyTemplateInput {
+    id: SurveyTemplateInputId!
+    type: SurveyTemplateInputType!
+    label: String!
+    options: [String!]
+    placeholder: String
+    required: Boolean!
+    category: SurveyTemplateCategory
+    uploadMultiple: Boolean
+    uploadAccept: TemplateInputUploadType
+    calculationId: Int!
+}
+
+input CreatePatient {
+    nameInfo: CreateNameInfo!
+    phones: [CreatePhone!]! = []
+    dateOfBirth: LocalDate!
+    emails: [CreateEmail!]! = []
+    addresses: [CreateAddress!]! = []
+    insuranceNumber: String
+    sex: Sex!
+    gender: String!
+    ethnicity: Ethnicity
+    emergencyContacts: [CreateContact!]! = []
+    doctors: [DoctorIdInput!]! = []
+    thumbnail: Base64
+}
+
+input CreateContact {
+    nameInfo: CreateNameInfo!
+    relationship: Relationship
+    phones: [CreatePhone!]! = []
+    emails: [CreateEmail!]! = []
+}
+
+enum Relationship {
+    Parent,
+    Child,
+    Guardian,
+    Grandparent,
+    Grandchild,
+    Aunt,
+    Uncle,
+    Cousin,
+    Sibling,
+    Partner,
+    Other,
+}
+
+type Patient {
+    id: PatientId!
+    firstName: String!
+    middleName: String
+    lastName: String!
+    phoneNumbers: [Phone!]!
+    emails: [Email!]!
+    addresses: [Address!]!
+    thumbnail: Base64
+    dateOfBirth: LocalDate!
+    insuranceNumber: String
+    sex: Sex!
+    gender: String!
+    ethnicity: Ethnicity
+}
+
+input CreatePhone {
+    number: String!
+    type: PhoneType!
+}
+
+type Phone {
+    id: PhoneId!
+    number: String!
+    type: PhoneType!
+}
+
+enum PhoneType {
+    Work,
+    Cell,
+    Home,
+    Pager,
+    Other,
+}
+
+type PhoneId {
+    value: UUID!
+}
+
+type Address {
+    id: AddressId!
+    type: AddressType
+    address: String!
+    city: String!
+    country: Countries!
+    province: String!
+    postalCode: String!
+}
+
+type AddressId {
+    value: UUID!
+}
+
+input CreateEmail {
+    email: String!
+    type: EmailType!
+}
+
+type Email {
+    id: EmailId!
+    type: EmailType!
+    email: String!
+}
+
+type EmailId {
+    value: UUID!
+}
+
+enum EmailType {
+    Work,
+    Personal,
+    School,
+    Other,
+}
+
+enum Ethnicity {
+    AmericanAboriginal
+    Asian
+    Black
+    Hispanic
+    PacificIslander
+    White
+}
+
+enum Sex {
+    Male
+    Female
+    Intersex
+}
+
+type PatientId {
+    value: UUID!
+}
+
+type SurveyTemplateInputId {
+    value: UUID!
+}
+
+type SurveyTemplateSection {
+    id: SurveyTemplateSectionId!
+
+    title: String!
+    subtitle: String
+    inputs: [SurveyTemplateInput!]!
+    calculationId: Int!
+}
+
+type SurveyTemplateSectionId {
+    value: UUID!
+}
+
+input SurveyTemplateIdInput {
+    value: UUID!
 }
 
 type SurveyTemplateId {
-    value: UUID
+    value: UUID!
 }
 
 type MediqUserId {
-    value: UUID
+    value: String!
 }
 
 type MediqGroupId {
-    value: MediqGroupId
+    value: UUID!
 }
 
 type MediqGroup {
-    id: MediqGroupId
+    id: MediqGroupId!
     name: String
 }
 
 type MediqUser {
-    id: MediqUserId
+    id: MediqUserId!
     group: MediqGroup
-    name: NameInfo
+    name: NameInfo!
     accountDetails: UserAccountDetails
 }
 
@@ -145,23 +429,81 @@ type UserAccountDetails {
 }
 
 type NameInfo {
-    firstName: String
+    firstName: String!
     middleName: String
-    lastName: String
+    lastName: String!
 }
 
 type ClinicId {
-    value: UUID
+    value: UUID!
 }
 
 input ClinicIdInput {
-    value: UUID
+    value: UUID!
 }
 
 type Clinic {
-    id: ClinicId
-    name: String
+    id: ClinicId!
+    name: String!
+}
+
+input SurveyTemplateLinkIdInput {
+    value: UUID
+}
+
+input CreateCompleteSurvey {
+    surveyLinkId: SurveyTemplateLinkIdInput!
+    completeSurveyTemplateSections: [CreateCompleteSurveySection!]!
+}
+
+input CreateCompleteSurveySection {
+    surveyTemplateSectionId: SurveyTemplateSectionIdInput!
+    completedSurveyInputs: [CreateCompleteSurveyInput!]! = []
+}
+
+input SurveyTemplateSectionIdInput {
+    value: UUID!
+}
+
+input CreateCompleteSurveyInput {
+    surveyTemplateSectionInputId: SurveyTemplateSectionInputIdInput!
+    value: String!
+}
+
+input SurveyTemplateSectionInputIdInput {
+    value: UUID!
+}
+
+type CompleteSurvey {
+    id: CompleteSurveyId!
+    sections: [CompleteSurveySection!]!
+    surveyTemplate: SurveyTemplate!
+}
+
+type CompleteSurveySection {
+    id: CompleteSurveySectionId!
+    inputs: [CompleteSurveySectionInput!]!
+}
+
+type CompleteSurveySectionInput {
+    id: CompleteSurveySectionInputId!
+    value: String!
+}
+
+type CompleteSurveySectionInputId {
+    value: UUID!
+}
+
+type CompleteSurveySectionId {
+    value: UUID!
+}
+
+type CompleteSurveyId {
+    value: UUID!
 }
 
 scalar UUID
 scalar Base64
+scalar Duration
+scalar LocalDateTime
+scalar LocalDate

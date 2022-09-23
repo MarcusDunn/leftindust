@@ -9,12 +9,20 @@ spring:
     password: mediq
   security:
     oauth2:
-      resourceserver:
+      resource-server:
         jwt:
           jwk-set-uri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken%40system.gserviceaccount.com
   graphql:
     graphiql:
       enabled: true
+  sql:
+    init:
+      schema-locations:
+        - classpath:data-postgres.sql
+      mode: always
 icd:
   client:
     url: localhost:80/icd
+logging:
+  level:
+    root: trace

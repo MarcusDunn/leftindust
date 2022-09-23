@@ -755,4 +755,268 @@
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="phone" validate="true"/>
     </changeSet>
+    <changeSet id="1656393684356" author="marcus">
+        <createTable tableName="survey_link_entity">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="survey_link_entity_pkey"/>
+            </column>
+            <column name="survey_template_entity_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="survey_link_entity" baseColumnNames="survey_template_entity_id"
+                                 constraintName="survey_template_entity_id_fk"
+                                 referencedTableName="survey_template_entity"
+                                 referencedColumnNames="id" validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-2">
+        <createTable tableName="complete_survey_entity_sections">
+            <column name="complete_survey_entity_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="complete_survey_entity_sections_pkey"/>
+            </column>
+            <column name="sections_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="complete_survey_entity_sections_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-3">
+        <createTable tableName="complete_survey_section_entity_inputs">
+            <column name="complete_survey_section_entity_id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="complete_survey_section_entity_inputs_pkey"/>
+            </column>
+            <column name="inputs_id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="complete_survey_section_entity_inputs_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-4">
+        <addUniqueConstraint columnNames="sections_id" constraintName="uk_monyn0p2n9ghx1x8rsiwh8ypp"
+                             tableName="complete_survey_entity_sections"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-5">
+        <addUniqueConstraint columnNames="inputs_id" constraintName="uk_nlpupt78yohx8x0f6tqdk34h4"
+                             tableName="complete_survey_section_entity_inputs"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-6">
+        <createTable tableName="complete_survey_entity">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="complete_survey_entity_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-7">
+        <createTable tableName="complete_survey_section_entity">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="complete_survey_section_entity_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-8">
+        <createTable tableName="complete_survey_section_input_entity">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="complete_survey_section_input_entity_pkey"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-9">
+        <createTable tableName="survey_template_section_input_entity">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="survey_template_section_input_entity_pkey"/>
+            </column>
+            <column name="category" type="INTEGER"/>
+            <column name="label" type="VARCHAR(255)"/>
+            <column name="placeholder" type="VARCHAR(255)"/>
+            <column name="required" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="INTEGER"/>
+            <column name="upload_accept" type="INTEGER"/>
+            <column name="upload_multiple" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-10">
+        <createTable tableName="survey_template_section_input_entity_options">
+            <column name="survey_template_section_input_entity_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="options" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-11">
+        <addForeignKeyConstraint baseColumnNames="survey_template_section_input_entity_id"
+                                 baseTableName="survey_template_section_input_entity_options"
+                                 constraintName="fk8sfiv5ai67abo1fh2ab0tq959" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_template_section_input_entity"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-12">
+        <addForeignKeyConstraint baseColumnNames="complete_survey_section_entity_id"
+                                 baseTableName="complete_survey_section_entity_inputs"
+                                 constraintName="fkbwncu2thntn7cnntpml3o43s9" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="complete_survey_section_entity"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-13">
+        <addForeignKeyConstraint baseColumnNames="inputs_id" baseTableName="complete_survey_section_entity_inputs"
+                                 constraintName="fkl5pecxpga40rg32m64b5mvfjk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="complete_survey_section_input_entity"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-14">
+        <addForeignKeyConstraint baseColumnNames="complete_survey_entity_id"
+                                 baseTableName="complete_survey_entity_sections"
+                                 constraintName="fkmcprir3rr2qwcxv1qaqq1cftr" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="complete_survey_entity"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-15">
+        <addForeignKeyConstraint baseColumnNames="inputs_id" baseTableName="survey_template_section_entity_inputs"
+                                 constraintName="fknxdjll7wtdqwxgayf2dv8ud9h" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_template_section_input_entity"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-16">
+        <addForeignKeyConstraint baseColumnNames="sections_id" baseTableName="complete_survey_entity_sections"
+                                 constraintName="fkrhv0q8e8w5apd739c755ptqb3" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="complete_survey_section_entity"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-17">
+        <dropForeignKeyConstraint baseTableName="create_survey_template_section_input_entity_options"
+                                  constraintName="fk33j86o8ugqdkv7fkg7jg6fxng"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-18">
+        <dropForeignKeyConstraint baseTableName="survey_template_section_entity_inputs"
+                                  constraintName="fk3bxh7unowe21dhvrpdx28xmgd"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-19">
+        <dropTable tableName="create_survey_template_section_input_entity"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-20">
+        <dropTable tableName="create_survey_template_section_input_entity_options"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659593354856-1">
+        <dropNotNullConstraint columnDataType="uuid" columnName="survey_template_entity_id"
+                               tableName="survey_link_entity"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659683779706-1">
+        <addColumn tableName="complete_survey_entity">
+            <column name="survey_template_id" type="uuid"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659683779706-2">
+        <addForeignKeyConstraint baseColumnNames="survey_template_id" baseTableName="complete_survey_entity"
+                                 constraintName="fk1xih1bubu6j2aiomde9q978a6" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_template_entity"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659685626554-7">
+        <addColumn tableName="complete_survey_entity">
+            <column name="survey_link_id" type="UUID"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1659685626554-8">
+        <addForeignKeyConstraint baseColumnNames="survey_link_id" baseTableName="complete_survey_entity"
+                                 constraintName="fkjvro3b1nx6x8w19k1gsj3hmh0" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="survey_link_entity" validate="true"/>
+    </changeSet>
+    <changeSet id="1659685626555-1" author="marcus (manual)">
+        <addColumn tableName="survey_template_section_entity">
+            <column name="calculation_id" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1659685626555-2" author="marcus (manual)">
+        <addColumn tableName="survey_template_section_input_entity">
+            <column name="calculation_id" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1659685626556-1" author="marcus (manual)">
+        <addNotNullConstraint tableName="survey_template_section_input_entity" columnName="calculation_id"/>
+    </changeSet>
+    <changeSet id="1659685626556-2" author="marcus (manual)">
+        <addNotNullConstraint tableName="survey_template_section_entity" columnName="calculation_id"/>
+    </changeSet>
+    <changeSet id="1659685626557-3" author="marcus (manual)">
+        <addNotNullConstraint tableName="survey_template_section_input_entity" columnName="calculation_id"/>
+    </changeSet>
+    <changeSet id="1659685626558-1" author="boris (manual)">
+        <modifyDataType tableName="survey_template_calculation_entity" columnName="calculation" newDataType="VARCHAR(10000)"/>
+    </changeSet>
+    <changeSet id="1659685626559-1" author="marcus (manual)">
+        <modifyDataType tableName="survey_template_section_entity" columnName="subtitle" newDataType="VARCHAR(1000)"/>
+    </changeSet>
+    <changeSet id="1659685626560-1" author="marcus (manual)">
+        <modifyDataType tableName="survey_template_entity" columnName="subtitle" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="1659685626559-2" author="marcus (manual)">
+        <modifyDataType tableName="survey_template_section_entity" columnName="subtitle" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="1659685626558-3" author="boris (manual)">
+        <modifyDataType tableName="survey_template_calculation_entity" columnName="calculation" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="1659685626558-4" author="boris (manual)">
+        <modifyDataType tableName="survey_template_calculation_entity" columnName="label" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet id="16596856211-1" author="marcus (manual)">
+        <modifyDataType tableName="doctor" columnName="title" newDataType="TEXT"/>
+        <modifyDataType tableName="clinic" columnName="name" newDataType="TEXT"/>
+        <modifyDataType tableName="visit" columnName="description" newDataType="TEXT"/>
+        <modifyDataType tableName="visit" columnName="title" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="address" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="city" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="country" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="province" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="postal_code" newDataType="TEXT"/>
+        <modifyDataType tableName="address" columnName="type" newDataType="TEXT"/>
+        <modifyDataType tableName="contact" columnName="relationship" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_input_entity" columnName="label" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_input_entity" columnName="placeholder" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_input_entity_options" columnName="options" newDataType="TEXT"/>
+        <modifyDataType tableName="email" columnName="address" newDataType="TEXT"/>
+        <modifyDataType tableName="event" columnName="ical" newDataType="TEXT"/>
+        <modifyDataType tableName="mediq_group" columnName="name" newDataType="TEXT"/>
+        <modifyDataType tableName="mediq_record" columnName="json_blob" newDataType="TEXT"/>
+        <modifyDataType tableName="mediq_record" columnName="type" newDataType="TEXT"/>
+        <modifyDataType tableName="name_info" columnName="first_name" newDataType="TEXT"/>
+        <modifyDataType tableName="name_info" columnName="last_name" newDataType="TEXT"/>
+        <modifyDataType tableName="name_info" columnName="middle_name" newDataType="TEXT"/>
+        <modifyDataType tableName="patient" columnName="gender" newDataType="TEXT"/>
+        <modifyDataType tableName="patient" columnName="insurance_number" newDataType="TEXT"/>
+        <modifyDataType tableName="phone" columnName="number" newDataType="TEXT"/>
+        <modifyDataType tableName="phone" columnName="type" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_input_entity" columnName="label" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_entity" columnName="title" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_entity" columnName="title" newDataType="TEXT"/>
+        <modifyDataType tableName="visit_icds" columnName="icds" newDataType="TEXT"/>
+        <modifyDataType tableName="complete_survey_section_input_entity" columnName="value" newDataType="TEXT"/>
+        <modifyDataType tableName="survey_template_section_input_entity" columnName="placeholder" newDataType="TEXT"/>
+        <modifyDataType tableName="visit" columnName="title" newDataType="TEXT"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1661568761512-35">
+        <addColumn tableName="survey_link_entity">
+            <column name="patient_id" type="uuid"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1661568761512-36">
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="survey_link_entity" constraintName="fkku7hm59dg4q6c9dwsmiso9gwa" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1661568761512-37">
+        <dropForeignKeyConstraint baseTableName="complete_survey_entity" constraintName="fk1xih1bubu6j2aiomde9q978a6"/>
+    </changeSet>
+    <changeSet author="marcus (generated)" id="1661568761512-38">
+        <dropColumn columnName="survey_template_id" tableName="complete_survey_entity"/>
+    </changeSet>
 </databaseChangeLog>

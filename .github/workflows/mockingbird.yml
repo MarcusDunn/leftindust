@@ -1,8 +1,10 @@
 name: Mockingbird
 on:
-  push:
+  pull_request:
     paths: 
       - 'mockingbird/**'
+    branches:
+      - main
   workflow_dispatch:
       
 concurrency: 
@@ -10,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-mockingbird:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

@@ -1,46 +1,48 @@
 package com.leftindust.mockingbird.clinic
 
-import com.leftindust.mockingbird.AddedElementMessage
-import com.leftindust.mockingbird.NoOpUpdatedEntityFieldMessage
-import com.leftindust.mockingbird.NoUpdatesOccurredNoEntityWithId
-import com.leftindust.mockingbird.SetEntityFieldMessage
+
+import com.leftindust.mockingbird.*
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.graphql.types.Updatable
 import javax.transaction.Transactional
 import mu.KotlinLogging
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+
 
 @Service
 @Transactional
 class ClinicUpdaterServiceImpl(
     private val clinicRepository: ClinicRepository,
+    private val doctorRepository: DoctorRepository,
     private val createAddressService: CreateAddressService,
-    private val readDoctorService: ReadDoctorService,
+    private val clinicEntityToClinicConverter: InfallibleConverter<ClinicEntity, Clinic>,
 ) : UpdateClinicService {
     private val logger = KotlinLogging.logger { }
 
     override suspend fun editClinic(clinicEdit: ClinicEdit): Clinic? {
         val clinicId = clinicEdit.cid.value
-        val clinic = clinicRepository.findById(clinicId).orElse(null)
+        val existingClinic = clinicRepository.findByIdOrNull(clinicId)
 
-        return if (clinic == null) {
-            logger.warn { NoUpdatesOccurredNoEntityWithId(Clinic::class, clinicId) }
+        return if (existingClinic == null) {
+            logger.warn { NoUpdatesOccurredNoEntityWithId(ClinicEntity::class, clinicId) }
             null
-        } else {
-            updateAddress(clinicEdit.address, clinic)
-            updateDoctors(clinicEdit.doctors, clinic)
-            updateName(clinicEdit.name, clinic)
-
-            clinicRepository.save(clinic)
+        }
+        else {
+            updateAddress(clinicEdit.address, existingClinic)
+            updateDoctors(clinicEdit.doctors, existingClinic)
+            updateName(clinicEdit.name, existingClinic)
+            clinicRepository.save(existingClinic)
+            return clinicEntityToClinicConverter.convert(existingClinic)
         }
     }
 
     private fun updateName(
         nameEdit: Updatable<String>,
-        clinic: Clinic,
+        clinic: ClinicEntity,
     ) {
         return when (nameEdit) {
             is Updatable.Ignore -> {
@@ -55,7 +57,7 @@ class ClinicUpdaterServiceImpl(
 
     private suspend fun updateDoctors(
         doctorsEdit: Updatable<List<DoctorDto.DoctorDtoId>>,
-        clinic: Clinic,
+        clinic: ClinicEntity,
     ) {
         when (doctorsEdit) {
             is Updatable.Ignore -> {
@@ -63,18 +65,18 @@ class ClinicUpdaterServiceImpl(
             }
             is Updatable.Update -> {
                 val doctorIds = doctorsEdit.value
-                val newDoctors = doctorIds.map { it to readDoctorService.getByDoctorId(it) }
+                val newDoctorsToIds = doctorIds.map { it to doctorRepository.findByIdOrNull(it.value) }
+                newDoctorsToIds.forEach {
+                    if (it.second == null)
+                        logger.warn { NoOpUpdatedEntityFieldMessage(clinic, clinic::doctors, "Could not find a doctor with id: ${it.first}") }
+                }
+                val newDoctors = newDoctorsToIds.mapNotNull { it.second }
 
                 clinic.clearDoctors()
 
-                newDoctors.forEach { (id, doctor) ->
-                    if (doctor == null) {
-                        logger.warn { NoOpUpdatedEntityFieldMessage(clinic, clinic::doctors, "Could not find a doctor with id: $id") }
-                    } else {
-                        val clinicDoctorEntity = clinic.addDoctor(doctor)
-                        logger.trace { AddedElementMessage(clinic, clinic::doctors, clinicDoctorEntity) }
-                    }
-
+                newDoctors.forEach {
+                    clinic.addDoctor(it)
+                    logger.trace { AddedElementMessage(clinic, clinic::doctors, it) }
                 }
             }
         }
@@ -82,7 +84,7 @@ class ClinicUpdaterServiceImpl(
 
     private suspend fun updateAddress(
         addressEdit: Updatable<CreateAddressDto>,
-        clinic: Clinic,
+        clinic: ClinicEntity,
     ) {
         when (addressEdit) {
             is Updatable.Ignore -> {

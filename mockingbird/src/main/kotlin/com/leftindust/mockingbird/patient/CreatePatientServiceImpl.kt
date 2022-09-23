@@ -2,25 +2,26 @@ package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.contact.CreateContactService
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhoneService
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 @Transactional
 class CreatePatientServiceImpl(
-    private val patientRepository: HibernatePatientRepository,
+    private val patientRepository: PatientRepository,
     private val createNameInfoService: CreateNameInfoService,
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,
     private val createPhoneService: CreatePhoneService,
     private val createContactService: CreateContactService,
-    private val readDoctorService: ReadDoctorService,
+    private val doctorRepository: DoctorRepository
 ) : CreatePatientService {
     private val logger = KotlinLogging.logger { }
 
@@ -32,7 +33,7 @@ class CreatePatientServiceImpl(
             phones = patient.phones.map { createPhoneService.createPhone(it) }.toMutableSet(),
             events = mutableSetOf(),
             user = null,
-            thumbnail = Base64.decode(patient.thumbnail),
+            thumbnail = patient.thumbnail?.let { Base64.decode(patient.thumbnail) },
             sex = patient.sex,
             dateOfBirth = patient.dateOfBirth,
             gender = patient.gender,
@@ -40,6 +41,7 @@ class CreatePatientServiceImpl(
             insuranceNumber = patient.insuranceNumber,
             contacts = mutableSetOf(),
             doctors = mutableSetOf(),
+            assignedSurveys = mutableSetOf(),
         )
 
         patient.contacts
@@ -47,8 +49,11 @@ class CreatePatientServiceImpl(
             .forEach { newPatient.addContact(it) }
 
         patient.doctors
-            .map { it to readDoctorService.getByDoctorId(it) }
-            .forEach { it.second?.addPatient(newPatient) ?: logger.debug { "did not add a doctor in addNewPatient with ${it.first}" } }
+            .map { it to doctorRepository.findByIdOrNull(it.value) }
+            .forEach {
+                it.second?.addPatient(newPatient)
+                    ?: logger.debug { "did not add a doctor in addNewPatient with ${it.first}" }
+            }
 
         return patientRepository.save(newPatient)
     }

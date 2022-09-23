@@ -1,8 +1,8 @@
 # Marcus Handles most of the infastructure stuff which is stored in root and in .github
 * @MarcusDunn
 # Marcus also is the cheif backend man - which is stored in `mockingbird`
-/mockingbird @MarcusDunn
+/mockingbird @MarcusDunn @Bvasilchikov
 # Aydan is the frontend guy - this is currently only stored in `ultra`
-/ultra @ka1to1
-/.vscode @ka1to1
-/tests @MarcusDunn @ka1to1
+/ultra @AydanGaite
+/.vscode @AydanGaite
+/tests @MarcusDunn @AydanGaite
