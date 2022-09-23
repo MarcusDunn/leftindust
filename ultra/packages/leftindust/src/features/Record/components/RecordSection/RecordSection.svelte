@@ -5,7 +5,7 @@
   import type { RecordForm, RecordValues } from '../..';
 
   export let section: SurveyTemplateSection;
-  export let values: RecordValues['inputs'] | undefined;
+  export let values: RecordValues[number]['inputs'] | undefined;
 
   export let form: RecordForm;
 

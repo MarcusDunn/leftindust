@@ -62,7 +62,9 @@
           <input type="number" {placeholder} bind:value />
         </Input>
       {:else if type === SurveyTemplateInputType.Date}
-        <Date title={label} {placeholder} bind:value />
+        {#if typeof value === 'number'}
+          <Date title={label} {placeholder} bind:value />
+        {/if}
       {:else if type === SurveyTemplateInputType.Paragraph}
         <Input title={label} clear>
           <textarea {placeholder} bind:value />
@@ -77,7 +79,6 @@
               <Checkbox
                 title={option}
                 multiple={type === SurveyTemplateInputType.MultiSelect}
-                slot="content"
                 bind:selected={value}
                 value={options[index]}
               />

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
 
-  import { defaultRangeInput, PartialDoctorsByDoctorIdQueryDocument, type PartialDoctorFragment } from '@/api/server';
+  import { defaultRangeInput, PartialDoctorsByDoctorIdQueryDocument, PartialDoctorsByRangeQueryDocument, type PartialDoctorFragment } from '@/api/server';
   import { clientsSelected } from '@/features/Clients/store';
 
   import { _ } from '@/language';
@@ -23,12 +23,12 @@
   let doctors: PartialDoctorFragment[];
   let recents: PartialDoctorFragment[];
 
-  const request = operationStore(PartialDoctorsByDoctorIdQueryDocument, {
+  const request = operationStore(PartialDoctorsByRangeQueryDocument, {
     range: defaultRangeInput,
   });
 
   const recentsRequest = operationStore(PartialDoctorsByDoctorIdQueryDocument, {
-    dids: getTimestampedValues($account.database.recents.Doctor ??= []).map((id) => ({ id })),
+    doctorIds: getTimestampedValues($account.database.recents.Doctor ??= []).map((id) => ({ value: id })),
   });
 
   const navigate = (multiple: boolean) => {
@@ -40,16 +40,16 @@
   };
 
   $: $recentsRequest.variables = {
-    dids: getTimestampedValues($account.database.recents.Doctor ?? []).map((id) => ({ id })),
+    doctorIds: getTimestampedValues($account.database.recents.Doctor ?? []).map((id) => ({ value: id })),
   };
 
-  $: doctors = $request.data?.doctorsByDoctorIds ?? [];
+  $: doctors = $request.data?.doctorsByRange ?? [];
   $: timestampedRecents = $account.database.recents.Doctor ?? {};
   $: recents = sortRecents(
-    $recentsRequest.data?.doctors ?? [],
+    $recentsRequest.data?.doctorsByDoctorIds ?? [],
     timestampedRecents,
-    (doctor => doctor.id?.value),
-  );
+    ((doctor) => doctor?.id?.value ?? ''),
+  ) as PartialDoctorFragment[];
 
   query(request);
   query(recentsRequest);

@@ -76,7 +76,7 @@
       <Col width="100" small={(multiselect || title || compute ) ? 100 : 50}>
         <Input
           style="width: 100%"
-          error={$errors?.sections?.[sectionIndex]?.inputs?.[index]?.label}
+          error={$errors?.sections?.[sectionIndex]?.inputs?.[index]}
         >
           <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
           <input
@@ -92,7 +92,7 @@
           <Col width="100" small="50">
             <Input
               style="width: 100%"
-              error={$errors?.sections?.[sectionIndex]?.inputs?.[index]?.placeholder}
+              error={$errors?.sections?.[sectionIndex]?.inputs?.[index]}
             >
               <svelte:fragment slot="title">{$_('generics.placeholder')}</svelte:fragment>
               <input

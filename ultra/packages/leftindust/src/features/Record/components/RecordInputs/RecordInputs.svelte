@@ -5,7 +5,7 @@
   import RecordInput from '../RecordInput/RecordInput.svelte';
 
   export let inputs: SurveyTemplateInput[];
-  export let values: RecordValues['inputs'];
+  export let values: RecordValues[number]['inputs'];
 
   export let errors: Writable<Record<string, string>>;
   export let data: Omit<Writable<Record<string, unknown>>, 'subscribe'> & {

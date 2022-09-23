@@ -35,11 +35,11 @@
         fill
         round
       >
-        {`${$account.names?.firstName} ${$account.names?.lastName}`.match(/\b(\w)/g)?.join('')}
+        {`${$account.name?.firstName} ${$account.name?.lastName}`.match(/\b(\w)/g)?.join('')}
       </Boxed>
     </div>
     <div class="text-align-center" style="margin-top: 20px">
-      <h2>{`${$account.names?.firstName} ${$account.names?.lastName}`}</h2>
+      <h2>{`${$account.name?.firstName} ${$account.name?.lastName}`}</h2>
       <UserTags {...$account} />
     </div>
     <div style="margin-top: 20px">
