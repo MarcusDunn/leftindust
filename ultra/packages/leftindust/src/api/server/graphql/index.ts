@@ -38,7 +38,7 @@ export const resolversRecord: { [K in keyof ResolversTypes]: Record<string, any>
   CreateClinic: {},
   CreateCompleteSurvey: {},
   CreateCompleteSurveyInput: {},
-  CreateCompleteSurveySections: {},
+  CreateCompleteSurveySection: {},
   CreateSurveyTemplate: {},
   CreateSurveyTemplateCalculation: {},
   CreateSurveyTemplateSection: {},
@@ -85,6 +85,23 @@ export const resolversRecord: { [K in keyof ResolversTypes]: Record<string, any>
   TemplateInputUploadType: {},
   UUID: {},
   UserAccountDetails: {},
+  Address: {},
+  AddressId: {},
+  CreateContact: {},
+  CreateEmail: {},
+  CreateNameInfo: {},
+  CreatePatient: {},
+  CreatePhone: {},
+  CreateSurveyLink: {},
+  CreateUser: {},
+  Email: {},
+  EmailId: {},
+  EmailType: {},
+  MediqGroupIdInput: {},
+  Phone: {},
+  PhoneId: {},
+  PhoneType: {},
+  Relationship: {},
 };
 
 export const resolversArray: { [K in keyof ResolversTypes]: any[] } = {
@@ -106,7 +123,7 @@ export const resolversArray: { [K in keyof ResolversTypes]: any[] } = {
   CreateClinic: [],
   CreateCompleteSurvey: [],
   CreateCompleteSurveyInput: [],
-  CreateCompleteSurveySections: [],
+  CreateCompleteSurveySection: [],
   CreateSurveyTemplate: [],
   CreateSurveyTemplateCalculation: [],
   CreateSurveyTemplateSection: [],
@@ -153,6 +170,23 @@ export const resolversArray: { [K in keyof ResolversTypes]: any[] } = {
   TemplateInputUploadType: [],
   UUID: [],
   UserAccountDetails: [],
+  Address: [],
+  AddressId: [],
+  CreateContact: [],
+  CreateEmail: [],
+  CreateNameInfo: [],
+  CreatePatient: [],
+  CreatePhone: [],
+  CreateSurveyLink: [],
+  CreateUser: [],
+  Email: [],
+  EmailId: [],
+  EmailType: [],
+  MediqGroupIdInput: [],
+  Phone: [],
+  PhoneId: [],
+  PhoneType: [],
+  Relationship: [],
 };
 
 
@@ -177,7 +211,6 @@ export const client = createClient({
         return null;
       },
     }),
-    /*
     authExchange<{ token: string | undefined } | undefined>({
       getAuth: async () => {
         const user: User = await new Promise((resolve, reject) => {
@@ -213,7 +246,6 @@ export const client = createClient({
         });
       },
     }),
-    */
     fetchExchange,
   ],
 });
