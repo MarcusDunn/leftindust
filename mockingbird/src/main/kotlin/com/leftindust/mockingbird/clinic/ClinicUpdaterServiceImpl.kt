@@ -5,7 +5,7 @@ import com.leftindust.mockingbird.*
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.graphql.types.Updatable
 import javax.transaction.Transactional
 import mu.KotlinLogging
@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service
 @Transactional
 class ClinicUpdaterServiceImpl(
     private val clinicRepository: ClinicRepository,
+    private val doctorRepository: DoctorRepository,
     private val createAddressService: CreateAddressService,
-    private val readDoctorService: ReadDoctorService,
     private val clinicEntityToClinicConverter: InfallibleConverter<ClinicEntity, Clinic>,
 ) : UpdateClinicService {
     private val logger = KotlinLogging.logger { }
@@ -65,18 +65,18 @@ class ClinicUpdaterServiceImpl(
             }
             is Updatable.Update -> {
                 val doctorIds = doctorsEdit.value
-                val newDoctors = doctorIds.map { it to readDoctorService.getByDoctorId(it) }
+                val newDoctorsToIds = doctorIds.map { it to doctorRepository.findByIdOrNull(it.value) }
+                newDoctorsToIds.forEach {
+                    if (it.second == null)
+                        logger.warn { NoOpUpdatedEntityFieldMessage(clinic, clinic::doctors, "Could not find a doctor with id: ${it.first}") }
+                }
+                val newDoctors = newDoctorsToIds.mapNotNull { it.second }
 
                 clinic.clearDoctors()
 
-                newDoctors.forEach { (id, doctor) ->
-                    if (doctor == null) {
-                        logger.warn { NoOpUpdatedEntityFieldMessage(clinic, clinic::doctors, "Could not find a doctor with id: $id") }
-                    } else {
-                        val clinicDoctorEntity = clinic.addDoctor(doctor)
-                        logger.trace { AddedElementMessage(clinic, clinic::doctors, clinicDoctorEntity) }
-                    }
-
+                newDoctors.forEach {
+                    clinic.addDoctor(it)
+                    logger.trace { AddedElementMessage(clinic, clinic::doctors, it) }
                 }
             }
         }

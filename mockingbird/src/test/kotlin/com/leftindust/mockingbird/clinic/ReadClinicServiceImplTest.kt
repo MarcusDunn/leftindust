@@ -1,10 +1,9 @@
 package com.leftindust.mockingbird.clinic
 
-
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.util.ClinicMother.DansClinic
-import com.leftindust.mockingbird.util.DoctorMother.Jenny
+import com.leftindust.mockingbird.util.DoctorMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -21,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.web.server.SecurityWebFilterChain
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -30,28 +30,31 @@ internal class ReadClinicServiceImplUnitTest {
     private lateinit var clinicRepository: ClinicRepository
 
     @MockK
-    private lateinit var doctorService: ReadDoctorService
+    private lateinit var doctorRepository: DoctorRepository
 
     private val clinicEntityToClinicConverter = ClinicEntityToClinicConverter()
 
     @Test
     internal fun `check getByDoctorId returns a doctor's clinics when the doctor exists`() = runTest {
-        coEvery { doctorService.getByDoctorId(Jenny.graphqlId) } returns Jenny.entityPersisted
-        val readClinicServiceImpl = ReadClinicServiceImpl(clinicEntityToClinicConverter, clinicRepository, doctorService)
-        val clinics = readClinicServiceImpl.getByDoctorId(Jenny.graphqlId)
+        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityPersisted
+        val readClinicService = ReadClinicServiceImpl(clinicEntityToClinicConverter, clinicRepository, doctorRepository)
+        val clinics = readClinicService.getByDoctorId(DoctorMother.Jenny.graphqlId)
 
-        coVerify(exactly = 1) { doctorService.getByDoctorId(Jenny.graphqlId) }
-        assertThat(clinics, containsInAnyOrder(Jenny.clinics.map { equalTo(it.clinic) }))
+        coVerify(exactly = 1) { doctorRepository.findByIdOrNull(DoctorMother.Jenny.graphqlId.value) }
+        assertThat(
+            clinics,
+            containsInAnyOrder(DoctorMother.Jenny.clinics.map { equalTo(clinicEntityToClinicConverter.convert(it)) })
+        )
     }
 
     @Test
     internal fun `check getByDoctorId returns null when no matching doctor exists`() = runTest {
         val someNonExistentUUUid = UUID.fromString("235b4875-92d4-4553-8852-eb8f4b3a887d")
-        coEvery { doctorService.getByDoctorId(match { it.value == someNonExistentUUUid }) } returns null
-        val readClinicServiceImpl = ReadClinicServiceImpl(clinicEntityToClinicConverter, clinicRepository, doctorService)
-        val clinics = readClinicServiceImpl.getByDoctorId(DoctorDto.DoctorDtoId(someNonExistentUUUid))
+        coEvery { doctorRepository.findByIdOrNull(match { it == someNonExistentUUUid }) } returns null
+        val readClinicService = ReadClinicServiceImpl(clinicEntityToClinicConverter, clinicRepository, doctorRepository)
+        val clinics = readClinicService.getByDoctorId(DoctorDto.DoctorDtoId(someNonExistentUUUid))
 
-        coVerify(exactly = 1) { doctorService.getByDoctorId(match { it.value == someNonExistentUUUid }) }
+        coVerify(exactly = 1) { doctorRepository.findByIdOrNull(match { it == someNonExistentUUUid }) }
         assertThat(clinics, nullValue())
     }
 }
@@ -70,11 +73,8 @@ internal class ReadClinicServiceImplDataTest(
     @MockkBean
     private lateinit var securityWebFilterChain: SecurityWebFilterChain
 
-    // create a mock ReadDoctorService, despite the fact this is an integration test.
-    // this is because we are testing the service layer, and we should (alomost) always
-    // mock out things on the same layer, they are tested in their own tests.
     @MockkBean
-    private lateinit var doctorService: ReadDoctorService
+    private lateinit var doctorRepository: DoctorRepository
 
     private val clinicEntityToClinicConverter = ClinicEntityToClinicConverter()
 
@@ -85,7 +85,7 @@ internal class ReadClinicServiceImplDataTest(
         val dansClinic = clinicEntityToClinicConverter.convert(dansClinicEntity)
 
         // create the service under test using the *real* ClinicRepository and a fake ReadDoctorService
-        val readClinicService = ReadClinicServiceImpl(clinicEntityToClinicConverter, clinicRepository, doctorService)
+        val readClinicService = ReadClinicServiceImpl(clinicEntityToClinicConverter, clinicRepository, doctorRepository)
 
         // run the query using the returned Clinic's id (assigned by the database)
         val returnedClinic = readClinicService.getByClinicId(ClinicDto.ClinicDtoId(dansClinic.id))
@@ -101,7 +101,7 @@ internal class ReadClinicServiceImplDataTest(
         val someNonExistentUuid = UUID.fromString("d25292ba-ba8e-4098-8295-806712f70bd1")
 
         // create the service under test using the *real* ClinicRepository and a fake ReadDoctorService
-        val readClinicService = ReadClinicServiceImpl(clinicEntityToClinicConverter, clinicRepository, doctorService)
+        val readClinicService = ReadClinicServiceImpl(clinicEntityToClinicConverter, clinicRepository, doctorRepository)
 
         // run the query using the fake UUID
         val returnedClinic = readClinicService.getByClinicId(ClinicDto.ClinicDtoId(someNonExistentUuid))

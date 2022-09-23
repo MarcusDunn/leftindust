@@ -30,7 +30,7 @@ internal class DoctorAddressQueryControllerTest(
 
     @Test
     internal fun `check can query for doctor address fields`() {
-        coEvery { readDoctorService.getByDoctorId(DoctorMother.Jenny.graphqlId) } returns DoctorMother.Jenny.entityPersisted
+        coEvery { readDoctorService.getByDoctorId(DoctorMother.Jenny.graphqlId) } returns DoctorMother.Jenny.domain
         coEvery { readAddressService.getByDoctorId(DoctorMother.Jenny.graphqlId) } returns listOf(AddressMother.JennysHouse.entityPersisted)
 
         @Language("graphql")

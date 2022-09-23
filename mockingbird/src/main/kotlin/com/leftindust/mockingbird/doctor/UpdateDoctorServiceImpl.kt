@@ -44,14 +44,15 @@ class UpdateDoctorServiceImpl(
     private val createEmailService: CreateEmailService,
     private val readPatientService: ReadPatientService,
     private val updateClinicService: UpdateClinicService,
-    private val readDoctorService: ReadDoctorService
+    private val readDoctorService: ReadDoctorService,
+    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter,
 ) : UpdateDoctorService {
     private val logger = KotlinLogging.logger { }
 
     override suspend fun editDoctor(updateDoctor: UpdateDoctor): Doctor? {
         val doctor = doctorRepository.findById(updateDoctor.did.value).orElse(null)
             ?: run {
-                logger.warn { NoUpdatesOccurredNoEntityWithId(Doctor::class, updateDoctor.did.value) }
+                logger.warn { NoUpdatesOccurredNoEntityWithId(DoctorEntity::class, updateDoctor.did.value) }
                 return null
             }
 
@@ -64,10 +65,10 @@ class UpdateDoctorServiceImpl(
         updateAddresses(updateDoctor.addresses, doctor)
         updateEmails(updateDoctor.emails, doctor)
         updatePatients(updateDoctor.patients, doctor)
-        return doctorRepository.save(doctor)
+        return doctorEntityToDoctorConverter.convert(doctorRepository.save(doctor))
     }
 
-    private suspend fun updatePatients(patients: Updatable<List<PatientDto.PatientDtoId>>, doctor: Doctor) {
+    private suspend fun updatePatients(patients: Updatable<List<PatientDto.PatientDtoId>>, doctor: DoctorEntity) {
         when (patients) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::patients) }
@@ -85,7 +86,7 @@ class UpdateDoctorServiceImpl(
         }
     }
 
-    private suspend fun updateEmails(emails: Updatable<List<CreateEmail>>, doctor: Doctor) {
+    private suspend fun updateEmails(emails: Updatable<List<CreateEmail>>, doctor: DoctorEntity) {
         when (emails) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::emails) }
@@ -100,7 +101,7 @@ class UpdateDoctorServiceImpl(
         }
     }
 
-    private suspend fun updateAddresses(addresses: Updatable<List<CreateAddress>>, doctor: Doctor) {
+    private suspend fun updateAddresses(addresses: Updatable<List<CreateAddress>>, doctor: DoctorEntity) {
         when (addresses) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::addresses) }
@@ -115,11 +116,11 @@ class UpdateDoctorServiceImpl(
         }
     }
 
-    private fun updateDateOfBirth(dateOfBirth: Updatable<LocalDate>, doctor: Doctor) {
+    private fun updateDateOfBirth(dateOfBirth: Updatable<LocalDate>, doctor: DoctorEntity) {
         dateOfBirth.applyDeletable(doctor, doctor::dateOfBirth, logger)
     }
 
-    private suspend fun updateClinics(clinics: Updatable<List<ClinicDto.ClinicDtoId>>, doctor: Doctor) {
+    private suspend fun updateClinics(clinics: Updatable<List<ClinicDto.ClinicDtoId>>, doctor: DoctorEntity) {
         when (clinics) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::clinics) }
@@ -154,11 +155,11 @@ class UpdateDoctorServiceImpl(
         }
     }
 
-    private fun updateTitle(title: Deletable<String>, doctor: Doctor) {
+    private fun updateTitle(title: Deletable<String>, doctor: DoctorEntity) {
         title.applyDeletable(doctor, doctor::title, logger)
     }
 
-    private suspend fun updatePhones(phones: Updatable<List<CreatePhone>>, doctor: Doctor) {
+    private suspend fun updatePhones(phones: Updatable<List<CreatePhone>>, doctor: DoctorEntity) {
         when (phones) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::phones) }
@@ -173,7 +174,7 @@ class UpdateDoctorServiceImpl(
         }
     }
 
-    private suspend fun updateNameInfo(nameInfo: Updatable<UpdateNameInfo>, doctor: Doctor) {
+    private suspend fun updateNameInfo(nameInfo: Updatable<UpdateNameInfo>, doctor: DoctorEntity) {
         when (nameInfo) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::nameInfo) }
@@ -185,7 +186,7 @@ class UpdateDoctorServiceImpl(
     }
 
 
-    private suspend fun updateUserUid(userUid: Deletable<String>, doctor: Doctor) {
+    private suspend fun updateUserUid(userUid: Deletable<String>, doctor: DoctorEntity) {
         when (userUid) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::user) }

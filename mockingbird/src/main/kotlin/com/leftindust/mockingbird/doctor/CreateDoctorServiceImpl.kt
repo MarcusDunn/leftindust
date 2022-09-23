@@ -28,6 +28,7 @@ class CreateDoctorServiceImpl(
     private val createNameInfoService: CreateNameInfoService,
     private val createPhoneService: CreatePhoneService,
     private val readPatientService: ReadPatientService,
+    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter,
 ) : CreateDoctorService {
 
     override suspend fun addDoctor(createDoctor: CreateDoctor): Doctor {
@@ -45,7 +46,7 @@ class CreateDoctorServiceImpl(
             is CreateDoctor.User.NoUser -> null to createNameInfoService.createNameInfo(user.nameInfo)
         }
         val notNullNameInfo = nameInfo ?: user?.nameInfo!!
-        val doctor = Doctor(
+        val doctor = DoctorEntity(
             nameInfo = notNullNameInfo,
             addresses = createDoctor.addresses.map { createAddressService.createAddress(it) }.toMutableSet(),
             emails = createDoctor.emails.map { createEmailService.createEmail(it) }.toMutableSet(),
@@ -66,12 +67,12 @@ class CreateDoctorServiceImpl(
 
             updateClinics(createDoctor.clinic, this)
         }
-        return doctorRepository.save(doctor)
+        return doctorEntityToDoctorConverter.convert(doctorRepository.save(doctor))
     }
 
     private suspend fun updateClinics(
         clinicsEdit: List<ClinicDto.ClinicDtoId>,
-        doctor: Doctor
+        doctor: DoctorEntity
     ) {
         doctor.id ?: throw IllegalArgumentException("Clinic is missing a doctor id")
 

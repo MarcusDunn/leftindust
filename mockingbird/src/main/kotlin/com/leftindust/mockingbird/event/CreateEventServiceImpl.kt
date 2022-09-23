@@ -1,7 +1,8 @@
 package com.leftindust.mockingbird.event
 
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.patient.ReadPatientService
+import org.springframework.data.repository.findByIdOrNull
 import javax.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Service
 @Transactional
 class CreateEventServiceImpl(
     private val eventRepository: HibernateEventRepository,
-    private val readDoctorService: ReadDoctorService,
     private val readPatientService: ReadPatientService,
+    private val doctorRepository: DoctorRepository
 ) : CreateEventService {
     override suspend fun addEvent(createEvent: CreateEvent): Event {
         val patients = createEvent.patients.map {
@@ -18,7 +19,7 @@ class CreateEventServiceImpl(
                 ?: throw IllegalArgumentException("No Patient with id $it")
         }
         val doctors = createEvent.doctors.map {
-            readDoctorService.getByDoctorId(it)
+            doctorRepository.findByIdOrNull(it.value)
                 ?: throw IllegalArgumentException("No Doctor with id $it")
         }
 

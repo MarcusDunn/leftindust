@@ -2,13 +2,14 @@ package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.contact.CreateContactService
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhoneService
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -20,7 +21,7 @@ class CreatePatientServiceImpl(
     private val createEmailService: CreateEmailService,
     private val createPhoneService: CreatePhoneService,
     private val createContactService: CreateContactService,
-    private val readDoctorService: ReadDoctorService,
+    private val doctorRepository: DoctorRepository
 ) : CreatePatientService {
     private val logger = KotlinLogging.logger { }
 
@@ -48,7 +49,7 @@ class CreatePatientServiceImpl(
             .forEach { newPatient.addContact(it) }
 
         patient.doctors
-            .map { it to readDoctorService.getByDoctorId(it) }
+            .map { it to doctorRepository.findByIdOrNull(it.value) }
             .forEach {
                 it.second?.addPatient(newPatient)
                     ?: logger.debug { "did not add a doctor in addNewPatient with ${it.first}" }

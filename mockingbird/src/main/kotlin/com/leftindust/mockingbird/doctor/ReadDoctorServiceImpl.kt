@@ -16,16 +16,18 @@ import org.springframework.stereotype.Service
 class ReadDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
     private val readPatientService: ReadPatientService,
+    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter
 ) : ReadDoctorService {
     private val logger = KotlinLogging.logger { }
 
     override suspend fun getByPatientId(patientDtoId: PatientDto.PatientDtoId): List<Doctor>? {
         val patient = readPatientService.getByPatientId(patientDtoId) ?: return null
-        return patient.doctors.map { it.doctor }
+        return patient.doctors.map { doctorEntityToDoctorConverter.convert(it.doctor) }
     }
 
     override suspend fun getByDoctorId(doctorDtoId: DoctorDto.DoctorDtoId): Doctor? {
-        return doctorRepository.findByIdOrNull(doctorDtoId.value)
+        val doctorEntity = doctorRepository.findByIdOrNull(doctorDtoId.value) ?: return null
+        return doctorEntityToDoctorConverter.convert(doctorEntity)
     }
 
     override suspend fun getByClinicId(clinicDtoId: ClinicDto.ClinicDtoId): List<Doctor>? {
@@ -37,7 +39,10 @@ class ReadDoctorServiceImpl(
     }
 
     override suspend fun getMany(range: RangeDto): List<Doctor> {
-        return doctorRepository.findAll(range.toPageable(Sort.sort(Doctor::class.java).by(Doctor::id))).toList()
+        return doctorRepository
+            .findAll(range.toPageable(Sort.sort(Doctor::class.java).by(Doctor::id)))
+            .map { doctorEntityToDoctorConverter.convert(it) }
+            .toList()
     }
 
     override suspend fun searchByExample(example: GraphQLDoctorExample): List<Doctor> {
