@@ -25,8 +25,6 @@
 
   export let f7router: Router.Router;
 
-  console.log('AAA');
-
   let patients: PartialPatientFragment[];
   let recents: PartialPatientFragment[];
 
@@ -59,8 +57,6 @@
   ).filter(
     (patient): patient is PartialPatientFragment => !!patient,
   ) ?? [];
-
-  $: console.log($request, patients);
 
   query(request);
   query(recentsRequest);

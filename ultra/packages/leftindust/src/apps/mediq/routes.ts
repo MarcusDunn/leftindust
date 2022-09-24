@@ -1,6 +1,7 @@
 import type { Route } from '@/features/View';
 
 import DashboardPage from '@/features/Dashboard/DashboardPage.svelte';
+import CalendarPage from '@/features/Calendar/CalendarPage.svelte';
 import ClientsPage from '@/features/Clients/ClientsPage.svelte';
 
 import TemplatesPage from '@/features/Templates/TemplatesPage.svelte';
@@ -27,6 +28,7 @@ export type Path =
   | '/patient/:data/'
   | '/doctor/:data/'
   | '/people/:data/'
+  | '/calendar/'
   | '/templates/'
   | '/assign/template/'
   | '/template/:data/'
@@ -43,6 +45,10 @@ const routes: Route<Path>[] = [
   {
     path: '/dashboard/',
     component: DashboardPage,
+  },
+  {
+    path: '/calendar/',
+    component: CalendarPage,
   },
   {
     path: '/clients/',
