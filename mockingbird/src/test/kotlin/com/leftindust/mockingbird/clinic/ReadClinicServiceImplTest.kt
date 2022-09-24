@@ -25,13 +25,17 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
+@DataJpaTest
 internal class ReadClinicServiceImplUnitTest {
+
+    @MockkBean
+    private lateinit var httpSecurity: SecurityWebFilterChain
+
     @MockK
     private lateinit var clinicRepository: ClinicRepository
 
     @MockK
     private lateinit var doctorRepository: DoctorRepository
-
     private val clinicEntityToClinicConverter = ClinicEntityToClinicConverter()
 
     @Test
@@ -64,14 +68,15 @@ internal class ReadClinicServiceImplUnitTest {
 // If we had created methods via https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods
 // we would likely test those in isolation from the services that use them.
 @OptIn(ExperimentalCoroutinesApi::class)
+@ExtendWith(MockKExtension::class)
 @DataJpaTest
 internal class ReadClinicServiceImplDataTest(
     @Autowired private val testEntityManager: TestEntityManager,
-    @Autowired private val clinicRepository: ClinicRepository
+    @Autowired private val clinicRepository: ClinicRepository,
 ) {
     // create a mock SecurityWebFilterChain in order to not have to deal with security (we can test that separately)
     @MockkBean
-    private lateinit var securityWebFilterChain: SecurityWebFilterChain
+    private lateinit var httpSecurity: SecurityWebFilterChain
 
     @MockkBean
     private lateinit var doctorRepository: DoctorRepository

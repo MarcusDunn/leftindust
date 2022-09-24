@@ -13,5 +13,5 @@ class CompleteSurveyEntityToCompleteSurvey : InfallibleConverter<CompleteSurveyE
         )
     }
 
-    data class CompleteSurveyImpl(override val id: UUID): CompleteSurvey
+    data class CompleteSurveyImpl(override val id: UUID) : CompleteSurvey
 }

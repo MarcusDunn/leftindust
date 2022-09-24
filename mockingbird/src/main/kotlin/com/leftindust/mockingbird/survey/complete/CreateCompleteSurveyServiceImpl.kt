@@ -15,7 +15,7 @@ class CreateCompleteSurveyServiceImpl(
     private val surveyLinkRepository: SurveyLinkRepository,
     private val completeSurveyEntityToCompleteSurvey: CompleteSurveyEntityToCompleteSurvey,
 ) : CreateCompleteSurveyService {
-    private val logger = KotlinLogging.logger {  }
+    private val logger = KotlinLogging.logger { }
     override suspend fun createCompleteSurvey(createCompleteSurvey: CreateCompleteSurvey): CompleteSurvey? {
         val newCompleteSurvey = CompleteSurveyEntity(
             sections = createCompleteSurvey.completeSurveyTemplateSections
@@ -24,7 +24,7 @@ class CreateCompleteSurveyServiceImpl(
                         inputs = createCompleteSurveySection.completedSurveyInputs
                             .map { createCompleteSurveyInput ->
                                 CompleteSurveySectionInputEntity(
-                                    value = createCompleteSurveyInput.value
+                                    value =  createCompleteSurveyInput.value
                                 )
                             }
                             .toSet()
