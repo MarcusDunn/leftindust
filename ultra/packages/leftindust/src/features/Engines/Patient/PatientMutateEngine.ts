@@ -7,8 +7,12 @@ import type {
   PatientEditMutationMutation,
   PatientFragment
 } from "@/api/server";
-import type { TypedDocumentNode } from "@urql/core"
 
+/**
+ * Adds a patient
+ * @param patient The patient to add
+ * @returns The added patient
+ */
 export const mutateAddPatient = async (patient: PatientInput): Promise<PatientMutationMutation> => {
   const result = await client.mutation(PatientMutationDocument, { patient }).toPromise();
   
@@ -19,6 +23,11 @@ export const mutateAddPatient = async (patient: PatientInput): Promise<PatientMu
   return data;
 }
 
+/**
+ * Edits a patient
+ * @param patient The patient to edit
+ * @returns The edited patient
+ */
 export const mutateEditPatient = async (patient: PatientEditInput): Promise<PatientEditMutationMutation> => {
   const result = await client.mutation(PatientEditMutationDocument, { patient }).toPromise();
 

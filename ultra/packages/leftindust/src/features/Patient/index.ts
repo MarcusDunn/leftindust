@@ -12,6 +12,9 @@ export enum PatientTab {
   Contacts = 'Contacts'
 }
 
+/**
+ * Type of the parameters to create a patient
+ */
 export type CreatePatient = {
   firstName: string,
   middleName?: string,
@@ -27,6 +30,9 @@ export type CreatePatient = {
   insuranceNumber?: string,
 }
 
+/**
+ * Default patient form inputs with CreatePatient type
+ */
 const defaultPatientForm: CreatePatient = {
   firstName: '',
   middleName: '',
@@ -42,6 +48,9 @@ const defaultPatientForm: CreatePatient = {
   insuranceNumber:''
 };
 
+/**
+ * Creates form validator schema for patients
+ */
 const createPatientFormSchema: yup.SchemaOf<CreatePatient> = yup.object({
   firstName: yup.string().required(),
   middleName: yup.string(),
@@ -58,11 +67,18 @@ const createPatientFormSchema: yup.SchemaOf<CreatePatient> = yup.object({
 });
 
 type CreatePatientFormSchema = yup.InferType<typeof createPatientFormSchema>;
+/**
+ * On submit callback for form submit
+ */
 type CreatePatientFormOnSubmit<Data extends Record<string, unknown>> = (
   values: Data,
   context: SubmitContext<Data>
 ) => Promise<unknown> | unknown;
 
+/**
+ * Creates a patient form on submit
+ * @param onSubmit callback for submitting the form
+ */
 export const createPatientForm = (onSubmit: CreatePatientFormOnSubmit<CreatePatientFormSchema>) => {
   return createForm<CreatePatientFormSchema>({
     initialValues: defaultPatientForm,
