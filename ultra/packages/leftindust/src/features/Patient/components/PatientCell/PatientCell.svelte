@@ -1,12 +1,12 @@
 <script lang="ts">
-  import type { PatientsFragment } from '@/api/server';
+  import type { PartialPatientFragment } from '@/api/server';
   
   import Cell from '@/features/UI/components/Cell/Cell.svelte';
   import Boxed from '../../../UI/components/Boxed/Boxed.svelte';
 
   import PatientTags from '../PatientTags/PatientTags.svelte';
 
-  export let patient: PatientsFragment;
+  export let patient: PartialPatientFragment;
   export let link = true;
 </script>
 

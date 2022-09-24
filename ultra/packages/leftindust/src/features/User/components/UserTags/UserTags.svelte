@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { Group } from '@/api/server';
+  import type { MediqGroup } from '@/api/server';
   import { Chip, Icon } from 'framework7-svelte';
 
-  export let group: Partial<Group> | undefined = undefined;
+  export let group: Partial<MediqGroup> | undefined = undefined;
 
   export let outline = false;
   export let small = false;

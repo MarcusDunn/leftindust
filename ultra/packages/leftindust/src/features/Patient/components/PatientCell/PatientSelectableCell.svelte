@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Writable } from 'svelte/types/runtime/store';
 
-  import type { Data, PatientsFragment } from '@/api/server';
+  import type { Data, PartialPatientFragment } from '@/api/server';
 
-  import { createEventDispatcher, tick } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
 
   import { click } from '@/features/Select';
 
@@ -14,8 +14,8 @@
 
   const dispatch = createEventDispatcher();
   
-  export let patient: PatientsFragment;
-  export let patients: PatientsFragment[];
+  export let patient: PartialPatientFragment;
+  export let patients: PartialPatientFragment[];
   export let selected: Writable<Data[]>;
 
   export let multiselect = true;
@@ -24,10 +24,10 @@
 
 <Cell
   title={`${patient.firstName} ${patient?.middleName ? `${patient?.middleName?.charAt(0)}.` : ''} ${patient.lastName}`}
-  selected={$selected.some((selectable) => selectable.id === patient.pid.id)}
+  selected={$selected.some((selectable) => selectable.id === patient.id.value)}
   on:click={(event) => {
-    let selectable = { id: patient.pid.id, type: patient.__typename };
-    let reference = patients.map((item) => ({ id: item.pid.id, type: item.__typename }));
+    let selectable = { id: patient.id.value, type: patient.__typename };
+    let reference = patients.map((item) => ({ id: item.id.value, type: item.__typename }));
 
     $selected = click(event, { selectable, multiselect: multiselect ? { selected: $selected, reference } : undefined });
 

@@ -1,5 +1,0 @@
-fragment email on Email {
-  __typename
-  type
-  email
-}

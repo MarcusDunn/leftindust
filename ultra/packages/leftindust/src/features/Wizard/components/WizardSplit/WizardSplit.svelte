@@ -14,7 +14,7 @@
   export let subtitle: string | undefined = undefined;
   export let color: Color = 'purple';
 
-  export let disabled = true;
+  export let disabled = false;
 
   const scroll = (node: HTMLElement): void => {
     const page = node;

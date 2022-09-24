@@ -4,7 +4,7 @@
 
   import { AppPopups, AppViews, AppRootRoutes } from '../../';
   import { getFirebaseUserDatabaseAndSignIn } from '@/features/Account';
-  import { auth, client, database, Month, Sex } from '@/api/server';
+  import { auth, client, database } from '@/api/server';
   import { account, signInStatus } from '@/features/Account/store';
   
   import { onAuthStateChanged } from 'firebase/auth';
@@ -48,7 +48,7 @@
   });
 
   // Everytime user account information changes, update the firebase db
-  $: if ($account) void set(ref(database, `users/${$account.uid}`), $account.database);
+  $: if ($account) void set(ref(database, `users/${$account.id.value}`), $account.database);
     
   f7ready(() => {
     observeWindowErrors();
@@ -66,7 +66,7 @@
 
 <App {...{ id, theme, routes, autoDarkMode }}>
   <Dragbar />
-  <LoginScreen opened={!$account?.isRegistered && showLoginScreen}>
+  <LoginScreen opened={!$account?.accountDetails?.isRegistered && showLoginScreen}>
     <View url="/account/login/" />
   </LoginScreen>
   
@@ -74,7 +74,7 @@
     <View url={AppRootRoutes.LifeCycleError} iosSwipeBack={false} />
   </Popup>
 
-  {#if $account?.isRegistered || !showLoginScreen}
+  {#if $account?.accountDetails?.isRegistered || !showLoginScreen}
     <Popup id={AppPopups.Default} closeByBackdropClick={false}>
       <View id={AppViews.Popup} iosSwipeBack={false} />
     </Popup>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Popover as PopoverType, View as ViewType } from 'framework7/types';
-  import type { MenuNodes } from '../..';
+  import type { MenuNode, MenuNodes } from '../..';
   import Popover from '@/features/View/components/Popover/Popover.svelte';
   import { Block, Col, Icon, List, ListItem, Row, View } from 'framework7-svelte';
   import Boxed from '@/features/UI/components/Boxed/Boxed.svelte';
@@ -10,11 +10,13 @@
   import { _ } from '@/language';
   import NodesSelectorModalPage from './NodesSelectorModalPage.svelte';
   import { createEventDispatcher, onMount } from 'svelte';
-  import { temporarySelectedNode } from './store';
   import { isDarkMode } from '@/features/UI/store';
+  import { writable, type Writable } from 'svelte/store';
 
   export let menuNodes: MenuNodes;
   export let instance: PopoverType.Popover | undefined = undefined;
+
+  let temporarySelectedNode: Writable<MenuNode[]> = writable([]);
 
   let viewRef: View;
   let view: ViewType.View;
@@ -62,6 +64,7 @@
                   on:click={() => view.router.navigate(`/${index}/`, {
                     props: {
                       nodes: section.nodes,
+                      temporarySelectedNode,
                     },
                   })}
                 >

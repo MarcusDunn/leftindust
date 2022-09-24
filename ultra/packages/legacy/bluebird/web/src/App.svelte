@@ -63,7 +63,7 @@
   $: if ($ACCOUNT) 
     void realtime.ref(`users/${$ACCOUNT.uid}`).set($ACCOUNT.database);
 
-  $: if ($ACCOUNT?.isRegistered && !$ACCOUNT?.database.settings.setup)
+  $: if ($account?.accountDetails?.isRegistered && !$ACCOUNT?.database.settings.setup)
     f7ready(() => setTimeout(() => openPopupUrl('/setup/'), 100));
 
   $: observeHistory();
@@ -76,11 +76,11 @@
   autoDarkTheme: f7params.autoDarkTheme,
 }}>
   <DragBarUI />
-  <LoginScreen opened={!$ACCOUNT?.isRegistered}>
+  <LoginScreen opened={!$account?.accountDetails?.isRegistered}>
     <View url="/login/" />
   </LoginScreen>
 
-  {#if $ACCOUNT?.isRegistered}
+  {#if $account?.accountDetails?.isRegistered}
     <Popup id={AppPopups.Default} closeByBackdropClick={false}>
       <View id={AppViews.Popup} iosSwipeBack={false} />
     </Popup>

@@ -1,7 +1,0 @@
-#import "../fragments/doctorFragment.graphql"
-
-mutation doctorEditMutation($doctor: DoctorEditInput!) {
-    editDoctor(doctor: $doctor) {
-        ...doctor
-    }
-}

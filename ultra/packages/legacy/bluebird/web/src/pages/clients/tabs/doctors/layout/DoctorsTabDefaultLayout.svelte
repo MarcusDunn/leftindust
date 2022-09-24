@@ -38,7 +38,7 @@
 
     <RequestLayout {...$request} refetch={request.refetch}>
       <DoctorsTabSelectableList
-        doctors={$request.data?.doctors || []}
+        doctors={$request.data?.doctorsByDoctorIds || []}
         selected={ClientsSelected}
         on:navigate={() => {
           updateRecents('Doctor', $ClientsSelected.filter((client) => client.type === 'Doctor')[0].id);

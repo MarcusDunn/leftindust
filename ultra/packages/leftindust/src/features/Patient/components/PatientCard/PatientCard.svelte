@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { CardProps } from '@/features/Widgets';
   import type { Popup } from 'framework7/types';
-  import { PatientsQueryDocument, type PatientsFragment } from '@/api/server';
+  import { PartialPatientsByPatientIdQueryDocument, type PartialPatientFragment } from '@/api/server';
   
   import { _ } from '@/language';
   import { pin, pinned } from '@/features/Pin';
@@ -27,15 +27,15 @@
   const { data, dragger, reference, attachments, quicklook } = $$props as CardProps;
 
   let quicklookPopup: Popup.Popup;
-  let patient: PatientsFragment;
+  let patient: PartialPatientFragment;
 
-  const request = operationStore(PatientsQueryDocument, {
-    pids: [{ id: data.id }],
+  const request = operationStore(PartialPatientsByPatientIdQueryDocument, {
+    patientIds: [{ value: data.id }],
   });
 
   query(request);
 
-  $: if ($request.data?.patients[0]) patient = $request.data?.patients[0];
+  $: if ($request.data?.patientsByPatientId[0]) patient = $request.data?.patientsByPatientId[0];
 
   const url = `/patient/${JSON.stringify(data)}/`;
 </script>
@@ -79,11 +79,11 @@
     {#if reference}
       <PinButton
         pinned={pinned({
-          id: patient.pid.id,
+          id: patient.id.value,
           type: patient.__typename,
         }, reference)}
         on:pin={({ detail }) => reference && pin(detail, {
-          id: patient.pid.id,
+          id: patient.id.value,
           type: patient.__typename,
         }, reference)}
       />

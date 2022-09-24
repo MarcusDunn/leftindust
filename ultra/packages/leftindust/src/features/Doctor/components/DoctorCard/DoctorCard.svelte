@@ -20,22 +20,22 @@
   import Quicklook from '@/features/View/components/Quicklook/Quicklook.svelte';
   import Boxed from '@/features/UI/components/Boxed/Boxed.svelte';
   import PinButton from '@/features/Pin/components/PinButton/PinButton.svelte';
-  import { type DoctorsFragment, DoctorsQueryDocument } from '@/api/server';
+  import { type PartialDoctorFragment, PartialDoctorsByDoctorIdQueryDocument } from '@/api/server';
   import { operationStore, query } from '@urql/svelte';
 
   const { data, dragger, reference, attachments, quicklook } = $$props as CardProps;
 
   let quicklookPopup: Popup.Popup;
 
-  let doctor: DoctorsFragment;
+  let doctor: PartialDoctorFragment;
 
-  const request = operationStore(DoctorsQueryDocument, {
-    dids: [{ id: data.id }],
+  const request = operationStore(PartialDoctorsByDoctorIdQueryDocument, {
+    doctorIds: [{ value: data.id }],
   });
 
   query(request);
 
-  $: if ($request.data?.doctors[0]) doctor = $request.data?.doctors[0];
+  $: if ($request.data?.doctorsByDoctorIds[0]) doctor = $request.data?.doctorsByDoctorIds[0];
 
   const url = `/doctor/${JSON.stringify(data)}/`;
 
@@ -82,11 +82,11 @@
     {#if reference}
       <PinButton
         pinned={pinned({
-          id: doctor.did.id,
+          id: doctor.id?.value,
           type: doctor.__typename,
         }, reference)}
         on:pin={({ detail }) => reference && pin(detail, {
-          id: doctor.did.id,
+          id: doctor.id?.value,
           type: doctor.__typename,
         }, reference)}
       />

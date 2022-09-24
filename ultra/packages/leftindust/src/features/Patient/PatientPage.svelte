@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
-  import { PatientQueryDocument, type Data, type PatientFragment } from '@/api/server';
+  import { PatientsByPatientIdQueryDocument, type Data, type PatientFragment } from '@/api/server';
   
   import { account } from '../Account/store';
   import { ClientTab } from '../Client';
@@ -39,11 +39,11 @@
 
   const data: Data = JSON.parse(f7route.params.data ?? '{}');
 
-  const request = operationStore(PatientQueryDocument, {
-    pids: [{ id: data.id }],
+  const request = operationStore(PatientsByPatientIdQueryDocument, {
+    patientIds: [{ value: data.id }],
   });
 
-  $: patient = $request.data?.patients[0];
+  $: patient = $request.data?.patientsByPatientId[0];
 
   query(request);
 </script>
@@ -124,21 +124,21 @@
       </Boxed>
       <PatientTags slot="tags" {...patient} />
       <EntityTable
-        phones={patient?.phones}
+        phones={patient?.phoneNumbers}
         emails={patient?.emails}
         addresses={patient?.addresses}
       />
       <div slot="drawer">
         {#key $account}
-          {#if $account.database.layout.pinned['Patient']?.[patient?.pid.id]?.length ?? 0 > 0}
+          {#if $account.database.layout.pinned['Patient']?.[patient?.id.value]?.length ?? 0 > 0}
             <SpecificGrid
-              props={$account.database.layout.pinned['Patient']?.[patient?.pid.id]?.map(({ type, id }) => {
+              props={$account.database.layout.pinned['Patient']?.[patient?.id.value]?.map(({ type, id }) => {
                 if (type) {
                   return {
                     id: type,
                     data: { id, type },
                     reference: {
-                      id: patient?.pid.id,
+                      id: patient?.id.value,
                       type: 'Patient',
                     },
                     quicklook,
@@ -148,14 +148,16 @@
               type={WidgetType.Card}
             />
           {:else}
-            <DescriptivePlaceholder
-              title={$_('generics.noPinned')}
-              description={$_('descriptions.addPinned')}
-              link={{
-                label: $_('descriptions.learnMorePinning'),
-                href: '#',
-              }}
-            />
+            <div style="margin-top: 40px">
+              <DescriptivePlaceholder
+                title={$_('generics.noPinned')}
+                description={$_('descriptions.addPinned')}
+                link={{
+                  label: $_('descriptions.learnMorePinning'),
+                  href: '#',
+                }}
+              />
+            </div>
             <br />
           {/if}
         {/key}
@@ -165,6 +167,15 @@
       <Tab tabActive={layout === Layout.Bundled}>
         <Block style="margin-left: 25px;margin-right: 25px">
           <Tabs>
+            <Tab tabActive={tab === ClientTab.Records}>
+              <GenericGrid
+                props={{ id: 'CompleteSurvey', data, quicklook }}
+                type={WidgetType.Bundle}
+                dataType={['CompleteSurvey']}
+                category={[WidgetCategory.Record]}
+                store
+              />
+            </Tab>
             <Tab tabActive={tab === ClientTab.Contacts}>
               <GenericGrid
                 props={{ id: 'Patient', data, quicklook }}

@@ -26,7 +26,7 @@ const language: Dictionary = {
     learnMoreDoctors: 'Learn more about adding doctors...',
   },
   errors: {
-    connectionError: 'We\'re having issues connecting to MedIQ. If your clinic is registered to a VPN, ensure you are connected and try again.',
+    connectionError: 'We\'re having issues connecting to our servers. If your clinic is registered to a VPN, ensure you are connected and try again.',
     runtimeError: 'The application has run into an unexpected issue. Click "Reload" to refresh the application, or "Report" for us to take a look.',
     internalError: 'Something went wrong.',
     loginIncorrectFields: 'Incorrect email or password. You can reset your password by contacting your administrator.',
@@ -158,6 +158,8 @@ const language: Dictionary = {
     export: 'Export',
     share: 'Share',
     poweredByDust: 'Powered by leftindust',
+    complete: 'Complete',
+    submit: 'Submit',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',

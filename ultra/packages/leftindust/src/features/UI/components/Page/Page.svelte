@@ -5,6 +5,8 @@
 
   export let style = '';
 
+  export let instance: HTMLDivElement | undefined = undefined;
+
   const scroll = (node: HTMLElement): void => {
     const page = (node.parentNode as HTMLElement).getElementsByClassName('ui-page')[0] as HTMLElement;
 
@@ -44,7 +46,7 @@
 
 <Page {...$$restProps} on:pageAfterIn>
   <slot name="fixed" />
-  <div class="ui-page" {style} use:scroll>
+  <div class="ui-page" {style} use:scroll bind:this={instance}>
     <slot />
   </div>
 </Page>

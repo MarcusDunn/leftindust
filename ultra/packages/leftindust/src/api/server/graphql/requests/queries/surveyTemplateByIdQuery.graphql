@@ -1,0 +1,7 @@
+#import "../fragments/templateFragment.graphql"
+
+query surveyTemplateByIdQuery($surveyTemplateId: SurveyTemplateIdInput!) {
+    surveyTemplateById(surveyTemplateId: $surveyTemplateId) {
+      ...templateFragment
+    }
+}

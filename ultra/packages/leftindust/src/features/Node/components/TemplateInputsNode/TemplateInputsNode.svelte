@@ -1,47 +1,64 @@
 <script lang="ts">
-  import { TemplateInputItems } from '@/features/Templates/store';
+  import { Template } from '@/features/Template/store';
 
-  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, TemplateInputType, type TemplateCalculationSockets } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, type TemplateCalculationSockets } from '@/features/Template';
   import type { Editor, OutputSocket, OutputSockets } from 'function-junctions/types';
   import { _ } from '@/language';
   import { ListItem } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import Input from '@/features/Input/Input.svelte';
+  import { SurveyTemplateInputType } from '@/api/server';
   import { get } from 'svelte/store';
 
   export let outputs: OutputSockets<{
     Values: OutputSocket<unknown[]>;
+    Indexes: OutputSocket<number[]>;
   }>;
 
   export let editor: Editor;
   
   const { value: Values } = outputs.Values;
+  const { value: Indexes } = outputs.Indexes;
 
   let rerenderSmartSelect = false;
   let smartSelectOpen = false;
   
   export let store: {
-    type: TemplateInputType;
-    ids: string[];
+    type: SurveyTemplateInputType;
+    ids: number[];
+    options: Record<string, string[] | undefined>;
   } = {
-    type: TemplateInputType.Text,
+    type: SurveyTemplateInputType.Text,
     ids: [],
+    options: {},
   };
 
   let prevType = store.type;
 
-  $: inputs = $TemplateInputItems.sections.flatMap((section, index) =>
-    section.inputs.map((input, inputIndex) => ({
-      ...input,
-      sectionIndex: index,
-      index: inputIndex,
-      label: `${input.label}${
-        $TemplateInputItems.sections.length > 1
-          // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-          ? ` (${$_('generics.sectionIndexed', { values: { number: index + 1 } })})`
-          : ''
-      }`,
-    })),
+  $: inputs = $Template.sections.flatMap((section, index) =>
+    section.inputs.map((input, inputIndex) => {
+      if (
+        (input.type === SurveyTemplateInputType.SingleSelect
+          || input.type === SurveyTemplateInputType.MultiSelect)
+          && store.ids.includes(input.id)
+      ) {
+        store.options[input.id] = input.options;
+      } else {
+        if (store.options[input.id]) delete store.options[input.id];
+      }
+
+      return {
+        ...input,
+        sectionIndex: index,
+        index: inputIndex,
+        label: `${input.label}${
+          $Template.sections.length > 1
+            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+            ? ` (${$_('generics.sectionIndexed', { values: { number: index + 1 } })})`
+            : ''
+        }`,
+      };
+    }),
   ).filter((input) => input.type === store.type);
 
   $: $Values = store.ids.map(
@@ -64,13 +81,34 @@
     prevType = store.type;
   }
 
+  $: {
+    if (store.type === SurveyTemplateInputType.SingleSelect) {
+      const indexes: number[] = store.ids.map((id) => {
+        const index = inputs.findIndex((input) => input.id === id);
+        const value = editor.inputs?.[id]?.value ? get(editor.inputs[id].value) as string[] : undefined;
+
+        if (index === -1 || !value) return undefined;
+
+        return inputs[index].options.findIndex((option) => option === value[0]) + 1;
+      }).filter((value): value is number => value !== undefined);
+
+      $Indexes = indexes;
+      outputs.Indexes.disabled = false;
+    } else {
+      $Indexes = [];
+      outputs.Indexes.disabled = true;
+    }
+  }
+
   // Rerendering bug with key to preserve smartSelect instance when open
   $: inputs, (() => {
     if (!smartSelectOpen) rerenderSmartSelect =  !rerenderSmartSelect;
   })();
+
+  $: console.log(store);
 </script>
 
-<div style="min-width: 430px">
+<div style="min-width: 430px; max-width: 430px">
   <Select
     title={$_('generics.type')}
     placeholder={$_('examples.text')}
