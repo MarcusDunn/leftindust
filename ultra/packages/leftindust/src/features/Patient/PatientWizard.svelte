@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Data, PatientQueryQuery } from '@/api/server';
+  import type { Data } from '@/api/server';
 
   import { _ } from '@/language';
 
@@ -20,15 +20,13 @@
   import { createPatientForm } from './';
   import DatePicker from '../Input/components/Date/DatePicker.svelte';
   import type { Router } from 'framework7/types';
-  import { operationStore } from '@urql/svelte';
-  import { writable } from 'svelte/store';
-  import { queryPatient } from '../Engines/Patient/PatientQueryEngine'
-  import { onMount } from 'svelte';
 
   let patient: Patient;
 
   const { form, data: formData, handleSubmit } = createPatientForm((form) => {
-    console.log(`submitted: ${form}`);
+    const dateOfBirth = form.dateOfBirth;
+    if(!dateOfBirth.day || !dateOfBirth.month || !dateOfBirth.year) throw new Error('Date of birth is not filled in');
+
     mutateAddPatient({
       nameInfo: {
         firstName: form.firstName,
@@ -38,9 +36,9 @@
       sex: form.sex,
       gender: form.genderIdentity,
       dateOfBirth: {
-        day: form.day,
-        month: form.month,
-        year: form.year,
+        day: dateOfBirth.day,
+        month: dateOfBirth.month,
+        year: dateOfBirth.year,
       },
       ethnicity: form.ethnicity
     });
@@ -50,9 +48,6 @@
   export let f7route: Router.Route;
 
   const data: Data = JSON.parse(f7route.params.data ?? '{}');
-
-  $: console.log(`patient ${JSON.stringify(patient)}`);
-  $: console.log(`formData ${JSON.stringify(formData)}`)
 
   let ref: HTMLFormElement;
 </script>
@@ -85,6 +80,7 @@
                   <Input>
                     <input type="text" name="lastName" placeholder="Last Name" />
                   </Input>
+                  <p />
                 </Col>
                 <Col width="100" medium="50">
                   <Select
@@ -172,6 +168,7 @@
                 </Col>
               </Row>
               <Col width="100">
+                <p />
                 <Input>
                   <input type="text" name="insuranceNumber" placeholder="Insurance Number (Optional)" />
                 </Input>

@@ -35,7 +35,7 @@
   on:submit={() => ref?.requestSubmit()}
 > 
   <form use:form on:submit="{handleSubmit}" bind:this="{ref}">
-    <Block style="margin-top: 60px">
+    <Block style="margin-top: 100px">
       <Block>
         <h4>Identification</h4>
         <Row>
@@ -45,19 +45,16 @@
                 <Input>
                   <input type="text" name="firstName" placeholder="First Name" />  
                 </Input>
-                <p />
               </Col>
               <Col width="100" medium="33">
                 <Input>
                   <input type="text" name="middleName" placeholder="Middle Name (Optional)" />
                 </Input>
-                <p />
               </Col>
               <Col width="100" medium="33">
                 <Input>
                   <input type="text" name="lastName" placeholder="Last Name" />
                 </Input>
-                <p />
               </Col>
             </Row>
           </Col>
@@ -67,7 +64,6 @@
                 <Input>
                   <input type="text" name="title" placeholder="Title" />
                 </Input>
-                <p />
               </Col>
             </Row>
           </Col>

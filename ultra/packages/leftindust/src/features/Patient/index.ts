@@ -42,14 +42,16 @@ const defaultPatientForm: CreatePatient = {
   insuranceNumber:''
 };
 
-const createPatientFormSchema = yup.object({
+const createPatientFormSchema: yup.SchemaOf<CreatePatient> = yup.object({
   firstName: yup.string().required(),
   middleName: yup.string(),
   lastName: yup.string().required(),
-  day: yup.number().required(),
-  month: yup.mixed<Month>().oneOf(Object.values(Month)).required(),
-  year: yup.number().required(),
   ethnicity: yup.mixed<Ethnicity>().oneOf(Object.values(Ethnicity)),
+  dateOfBirth: yup.object({
+    day: yup.number().required(),
+    month: yup.mixed<Month>().oneOf(Object.values(Month)).required(),
+    year: yup.number().required(),
+  }),
   sex: yup.mixed<Sex>().oneOf(Object.values(Sex)).required(),
   genderIdentity: yup.string(),
   insuranceNumber: yup.string(),
