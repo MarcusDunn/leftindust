@@ -32,7 +32,9 @@
       color: 'blue',
     },
     onClick: () => {
-      openPopupUrl('/assign/template/');
+      openPopupUrl('/assign/template/', {
+        data,
+      });
     /*
       client.mutation(CreateSurveyLinkMutationDocument, {
         surveyTemplateId: { value: data.id },
