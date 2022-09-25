@@ -5,13 +5,13 @@ import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.person.Relationship
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.email.Email
-import com.leftindust.mockingbird.patient.Patient
+import com.leftindust.mockingbird.patient.PatientEntity
 import javax.persistence.*
 
 @Entity
 class Contact(
     @ManyToOne(optional = false)
-    var patient: Patient?,
+    var patient: PatientEntity?,
     @Enumerated(EnumType.STRING)
     var relationship: Relationship,
     @OneToOne
