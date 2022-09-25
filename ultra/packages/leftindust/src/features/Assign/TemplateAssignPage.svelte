@@ -107,7 +107,7 @@
             style="width: 260px;"
             on:click={generateLink}
           >
-            <Icon style="margin-right: 4px" f7="link" /> Generate Link
+            <Icon style="margin-right: 4px" f7="link" /> Send Link
           </Button>
         {:else}
           <Button
@@ -117,7 +117,7 @@
             style="width: 260px;"
             on:click={goBackToGenerateLink}
           >
-            <Icon style="margin-right: 4px" f7="link" /> Generate another Link
+            <Icon style="margin-right: 4px" f7="link" /> Send another Link
           </Button>
         {/if}
       </div>

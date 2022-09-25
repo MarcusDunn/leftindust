@@ -67,11 +67,13 @@
           icon: { f7: 'pencil_outline', color: 'gray' },
           condense: true,
         },
+      /*
         {
           title: $_('generics.create'),
           icon: { f7: 'plus_circle_fill', color: 'purple' },
           condense: true,
         },
+        */
       ] : []}
     >
       <svelte:fragment slot="left">
