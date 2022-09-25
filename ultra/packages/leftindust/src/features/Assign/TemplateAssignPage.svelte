@@ -26,6 +26,8 @@
   let link = '';
   let patient: PatientFragment | undefined;
 
+  let linkInputRef: HTMLInputElement;
+
   const request = operationStore(PartialPatientsByRangeQueryDocument, {
     range: defaultRangeInput,
   });
@@ -56,7 +58,7 @@
           .toPromise().then(({ data: patientValue }) => {
             if (!patientValue) return;
 
-            link = `/apps/intake/?id=${surveyLinkData.createSurveyLink.id.value}`;
+            link = `${window.location.host}/apps/intake/?id=${surveyLinkData.createSurveyLink.id.value}`;
             patient = patientValue.patientsByPatientId[0];
             generated = true;
           }).catch((error) => {
@@ -124,7 +126,7 @@
   {#if !generated}
     {#if patients.length > 0}
       <Block style="margin-left: 15px;margin-right: 15px">
-        <Row class="no-gutter">
+        <Row>
           {#each patients as patient}
             <Col width="50" style="margin-bottom: 10px">
               <PatientCheckboxCell {patient} bind:selected={$selected} />
@@ -166,12 +168,17 @@
               placeholder="Generating Link..."
               readonly
               value={link}
+              bind:this={linkInputRef}
             />
             <Button
               round
               outline
               color="blue"
               style="margin-right: 10px"
+              on:click={() => {
+                linkInputRef.select();
+                document.execCommand('copy');
+              }}
             >
               <Icon f7="doc_on_doc_fill" style="margin-right: 4px" /> Copy
             </Button>
@@ -184,7 +191,8 @@
               round
               fill
               style="margin-right: 10px"
-              on:click={() =>( window.location.href = `mailto:${patient?.emails[0].email}`)}
+              on:click={() =>(window.location.href = `mailto:${patient?.emails[0].email}`)}
+              disabled
             >
               <Icon f7="envelope_fill" style="margin-right: 4px" /> Email
             </Button>
@@ -198,10 +206,12 @@
                   `sms:${patient?.phoneNumbers[0].number}
                   &body=${generateSmsMessageBodyText(patient?.firstName ?? '', link)}
                   `)}
+              disabled
             >
               <Icon f7="bubble_left_fill" style="margin-right: 4px" /> Text/SMS
             </Button>
           </div>
+          <p>Auto-messaging and emailing has been disabled by your administrator</p>
         {/if}
       </div>
     </Block>

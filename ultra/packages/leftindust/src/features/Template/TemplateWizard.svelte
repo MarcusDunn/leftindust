@@ -37,7 +37,7 @@
   on:close={() => closeWizardHandler()}
 >
   <svelte:fragment slot="appbar">
-    {#if !$TemplateNodesModalOpen}
+    {#if !$TemplateNodesModalOpen && false}
       <div transition:fade={{ duration: 100 }}>
         <Segmented
           strong
