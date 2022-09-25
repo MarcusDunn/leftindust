@@ -18,8 +18,8 @@ object SurveyLinkMother {
         val graphqlId = SurveyLinkDto.SurveyLinkDtoId(id)
         val surveyTemplateEntityDetached = KoosKneeSurvey.entityDetached
         val surveyTemplateEntityTransient = KoosKneeSurvey.entityTransient
-        val patientDetached = Dan.entityDetached
-        val patientTransient = Dan.entityTransient
+        val patientDetached = Dan.domainEntityDetached
+        val patientTransient = Dan.domainEntityTransient
 
         val createDto = CreateSurveyLinkDto(
             patientId = Dan.graphqlId,
