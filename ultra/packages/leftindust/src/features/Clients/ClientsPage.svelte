@@ -63,7 +63,7 @@
 	
     <AppBar>
       <Searchbar
-        class="color-purple"
+        class="color-purple disabled"
         customSearch
         inline
         disableButton={false}
@@ -75,7 +75,7 @@
         <MenuButton
           title={$_('generics.filter')}
           icon={{ f7: 'line_horizontal_3_decrease_circle_fill' }}
-          disabled={$clientsSelectedTab === ClientsTab.Doctors}
+          disabled
         />
         {#if !$wizardOpen}
           <MenuButton

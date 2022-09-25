@@ -26,13 +26,15 @@
 
   const menuItems: MenuItem[] = [{
     title: 'Send Link',
-    text: 'Generate a link to send to somebody outside of this clinic',
+    text: 'Send a link to somebody outside of this clinic',
     icon: {
       f7: 'link_circle_fill',
       color: 'blue',
     },
     onClick: () => {
-      openPopupUrl('/assign/template/');
+      openPopupUrl('/assign/template/', {
+        data,
+      });
     /*
       client.mutation(CreateSurveyLinkMutationDocument, {
         surveyTemplateId: { value: data.id },
