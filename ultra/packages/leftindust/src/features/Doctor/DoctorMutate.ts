@@ -1,7 +1,7 @@
 import { client, DoctorEditMutationDocument, DoctorMutationDocument, type Doctor, type DoctorEditInput, type DoctorInput } from '@/api/server';
 import { sendTrigger } from '@/features/Triggers';
 
-const doctorMutateEngine = async (doctor: DoctorInput | DoctorEditInput, edit = false): Promise<boolean> => {
+const mutateAddDoctor = async (doctor: DoctorInput | DoctorEditInput, edit = false): Promise<boolean> => {
   const result = await client
     .mutation<Record<'addDoctor' | 'editDoctor', Doctor>>(edit ? DoctorEditMutationDocument : DoctorMutationDocument, {
       variables: {
@@ -19,4 +19,4 @@ const doctorMutateEngine = async (doctor: DoctorInput | DoctorEditInput, edit = 
   }
 };
 
-export default doctorMutateEngine;
+export default mutateAddDoctor;

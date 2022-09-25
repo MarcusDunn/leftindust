@@ -7,11 +7,10 @@
     Ethnicity,
     Month,
     Sex,
-    type Patient,
   } from '@/api/server/graphql/schema/leftindust.schema';
 
   import { Row, Col, Block } from 'framework7-svelte';
-  import { mutateAddPatient } from '../Engines/Patient/PatientMutateEngine';
+  import { mutateAddPatient } from './PatientMutate';
 
   import Input from '../Input/Input.svelte';
   import Select from '../Input/components/Select/Select.svelte'

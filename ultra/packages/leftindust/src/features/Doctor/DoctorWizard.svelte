@@ -4,7 +4,7 @@
   import { _ } from '@/language';
 
   import { Row, Col, Block } from 'framework7-svelte';
-  import doctorMutateEngine from '../Engines/Doctor/DoctorMutateEngine';
+  import doctorMutateEngine from './DoctorMutate';
 
   import Input from '../Input/Input.svelte';
   import Wizard from '../Wizard/Wizard.svelte';
