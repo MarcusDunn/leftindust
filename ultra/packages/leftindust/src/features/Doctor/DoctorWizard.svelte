@@ -39,28 +39,24 @@
       <Block>
         <h4>Identification</h4>
         <Row>
-          <Col xlarge="50" width="100">
+          <Col width="100">
             <Row>
-              <Col width="100" medium="33">
+              <Col width="100" medium="20">
                 <Input>
                   <input type="text" name="firstName" placeholder="First Name" />  
                 </Input>
               </Col>
-              <Col width="100" medium="33">
+              <Col width="100" medium="20">
                 <Input>
                   <input type="text" name="middleName" placeholder="Middle Name (Optional)" />
                 </Input>
               </Col>
-              <Col width="100" medium="33">
+              <Col width="100" medium="20">
                 <Input>
                   <input type="text" name="lastName" placeholder="Last Name" />
                 </Input>
               </Col>
-            </Row>
-          </Col>
-          <Col xlarge="50" width="100">
-            <Row>
-              <Col width="100">
+              <Col width="40">
                 <Input>
                   <input type="text" name="title" placeholder="Title" />
                 </Input>

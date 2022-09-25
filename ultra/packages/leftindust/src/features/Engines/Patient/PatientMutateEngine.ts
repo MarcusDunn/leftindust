@@ -1,11 +1,9 @@
 import { client, PatientEditMutationDocument, PatientMutationDocument } from "@/api/server";
 import type {
-  Patient,
   PatientInput,
   PatientEditInput,
   PatientMutationMutation,
   PatientEditMutationMutation,
-  PatientFragment
 } from "@/api/server";
 
 /**

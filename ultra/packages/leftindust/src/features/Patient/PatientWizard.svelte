@@ -21,11 +21,9 @@
   import DatePicker from '../Input/components/Date/DatePicker.svelte';
   import type { Router } from 'framework7/types';
 
-  let patient: Patient;
-
   const { form, data: formData, handleSubmit } = createPatientForm((form) => {
     const dateOfBirth = form.dateOfBirth;
-    if(!dateOfBirth.day || !dateOfBirth.month || !dateOfBirth.year) throw new Error('Date of birth is not filled in');
+    if(!dateOfBirth || !dateOfBirth.day || !dateOfBirth.month || !dateOfBirth.year) throw new Error('Date of birth is not filled in');
 
     mutateAddPatient({
       nameInfo: {
@@ -49,6 +47,21 @@
 
   const data: Data = JSON.parse(f7route.params.data ?? '{}');
 
+  let dateOfBirthTime: number | undefined;
+  let dateOfBirthDate: Date;
+  
+  // DatePicker sets the date as a millisecond number, here we convert to a date when it is updated
+  $: if (dateOfBirthTime) {
+    dateOfBirthDate = new Date(dateOfBirthTime);
+    const month = Object.values(Month).at(dateOfBirthDate.getMonth());
+    if(!month) throw new Error(`Could not convert number ${dateOfBirthDate.getMonth()} to a month`);
+    $formData.dateOfBirth = {
+      day: dateOfBirthDate.getDate(),
+      month: month,
+      year: dateOfBirthDate.getFullYear()
+    };
+  }
+
   let ref: HTMLFormElement;
 </script>
 
@@ -64,7 +77,7 @@
         <Block>
           <h4>Identification</h4>
           <Row>
-            <Col xlarge="50" width="100">
+            <Col width="100">
               <Row>              
                 <Col width="100" medium="33">
                   <Input>
@@ -115,28 +128,11 @@
                   />
                 </Col>
                 <Col width="100" medium="50">
-                  <DatePicker
-                    placeholder="Birth Date"
-                    title="Select Birth Date"
+                  <DatePicker 
+                    title="Birth Date" 
+                    placeholder="Select Birth Date" 
                     pastOnly
-                    value={
-                      patient
-                        ? new Date(formData.dateOfBirth.toUtcTime.unixMilliseconds).getTime()
-                        : undefined
-                    }
-                    on:change={({ detail }) => {
-                      const date = new Date(detail);
-
-                      const day = date.getDate();
-                      const month = Object.values(Month)[date.getMonth()];
-                      const year = date.getFullYear();
-
-                      formData.dateOfBirth = {
-                        day,
-                        month,
-                        year
-                      };
-                    }}
+                    bind:value={dateOfBirthTime}
                   />
                 </Col>
               </Row>
