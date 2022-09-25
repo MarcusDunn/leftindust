@@ -192,7 +192,7 @@ export const resolversArray: { [K in keyof ResolversTypes]: any[] } = {
 
 
 export const client = createClient({
-  url: `${config.mockingbird.address}:${config.mockingbird.port}/graphql`,
+  url: `${config.mockingbird.address}/graphql`,
   maskTypename: true,
   exchanges: [
     devtoolsExchange,
