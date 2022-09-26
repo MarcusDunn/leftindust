@@ -160,6 +160,7 @@ const language: Dictionary = {
     poweredByDust: 'Powered by leftindust',
     complete: 'Complete',
     submit: 'Submit',
+    continue: 'Continue',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',
