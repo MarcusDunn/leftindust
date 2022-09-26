@@ -18,7 +18,7 @@ object ContactMother {
         val phone = emptySet<Phone>()
         val email = setOf(EmailMother.jennysEmail)
         val relationship = Relationship.Parent
-        val patient: PatientEntity? = null
+        val patient: PatientEntity = PatientMother.Dan.entityDetached
         val entityPersisted = Contact(
             patient = patient,
             relationship = relationship,

@@ -69,6 +69,5 @@ class PatientEntity(
 
     fun removeContact(contact: Contact) {
         contacts.remove(contact)
-        contact.patient = null
     }
 }
