@@ -37,7 +37,10 @@ class ReadPatientServiceImpl(
     }
 
     override suspend fun getMany(range: Range): List<Patient> {
-        return patientRepository.findAll(range.toPageable(Sort.by(Patient_.ID))).toList()
+        return patientRepository
+            .findAll(range.toPageable(Sort.by(PatientEntity_.ID)))
+            .mapNotNull { patientEntityToPatientConverter.convert(it) }
+            .toList()
     }
 
     override suspend fun getByEvent(eventId: EventDto.EventDtoId): List<Patient>? {

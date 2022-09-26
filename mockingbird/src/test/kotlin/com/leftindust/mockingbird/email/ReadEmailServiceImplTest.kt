@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.email
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.leftindust.mockingbird.contact.ReadContactService
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorRepository
@@ -25,7 +24,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.web.server.SecurityWebFilterChain
 import java.util.*
@@ -72,9 +70,8 @@ internal class ReadEmailServiceImplUnitTest {
     @Test
     internal fun `check getPatientEmails returns a list of email addresses corresponding to a patient's Id`() =
         runTest {
-            coEvery { readPatientService.getByPatientId(Dan.graphqlId) } returns Dan.entityDetached
-            val readEmailServiceImpl =
-                ReadEmailServiceImpl(emailRepository, readPatientService, readContactService, doctorRepository)
+            coEvery { patientRepository.findByIdOrNull(Dan.id) } returns Dan.entityDetached
+            val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository)
             val emails = readEmailServiceImpl.getPatientEmails(Dan.graphqlId)
 
             assertThat(emails, containsInAnyOrder(Dan.emailsDetached.map { equalTo(it) }))

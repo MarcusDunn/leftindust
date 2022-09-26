@@ -30,7 +30,7 @@ class ReadEmailServiceImpl(
     }
 
     override suspend fun getPatientEmails(patientId: PatientDto.PatientDtoId): List<Email>? {
-        return readPatientService.getByPatientId(patientId)?.emails?.toList()
+        return patientRepository.findByIdOrNull(patientId.value)?.emails?.toList()
     }
 
     override suspend fun getContactEmails(contactContactDtoId: ContactDto.ContactDtoId): List<Email>? {

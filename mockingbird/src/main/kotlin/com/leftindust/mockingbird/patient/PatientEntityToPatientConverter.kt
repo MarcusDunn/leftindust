@@ -5,9 +5,11 @@ import com.leftindust.mockingbird.NullEntityIdInConverterException
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.person.Sex
+import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.util.UUID
 
+@Component
 class PatientEntityToPatientConverter : InfallibleConverter<PatientEntity, Patient> {
     override fun convert(source: PatientEntity): Patient {
         return PatientImpl(
