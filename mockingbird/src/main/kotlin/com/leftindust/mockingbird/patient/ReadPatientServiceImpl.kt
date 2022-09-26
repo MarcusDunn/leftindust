@@ -20,10 +20,12 @@ import org.springframework.stereotype.Service
 class ReadPatientServiceImpl(
     private val patientRepository: PatientRepository,
     private val surveyLinkRepository: SurveyLinkRepository,
+    private val patientEntityToPatientConverter: PatientEntityToPatientConverter
 ) : ReadPatientService {
     private val logger = KotlinLogging.logger {  }
     override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): Patient? {
-        return patientRepository.findByIdOrNull(patientId.value)
+        val patientEntity = patientRepository.findByIdOrNull(patientId.value) ?: return null
+        return patientEntityToPatientConverter.convert(patientEntity)
     }
 
     override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Patient>? {

@@ -5,7 +5,7 @@ import com.leftindust.mockingbird.contact.ContactDto
 import com.leftindust.mockingbird.contact.ReadContactService
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.patient.PatientDto
-import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.patient.PatientRepository
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ReadEmailServiceImpl(
     val emailRepository: EmailRepository,
-    val readPatientService: ReadPatientService,
+    val patientRepository: PatientRepository,
     val readContactService: ReadContactService,
     val doctorRepository: DoctorRepository
 ) : ReadEmailService {
