@@ -241,7 +241,10 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
               __typename: 'MediqGroup',
               name: 'Development',
             },
-            database: data,
+            database: {
+              ...accountDatabaseTemplate,
+              data,
+            },
           }));
         } else {
           // Sign-in user and authenticate with leftindust servers
@@ -250,6 +253,7 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
         off(realtime);
       }
     } else {
+      console.log(accountDatabaseTemplate);
       // Load default settings
       void set(realtime, { ...accountDatabaseTemplate })
         .then(() => {
