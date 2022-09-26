@@ -6,7 +6,6 @@ import Framework7Svelte from 'framework7-svelte';
 import { setupI18n } from '@/language';
 import { isLoading } from 'svelte-i18n';
 import type { Route } from '../View';
-import { readable } from 'svelte/store';
 
 import devConfig from '../../../config.dev.json';
 import prodConfig from '../../../config.prod.json';
@@ -49,7 +48,6 @@ export enum Layout {
 export interface AppConfig {
   mockingbird: {
     address: string;
-    port: string;
   },
   firebase: {
     apiKey: string;
