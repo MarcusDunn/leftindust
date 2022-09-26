@@ -49,8 +49,6 @@
 
   // Everytime user account information changes, update the firebase db
   $: if ($account) void set(ref(database, `users/${$account.id.value}`), $account.database);
-
-  $: console.log($account);
     
   f7ready(() => {
     observeWindowErrors();
