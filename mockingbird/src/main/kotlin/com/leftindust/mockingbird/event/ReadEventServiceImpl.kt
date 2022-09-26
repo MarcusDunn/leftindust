@@ -3,6 +3,7 @@ package com.leftindust.mockingbird.event
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.patient.PatientRepository
 import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.visit.ReadVisitService
 import com.leftindust.mockingbird.visit.VisitDto
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service
 class ReadEventServiceImpl(
     private val eventRepository: HibernateEventRepository,
     private val readPatientService: ReadPatientService,
+    private val patientRepository: PatientRepository,
     private val readVisitService: ReadVisitService,
     private val doctorRepository: DoctorRepository
 ) : ReadEventService {
@@ -26,7 +28,7 @@ class ReadEventServiceImpl(
     }
 
     override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<Event>? {
-        val patient = readPatientService.getByPatientId(patientId) ?: return null
+        val patient = patientRepository.findByIdOrNull(patientId.value) ?: return null
         return patient.events.map { it.event }
     }
 
