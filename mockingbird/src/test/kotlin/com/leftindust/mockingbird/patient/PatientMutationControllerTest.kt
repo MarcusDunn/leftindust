@@ -6,7 +6,6 @@ import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.leftindust.mockingbird.util.PhoneMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
@@ -30,7 +29,7 @@ internal class PatientMutationControllerTest(
 
     @Test
     internal fun `check can create patient`() {
-        coEvery { createPatientService.addNewPatient(any()) } returns Dan.entityDetached
+        coEvery { createPatientService.addNewPatient(any()) } returns Dan.domainEntityDetached
 
         @Language("graphql")
         val mutation = """
