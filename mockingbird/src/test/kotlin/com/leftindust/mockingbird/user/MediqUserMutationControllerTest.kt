@@ -37,7 +37,7 @@ internal class MediqUserMutationControllerWebTest(
                     nameInfo: {
                         firstName: "${Marcus.firstName}"
                         lastName: "${Marcus.lastName}"
-                        middleName: "${Marcus.middleName?.let { """"${it}"""" }}"                        
+                        middleName: "${Marcus.middleName?.let { """"${it}"""" }}"
                     }
                     uid: "${Marcus.uniqueId}"
                 }) {
@@ -45,10 +45,9 @@ internal class MediqUserMutationControllerWebTest(
                     group {
                         id { value }
                         name
-                    }                        
+                    }
                 }
             }
-            
         """.trimIndent()
 
         graphQlTester.document(mutation)

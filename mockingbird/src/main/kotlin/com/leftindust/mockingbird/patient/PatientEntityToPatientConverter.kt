@@ -21,7 +21,6 @@ class PatientEntityToPatientConverter : InfallibleConverter<PatientEntity, Patie
             gender = source.gender,
             ethnicity = source.ethnicity,
             insuranceNumber = source.insuranceNumber
-                ?: throw Exception("Insurance Number was not found for this Patient Id: ${source.id}")
         )
     }
 
@@ -33,6 +32,6 @@ class PatientEntityToPatientConverter : InfallibleConverter<PatientEntity, Patie
         override val dateOfBirth: LocalDate,
         override val gender: String,
         override val ethnicity: Ethnicity?,
-        override val insuranceNumber: String
+        override val insuranceNumber: String?
     ) : Patient
 }

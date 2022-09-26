@@ -10,7 +10,6 @@ import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import com.leftindust.mockingbird.visit.VisitDto
 import javax.transaction.Transactional
 import mu.KotlinLogging
-import org.hibernate.Hibernate
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -47,7 +46,7 @@ class ReadPatientServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun searchByExample(example: Example<Patient>): List<Patient> {
+    override suspend fun searchByExample(example: Example<PatientEntity>): List<Patient> {
         TODO("Not yet implemented")
     }
 
@@ -58,6 +57,6 @@ class ReadPatientServiceImpl(
     override suspend fun getBySurveyLink(surveyLinkId: SurveyLinkDto.SurveyLinkDtoId): Patient? {
         val surveyLink = surveyLinkRepository.findByIdOrNull(surveyLinkId.value)
             ?: return null.also { logger.debug { "Could not find a Patient by surveyLink because could not find a surveyLink with id $surveyLinkId" } }
-        return surveyLink.patient.also { Hibernate.initialize(it) } // todo remove when Patient domain object comes about
+        return patientEntityToPatientConverter.convert(surveyLink.patient)
     }
 }

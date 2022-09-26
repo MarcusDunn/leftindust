@@ -18,12 +18,14 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 @DataJpaTest
 internal class ReadPatientServiceImplJpaTest(
     @Autowired private val patientRepository: PatientRepository,
-    @Autowired private val surveyLinkRepository: SurveyLinkRepository,
+    @Autowired private val surveyLinkRepository: SurveyLinkRepository
 ) {
     @MockkBean
     private lateinit var httpSecurity: SecurityWebFilterChain
+
+    private val patientEntityToPatientConverter = PatientEntityToPatientConverter()
     
-    private val readPatientServiceImpl = ReadPatientServiceImpl(patientRepository, surveyLinkRepository)
+    private val readPatientServiceImpl = ReadPatientServiceImpl(patientRepository, surveyLinkRepository, patientEntityToPatientConverter)
 
     @Test
     internal fun `recreate issue 145`() = runTest {

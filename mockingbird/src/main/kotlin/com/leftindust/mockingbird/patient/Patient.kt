@@ -14,5 +14,5 @@ interface Patient {
     val dateOfBirth: LocalDate
     val gender: String
     val ethnicity: Ethnicity?
-    val insuranceNumber: String
+    val insuranceNumber: String?
 }

@@ -4,7 +4,6 @@ import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.PatientRepository
-import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.visit.ReadVisitService
 import com.leftindust.mockingbird.visit.VisitDto
 import javax.transaction.Transactional
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service
 @Transactional
 class ReadEventServiceImpl(
     private val eventRepository: HibernateEventRepository,
-    private val readPatientService: ReadPatientService,
     private val patientRepository: PatientRepository,
     private val readVisitService: ReadVisitService,
     private val doctorRepository: DoctorRepository

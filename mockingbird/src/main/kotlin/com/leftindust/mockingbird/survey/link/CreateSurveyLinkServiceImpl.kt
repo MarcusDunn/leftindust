@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.survey.link
 
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.patient.PatientEntityToPatientConverter
 import com.leftindust.mockingbird.patient.PatientRepository
 import com.leftindust.mockingbird.survey.template.SurveyTemplateRepository
 import javax.transaction.Transactional
@@ -16,7 +15,6 @@ class CreateSurveyLinkServiceImpl(
     private val surveyTemplateRepository: SurveyTemplateRepository,
     private val patientRepository: PatientRepository,
     private val surveyLinkEntityToSurveyLinkConverter: InfallibleConverter<SurveyLinkEntity, SurveyLink>,
-    private val patientEntityToPatientConverter: PatientEntityToPatientConverter
 ) : CreateSurveyLinkService {
     private val logger = KotlinLogging.logger {  }
     override suspend fun createSurveyLink(createSurveyLink: CreateSurveyLink): SurveyLink? {
@@ -28,7 +26,7 @@ class CreateSurveyLinkServiceImpl(
 
         val newSurveyLinkEntity = SurveyLinkEntity(
             surveyTemplateEntity = surveyTemplateEntity,
-            patient = patientEntityToPatientConverter.convert(patient),
+            patient = patient
         )
         val surveyLinkEntity = surveyLinkRepository.save(newSurveyLinkEntity)
         return surveyLinkEntityToSurveyLinkConverter.convert(surveyLinkEntity)

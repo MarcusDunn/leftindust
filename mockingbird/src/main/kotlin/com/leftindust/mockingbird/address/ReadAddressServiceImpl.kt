@@ -20,8 +20,7 @@ class ReadAddressServiceImpl(
     }
 
     override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<Address>? {
-        val byPatientId = patientRepository.findByIdOrNull(patientId.value)
-            ?: return null
+        val byPatientId = patientRepository.findByIdOrNull(patientId.value) ?: return null
         return byPatientId.addresses.sortedBy { it.id }
     }
 }
