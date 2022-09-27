@@ -11,7 +11,7 @@
 
   export let value: number[] | number | undefined = undefined;
   export let placeholder = $_('generics.selectDate');
-  export let title = $_('generics.selectDate');
+  export let label: string | undefined = undefined;
   export let props: Calendar.AppParams['calendar'] = {};
 
   export let multiple = false;
@@ -100,7 +100,7 @@
 </script>
 
 <div class="input-date">
-  <Input {title}>
+  <Input title={label}>
     <input
       type="text"
       {name}

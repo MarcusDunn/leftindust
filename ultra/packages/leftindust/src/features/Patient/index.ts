@@ -1,9 +1,20 @@
 import { validator } from '@felte/validator-yup';
-import type { SubmitContext } from '@felte/common'
+import type { SubmitContext } from '@felte/common';
 import { createForm } from 'felte';
 import * as yup from 'yup';
 
-import { Ethnicity, Month, Sex } from '@/api/server';
+import { client, AddPatientDocument, type AddPatientMutation, EditPatientDocument, type EditPatientMutation, AddressType, EmailType, PhoneType, Countries } from '@/api/server';
+import type {
+  MutationAddPatientArgs,
+  MutationEditPatientArgs,
+} from '@/api/server';
+
+import { Ethnicity, Sex, type EditPatient, type CreatePatient } from '@/api/server';
+
+import getNativeAPI from '@/api/bridge';
+import { get } from 'svelte/store';
+
+import { _ } from '@/language';
 
 export enum PatientTab {
   Overview = 'Overview',
@@ -12,78 +23,138 @@ export enum PatientTab {
   Contacts = 'Contacts'
 }
 
-/**
- * Type of the parameters to create a patient
- */
-export type CreatePatient = {
-  firstName: string,
-  middleName?: string,
-  lastName: string,
-  dateOfBirth: {
-    day?: number,
-    month?: Month,
-    year?: number,
-  }
-  ethnicity?: Ethnicity,
-  sex: Sex,
-  genderIdentity?: string,
-  insuranceNumber?: string,
-}
+const { Dialog } = getNativeAPI();
 
-/**
- * Default patient form inputs with CreatePatient type
- */
-const defaultPatientForm: CreatePatient = {
-  firstName: '',
-  middleName: '',
-  lastName: '',
-  dateOfBirth: {
-    day: 1,
-    month: Month.Jan,
-    year: new Date().getFullYear(),
-  },
-  ethnicity: undefined,
-  sex: Sex.Male,
-  genderIdentity: '',
-  insuranceNumber:''
-};
+const language = get(_);
 
 /**
  * Creates form validator schema for patients
  */
-const createPatientFormSchema: yup.SchemaOf<CreatePatient> = yup.object({
-  firstName: yup.string().required(),
-  middleName: yup.string(),
-  lastName: yup.string().required(),
-  ethnicity: yup.mixed<Ethnicity>().oneOf(Object.values(Ethnicity)),
-  dateOfBirth: yup.object({
-    day: yup.number().required(),
-    month: yup.mixed<Month>().oneOf(Object.values(Month)).required(),
-    year: yup.number().required(),
+const createPatientFormSchema = yup.object({
+  nameInfo: yup.object({
+    firstName: yup.string().required(),
+    middleName: yup.string(),
+    lastName: yup.string().required(),
   }),
+  ethnicity: yup.mixed<Ethnicity>().oneOf(Object.values(Ethnicity)).required(),
+  dateOfBirth: yup.string().required(),
   sex: yup.mixed<Sex>().oneOf(Object.values(Sex)).required(),
-  genderIdentity: yup.string(),
+  gender: yup.string().required(),
   insuranceNumber: yup.string(),
+  addresses: yup.array(yup.object({
+    address: yup.string().required(),
+    addressType: yup.mixed<AddressType>().oneOf(Object.values(AddressType)).required(),
+    city: yup.string().required(),
+    country: yup.mixed<Countries>().oneOf(Object.values(Countries)).required(),
+    postalCode: yup.string().required(),
+    province: yup.string().required(),
+  })),
+  emails: yup.array(yup.object({
+    email: yup.string().required(),
+    type: yup.mixed<EmailType>().oneOf(Object.values(EmailType)).required(),
+  })),
+  phones: yup.array(yup.object({
+    number: yup.string().required(),
+    type: yup.mixed<PhoneType>().oneOf(Object.values(PhoneType)).required(),
+  })),
 });
 
-type CreatePatientFormSchema = yup.InferType<typeof createPatientFormSchema>;
+type PatientFormSchema = yup.InferType<typeof createPatientFormSchema>;
+
 /**
- * On submit callback for form submit
+ * Default patient form inputs with CreatePatient type
  */
-type CreatePatientFormOnSubmit<Data extends Record<string, unknown>> = (
-  values: Data,
-  context: SubmitContext<Data>
-) => Promise<unknown> | unknown;
+const defaultPatientForm: Partial<PatientFormSchema> = {
+  nameInfo: {
+    firstName: '',
+    middleName: '',
+    lastName: '',
+  },
+  dateOfBirth: '',
+  ethnicity: undefined,
+  sex: undefined,
+  gender: '',
+  insuranceNumber: '',
+  addresses: [],
+  emails: [],
+  phones: [],
+};
+
+
+/**
+ * Adds a patient
+ * @param patient The patient to add
+ * @returns The added patient
+ */
+export const addPatient = async (patient: NonNullable<MutationAddPatientArgs['createPatient']>): Promise<AddPatientMutation> => {
+  const result = await client.mutation(AddPatientDocument, { patient }).toPromise();
+  
+  const data = result.data;
+  const userName = `${patient.nameInfo.firstName} ${patient.nameInfo.lastName}`;
+  if (result.error) throw new Error(`Failed to add patient ${userName}: ${result.error.message}`);
+  else if (!data) throw new Error(`Failed to add patient ${userName}: No data returned`);
+  return data;
+};
+
+/**
+ * Edits a patient
+ * @param patient The patient to edit
+ * @returns The edited patient
+ */
+export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['patient']>): Promise<EditPatientMutation> => {
+  const result = await client.mutation(EditPatientDocument, { patient }).toPromise();
+
+  const data = result.data;
+  if (result.error) throw new Error(`Failed to edit patient id ${patient.pid}: ${result.error.message}`);
+  else if (!data) throw new Error(`Failed to edit patient id ${patient.pid}: No data returned`);
+  return data;
+};
 
 /**
  * Creates a patient form on submit
- * @param onSubmit callback for submitting the form
  */
-export const createPatientForm = (onSubmit: CreatePatientFormOnSubmit<CreatePatientFormSchema>) => {
-  return createForm<CreatePatientFormSchema>({
-    initialValues: defaultPatientForm,
-    onSubmit,
-    onError: (error) => console.log(error),
-    extend: [validator({ schema: createPatientFormSchema })]
-  });
-}
+export const createPatientForm = (pid?: string) => createForm<PatientFormSchema>({
+  initialValues: defaultPatientForm,
+  onSubmit: async (form) => {
+    const patient = {
+      nameInfo: {
+        firstName: form.nameInfo.firstName,
+        middleName: form.nameInfo.firstName,
+        lastName: form.nameInfo.firstName,
+      },
+      dateOfBirth: form.dateOfBirth,
+      ethnicity: form.ethnicity,
+      sex: form.sex,
+      gender: form.gender,
+      insuranceNumber: form.insuranceNumber,
+      addresses: form.addresses,
+      emails: form.emails,
+      phones: form.phones,
+    };
+
+    try {
+      if (pid) {
+        /*
+          TODO: Edit patient
+          await editPatient({
+            pid: {
+              value: pid,
+            },
+            ...patient,
+          });
+          */
+      } else {
+        await addPatient(patient);
+      }
+    } catch (error) {
+      void Dialog.alert({
+        message: language('errors.internalError'),
+        detail: (error as Error).message,
+        buttons: [language('generics.ok')],
+        defaultId: 0,
+      });
+    }
+  },
+  onError: (error) => console.log(error),
+  extend: [validator({ schema: createPatientFormSchema })],
+});

@@ -1,28 +1,16 @@
 <script lang="ts">
-  import type { Data } from '@/api/server/graphql';
-  
   import { _ } from '@/language';
 
   import { Row, Col, Block } from 'framework7-svelte';
-  import doctorMutateEngine from './DoctorMutate';
 
   import Input from '../Input/Input.svelte';
   import Wizard from '../Wizard/Wizard.svelte';
   
   import { createDoctorForm } from './';
 
-  export let data: Data<'Doctor'> | undefined = undefined;
+  export let doctorId: string | undefined = undefined;
 
-  const { form, data: formData, handleSubmit } = createDoctorForm((form) => {
-    doctorMutateEngine({
-      nameInfo: {
-        firstName: form.firstName,
-        lastName: form.firstName,
-        middleName: form.middleName, 
-      },
-      title: form.title
-    })
-  });
+  const { form, handleSubmit } = createDoctorForm(doctorId);
 
   let ref: HTMLFormElement;
 </script>
@@ -34,7 +22,7 @@
   disabled={false}
   on:submit={() => ref?.requestSubmit()}
 > 
-  <form use:form on:submit="{handleSubmit}" bind:this="{ref}">
+  <form use:form on:submit={handleSubmit} bind:this={ref}>
     <Block style="margin-top: 100px">
       <Block>
         <h4>Identification</h4>

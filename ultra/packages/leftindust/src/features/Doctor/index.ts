@@ -2,26 +2,13 @@ import { validator } from '@felte/validator-yup';
 import type { SubmitContext } from '@felte/common';
 import { createForm } from 'felte';
 import * as yup from 'yup';
+import getNativeAPI from '@/api/bridge';
+import { get } from 'svelte/store';
+import { _ } from '@/language';
 
-/**
- * Type of the parameters to create a doctor
- */
-export type CreateDoctor = {
-  firstName: string,
-  middleName?: string,
-  lastName: string,
-  title?: string,
-}
+const { Dialog } = getNativeAPI();
 
-/**
- * Default fields for a doctor form
- */
-const defaultDoctorForm: CreateDoctor = {
-  firstName: '',
-  middleName: '',
-  lastName: '',
-  title: '',
-};
+const language = get(_);
 
 /**
  * Creates a doctor form schema validator
@@ -33,25 +20,48 @@ const createDoctorFormSchema = yup.object({
   title: yup.string(),
 });
 
-type CreateDoctorFormSchema = yup.InferType<typeof createDoctorFormSchema>;
+type DoctorFormSchema = yup.InferType<typeof createDoctorFormSchema>;
 
 /**
- * On submit callback for form submit
+ * Default fields for a doctor form
  */
-type CreateDoctorFormOnSubmit<Data extends Record<string, unknown>> = (
-  values: Data,
-  context: SubmitContext<Data>
-) => Promise<unknown> | unknown;
+const defaultDoctorForm: DoctorFormSchema = {
+  firstName: '',
+  middleName: '',
+  lastName: '',
+  title: '',
+};
 
 /**
  * Creates a doctor form on submit
- * @param onSubmit callback for submitting the form
  */
-export const createDoctorForm = (onSubmit: CreateDoctorFormOnSubmit<CreateDoctorFormSchema>) => {
-  return createForm<CreateDoctorFormSchema>({
-    initialValues: defaultDoctorForm,
-    onSubmit,
-    onError: (error) => console.log(error),
-    extend: [validator({ schema: createDoctorFormSchema })]
-  });
-};
+export const createDoctorForm = (did?: string) => createForm<DoctorFormSchema>({
+  initialValues: defaultDoctorForm,
+  onSubmit: (doctor) => {
+    try {
+      if (did) {
+        /*
+          TODO: Edit patient
+          await editDoctor({
+            pid: {
+              value: pid,
+            },
+            ...patient,
+          });
+          */
+      } else {
+        console.log(doctor);
+        // await addDoctor(patient);
+      }
+    } catch (error) {
+      void Dialog.alert({
+        message: language('errors.internalError'),
+        detail: (error as Error).message,
+        buttons: [language('generics.ok')],
+        defaultId: 0,
+      });
+    }
+  },
+  onError: (error) => console.log(error),
+  extend: [validator({ schema: createDoctorFormSchema })],
+});

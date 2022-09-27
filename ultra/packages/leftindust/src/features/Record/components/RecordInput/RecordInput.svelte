@@ -3,7 +3,7 @@
 
   import Add from '@/features/Input/components/Add/Add.svelte';
   import Checkbox from '@/features/Input/components/Checkbox/Checkbox.svelte';
-  import Date from '@/features/Input/components/Date/Date.svelte';
+  import Date from '@/features/Input/components/Date/DatePicker.svelte';
 
   import Input from '@/features/Input/Input.svelte';
   import InputError from '@/features/Input/InputError.svelte';
@@ -69,7 +69,6 @@
             <Checkbox
               title={option}
               multiple={type === SurveyTemplateInputType.MultiSelect}
-              slot="content"
               bind:selected={value}
               value={options[index]}
             />
