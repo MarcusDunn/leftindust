@@ -1,10 +1,10 @@
-import { client, PatientEditMutationDocument, PatientMutationDocument } from "@/api/server";
+import { client, PatientEditMutationDocument, PatientMutationDocument } from '@/api/server';
 import type {
   PatientInput,
   PatientEditInput,
   PatientMutationMutation,
   PatientEditMutationMutation,
-} from "@/api/server";
+} from '@/api/server';
 
 /**
  * Adds a patient
