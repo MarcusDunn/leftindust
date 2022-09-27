@@ -12,7 +12,6 @@ fragment partialCompleteSurveyFragment on CompleteSurvey {
       id {
         value
       }
-      value
     }
   }
   surveyTemplate {
