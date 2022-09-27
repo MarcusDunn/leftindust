@@ -21,12 +21,13 @@ class CreatePatientServiceImpl(
     private val createEmailService: CreateEmailService,
     private val createPhoneService: CreatePhoneService,
     private val createContactService: CreateContactService,
-    private val doctorRepository: DoctorRepository
+    private val doctorRepository: DoctorRepository,
+    private val patientEntityToPatientConverter: PatientEntityToPatientConverter
 ) : CreatePatientService {
     private val logger = KotlinLogging.logger { }
 
     override suspend fun addNewPatient(patient: CreatePatient): Patient {
-        val newPatient = Patient(
+        val newPatient = PatientEntity(
             nameInfo = createNameInfoService.createNameInfo(patient.nameInfo),
             addresses = patient.addresses.map { createAddressService.createAddress(it) }.toMutableSet(),
             emails = patient.emails.map { createEmailService.createEmail(it) }.toMutableSet(),
@@ -55,6 +56,6 @@ class CreatePatientServiceImpl(
                     ?: logger.debug { "did not add a doctor in addNewPatient with ${it.first}" }
             }
 
-        return patientRepository.save(newPatient)
+        return patientEntityToPatientConverter.convert(patientRepository.save(newPatient))
     }
 }

@@ -16,14 +16,14 @@ data class PatientExampleDto(
     val dateOfBirth: DateFilterDto? = null,
     val insuranceNumber: WhiteSpaceAgnosticStringFilterDto? = null,
     override val strict: Boolean,
-) : Example<Patient> {
-    override fun toPredicate(criteriaBuilder: CriteriaBuilder, root: Root<Patient>): Predicate {
-        val patientNameInfoJoin = root.join(Patient_.nameInfo)
+) : Example<PatientEntity> {
+    override fun toPredicate(criteriaBuilder: CriteriaBuilder, root: Root<PatientEntity>): Predicate {
+        val patientNameInfoJoin = root.join(PatientEntity_.nameInfo)
         val predicates = listOfNotNull(
             firstName?.toPredicate(criteriaBuilder, patientNameInfoJoin, NameInfo_.firstName),
             lastName?.toPredicate(criteriaBuilder, patientNameInfoJoin, NameInfo_.lastName),
-            dateOfBirth?.toPredicate(criteriaBuilder, root, Patient_.dateOfBirth),
-            insuranceNumber?.toPredicate(criteriaBuilder, root, Patient_.insuranceNumber),
+            dateOfBirth?.toPredicate(criteriaBuilder, root, PatientEntity_.dateOfBirth),
+            insuranceNumber?.toPredicate(criteriaBuilder, root, PatientEntity_.insuranceNumber)
         ).toTypedArray()
         return combineWithStrict(criteriaBuilder, *predicates)
     }
