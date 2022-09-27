@@ -13,16 +13,11 @@ import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Lob
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
+import javax.persistence.*
 
 @Entity
 class PatientEntity(
-    @OneToOne(cascade = [CascadeType.PERSIST])
+    @OneToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
     var nameInfo: NameInfo,
     @OneToMany(cascade = [CascadeType.PERSIST])
     val addresses: MutableSet<Address>,
