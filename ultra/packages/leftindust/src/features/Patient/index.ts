@@ -119,8 +119,8 @@ export const createPatientForm = (pid?: string) => createForm<PatientFormSchema>
     const patient = {
       nameInfo: {
         firstName: form.nameInfo.firstName,
-        middleName: form.nameInfo.firstName,
-        lastName: form.nameInfo.firstName,
+        middleName: form.nameInfo.middleName,
+        lastName: form.nameInfo.lastName,
       },
       dateOfBirth: form.dateOfBirth,
       ethnicity: form.ethnicity,
