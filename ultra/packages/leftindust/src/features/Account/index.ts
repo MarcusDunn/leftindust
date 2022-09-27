@@ -3,10 +3,10 @@ import {
   database,
   resolversArray,
   resolversRecord,
-  UserQueryDocument,
+  PartialUserByUserUniqueIdQueryDocument,
   type Data,
   type ResolversTypes,
-  type UserFragment,
+  type PartialUserFragment,
 } from '@/api/server';
 import type { WidgetType } from '../Widgets';
 
@@ -39,7 +39,7 @@ import { _ } from '@/language';
 
 import getNativeAPI from '@/api/bridge';
 import type { TimestampedRecents } from '../Recents';
-import config from '@/../config.json';
+import { config } from '@/features/App';
 
 export type AccountRecentsTemplate = Record<keyof ResolversTypes, TimestampedRecents>;
 
@@ -79,7 +79,7 @@ export type AccountDatabaseTemplate = {
   layout: AccountLayoutTemplate;
 };
 
-export type Account = UserFragment & {
+export type Account = PartialUserFragment & {
   database: AccountDatabaseTemplate;
 };
 
@@ -137,11 +137,11 @@ const accountDatabaseTemplate: AccountDatabaseTemplate = {
 export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): void => {
   const { user, database } = fb;
 
-  client.query(UserQueryDocument, {
-    uid: user.uid,
+  client.query(PartialUserByUserUniqueIdQueryDocument, {
+    uniqueId: user.uid,
   })
     .toPromise()
-    .then(({ data, error }) => {
+    .then(({ data }) => {
       const showSignInError = (message = language('errors.connectionError')) => {
         signInStatus.update((prev) => ({
           ...prev,
@@ -151,12 +151,13 @@ export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): v
       };
 
       if (navigator.onLine) {
-        if (data) {
+        if (data?.userByUserUniqueId) {
           account.update(() => ({
-            ...data.user,
+            // I'm not sure why this needs to be casted––the type signature should be the same
+            ...data.userByUserUniqueId as PartialUserFragment,
             database: deepmerge(accountDatabaseTemplate, database),
           }));
-        } else if (error) {
+        } else {
           showSignInError();
         }
       } else {
@@ -220,25 +221,30 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
           }));
           
           account.update(() => ({
-            __typename: 'User',
-            isRegistered: true,
-            uid: user.uid,
-            patient: undefined,
-            doctor: undefined,
-            firebaseUserInfo: {
-              email: user.email ?? '',
-              displayName: user.displayName,
+            __typename: 'MediqUser',
+            id: {
+              __typename: 'MediqUserId',
+              value: user.uid,
             },
-            names: {
+            accountDetails: {
+              __typename: 'UserAccountDetails',
+              email: user.email ?? '',
+              isRegistered: true,
+            },
+            name: {
               __typename: 'NameInfo',
               firstName: 'John',
+              middleName: undefined,
               lastName: 'Doe',
             },
             group: {
-              __typename: 'Group',
+              __typename: 'MediqGroup',
               name: 'Development',
             },
-            database: data,
+            database: {
+              ...accountDatabaseTemplate,
+              data,
+            },
           }));
         } else {
           // Sign-in user and authenticate with leftindust servers
@@ -247,6 +253,7 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
         off(realtime);
       }
     } else {
+      console.log(accountDatabaseTemplate);
       // Load default settings
       void set(realtime, { ...accountDatabaseTemplate })
         .then(() => {

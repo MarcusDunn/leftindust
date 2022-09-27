@@ -26,15 +26,20 @@ internal class ClinicMutationControllerWebTest(
 
     @Test
     internal fun `test change clinic name is an accepted query`() {
-        val newClinicName = "My Clinic"
-
-        coEvery { updateClinicService.editClinic(match { it.cid.value == DansClinic.id }) } returns DansClinic.entityPersisted.apply { name = newClinicName }
+        coEvery { updateClinicService.editClinic(match { it.cid.value == DansClinic.id }) } returns DansClinic.domain
         //language=graphql
-        val mutation = """mutation { editClinic(clinic: {cid: {value: "${DansClinic.id}"}, name: "$newClinicName"}) { name } }"""
+        val mutation = """mutation {
+            |    editClinic(clinic: {
+            |        cid: { value: "${DansClinic.id}" },
+            |        name: "${DansClinic.dansClinicName}"
+            |    }) {
+            |        name
+            |    } }""".trimMargin()
         graphQlTester
             .document(mutation)
             .execute()
             .errors().satisfy { assertThat(it, equalTo(emptyList())) }
-            .path("editClinic.name").entity(String::class.java).satisfies { assertThat(it, equalTo(newClinicName)) }
+            .path("editClinic.name").entity(String::class.java)
+            .satisfies { assertThat(it, equalTo(DansClinic.dansClinicName)) }
     }
 }

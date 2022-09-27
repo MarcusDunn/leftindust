@@ -164,6 +164,9 @@ export type Dictionary = {
     export: string;
     share: string;
     poweredByDust: string;
+    complete: string;
+    submit: string;
+    continue: string;
   };
   examples: {
     totalPlateletCount: string;

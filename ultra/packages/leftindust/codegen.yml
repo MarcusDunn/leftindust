@@ -1,4 +1,4 @@
-schema: http://192.168.0.11:8080/graphql
+schema: http://192.168.4.29:8081/graphql
 
 generates:
   ./src/api/server/graphql/schema/leftindust.schema.ts:
@@ -11,6 +11,7 @@ generates:
     config:
       maybeValue: T | undefined
       useTypeImports: true
+      resolverTypeWrapperSignature: "T extends { __typename: TypenameTemplateLiteralType } ? T : Optional<T, '__typename'>"
 
   ./src/api/server/graphql/requests/index.ts:
     documents: 'src/api/server/graphql/requests/**/*.graphql'
@@ -37,6 +38,7 @@ generates:
       maybeValue: T | undefined
       useTypeImports: true
       dedupeFragments: true
+      nonOptionalTypename: true
       avoidOptionals:
         field: true 
         object: false

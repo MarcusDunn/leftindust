@@ -1,5 +1,0 @@
-fragment firebaseUsers on FirebaseInfo {
-  __typename
-  email
-  uid
-}

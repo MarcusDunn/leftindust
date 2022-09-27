@@ -12,9 +12,9 @@ data class GraphQLDoctorExample(
     val firstName: CaseAgnosticStringFilterDto? = null,
     val lastName: CaseAgnosticStringFilterDto? = null,
     override val strict: Boolean,
-) : Example<Doctor> {
-    override fun toPredicate(criteriaBuilder: CriteriaBuilder, root: Root<Doctor>): Predicate {
-        val doctorNameInfo = root.join(Doctor_.nameInfo)
+) : Example<DoctorEntity> {
+    override fun toPredicate(criteriaBuilder: CriteriaBuilder, root: Root<DoctorEntity>): Predicate {
+        val doctorNameInfo = root.join(DoctorEntity_.nameInfo)
         val predicates = listOfNotNull(
             firstName?.toPredicate(criteriaBuilder, doctorNameInfo, NameInfo_.firstName),
             lastName?.toPredicate(criteriaBuilder, doctorNameInfo, NameInfo_.lastName),

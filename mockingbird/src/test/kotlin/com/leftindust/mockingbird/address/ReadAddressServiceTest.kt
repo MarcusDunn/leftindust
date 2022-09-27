@@ -1,9 +1,11 @@
 package com.leftindust.mockingbird.address
 
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.util.DoctorMother
 import com.leftindust.mockingbird.util.PatientMother
+import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -15,24 +17,31 @@ import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.runner.RunWith
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
+@DataJpaTest
 internal class ReadAddressServiceTest {
+    @MockkBean
+    private lateinit var httpSecurity: SecurityWebFilterChain
 
     @MockK
-    private lateinit var readDoctorService: ReadDoctorService
+    private lateinit var doctorRepository: DoctorRepository
 
     @MockK
     private lateinit var readPatientService: ReadPatientService
 
     @Test
     internal fun `check getByDoctorId returns a list of addresses when matching Doctor Id exists`() = runTest {
-        coEvery { readDoctorService.getByDoctorId(DoctorMother.Jenny.graphqlId) } returns DoctorMother.Jenny.entityPersisted
-        val readAddressServiceImpl =
-            withContext(Dispatchers.IO) {
-                ReadAddressServiceImpl(readDoctorService, readPatientService)
-            }
+        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityPersisted
+        val readAddressServiceImpl = ReadAddressServiceImpl(readPatientService, doctorRepository)
+
         val addresses = readAddressServiceImpl.getByDoctorId(DoctorMother.Jenny.graphqlId)
 
         MatcherAssert.assertThat(
@@ -42,20 +51,14 @@ internal class ReadAddressServiceTest {
     }
 
     @Test
-    internal fun `check getByPatientId returns a list of addresses corresponding to a patient's Id`() =
-        runTest {
-            val answer = PatientMother.Dan.entityDetached
-            coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns answer
-            val readAddressServiceImpl =
-                withContext(Dispatchers.IO) {
-                    ReadAddressServiceImpl(readDoctorService, readPatientService)
-                }
-            val addresses = readAddressServiceImpl.getByPatientId(PatientMother.Dan.graphqlId)
+    internal fun `check getByPatientId returns a list of addresses corresponding to a patient's Id`() = runTest {
+        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityDetached
+        val readAddressServiceImpl = ReadAddressServiceImpl(readPatientService, doctorRepository)
+        val addresses = readAddressServiceImpl.getByPatientId(PatientMother.Dan.graphqlId)
 
-            MatcherAssert.assertThat(
-                addresses,
-                Matchers.containsInAnyOrder(PatientMother.Dan.addressesDetached.map { Matchers.equalTo(it) })
-            )
-        }
-
+        MatcherAssert.assertThat(
+            addresses,
+            Matchers.containsInAnyOrder(PatientMother.Dan.addressesDetached.map { Matchers.equalTo(it) })
+        )
+    }
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
-  import { DoctorQueryDocument, type Data, type DoctorFragment } from '@/api/server';
+  import { DoctorsByDoctorIdQueryDocument, type Data, type DoctorFragment } from '@/api/server';
   
   import { account } from '../Account/store';
   import { ClientTab } from '../Client';
@@ -39,11 +39,11 @@
 
   const data: Data = JSON.parse(f7route.params.data ?? '{}');
 
-  const request = operationStore(DoctorQueryDocument, {
-    dids: [{ id: data.id }],
+  const request = operationStore(DoctorsByDoctorIdQueryDocument, {
+    doctorIds: [{ value: data.id }],
   });
 
-  $: doctor = $request.data?.doctors[0];
+  $: doctor = $request.data?.doctorsByDoctorIds[0];
 
   query(request);
 </script>
@@ -67,11 +67,13 @@
           icon: { f7: 'pencil_outline', color: 'gray' },
           condense: true,
         },
+      /*
         {
           title: $_('generics.create'),
           icon: { f7: 'plus_circle_fill', color: 'purple' },
           condense: true,
         },
+        */
       ] : []}
     >
       <svelte:fragment slot="left">
@@ -124,21 +126,21 @@
       </Boxed>
       <DoctorTags slot="tags" {...doctor} />
       <EntityTable
-        phones={doctor?.phones}
+        phones={doctor?.phoneNumbers}
         emails={doctor?.emails}
         addresses={doctor?.addresses}
       />
       <div slot="drawer">
         {#key $account}
-          {#if $account.database.layout.pinned['Doctor']?.[doctor?.did.id]?.length ?? 0 > 0}
+          {#if $account.database.layout.pinned['Doctor']?.[doctor?.id?.value]?.length ?? 0 > 0}
             <SpecificGrid
-              props={$account.database.layout.pinned['Doctor']?.[doctor?.did.id]?.map(({ type, id }) => {
+              props={$account.database.layout.pinned['Doctor']?.[doctor?.id?.value]?.map(({ type, id }) => {
                 if (type) {
                   return {
                     id: type,
                     data: { id, type },
                     reference: {
-                      id: doctor?.did.id,
+                      id: doctor?.id?.value,
                       type: 'Doctor',
                     },
                     quicklook,

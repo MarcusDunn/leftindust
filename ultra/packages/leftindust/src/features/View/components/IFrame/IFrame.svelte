@@ -7,15 +7,25 @@
     Link,
     Icon,
   } from 'framework7-svelte';
+  import type { View as ViewType } from 'framework7/types';
+  import { onMount } from 'svelte';
 
   import './IFrame.scss';
     
   export let views: {
     url: string;
+    props?: Record<string, unknown>;
     selected?: boolean;
   }[];
 
   export let url: string | undefined = undefined;
+
+  export let props: Record<string, unknown> = {};
+
+  export let style = '';
+
+  let viewRefs: (View | undefined)[] = views.map(() => undefined);
+  let viewInstances: (ViewType.View | undefined)[] = views.map(() => undefined);
 
   let swiper: SwiperType | undefined;
   // TODO: Bumped F7 to v7 and type error came up. Investigate later
@@ -29,6 +39,11 @@
     isBeginning = swiper?.isBeginning ?? true;
     isEnd = swiper?.isEnd ?? true;
   };
+
+  const navigate = (options: { instance: ViewType.View, url: string, props: Record<string, unknown> }) => {
+    const { instance, url, props } = options;
+    instance.router.navigate(url, { props });
+  };
   
   $: swiper?.on('slideChange', () => {
     updateSwiperButtons();
@@ -38,10 +53,34 @@
   $: swiper, updateSwiperButtons();
 
   let index = views.map((view) => view.selected).indexOf(true);
+
+  onMount(() => {
+    views.forEach((view, index) => {
+      viewInstances[index] = (<{ instance: () => ViewType.View }>(<unknown>viewRefs[index])).instance();
+
+      const currentInstance = viewInstances[index];
+
+      if (currentInstance) {
+        if (view.selected && url) {
+          navigate({
+            instance: currentInstance,
+            url,
+            props: { ...props, ...view.props },
+          });
+        } else {
+          navigate({
+            instance: currentInstance,
+            url: view.url,
+            props: { ...props, ...view.props },
+          });
+        }
+      }
+    });
+  });     
 </script>
 
 <div class="view-iframe">
-  <div class="view-iframe-container">
+  <div class="view-iframe-container" {style}>
     {#if views.length > 1}
       <Link
         class={`view-iframe-up ${isBeginning ? 'disabled' : ''}`}
@@ -58,13 +97,13 @@
       initialSlide={index}
       on:swiper={setSwiper}
     >
-      {#each views as view}
+      {#each views as _, index}
         <SwiperSlide>
           <View
-            url={view.selected && url ? url : view.url}
-            stackPages={true}
-            iosSwipeBack={false}
+            stackPages
+            iosSwipeBack
             animate={false}
+            bind:this={viewRefs[index]}
           />
         </SwiperSlide>
       {/each}

@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne
 
 @Entity
 class DoctorEventEntity(
-    @Id @ManyToOne val doctor: Doctor,
+    @Id @ManyToOne val doctor: DoctorEntity,
     @Id @ManyToOne val event: Event,
 ) : java.io.Serializable, JpaEntity {
     override fun equals(other: Any?): Boolean {

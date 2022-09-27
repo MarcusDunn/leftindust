@@ -15,7 +15,7 @@
 
   let selectable: Selectable = {
     type: patient.__typename,
-    id: patient.pid.id ?? '',
+    id: patient.id.value ?? '',
   };
 
   let value = JSON.stringify(selectable);

@@ -1,0 +1,25 @@
+.record-record_calculation {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  padding: 10px 0;
+
+  .record-record_calculation_text {
+    width: 100%;
+    .record-record_calculation_type {
+      font-size: 12px;
+    }
+    .record-record_calculation_title {
+      font-weight: 600;
+      font-size: 19px;
+    }
+  }
+
+  .record-record_calculation_value {
+    .record-record_calculation_number {
+      font-size: 22px;
+      color: var(--f7-color-blue);
+    }
+  }
+}

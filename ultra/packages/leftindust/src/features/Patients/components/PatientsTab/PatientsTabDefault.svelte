@@ -3,9 +3,9 @@
 
   import {
     defaultRangeInput,
-    PatientsQueryDocument,
-    SortableField,
-    type PatientsFragment,
+    PartialPatientsByRangeQueryDocument,
+    PartialPatientsByPatientIdQueryDocument,
+    type PartialPatientFragment,
   } from '@/api/server';
   import { clientsSelected } from '@/features/Clients/store';
 
@@ -25,16 +25,15 @@
 
   export let f7router: Router.Router;
 
-  let patients: PatientsFragment[];
-  let recents: PatientsFragment[];
+  let patients: PartialPatientFragment[];
+  let recents: PartialPatientFragment[];
 
-  const request = operationStore(PatientsQueryDocument, {
+  const request = operationStore(PartialPatientsByRangeQueryDocument, {
     range: defaultRangeInput,
-    sortedBy: SortableField.LastName,
   });
 
-  const recentsRequest = operationStore(PatientsQueryDocument, {
-    pids: getTimestampedValues($account.database.recents.Patient ??= {}).map(id => ({ id })),
+  const recentsRequest = operationStore(PartialPatientsByPatientIdQueryDocument, {
+    patientIds: getTimestampedValues($account.database.recents.Patient ??= {}).map(id => ({ value: id })),
   });
 
   const navigate = (multiple: boolean) => {
@@ -46,16 +45,18 @@
   };
 
   $: $recentsRequest.variables = {
-    pids: getTimestampedValues($account.database.recents.Patient ?? {}).map(id => ({ id })),
+    patientIds: getTimestampedValues($account.database.recents.Patient ?? {}).map(id => ({ value: id })),
   };
 
-  $: patients = $request.data?.patients ?? [];
+  $: patients = $request.data?.patientsByRange ?? [];
   $: timestampedRecents = $account.database.recents.Patient ?? {};
   $: recents = sortRecents(
-    $recentsRequest.data?.patients ?? [],
+    $recentsRequest.data?.patientsByPatientId ?? [],
     timestampedRecents,
-    (patient => patient.pid.id),
-  );
+    (patient => patient?.id.value),
+  ).filter(
+    (patient): patient is PartialPatientFragment => !!patient,
+  ) ?? [];
 
   query(request);
   query(recentsRequest);
@@ -80,14 +81,20 @@
     </Request>
 
     <Request {...$request} reexecute={request.reexecute}>
-      <PatientsCells
-        patients={patients || []}
-        selected={clientsSelected}
-        on:navigate={() => {
-          if ($clientsSelected.length === 1) updateRecents('Patient', $clientsSelected.filter((client) => client.type === 'Patient')[0].id);
-          navigate($clientsSelected.length > 1);
-        }}
-      />
+      {#if patients.length > 0}
+        <PatientsCells
+          {patients}
+          selected={clientsSelected}
+          on:navigate={() => {
+            if ($clientsSelected.length === 1) updateRecents('Patient', $clientsSelected.filter((client) => client.type === 'Patient')[0].id);
+            navigate($clientsSelected.length > 1);
+          }}
+        />
+      {:else}
+        <CollapsableContentPlaceholder center>
+          No patients found...
+        </CollapsableContentPlaceholder>
+      {/if}
     </Request>
   </MasterListLayout>
 </PageContent>

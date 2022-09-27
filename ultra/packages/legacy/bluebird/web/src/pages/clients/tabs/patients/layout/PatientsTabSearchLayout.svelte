@@ -112,7 +112,7 @@
         length={$patients.length}
         description="Showing search results from this clinic"
         on:select={() => {
-          $ClientsSelected = $patients.map((patient) => ({ type: patient.__typename, id: patient.pid.id }));
+          $ClientsSelected = $patients.map((patient) => ({ type: patient.__typename, id: patient.id.value }));
           navigate();
         }}
       />

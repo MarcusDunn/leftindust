@@ -1,10 +1,11 @@
 package com.leftindust.mockingbird.event
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
-import com.leftindust.mockingbird.util.DoctorMother.Jenny
+import com.leftindust.mockingbird.util.DoctorMother
 import com.leftindust.mockingbird.util.EventMother
 import com.leftindust.mockingbird.util.PatientMother
 import com.leftindust.mockingbird.util.VisitMother
@@ -14,6 +15,7 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -22,24 +24,31 @@ import org.hamcrest.Matchers
 import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.nullValue
+import org.junit.Before
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
+@DataJpaTest
 internal class ReadEventServiceImplUnitTest {
+    @MockkBean
+    private lateinit var httpSecurity: SecurityWebFilterChain
+
     @MockK
     private lateinit var eventRepository: HibernateEventRepository
 
     @MockK
-    private lateinit var readPatientService: ReadPatientService
+    private lateinit var doctorRepository: DoctorRepository
 
     @MockK
-    private lateinit var readDoctorService: ReadDoctorService
+    private lateinit var readPatientService: ReadPatientService
 
     @MockK
     private lateinit var readVisitService: ReadVisitService
@@ -48,18 +57,19 @@ internal class ReadEventServiceImplUnitTest {
     internal fun `check getByPatientId returns a patient's event when patient exists`() = runTest {
         coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityDetached
         val readEventServiceImpl =
-            ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
+            ReadEventServiceImpl(eventRepository, readPatientService, readVisitService, doctorRepository)
         val events = readEventServiceImpl.getByPatientId(PatientMother.Dan.graphqlId)
 
         assertThat(events, containsInAnyOrder(PatientMother.Dan.events.map { equalTo(it.event) }))
     }
 
     @Test
-    internal fun `check getByPatientId returns null when no matching patient exists corresponding to any events`() = runTest {
+    internal fun `check getByPatientId returns null when no matching patient exists corresponding to any events`() =
+        runTest {
             val someNonExistentUUid = UUID.fromString("235b4875-92d4-4553-8852-eb8f4b3a887d")
             coEvery { readPatientService.getByPatientId(match { it.value == someNonExistentUUid }) } returns null
             val readEventServiceImpl =
-                ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
+                ReadEventServiceImpl(eventRepository, readPatientService, readVisitService, doctorRepository)
             val events = readEventServiceImpl.getByPatientId(PatientDto.PatientDtoId(someNonExistentUUid))
 
             assertThat(events, nullValue())
@@ -67,21 +77,21 @@ internal class ReadEventServiceImplUnitTest {
 
     @Test
     internal fun `check getByDoctorId returns a doctor's event when doctor exists`() = runTest {
-        coEvery { readDoctorService.getByDoctorId(Jenny.graphqlId) } returns Jenny.entityPersisted
+        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityPersisted
         val readEventServiceImpl =
-            ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
-        val events = readEventServiceImpl.getByDoctorId(Jenny.graphqlId)
+            ReadEventServiceImpl(eventRepository, readPatientService, readVisitService, doctorRepository)
+        val events = readEventServiceImpl.getByDoctorId(DoctorMother.Jenny.graphqlId)
 
-        assertThat(events, containsInAnyOrder(Jenny.events.map { equalTo(it.event) }))
+        assertThat(events, containsInAnyOrder(DoctorMother.Jenny.events.map { equalTo(it.event) }))
     }
 
     @Test
     internal fun `check getByDoctorId returns null when no matching doctor exists corresponding to any events`() =
         runTest {
             val someNonExistentUUid = UUID.fromString("235b4875-92d4-4553-8852-eb8f4b3a887d")
-            coEvery { readDoctorService.getByDoctorId(match { it.value == someNonExistentUUid }) } returns null
+            coEvery { doctorRepository.findByIdOrNull(match { it == someNonExistentUUid }) } returns null
             val readEventServiceImpl =
-                ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
+                ReadEventServiceImpl(eventRepository, readPatientService, readVisitService, doctorRepository)
             val events = readEventServiceImpl.getByDoctorId(DoctorDto.DoctorDtoId(someNonExistentUUid))
 
             assertThat(events, nullValue())
@@ -92,7 +102,7 @@ internal class ReadEventServiceImplUnitTest {
         val jennyDoctorVisit = VisitMother.jennyVisitPersisted
         coEvery { readVisitService.getByVisitId(VisitDto.VisitDtoId(jennyDoctorVisit.id!!)) } returns jennyDoctorVisit
         val readEventServiceImpl =
-            ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
+            ReadEventServiceImpl(eventRepository, readPatientService, readVisitService, doctorRepository)
         val event = readEventServiceImpl.getByVisitId(VisitDto.VisitDtoId(jennyDoctorVisit.id!!))
 
         assertThat(event, equalTo(jennyDoctorVisit.event))
@@ -103,7 +113,7 @@ internal class ReadEventServiceImplUnitTest {
         val someNonExistentUUid = UUID.fromString("235b4875-92d4-4553-8852-eb8f4b3a887d")
         coEvery { readVisitService.getByVisitId(VisitDto.VisitDtoId(someNonExistentUUid)) } returns null
         val readEventServiceImpl =
-            ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
+            ReadEventServiceImpl(eventRepository, readPatientService, readVisitService, doctorRepository)
         val events = readEventServiceImpl.getByVisitId(VisitDto.VisitDtoId(someNonExistentUUid))
 
         assertThat(events, nullValue())
@@ -111,6 +121,7 @@ internal class ReadEventServiceImplUnitTest {
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@ExtendWith(MockKExtension::class)
 @DataJpaTest
 internal class ReadEventServiceImplDataTest(
     @Autowired private val testEntityManager: TestEntityManager,
@@ -119,20 +130,21 @@ internal class ReadEventServiceImplDataTest(
     @MockkBean
     private lateinit var securityWebFilterChain: SecurityWebFilterChain
 
-    @MockkBean
-    private lateinit var readPatientService: ReadPatientService
+    @MockK
+    private lateinit var doctorRepository: DoctorRepository
 
     @MockkBean
-    private lateinit var readDoctorService: ReadDoctorService
+    private lateinit var readPatientService: ReadPatientService
 
     @MockkBean
     private lateinit var readVisitService: ReadVisitService
 
     @Test
     internal fun `check returns an event when queried with an id from the database with the matching Id`() = runTest {
-        val jennyDoctorAppointmentId = testEntityManager.persistAndGetId(EventMother.jennyAppointmentUnpersisted, UUID::class.java)
+        val jennyDoctorAppointmentId =
+            testEntityManager.persistAndGetId(EventMother.jennyAppointmentUnpersisted, UUID::class.java)
         val readEventServiceImpl =
-            ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
+            ReadEventServiceImpl(eventRepository, readPatientService, readVisitService, doctorRepository)
         val returnedEvent = readEventServiceImpl.getByEventId(EventDto.EventDtoId(jennyDoctorAppointmentId!!))
 
         assertThat(returnedEvent, Matchers.notNullValue())
@@ -143,7 +155,7 @@ internal class ReadEventServiceImplDataTest(
     internal fun `check returns null when the database has no matching Id corresponding to an event`() = runTest {
         val someNonExistentUuid = UUID.fromString("235b4875-92d4-4553-8852-eb8f4b3a887d")
         val readEventServiceImpl =
-            ReadEventServiceImpl(eventRepository, readPatientService, readDoctorService, readVisitService)
+            ReadEventServiceImpl(eventRepository, readPatientService, readVisitService, doctorRepository)
         val returnedEvent = readEventServiceImpl.getByEventId(EventDto.EventDtoId(someNonExistentUuid))
 
         assertThat(returnedEvent, nullValue())

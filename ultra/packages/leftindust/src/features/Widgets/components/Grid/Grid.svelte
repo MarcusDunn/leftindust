@@ -56,7 +56,7 @@
         },
       );
 
-      if (props && Object.keys($account.database.layout.grid[type][props.id]?.[widget.id] || []).length > 0) {
+      if (props && Object.keys($account.database.layout.grid?.[type]?.[props.id]?.[widget.id] || []).length > 0) {
         // Merge Svelte Grid constraints with saved constraints in fb
         return deepmerge(
           // Merge general constraints with widget specific constraints
