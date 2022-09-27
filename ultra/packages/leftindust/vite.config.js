@@ -13,17 +13,17 @@ const outDir = path.resolve(__dirname, 'build');
 // https://vitejs.dev/config/
 export default defineConfig({
   root,
-  base: '',
+  base: '/',
   publicDir: '../public',
-  mode: production ? undefined : 'development',
+  mode: production ? 'production' : 'development',
   build: {
     outDir,
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'src/index.html'),
-        mediq: path.resolve(__dirname,'src/apps/mediq/index.html'),
+        mediq: path.resolve(__dirname, 'src/apps/mediq/index.html'),
         queue: path.resolve(__dirname, 'src/apps/queue/index.html'),
-        record: path.resolve(__dirname, 'src/apps/record/index.html'),
+        intake: path.resolve(__dirname, 'src/apps/intake/index.html'),
       },
     },
     assetsInlineLimit: 0,

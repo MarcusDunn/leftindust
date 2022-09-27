@@ -192,7 +192,7 @@ export const resolversArray: { [K in keyof ResolversTypes]: any[] } = {
 
 
 export const client = createClient({
-  url: `${config.mockingbird.address}:${config.mockingbird.port}/graphql`,
+  url: `${config.mockingbird.address}/graphql`,
   maskTypename: true,
   exchanges: [
     devtoolsExchange,
@@ -212,6 +212,7 @@ export const client = createClient({
         return null;
       },
     }),
+    /*
     authExchange<{ token: string | undefined } | undefined>({
       getAuth: async () => {
         const user: User = await new Promise((resolve, reject) => {
@@ -247,6 +248,7 @@ export const client = createClient({
         });
       },
     }),
+    */
     fetchExchange,
   ],
 });
