@@ -13,12 +13,13 @@ class PatientMutationController(
     private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>,
     private val createPatientDtoToCreatePatient: FallibleConverter<CreatePatientDto, CreatePatient>,
     private val createPatientService: CreatePatientService,
-    private val updatePatientService: UpdatePatientService
+    //private val updatePatientService: UpdatePatientService
 ) {
 
-    suspend fun editPatient(patient: UpdatePatientDto): PatientDto {
-        val updatedPatient = updatePatientService.update(patient)
-        return patientToPatientDtoConverter.convert(updatedPatient)
+    suspend fun editPatient(@Argument("editPatient") patient: UpdatePatientDto): PatientDto {
+        /*val updatedPatient = updatePatientService.update(patient)
+        return patientToPatientDtoConverter.convert(updatedPatient)*/
+        TODO("Update patient service not implemented")
     }
 
     @MutationMapping

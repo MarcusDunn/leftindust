@@ -55,11 +55,11 @@ type Mutation {
 
     # patient
     addPatient(createPatient: CreatePatient): Patient
-    editPatient(patient: EditPatient): Patient
+    editPatient(editPatient: EditPatient): Patient
 
     # doctor
     addDoctor(createDoctor: CreateDoctor): Doctor
-    editDoctor(doctor: EditDoctor): Doctor
+    editDoctor(editDoctor: EditDoctor): Doctor
 }
 
 input CreateSurveyLink {
