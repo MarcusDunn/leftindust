@@ -1,4 +1,4 @@
-schema: http://192.168.4.29:8081/graphql
+schema: http://emr.leftindust.com/api/graphql
 
 generates:
   ./src/api/server/graphql/schema/leftindust.schema.ts:
