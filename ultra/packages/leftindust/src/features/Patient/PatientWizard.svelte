@@ -16,6 +16,7 @@
   import DatePicker from '../Input/components/Date/DatePicker.svelte';
   import Phones from '../Input/components/Phone/Phones.svelte';
   import Emails from '../Input/components/Email/Emails.svelte';
+  import Addresses from '../Input/components/Address/Addresses.svelte';
 
   export let patientId: string | undefined = undefined;
 
@@ -147,6 +148,9 @@
             <Emails title="Add Email (Optional)" bind:value={$formData.emails} />
           </Col>
         </Row>
+        <br />
+        <h4>Address</h4>
+        <Addresses title="Add Address (Optional)" bind:value={$formData.addresses} />
       </Block>
     </Block>
   </form>
