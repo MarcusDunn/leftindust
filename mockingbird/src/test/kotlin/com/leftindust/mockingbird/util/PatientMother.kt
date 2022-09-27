@@ -26,7 +26,7 @@ object PatientMother {
         val middleName = "TheMan"
         const val lastName = "Shervershani"
         val dateOfBirth = LocalDate.of(2014, Month.MARCH, 12)
-        val id = UUID.fromString("62d2344c-1dc5-11ed-861d-0242ac120002")
+        val id = UUID.fromString("3444970a-3e31-11ed-b878-0242ac120002")
         val graphqlId = PatientDto.PatientDtoId(id)
         val user: MediqUser? = null
         val thumbnail: ByteArray? = null
