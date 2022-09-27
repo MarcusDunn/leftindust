@@ -10,6 +10,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasSize
 import org.junit.Ignore
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -29,7 +30,7 @@ internal class ReadPatientServiceImplJpaTest(
     private val readPatientServiceImpl = ReadPatientServiceImpl(patientRepository, surveyLinkRepository, patientEntityToPatientConverter)
 
     @Test
-    @Ignore
+    @Disabled
     internal fun `recreate issue 145`() = runTest {
         patientRepository.save(PatientMother.Dan.entityTransient)
 
