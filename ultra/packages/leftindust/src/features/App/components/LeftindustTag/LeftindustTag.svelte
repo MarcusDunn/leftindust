@@ -15,6 +15,7 @@
 <Chip
   class={`${small ? 'chip-small' : ''}`}
   mediaBgColor="black"
+  outline
   {text}
   on:click={() => link && window.open(url, '_blank')}
   style={`${link ? 'cursor: pointer;' : ''}${$$restProps.style}`}

@@ -23,7 +23,6 @@ type Query {
     # complete survey
     completeSurveyById(completeSurveyId: CompleteSurveyIdInput): CompleteSurvey
     completeSurveyByRange(range: Range!): [CompleteSurvey!]!
-
     # patient
     patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!
     patientsByRange(range: Range!): [Patient!]!
@@ -465,9 +464,21 @@ input SurveyTemplateSectionIdInput {
     value: UUID!
 }
 
+#this is hayneous but graphql currently doesnt support input union types, only output
 input CreateCompleteSurveyInput {
     surveyTemplateSectionInputId: SurveyTemplateSectionInputIdInput!
-    value: String!
+    type: CompleteSurveyInputType!
+    stringInput: String
+    numberInput: Int
+    stringArrayInput: [String!]
+    numberArrayInput: [Int!]
+}
+
+enum CompleteSurveyInputType {
+    String,
+    Number,
+    StringArray,
+    NumberArray
 }
 
 input SurveyTemplateSectionInputIdInput {
@@ -485,9 +496,28 @@ type CompleteSurveySection {
     inputs: [CompleteSurveySectionInput!]!
 }
 
-type CompleteSurveySectionInput {
+interface CompleteSurveySectionInput {
     id: CompleteSurveySectionInputId!
-    value: String!
+}
+
+type CompleteSurveySectionStringInput implements CompleteSurveySectionInput {
+    id: CompleteSurveySectionInputId!
+    string: String!
+}
+
+type CompleteSurveySectionNumberInput implements CompleteSurveySectionInput {
+    id: CompleteSurveySectionInputId!
+    number: Int!
+}
+
+type CompleteSurveySectionStringArrayInput implements CompleteSurveySectionInput {
+    id: CompleteSurveySectionInputId!
+    stringArray: [String!]!
+}
+
+type CompleteSurveySectionNumberArrayInput implements CompleteSurveySectionInput {
+    id: CompleteSurveySectionInputId!
+    numberArray: [Int!]!
 }
 
 type CompleteSurveySectionInputId {

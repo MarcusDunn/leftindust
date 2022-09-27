@@ -7,10 +7,11 @@
   import type { MenuNode } from '../..';
   import type { Router } from 'framework7/types';
   import { Block, BlockFooter, Col, Row } from 'framework7-svelte';
+  import type { Writable } from 'svelte/store';
   import DemoNode from '@/features/Node/components/DemoNode/DemoNode.svelte';
-  import { temporarySelectedNode } from './store';
 
   export let nodes: MenuNode[];
+  export let temporarySelectedNode: Writable<MenuNode[]>;
   export let f7router: Router.Router;
 </script>
 

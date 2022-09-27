@@ -1,0 +1,5 @@
+fragment name on NameInfo {
+  firstName
+  middleName
+  lastName
+}

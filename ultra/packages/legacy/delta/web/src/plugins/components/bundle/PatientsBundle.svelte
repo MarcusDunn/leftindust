@@ -42,16 +42,16 @@
                 {patient}
                 on:click={() => {
                   void safeNavigate(`/patient/${JSON.stringify({
-                    id: patient.pid.id,
+                    id: patient.id.value,
                     type: patient.__typename,
                   })}/`, AppViews.Clients);
                 }}
                 pinned={pinned({
-                  id: patient.pid.id,
+                  id: patient.id.value,
                   type: patient.__typename,
                 }, selectable)}
                 on:pin={({ detail }) => pin(detail, {
-                  id: patient.pid.id,
+                  id: patient.id.value,
                   type: patient.__typename,
                 }, selectable)}
               />
@@ -79,7 +79,7 @@
           round
           disabled={$patients.length === 0}
           on:click={() => void safeNavigate(`/people/${JSON.stringify($patients.map((patient) => ({
-            id: patient.pid.id,
+            id: patient.id.value,
             type: patient.__typename,
           })))}/`, AppViews.Clients)}
         >

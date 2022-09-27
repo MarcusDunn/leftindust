@@ -8,8 +8,10 @@ import DoctorsBundle from '@/features/Doctors/components/DoctorsBundle/DoctorsBu
 import PatientCard from '@/features/Patient/components/PatientCard/PatientCard.svelte';
 import DoctorCard from '@/features/Doctor/components/DoctorCard/DoctorCard.svelte';
 import UserCard from '@/features/User/components/UserCard/UserCard.svelte';
-import IcdCard from '@/features/Icd/components/IcdCard/IcdCard.svelte';
+import TemplateCard from '@/features/Template/components/TemplateCard/TemplateCard.svelte';
+// import IcdCard from '@/features/Icd/components/IcdCard/IcdCard.svelte';
 import PatientsBundle from '../Patients/components/PatientsBundle/PatientsBundle.svelte';
+import RecordsBundle from '../Records/components/RecordsBundle/RecordsBundle.svelte';
 
 export enum WidgetType {
   Attachment = 'attachment',
@@ -74,6 +76,11 @@ const Widgets: Widgets = {
       component: PatientsBundle,
       category: [WidgetCategory.Contact],
     },
+    record: {
+      type: ['CompleteSurvey'],
+      component: RecordsBundle,
+      category: [WidgetCategory.Record],
+    },
   },
   card: {
     patient: {
@@ -87,15 +94,22 @@ const Widgets: Widgets = {
       category: [WidgetCategory.Document],
     },
     user: {
-      type: ['User', 'FirebaseInfo'],
+      type: ['MediqUser'],
       component: UserCard,
       category: [WidgetCategory.Document],
     },
+    template: {
+      type: ['SurveyTemplate'],
+      component: TemplateCard,
+      category: [WidgetCategory.Document],
+    },
+    /*
     icd: {
       type: ['IcdSimpleEntity', 'IcdLinearizationEntity'],
       component: IcdCard,
       category: [WidgetCategory.Record],
     },
+    */
   },
   cluster: {},
   comparable: {},

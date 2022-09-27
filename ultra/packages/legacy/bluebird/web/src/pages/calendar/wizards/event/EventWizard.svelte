@@ -118,8 +118,8 @@
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { visit, startTime, endTime, date, interval, ...stripped } = deepmerge(input, {
       ...$event,
-      patients: $event.patients.map((patient) => ({ id: patient.pid.id })),
-      doctors: $event.doctors.map((doctor) => ({ id: doctor.did.id })),
+      patients: $event.patients.map((patient) => ({ id: patient.id.value })),
+      doctors: $event.doctors.map((doctor) => ({ id: doctor.id?.value })),
       start: $event.startTime,
       end: $event.endTime,
     });
@@ -127,11 +127,11 @@
     $clients = [
       ...$event.doctors.map((doctor) => ({
         type: doctor.__typename,
-        id: doctor.did.id,
+        id: doctor.id?.value,
       })),
       ...$event.patients.map((patient) => ({
         type: patient.__typename,
-        id: patient.pid.id,
+        id: patient.id.value,
       })),
     ];
 

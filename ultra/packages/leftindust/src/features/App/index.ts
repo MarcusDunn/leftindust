@@ -7,6 +7,9 @@ import { setupI18n } from '@/language';
 import { isLoading } from 'svelte-i18n';
 import type { Route } from '../View';
 
+import devConfig from '../../../config.dev.json';
+import prodConfig from '../../../config.prod.json';
+
 export enum AppViews {
   Dashboard = 'view-dashboard',
   Calendar = 'view-calendar',
@@ -42,6 +45,24 @@ export enum Layout {
   Stacked = 'stacked',
 }
 
+export interface AppConfig {
+  mockingbird: {
+    address: string;
+  },
+  firebase: {
+    apiKey: string;
+    authDomain: string;
+    databaseURL: string;
+    projectId: string;
+    storageBucket: string;
+    messagingSenderId: string;
+    appId: string;
+  },
+  development: {
+    skipLoginValidation: boolean;
+  }
+}
+
 export const initMain = (
   app: typeof SvelteComponentDev,
   f7params: Framework7Parameters,
@@ -70,6 +91,13 @@ export const initMain = (
       });
     });
   });
-
-
 };
+
+export const config: AppConfig = (() => {
+  // These need to be string literals due to the nature of the build process
+  if (import.meta.env.MODE === 'development') {
+    return devConfig;
+  }
+
+  return prodConfig;
+})();

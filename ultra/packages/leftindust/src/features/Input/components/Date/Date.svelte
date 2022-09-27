@@ -22,6 +22,8 @@
   export let from: number | Date | undefined = undefined;
   export let to: number | Date | undefined = undefined;
 
+  export let name: string | undefined = undefined;
+
   let ref: HTMLInputElement;
   let calendar: Calendar.Calendar;
 
@@ -101,6 +103,7 @@
   <Input {title}>
     <input
       type="text"
+      {name}
       {placeholder}
       readonly
       bind:this={ref}

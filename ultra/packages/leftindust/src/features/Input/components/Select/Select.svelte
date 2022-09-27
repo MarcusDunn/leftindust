@@ -16,6 +16,8 @@
   export let title = '';
   export let placeholder = '';
 
+  export let name: string | undefined = undefined;
+
 </script>
 
 {#key options}
@@ -36,6 +38,7 @@
           <select
             bind:value
             on:change={() => dispatch('change', value)}
+            {name}
           >
             {#each options as option}
               <option value={option.value}>{option.text}</option>

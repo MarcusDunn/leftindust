@@ -1,24 +1,28 @@
+import type { Route } from '@/features/View';
+
 import DashboardPage from '@/features/Dashboard/DashboardPage.svelte';
+import CalendarPage from '@/features/Calendar/CalendarPage.svelte';
 import ClientsPage from '@/features/Clients/ClientsPage.svelte';
 
 import TemplatesPage from '@/features/Templates/TemplatesPage.svelte';
+import TemplatePage from '@/features/Template/TemplatePage.svelte';
+
+import SetupPage from '@/features/Setup/SetupPage.svelte';
 
 import PatientPage from '@/features/Patient/PatientPage.svelte';
 import DoctorPage from '@/features/Doctor/DoctorPage.svelte';
 import PeoplePage from '@/features/People/PeoplePage.svelte';
+import TemplateAssignPage from '@/features/Assign/TemplateAssignPage.svelte';
 
-import TemplatePreviewPage from '@/features/Templates/TemplatePreviewPage.svelte';
-import TemplateWizard from '@/features/Templates/TemplateWizard.svelte';
-
-import PatientWizard from '@/features/Patient/PatientWizard.svelte';
-import DoctorWizard from '@/features/Doctor/DoctorWizard.svelte';
+import TemplateWizard from '@/features/Template/TemplateWizard.svelte';
+import RecordWizard from '@/features/Record/RecordWizard.svelte';
 
 import MedIQLoginPage from '@/features/Account/MedIQLoginPage.svelte';
 
 import SettingsPage from '@/features/Settings/SettingsPage.svelte';
 
 import LifecycleErrorPage from '@/features/Errors/LifecycleErrorPage.svelte';
-import type { Route } from '@/features/View';
+import TemplatePreviewPage from '@/features/Template/TemplatePreviewPage.svelte';
 
 export type Path =
   | '/dashboard/'
@@ -26,11 +30,15 @@ export type Path =
   | '/patient/:data/'
   | '/doctor/:data/'
   | '/people/:data/'
+  | '/calendar/'
   | '/templates/'
+  | '/setup/'
+  | '/assign/template/'
+  | '/template/:data/'
   | '/wizard/template/'
-  | '/wizard/patient/'
-  | '/wizard/doctor/'
-  | '/template/preview/'
+  | '/wizard/record/'
+  | '/wizard/record/preview/'
+  | '/wizard/template/preview/'
   | '/account/login/'
   | '/settings/'
   | '/errors/lifecycle/'
@@ -40,6 +48,10 @@ const routes: Route<Path>[] = [
   {
     path: '/dashboard/',
     component: DashboardPage,
+  },
+  {
+    path: '/calendar/',
+    component: CalendarPage,
   },
   {
     path: '/clients/',
@@ -63,19 +75,27 @@ const routes: Route<Path>[] = [
     component: TemplatesPage,
   },
   {
+    path: '/assign/template/',
+    component: TemplateAssignPage,
+  },
+  {
+    path: '/template/:data/',
+    component: TemplatePage,
+  },
+  {
+    path: '/setup/',
+    component: SetupPage,
+  },
+  {
+    path: '/wizard/record/',
+    component: RecordWizard,
+  },
+  {
     path: '/wizard/template/',
     component: TemplateWizard,
   },
   {
-    path: '/wizard/patient/',
-    component: PatientWizard,
-  },
-  {
-    path: '/wizard/doctor/',
-    component: DoctorWizard,
-  },
-  {
-    path: '/template/preview/',
+    path: '/wizard/template/preview/',
     component: TemplatePreviewPage,
   },
   {

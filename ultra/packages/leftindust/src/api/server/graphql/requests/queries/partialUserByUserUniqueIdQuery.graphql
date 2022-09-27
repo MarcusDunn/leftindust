@@ -1,0 +1,7 @@
+#import "../fragments/partialUserFragment.graphql"
+
+query partialUserByUserUniqueIdQuery($uniqueId: String!) {
+    userByUserUniqueId(uniqueId: $uniqueId) {
+      ...partialUser
+    }
+}

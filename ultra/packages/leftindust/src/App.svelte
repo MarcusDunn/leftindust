@@ -13,7 +13,7 @@
   items={[
     {
       title: '',
-      id: AppViews.Hub,
+      id: AppViews.Main,
       url: AppRootRoutes.Home,
       active: true,
     },

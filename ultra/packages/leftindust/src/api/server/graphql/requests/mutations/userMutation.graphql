@@ -1,7 +1,0 @@
-#import "../fragments/userFragment.graphql"
-
-mutation userMutation($user: UserInput!) {
-    addUser(user: $user) {
-        ...user
-    }
-}

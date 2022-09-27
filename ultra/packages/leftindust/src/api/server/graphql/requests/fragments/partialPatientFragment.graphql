@@ -1,0 +1,12 @@
+fragment partialPatient on Patient {
+  id {
+    value
+  }
+  firstName
+  middleName
+  lastName
+  dateOfBirth
+  gender
+  sex
+  thumbnail
+}
