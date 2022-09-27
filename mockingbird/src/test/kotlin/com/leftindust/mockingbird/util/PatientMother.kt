@@ -101,7 +101,7 @@ object PatientMother {
             contacts = contacts,
             doctors = doctors,
             assignedSurveys = assignedSurveysTransient
-        )
+        ).apply { id = this@Dan.id }
 
         val domainEntityDetached = patientEntityToPatientConverter.convert(entityDetached)
         val dto: PatientDto = patientToPatientDtoConverter.convert(domainEntityDetached)
