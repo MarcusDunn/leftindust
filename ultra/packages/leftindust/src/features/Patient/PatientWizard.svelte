@@ -14,6 +14,8 @@
 
   import { createPatientForm } from './';
   import DatePicker from '../Input/components/Date/DatePicker.svelte';
+  import Phones from '../Input/components/Phone/Phones.svelte';
+  import Emails from '../Input/components/Email/Emails.svelte';
 
   export let patientId: string | undefined = undefined;
 
@@ -49,7 +51,6 @@
                 <Input error={$errors.nameInfo.lastName}>
                   <input type="text" name="nameInfo.lastName" placeholder="Last Name" />
                 </Input>
-                <p />
               </Col>
               <Col width="100" medium="50">
                 <p />
@@ -129,12 +130,21 @@
                 </Input>
               </Col>
             </Row>
-            <Col width="100">
-              <p />
-              <Input error={$errors.insuranceNumber}>
-                <input type="text" name="insuranceNumber" placeholder="Insurance Number (Optional)" />
-              </Input>
-            </Col>
+              <Col width="100">
+                <Input error={$errors.insuranceNumber}>
+                  <input type="text" name="insuranceNumber" placeholder="Insurance Number (Optional)" />
+                </Input>
+              </Col>
+          </Col>
+        </Row>
+        <br />
+        <h4>Contact</h4>
+        <Row>
+          <Col xlarge="50" width="100">
+            <Phones title="Add Phone (Optional)" bind:value={$formData.phones} />
+          </Col>
+          <Col xlarge="50" width="100">
+            <Emails title="Add Email (Optional)" bind:value={$formData.emails} />
           </Col>
         </Row>
       </Block>
