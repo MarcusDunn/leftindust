@@ -2,8 +2,6 @@ package com.leftindust.mockingbird.person
 
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullEntityIdInConverterException
-import com.leftindust.mockingbird.person.NameInfo
-import com.leftindust.mockingbird.person.NameInfoDto
 import org.springframework.stereotype.Component
 
 @Component

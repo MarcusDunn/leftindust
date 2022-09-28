@@ -4,7 +4,11 @@ import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.EmailEntity
-import com.leftindust.mockingbird.patient.*
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.patient.PatientEntity
+import com.leftindust.mockingbird.patient.PatientEntityToPatientConverter
+import com.leftindust.mockingbird.patient.PatientEventEntity
+import com.leftindust.mockingbird.patient.PatientToPatientDtoConverter
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.person.Sex
@@ -103,9 +107,7 @@ object PatientMother {
             assignedSurveys = assignedSurveysTransient
         ).apply { id = this@Dan.id }
 
-        val domainEntityDetached = patientEntityToPatientConverter.convert(entityDetached)
-        val dto: PatientDto = patientToPatientDtoConverter.convert(domainEntityDetached)
-
-        val domainEntityTransient = patientEntityToPatientConverter.convert(entityTransient)
+        val domain = patientEntityToPatientConverter.convert(entityDetached)
+        val dto: PatientDto = patientToPatientDtoConverter.convert(domain)
     }
 }
