@@ -53,7 +53,7 @@
               title={record.surveyTemplate.sections[sectionIndex].inputs[inputIndex].label}
             >
               <Block class="no-margin" strong inset>
-                {input.value}
+                {input}
               </Block>
             </CollapsableContent>
             <br />

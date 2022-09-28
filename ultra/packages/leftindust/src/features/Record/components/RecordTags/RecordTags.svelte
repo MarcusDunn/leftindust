@@ -7,8 +7,6 @@
 
   export let outline = false;
   export let small = false;
-
-  let values = sections?.flatMap((section) => section.inputs.map((input) => input.value));
 </script>
 
 <Chip
