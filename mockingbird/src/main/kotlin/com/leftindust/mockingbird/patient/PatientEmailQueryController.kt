@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullSubQueryException
-import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.email.EmailDto
 import com.leftindust.mockingbird.email.ReadEmailService
 import org.springframework.graphql.data.method.annotation.SchemaMapping
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller
 @Controller
 class PatientEmailQueryController(
     private val readEmailService: ReadEmailService,
-    private val emailToEmailDtoConverter: InfallibleConverter<Email, EmailDto>,
+    private val emailToEmailDtoConverter: InfallibleConverter<EmailEntity, EmailDto>,
 ) {
     @SchemaMapping(typeName = PatientDto.GRAPHQL_TYPE, field = "emails")
     suspend fun addresses(patientDto: PatientDto): List<EmailDto> {

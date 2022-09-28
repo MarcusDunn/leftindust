@@ -63,7 +63,7 @@ object DoctorMother {
         val id = UUID.fromString("c7c89079-ee58-4187-9d31-1fab272aa7f0")
         val graphqlId = DoctorDto.DoctorDtoId(id)
         val addresses = mutableSetOf(AddressMother.DansHouse.entityDetached)
-        val emails = mutableSetOf(EmailMother.dansEmail)
+        val emails = mutableSetOf(EmailMother.dansEmailEntity)
         val phones = mutableSetOf(PhoneMother.DansCell.entityDetached)
         val user: MediqUser? = null
         val events = mutableSetOf<DoctorEventEntity>()
