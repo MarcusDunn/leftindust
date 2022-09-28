@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.doctor
 
 import com.leftindust.mockingbird.address.Address
-import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.event.Event
 import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
@@ -22,7 +22,7 @@ class DoctorEntity(
     @OneToMany
     var addresses: MutableSet<Address>,
     @OneToMany
-    var emails: MutableSet<Email>,
+    var emails: MutableSet<EmailEntity>,
     @OneToMany
     var phones: MutableSet<Phone>,
     @OneToOne

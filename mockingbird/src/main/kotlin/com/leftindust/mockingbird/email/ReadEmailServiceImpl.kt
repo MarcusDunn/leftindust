@@ -20,20 +20,20 @@ class ReadEmailServiceImpl(
     val doctorRepository: DoctorRepository
 ) : ReadEmailService {
     private val logger = KotlinLogging.logger { }
-    override suspend fun getByEmailId(emailId: EmailDto.EmailDtoId): Email? {
+    override suspend fun getByEmailId(emailId: EmailDto.EmailDtoId): EmailEntity? {
         return emailRepository.findById(emailId.value).orElse(null)
     }
 
-    override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Email>? {
+    override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<EmailEntity>? {
         val doctor = doctorRepository.findByIdOrNull(doctorId.value) ?: return null
         return doctor.emails.toList()
     }
 
-    override suspend fun getPatientEmails(patientId: PatientDto.PatientDtoId): List<Email>? {
+    override suspend fun getPatientEmails(patientId: PatientDto.PatientDtoId): List<EmailEntity>? {
         return patientRepository.findByIdOrNull(patientId.value)?.emails?.toList()
     }
 
-    override suspend fun getContactEmails(contactContactDtoId: ContactDto.ContactDtoId): List<Email>? {
+    override suspend fun getContactEmails(contactContactDtoId: ContactDto.ContactDtoId): List<EmailEntity>? {
         return readContactService.getByContactId(contactContactDtoId)?.email?.toList()
     }
 }

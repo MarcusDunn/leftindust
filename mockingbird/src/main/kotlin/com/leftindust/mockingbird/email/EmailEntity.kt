@@ -5,7 +5,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity
-class Email(
+class EmailEntity(
     @Column(nullable = false)
     var type: EmailType,
     @Column(nullable = false)

@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
-import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.event.Event
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.person.Ethnicity
@@ -13,7 +13,13 @@ import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.Lob
+import javax.persistence.OneToMany
+import javax.persistence.OneToOne
 
 @Entity
 class PatientEntity(
@@ -22,7 +28,7 @@ class PatientEntity(
     @OneToMany(cascade = [CascadeType.PERSIST])
     val addresses: MutableSet<Address>,
     @OneToMany(cascade = [CascadeType.PERSIST])
-    val emails: MutableSet<Email>,
+    val emails: MutableSet<EmailEntity>,
     @OneToMany(cascade = [CascadeType.PERSIST])
     val phones: MutableSet<Phone>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)

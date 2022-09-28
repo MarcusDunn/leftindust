@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.util
 import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
-import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.patient.*
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfo
@@ -38,9 +38,9 @@ object PatientMother {
             get() = mutableSetOf()
         val doctors: MutableSet<DoctorPatientEntity>
             get() = mutableSetOf()
-        val emailsDetached: MutableSet<Email>
+        val emailsDetached: MutableSet<EmailEntity>
             get() = mutableSetOf(DansEmail.entityDetached)
-        val emailsTransient: MutableSet<Email>
+        val emailsTransient: MutableSet<EmailEntity>
             get() = mutableSetOf(DansEmail.entityTransient)
         val phonesDetached: MutableSet<Phone>
             get() = mutableSetOf(PhoneMother.DansCell.entityDetached)

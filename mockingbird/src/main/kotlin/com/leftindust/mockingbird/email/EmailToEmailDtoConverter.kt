@@ -5,8 +5,8 @@ import com.leftindust.mockingbird.NullEntityIdInConverterException
 import org.springframework.stereotype.Component
 
 @Component
-class EmailToEmailDtoConverter : InfallibleConverter<Email, EmailDto> {
-    override fun convert(source: Email): EmailDto {
+class EmailToEmailDtoConverter : InfallibleConverter<EmailEntity, EmailDto> {
+    override fun convert(source: EmailEntity): EmailDto {
         return EmailDto(
             EmailDto.EmailDtoId(source.id ?: throw NullEntityIdInConverterException(source)),
             source.type,
