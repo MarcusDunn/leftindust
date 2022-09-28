@@ -3,7 +3,7 @@
 
   import Add from '@/features/Input/components/Add/Add.svelte';
   import Checkbox from '@/features/Input/components/Checkbox/Checkbox.svelte';
-  import Date from '@/features/Input/components/Date/DatePicker.svelte';
+  import Dateicker from '@/features/Input/components/Date/DatePicker.svelte';
 
   import Input from '@/features/Input/Input.svelte';
   import InputError from '@/features/Input/InputError.svelte';
@@ -33,6 +33,8 @@
     }) => any): () => void;
   } & Record<string, any>) | undefined;
   export let errors: Writable<Record<string, string>> | undefined = undefined;
+  let errs: string | string[] | null | undefined;
+  $: if($errors) errs = (<Record<string, string>>$errors).id;
 
   // TODO: DEMO got no time to debug this
   $: $data![id] = value;
@@ -44,19 +46,19 @@
 {:else}
   <div style="margin-bottom: 20px;">
     {#if type === SurveyTemplateInputType.Text}
-      <Input title={label} clear error={$errors?.[id]}>
+      <Input title={label} clear error={errs}>
         <input type="text" {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Number}
-      <Input title={label} clear error={$errors?.[id]}>
+      <Input title={label} clear error={errs}>
         <input type="number" {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Date}
       {#if typeof value === 'number' || typeof value === 'undefined'}
-        <Date title={label} {placeholder} bind:value />
+        <Dateicker {label} {placeholder} bind:value />
       {/if}
     {:else if type === SurveyTemplateInputType.Paragraph}
-      <Input title={label} clear error={$errors?.[id]}>
+      <Input title={label} clear error={errs}>
         <textarea {placeholder} bind:value />
       </Input>
     {:else if type === SurveyTemplateInputType.Upload}
@@ -74,15 +76,15 @@
             />
           {/if}
         {/each}
-        {#if $errors?.[id]}
-          {#if Array.isArray($errors?.[id])}
-            {#each $errors?.[id] as e}
+        {#if errs}
+          {#if Array.isArray(errs)}
+            {#each errs as e}
               {#if typeof e === 'string'}
                 <InputError message={e} />
               {/if}
             {/each}
           {:else}
-            <InputError message={$errors?.[id]} />
+            <InputError message={errs} />
           {/if}
         {/if}
       {/if}

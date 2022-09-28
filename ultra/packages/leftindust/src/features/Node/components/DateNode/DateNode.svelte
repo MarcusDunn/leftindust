@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Date from '@/features/Input/components/Date/DatePicker.svelte';
+  import DatePicker from '@/features/Input/components/Date/DatePicker.svelte';
   import type { OutputSocket, OutputSockets } from 'function-junctions/types';
 
   export let outputs: OutputSockets<{
@@ -10,5 +10,5 @@
 </script>
 
 <div style="min-width: 430px">
-  <Date title="Date" placeholder="Select a Date" bind:value={$value} />
+  <DatePicker label="Date" placeholder="Select a Date" bind:value={$value} />
 </div>
