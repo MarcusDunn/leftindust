@@ -91,7 +91,6 @@
                   <DatePicker 
                     placeholder="Birthday" 
                     pastOnly
-                    value={new Date($formData.dateOfBirth).getTime()}
                     on:change={(e) => {
                       $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-GB');
                     }}

@@ -17,9 +17,6 @@
   export let placeholder = '';
 
   export let name: string | undefined = undefined;
-
-  $: console.log(value);
-
 </script>
 
 {#key options}

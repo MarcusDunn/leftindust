@@ -1,5 +1,4 @@
 import { validator } from '@felte/validator-yup';
-import type { SubmitContext } from '@felte/common';
 import { createForm } from 'felte';
 import * as yup from 'yup';
 
