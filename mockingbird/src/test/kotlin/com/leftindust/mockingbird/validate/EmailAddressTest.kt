@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.fail
 
-internal class EmailTest {
+internal class EmailAddressTest {
     @TestFactory
     internal fun valid() = listOf(
         "email@example.com",
@@ -25,7 +25,7 @@ internal class EmailTest {
         "firstname-lastname@example.com",
     ).map {
         dynamicTest("$it is a valid email") {
-            Email.parseResult4k(it).onFailure { fail(it.reason) }
+            EmailAddress.parseResult4k(it).onFailure { fail(it.reason) }
         }
     }
 
@@ -47,7 +47,7 @@ internal class EmailTest {
         "Abc..123@example.com"
     ).map {
         dynamicTest("$it is an invalid email") {
-            val success = Email.parseResult4k(it).onFailure { return@dynamicTest }
+            val success = EmailAddress.parseResult4k(it).onFailure { return@dynamicTest }
             fail(Exception("$success is not a valid email yet we accepted it"))
         }
     }
