@@ -20,7 +20,7 @@ import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.applyDeletable
 import com.leftindust.mockingbird.graphql.types.ignore
 import com.leftindust.mockingbird.patient.PatientDto
-import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.patient.PatientRepository
 import com.leftindust.mockingbird.person.UpdateNameInfo
 import com.leftindust.mockingbird.person.UpdateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhone
@@ -29,6 +29,7 @@ import com.leftindust.mockingbird.user.ReadMediqUserService
 import java.time.LocalDate
 import javax.transaction.Transactional
 import mu.KotlinLogging
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 
@@ -36,13 +37,13 @@ import org.springframework.stereotype.Service
 @Transactional
 class UpdateDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
+    private val patientRepository: PatientRepository,
     private val readMediqUserService: ReadMediqUserService,
     private val updateNameInfoService: UpdateNameInfoService,
     private val createPhoneService: CreatePhoneService,
     private val readClinicService: ReadClinicService,
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,
-    private val readPatientService: ReadPatientService,
     private val updateClinicService: UpdateClinicService,
     private val readDoctorService: ReadDoctorService,
     private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter,
@@ -76,10 +77,10 @@ class UpdateDoctorServiceImpl(
             is Updatable.Update -> {
                 doctor.clearPatients()
                 patients.value
-                    .map { it to readPatientService.getByPatientId(it) }
+                    .map { it to patientRepository.findByIdOrNull(it.value) }
                     .forEach { (id, patient) ->
                         patient
-                            ?.let { doctor.addPatient(it) }
+                            ?.let { doctor.addPatient(patient) }
                             ?: logger.warn { MissedCollectionAddNoEntityWithId(doctor, doctor::patients, id.value) }
                     }
             }
@@ -134,9 +135,7 @@ class UpdateDoctorServiceImpl(
                         clinicId
                     }
                     .forEach { id ->
-                        val doctorIds = readDoctorService.getByClinicId(id)
-                            ?.mapNotNull { it.id }
-                            ?.map { DoctorDto.DoctorDtoId(it) }
+                        val doctorIds = readDoctorService.getByClinicId(id)?.map { DoctorDto.DoctorDtoId(it.id) }
 
                         if (doctorIds != null) {
                             val editClinic = ClinicEditDto(

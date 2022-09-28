@@ -4,7 +4,7 @@ import com.leftindust.mockingbird.clinic.ClinicDto
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.graphql.types.input.toPageable
 import com.leftindust.mockingbird.patient.PatientDto
-import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.patient.PatientRepository
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.domain.Sort
@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service
 @Transactional
 class ReadDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
-    private val readPatientService: ReadPatientService,
+    private val patientRepository: PatientRepository,
     private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter
 ) : ReadDoctorService {
     private val logger = KotlinLogging.logger { }
 
     override suspend fun getByPatientId(patientDtoId: PatientDto.PatientDtoId): List<Doctor>? {
-        val patient = readPatientService.getByPatientId(patientDtoId) ?: return null
+        val patient = patientRepository.findByIdOrNull(patientDtoId.value) ?: return null
         return patient.doctors.map { doctorEntityToDoctorConverter.convert(it.doctor) }
     }
 

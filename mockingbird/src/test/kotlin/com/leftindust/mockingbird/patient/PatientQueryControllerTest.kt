@@ -23,7 +23,7 @@ internal class PatientQueryControllerWebTest(
 
     @Test
     internal fun `check can query all basic fields`() {
-        coEvery { readPatientService.getByPatientId(Dan.graphqlId) } returns Dan.entityDetached
+        coEvery { readPatientService.getByPatientId(Dan.graphqlId) } returns Dan.domainEntityDetached
 
         @Language("graphql")
         val query = """
@@ -54,7 +54,7 @@ internal class PatientQueryControllerWebTest(
 
     @Test
     internal fun `check can query by range`() {
-        coEvery { readPatientService.getMany(RangeDto(0, 1)) } returns listOf(Dan.entityDetached)
+        coEvery { readPatientService.getMany(RangeDto(0, 1)) } returns listOf(Dan.domainEntityDetached)
 
         @Language("graphql")
         val query = """

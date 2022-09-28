@@ -6,7 +6,7 @@ import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.applyUpdatable
 import com.leftindust.mockingbird.graphql.types.applyUpdatableGqlId
 import com.leftindust.mockingbird.patient.PatientDto
-import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.patient.PatientRepository
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service
 class UpdateEventServiceImpl(
     private val eventRepository: HibernateEventRepository,
     private val doctorRepository: DoctorRepository,
-    private val readPatientService: ReadPatientService,
+    private val patientRepository: PatientRepository,
 ) : UpdateEventService {
     private val logger = KotlinLogging.logger { }
 
@@ -42,7 +42,7 @@ class UpdateEventServiceImpl(
         patients.applyUpdatableGqlId(
             entity = event,
             property = event::patients,
-            addToCollection = { patientDtoId -> readPatientService.getByPatientId(patientDtoId)?.addEvent(event) },
+            addToCollection = { patientDtoId -> patientRepository.findByIdOrNull(patientDtoId.value)?.addEvent(event) },
             logger = logger
         )
     }
