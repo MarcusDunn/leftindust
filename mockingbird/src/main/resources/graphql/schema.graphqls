@@ -304,9 +304,10 @@ input CreateDoctorUser {
 }
 
 input CreateDoctor {
-    user: CreateDoctorUser!
+    user: CreateDoctorUser
+    nameInfo: CreateNameInfo
     phones: [CreatePhone!]!
-    tile: String
+    title: String!
     clinic: [ClinicIdInput!]!
     dateOfBirth: LocalDate
     addresses: [CreateAddress!]!
