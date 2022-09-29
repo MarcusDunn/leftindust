@@ -305,7 +305,6 @@ input CreateDoctorUser {
 
 input CreateDoctor {
     user: CreateDoctorUser
-    nameInfo: CreateNameInfo
     phones: [CreatePhone!]!
     title: String!
     clinic: [ClinicIdInput!]!
