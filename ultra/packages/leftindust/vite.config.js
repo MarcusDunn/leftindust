@@ -13,7 +13,7 @@ const outDir = path.resolve(__dirname, 'build');
 // https://vitejs.dev/config/
 export default defineConfig({
   root,
-  base: '',
+  base: production ? '/' : '',
   publicDir: '../public',
   mode: production ? 'production' : 'development',
   build: {
