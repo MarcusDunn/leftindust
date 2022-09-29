@@ -66,7 +66,7 @@ class CreateDoctorServiceImpl(
                         ?: throw IllegalArgumentException("No such patient with id $it")
                 }.forEach { addPatient(it) }
 
-            updateClinics(createDoctor.clinic, this)
+//            updateClinics(createDoctor.clinic, this)
         }
         return doctorEntityToDoctorConverter.convert(doctorRepository.save(doctor))
     }
@@ -75,6 +75,7 @@ class CreateDoctorServiceImpl(
         clinicsEdit: List<ClinicDto.ClinicDtoId>,
         doctor: DoctorEntity
     ) {
+        // this always fails
         doctor.id ?: throw IllegalArgumentException("Clinic is missing a doctor id")
 
         clinicsEdit.map {
