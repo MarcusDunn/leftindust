@@ -241,10 +241,7 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
               __typename: 'MediqGroup',
               name: 'Development',
             },
-            database: {
-              ...accountDatabaseTemplate,
-              data,
-            },
+            database: deepmerge(accountDatabaseTemplate, data),
           }));
         } else {
           // Sign-in user and authenticate with leftindust servers

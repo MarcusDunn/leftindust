@@ -13,7 +13,7 @@ const outDir = path.resolve(__dirname, 'build');
 // https://vitejs.dev/config/
 export default defineConfig({
   root,
-  base: '/',
+  base: '',
   publicDir: '../public',
   mode: production ? 'production' : 'development',
   build: {
@@ -30,7 +30,7 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
-  host: true,
+    host: true,
     port: 5002,
   },
   rollupDedupe: ['svelte', '@fullcalendar/common'],

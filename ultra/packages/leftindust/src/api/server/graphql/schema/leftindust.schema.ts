@@ -72,6 +72,13 @@ export type CompleteSurveyIdInput = {
   value?: InputMaybe<Scalars['UUID']>;
 };
 
+export enum CompleteSurveyInputType {
+  Number = 'Number',
+  NumberArray = 'NumberArray',
+  String = 'String',
+  StringArray = 'StringArray'
+}
+
 export type CompleteSurveySection = {
   __typename?: 'CompleteSurveySection';
   id: CompleteSurveySectionId;
@@ -84,14 +91,36 @@ export type CompleteSurveySectionId = {
 };
 
 export type CompleteSurveySectionInput = {
-  __typename?: 'CompleteSurveySectionInput';
   id: CompleteSurveySectionInputId;
-  value: Scalars['String'];
 };
 
 export type CompleteSurveySectionInputId = {
   __typename?: 'CompleteSurveySectionInputId';
   value: Scalars['UUID'];
+};
+
+export type CompleteSurveySectionNumberArrayInput = CompleteSurveySectionInput & {
+  __typename?: 'CompleteSurveySectionNumberArrayInput';
+  id: CompleteSurveySectionInputId;
+  numberArray: Array<Scalars['Int']>;
+};
+
+export type CompleteSurveySectionNumberInput = CompleteSurveySectionInput & {
+  __typename?: 'CompleteSurveySectionNumberInput';
+  id: CompleteSurveySectionInputId;
+  number: Scalars['Int'];
+};
+
+export type CompleteSurveySectionStringArrayInput = CompleteSurveySectionInput & {
+  __typename?: 'CompleteSurveySectionStringArrayInput';
+  id: CompleteSurveySectionInputId;
+  stringArray: Array<Scalars['String']>;
+};
+
+export type CompleteSurveySectionStringInput = CompleteSurveySectionInput & {
+  __typename?: 'CompleteSurveySectionStringInput';
+  id: CompleteSurveySectionInputId;
+  string: Scalars['String'];
 };
 
 export enum Countries {
@@ -118,9 +147,14 @@ export type CreateCompleteSurvey = {
   surveyLinkId: SurveyTemplateLinkIdInput;
 };
 
+/** this is hayneous but graphql currently doesnt support input union types, only output */
 export type CreateCompleteSurveyInput = {
+  numberArrayInput?: InputMaybe<Array<Scalars['Int']>>;
+  numberInput?: InputMaybe<Scalars['Int']>;
+  stringArrayInput?: InputMaybe<Array<Scalars['String']>>;
+  stringInput?: InputMaybe<Scalars['String']>;
   surveyTemplateSectionInputId: SurveyTemplateSectionInputIdInput;
-  value: Scalars['String'];
+  type: CompleteSurveyInputType;
 };
 
 export type CreateCompleteSurveySection = {
@@ -134,6 +168,31 @@ export type CreateContact = {
   phones?: Array<CreatePhone>;
   relationship?: InputMaybe<Relationship>;
 };
+
+export type CreateDoctor = {
+  addresses: Array<CreateAddress>;
+  clinic: Array<ClinicIdInput>;
+  dateOfBirth?: InputMaybe<Scalars['LocalDate']>;
+  emails: Array<CreateEmail>;
+  patients: Array<PatientIdInput>;
+  phones: Array<CreatePhone>;
+  title: Scalars['String'];
+  user?: InputMaybe<CreateDoctorUser>;
+};
+
+export type CreateDoctorUser = {
+  discriminant: CreateDoctorUserType;
+  group?: InputMaybe<MediqGroupIdInput>;
+  nameInfo?: InputMaybe<CreateNameInfo>;
+  uid?: InputMaybe<Scalars['String']>;
+  userUid?: InputMaybe<MediqGroupIdInput>;
+};
+
+export enum CreateDoctorUserType {
+  Create = 'Create',
+  Find = 'Find',
+  NoUser = 'NoUser'
+}
 
 export type CreateEmail = {
   email: Scalars['String'];
@@ -240,6 +299,35 @@ export type EditClinic = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type EditDoctor = {
+  addresses?: InputMaybe<Array<CreateAddress>>;
+  clinics?: InputMaybe<Array<ClinicIdInput>>;
+  dateOfBirth?: InputMaybe<Scalars['LocalDate']>;
+  did: DoctorIdInput;
+  emails?: InputMaybe<Array<CreateEmail>>;
+  nameInfo?: InputMaybe<UpdateNameInfo>;
+  patients?: InputMaybe<Array<PatientIdInput>>;
+  phones?: InputMaybe<Array<CreatePhone>>;
+  title?: InputMaybe<Scalars['String']>;
+  userUid?: InputMaybe<Scalars['String']>;
+};
+
+export type EditPatient = {
+  addresses: Array<CreateAddress>;
+  dateOfBirth?: InputMaybe<Scalars['LocalDate']>;
+  doctor: Array<DoctorIdInput>;
+  emails: Array<CreateEmail>;
+  emergencyContacts: Array<CreateContact>;
+  ethnicity: Ethnicity;
+  gender: Scalars['String'];
+  insuranceNumber?: InputMaybe<Scalars['String']>;
+  nameInfo?: InputMaybe<UpdateNameInfo>;
+  phones: Array<CreatePhone>;
+  pid: PatientIdInput;
+  sex: Sex;
+  thumbnail?: InputMaybe<Scalars['String']>;
+};
+
 export type Email = {
   __typename?: 'Email';
   email: Scalars['String'];
@@ -296,10 +384,16 @@ export type MediqUserId = {
   value: Scalars['String'];
 };
 
+export type MediqUserUniqueIdInput = {
+  value: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   /**  clinic */
   addClinic: Clinic;
+  /**  doctor */
+  addDoctor?: Maybe<Doctor>;
   /**  patient */
   addPatient?: Maybe<Patient>;
   /**  survey template */
@@ -311,11 +405,18 @@ export type Mutation = {
   /**  survey link */
   createSurveyLink: SurveyLink;
   editClinic?: Maybe<Clinic>;
+  editDoctor?: Maybe<Doctor>;
+  editPatient?: Maybe<Patient>;
 };
 
 
 export type MutationAddClinicArgs = {
   clinic: CreateClinic;
+};
+
+
+export type MutationAddDoctorArgs = {
+  createDoctor?: InputMaybe<CreateDoctor>;
 };
 
 
@@ -346,6 +447,16 @@ export type MutationCreateSurveyLinkArgs = {
 
 export type MutationEditClinicArgs = {
   clinic: EditClinic;
+};
+
+
+export type MutationEditDoctorArgs = {
+  editDoctor?: InputMaybe<EditDoctor>;
+};
+
+
+export type MutationEditPatientArgs = {
+  editPatient?: InputMaybe<EditPatient>;
 };
 
 export type NameInfo = {
@@ -622,6 +733,12 @@ export enum TemplateInputUploadType {
   Documents = 'Documents',
   Images = 'Images'
 }
+
+export type UpdateNameInfo = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  middleName?: InputMaybe<Scalars['String']>;
+};
 
 export type UserAccountDetails = {
   __typename?: 'UserAccountDetails';

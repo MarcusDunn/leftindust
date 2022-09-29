@@ -50,6 +50,13 @@ input CompleteSurveyIdInput {
   value: UUID
 }
 
+enum CompleteSurveyInputType {
+  Number
+  NumberArray
+  String
+  StringArray
+}
+
 type CompleteSurveySection {
   id: CompleteSurveySectionId!
   inputs: [CompleteSurveySectionInput!]!
@@ -59,13 +66,32 @@ type CompleteSurveySectionId {
   value: UUID!
 }
 
-type CompleteSurveySectionInput {
+interface CompleteSurveySectionInput {
   id: CompleteSurveySectionInputId!
-  value: String!
 }
 
 type CompleteSurveySectionInputId {
   value: UUID!
+}
+
+type CompleteSurveySectionNumberArrayInput implements CompleteSurveySectionInput {
+  id: CompleteSurveySectionInputId!
+  numberArray: [Int!]!
+}
+
+type CompleteSurveySectionNumberInput implements CompleteSurveySectionInput {
+  id: CompleteSurveySectionInputId!
+  number: Int!
+}
+
+type CompleteSurveySectionStringArrayInput implements CompleteSurveySectionInput {
+  id: CompleteSurveySectionInputId!
+  stringArray: [String!]!
+}
+
+type CompleteSurveySectionStringInput implements CompleteSurveySectionInput {
+  id: CompleteSurveySectionInputId!
+  string: String!
 }
 
 enum Countries {
@@ -92,9 +118,16 @@ input CreateCompleteSurvey {
   surveyLinkId: SurveyTemplateLinkIdInput!
 }
 
+"""
+this is hayneous but graphql currently doesnt support input union types, only output
+"""
 input CreateCompleteSurveyInput {
+  numberArrayInput: [Int!]
+  numberInput: Int
+  stringArrayInput: [String!]
+  stringInput: String
   surveyTemplateSectionInputId: SurveyTemplateSectionInputIdInput!
-  value: String!
+  type: CompleteSurveyInputType!
 }
 
 input CreateCompleteSurveySection {
@@ -107,6 +140,31 @@ input CreateContact {
   nameInfo: CreateNameInfo!
   phones: [CreatePhone!]! = []
   relationship: Relationship
+}
+
+input CreateDoctor {
+  addresses: [CreateAddress!]!
+  clinic: [ClinicIdInput!]!
+  dateOfBirth: LocalDate
+  emails: [CreateEmail!]!
+  patients: [PatientIdInput!]!
+  phones: [CreatePhone!]!
+  title: String!
+  user: CreateDoctorUser
+}
+
+input CreateDoctorUser {
+  discriminant: CreateDoctorUserType!
+  group: MediqGroupIdInput
+  nameInfo: CreateNameInfo
+  uid: String
+  userUid: MediqGroupIdInput
+}
+
+enum CreateDoctorUserType {
+  Create
+  Find
+  NoUser
 }
 
 input CreateEmail {
@@ -215,6 +273,35 @@ input EditClinic {
   name: String
 }
 
+input EditDoctor {
+  addresses: [CreateAddress!]
+  clinics: [ClinicIdInput!]
+  dateOfBirth: LocalDate
+  did: DoctorIdInput!
+  emails: [CreateEmail!]
+  nameInfo: UpdateNameInfo
+  patients: [PatientIdInput!]
+  phones: [CreatePhone!]
+  title: String
+  userUid: String
+}
+
+input EditPatient {
+  addresses: [CreateAddress!]!
+  dateOfBirth: LocalDate
+  doctor: [DoctorIdInput!]!
+  emails: [CreateEmail!]!
+  emergencyContacts: [CreateContact!]!
+  ethnicity: Ethnicity!
+  gender: String!
+  insuranceNumber: String
+  nameInfo: UpdateNameInfo
+  phones: [CreatePhone!]!
+  pid: PatientIdInput!
+  sex: Sex!
+  thumbnail: String
+}
+
 type Email {
   email: String!
   id: EmailId!
@@ -271,9 +358,16 @@ type MediqUserId {
   value: String!
 }
 
+input MediqUserUniqueIdInput {
+  value: String!
+}
+
 type Mutation {
   """ clinic"""
   addClinic(clinic: CreateClinic!): Clinic!
+
+  """ doctor"""
+  addDoctor(createDoctor: CreateDoctor): Doctor
 
   """ patient"""
   addPatient(createPatient: CreatePatient): Patient
@@ -290,6 +384,8 @@ type Mutation {
   """ survey link"""
   createSurveyLink(createSurveyLink: CreateSurveyLink): SurveyLink!
   editClinic(clinic: EditClinic!): Clinic
+  editDoctor(editDoctor: EditDoctor): Doctor
+  editPatient(editPatient: EditPatient): Patient
 }
 
 type NameInfo {
@@ -505,6 +601,12 @@ enum TemplateInputUploadType {
 
 """"""
 scalar UUID
+
+input UpdateNameInfo {
+  firstName: String!
+  lastName: String!
+  middleName: String
+}
 
 type UserAccountDetails {
   email: String
