@@ -1036,8 +1036,8 @@
         <renameColumn oldColumnName="patient_id" newColumnName="patient_entity_id" tableName="patient_entity_addresses"/>
         <renameColumn oldColumnName="patient_id" newColumnName="patient_entity_id" tableName="patient_entity_contacts"/>
         <renameColumn oldColumnName="patient_id" newColumnName="patient_entity_id" tableName="patient_entity_phones"/>
-        <renameColumn oldColumnName="doctor_id" newColumnName="patient_entity_id" tableName="doctor_entity_emails"/>
-        <renameColumn oldColumnName="doctor_id" newColumnName="patient_entity_id" tableName="doctor_entity_addresses"/>
-        <renameColumn oldColumnName="doctor_id" newColumnName="doctor_entity_phones" tableName="doctor_entity_phones"/>
+        <renameColumn oldColumnName="doctor_id" newColumnName="doctor_entity_id" tableName="doctor_entity_emails"/>
+        <renameColumn oldColumnName="doctor_id" newColumnName="doctor_entity_id" tableName="doctor_entity_addresses"/>
+        <renameColumn oldColumnName="doctor_id" newColumnName="doctor_entity_id" tableName="doctor_entity_phones"/>
     </changeSet>
 </databaseChangeLog>
