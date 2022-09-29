@@ -9,8 +9,10 @@ import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
+import java.util.*
 
 @GraphQlTest(controllers = [MediqUserMutationController::class])
 internal class MediqUserMutationControllerWebTest(
@@ -28,7 +30,8 @@ internal class MediqUserMutationControllerWebTest(
     @Test
     internal fun `check can query by id`() {
         coEvery { firebaseAuth.getUser(Marcus.uniqueId) } returns mockk()
-        coEvery { createMediqUserService.addUser(Marcus.create) } returns Marcus.domain
+        val answer = Marcus.domain
+        coEvery { createMediqUserService.addUser(Marcus.create) } returns answer
 
         @Language("graphql")
         val mutation = """
@@ -37,7 +40,7 @@ internal class MediqUserMutationControllerWebTest(
                     nameInfo: {
                         firstName: "${Marcus.firstName}"
                         lastName: "${Marcus.lastName}"
-                        middleName: ${Marcus.middleName?.let { """"${it}"""" }}                        
+                        middleName: ${Marcus.middleName}
                     }
                     uid: "${Marcus.uniqueId}"
                 }) {
@@ -45,10 +48,9 @@ internal class MediqUserMutationControllerWebTest(
                     group {
                         id { value }
                         name
-                    }                        
+                    }
                 }
             }
-            
         """.trimIndent()
 
         graphQlTester.document(mutation)

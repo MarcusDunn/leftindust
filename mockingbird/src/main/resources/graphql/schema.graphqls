@@ -55,6 +55,11 @@ type Mutation {
 
     # patient
     addPatient(createPatient: CreatePatient): Patient
+    editPatient(editPatient: EditPatient): Patient
+
+    # doctor
+    addDoctor(createDoctor: CreateDoctor): Doctor
+    editDoctor(editDoctor: EditDoctor): Doctor
 }
 
 input CreateSurveyLink {
@@ -247,6 +252,28 @@ type SurveyTemplateInput {
     calculationId: Int!
 }
 
+input UpdateNameInfo {
+    firstName: String!
+    middleName: String
+    lastName: String!
+}
+
+input EditPatient {
+    pid: PatientIdInput!
+    nameInfo: UpdateNameInfo
+    phones: [CreatePhone!]!
+    dateOfBirth: LocalDate
+    addresses: [CreateAddress!]!
+    emails: [CreateEmail!]!
+    insuranceNumber: String
+    sex: Sex!
+    gender: String!
+    ethnicity: Ethnicity!
+    emergencyContacts: [CreateContact!]!
+    thumbnail: String
+    doctor: [DoctorIdInput!]!
+}
+
 input CreatePatient {
     nameInfo: CreateNameInfo!
     phones: [CreatePhone!]! = []
@@ -260,6 +287,44 @@ input CreatePatient {
     emergencyContacts: [CreateContact!]! = []
     doctors: [DoctorIdInput!]! = []
     thumbnail: Base64
+}
+
+enum CreateDoctorUserType {
+    NoUser,
+    Find,
+    Create
+}
+
+input CreateDoctorUser {
+    discriminant: CreateDoctorUserType!
+    userUid: MediqGroupIdInput
+    uid: String
+    nameInfo: CreateNameInfo
+    group: MediqGroupIdInput
+}
+
+input CreateDoctor {
+    user: CreateDoctorUser
+    phones: [CreatePhone!]!
+    title: String!
+    clinic: [ClinicIdInput!]!
+    dateOfBirth: LocalDate
+    addresses: [CreateAddress!]!
+    emails: [CreateEmail!]!
+    patients: [PatientIdInput!]!
+}
+
+input EditDoctor {
+    did: DoctorIdInput!
+    userUid: String
+    nameInfo: UpdateNameInfo
+    phones: [CreatePhone!]
+    title: String
+    clinics: [ClinicIdInput!]
+    dateOfBirth: LocalDate
+    addresses: [CreateAddress!]
+    emails: [CreateEmail!]
+    patients: [PatientIdInput!]
 }
 
 input CreateContact {
@@ -403,6 +468,10 @@ type SurveyTemplateId {
 }
 
 type MediqUserId {
+    value: String!
+}
+
+input MediqUserUniqueIdInput {
     value: String!
 }
 

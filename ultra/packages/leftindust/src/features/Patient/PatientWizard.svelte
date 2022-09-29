@@ -1,110 +1,189 @@
 <script lang="ts">
-  import type { Data } from '@/api/server/graphql';
+  import { _ } from '@/language';
 
   import {
     Ethnicity,
+    Sex,
   } from '@/api/server/graphql/schema/leftindust.schema';
-
-  import { _ } from '@/language';
 
   import { Row, Col, Block } from 'framework7-svelte';
 
   import Input from '../Input/Input.svelte';
-  import Select from '../Input/components/Select/Select.svelte'
+  import Select from '../Input/components/Select/Select.svelte';
   import Wizard from '../Wizard/Wizard.svelte';
 
-  import { createPatientFormValidator } from './';
+  import { createPatientForm } from './';
+  import DatePicker from '../Input/components/Date/DatePicker.svelte';
+  import Phones from '../Input/components/Phone/Phones.svelte';
+  import Emails from '../Input/components/Email/Emails.svelte';
+  import Addresses from '../Input/components/Address/Addresses.svelte';
+  import { closeWizard } from '../Wizard';
 
-  export let data: Data<'Patient'> | undefined = undefined;
+  export let patientId: string | undefined = undefined;
+  export let fetch: () => void = () => undefined;
 
-  const { form, data: formData, handleSubmit } = createPatientFormValidator();
+  const { form, data: formData, handleSubmit, errors, reset } = createPatientForm(patientId, fetch);
+  
+  const close = () => {
+    reset();
+    closeWizard();
+  };
+
+  $: console.log($formData);
 
   let ref: HTMLFormElement;
 </script>
 
 <Wizard
-  title={$_("generics.newPatient")}
-  subtitle={$_("descriptions.addPatientDescription")}
+  title={$_('generics.newPatient')}
+  subtitle={$_('descriptions.addPatientDescription')}
   color="purple"
-  disabled={false}
   on:submit={() => ref?.requestSubmit()}
+  on:close={close}
 >
-  <form use:form on:submit="{handleSubmit}" bind:this="{ref}">
-      <Block style="margin-top: 60px">
-        <Block>
-          <h4>Identification</h4>
-          <Row>
-            <Col xlarge="50" width="100">
-              <Row>              
-                <Col width="100" medium="33">
-                  <Input>
-                    <input type="text" name="firstName" placeholder="First Name" />
-                  </Input>
-                  <p />
-                </Col>
-                <Col width="100" medium="33">
-                  <Input>
-                    <input type="text" name="middleName" placeholder="Middle Name (Optional)" />
-                  </Input>
-                  <p />
-                </Col>
-                <Col width="100" medium="33">
-                  <Input>
-                    <input type="text" name="lastName" placeholder="Last Name" />
-                  </Input>
-                  <p />
-                </Col>
-              </Row>
-              <Row class="align-items-flex-end">
-                <Col width="100" medium="50">
-                    <Select
-                    title="Ethnicity"
-                    options={[
-                      {
-                        text: 'American Aboriginal',
-                        value: Ethnicity.AmericanAboriginal,
-                      },
-                      {
-                        text: 'Asian',
-                        value: Ethnicity.Asian,
-                      },
-                      {
-                        text: 'Black',
-                        value: Ethnicity.Black,
-                      },
-                      {
-                        text: 'Hispanic',
-                        value: Ethnicity.Hispanic,
-                      },
-                      {
-                        text: 'Pacific Islander',
-                        value: Ethnicity.PacificIslander,
-                      },
-                      {
-                        text: 'White',
-                        value: Ethnicity.White,
-                      },
-                    ]}
-                    bind:value={$formData.ethnicity}
-                    />
-                  <p />
-                </Col>
-                <Col width="100" medium="50">
-                  <Input>
-                    <input type="text" name="genderIdentity" placeholder="Gender Identity (Optional)" />
-                  </Input>
-                  <p />
-                </Col>
-              </Row>
-              <Col width="100">
-                <Input>
-                  <input type="text" name="insuranceNumber" placeholder="Insurance Number (Optional)" />
+  <form use:form on:submit={handleSubmit} bind:this={ref}>
+    <Block style="margin-top: 100px">
+      <Block>
+        <h4>Identification</h4>
+        <Row>
+          <Col width="100">
+            <Row>              
+              <Col width="100" medium="33">
+                <Input error={$errors.nameInfo.firstName}>
+                  <input type="text" name="nameInfo.firstName" placeholder="First Name" />
                 </Input>
-                <p />
               </Col>
+              <Col width="100" medium="33">
+                <Input error={$errors.nameInfo.middleName}>
+                  <input type="text" name="nameInfo.middleName" placeholder="Middle Name (Optional)" />
+                </Input>
+              </Col>
+              <Col width="100" medium="33">
+                <Input error={$errors.nameInfo.lastName}>
+                  <input type="text" name="nameInfo.lastName" placeholder="Last Name" />
+                </Input>
+              </Col>
+              <Col width="100" medium="50">
+                <p />
+                <Select
+                  placeholder="Ethnicity"
+                  error={$errors.ethnicity}
+                  options={[
+                    {
+                      text: 'American Aboriginal',
+                      value: Ethnicity.AmericanAboriginal,
+                    },
+                    {
+                      text: 'Asian',
+                      value: Ethnicity.Asian,
+                    },
+                    {
+                      text: 'Black',
+                      value: Ethnicity.Black,
+                    },
+                    {
+                      text: 'Hispanic',
+                      value: Ethnicity.Hispanic,
+                    },
+                    {
+                      text: 'Pacific Islander',
+                      value: Ethnicity.PacificIslander,
+                    },
+                    {
+                      text: 'White',
+                      value: Ethnicity.White,
+                    },
+                  ]}
+                  bind:value={$formData.ethnicity}
+                />
+              </Col>
+              <Col width="100" medium="50">
+                <div style="margin-top: 2px;">
+                  <DatePicker
+                    placeholder="Birthday"
+                    error={$errors.dateOfBirth}
+                    pastOnly
+                    on:change={(e) => {
+                      $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                      });
+                    }}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col width="50">
+                <p />
+                <Select
+                  placeholder="Sex"
+                  error={$errors.sex}
+                  options={[
+                    {
+                      text: 'Male',
+                      value: Sex.Male,
+                    },
+                    {
+                      text: 'Female',
+                      value: Sex.Female,
+                    },
+                    {
+                      text: 'Intersex',
+                      value: Sex.Intersex,
+                    },
+                  ]}
+                  bind:value={$formData.sex}
+                />
+              </Col>
+              <Col width="50">
+                <Input style="margin-top: 2px" error={$errors.gender}>
+                  <input
+                    type="text"
+                    name="gender"
+                    placeholder="Gender Identity"
+                  />
+                </Input>
+              </Col>
+            </Row>
+            <Col width="100">
+              <Input error={$errors.insuranceNumber}>
+                <input type="text" name="insuranceNumber" placeholder="Insurance Number (Optional)" />
+              </Input>
             </Col>
-          </Row>
-        </Block>
+          </Col>
+        </Row>
+        <br />
+        <br />
+        <h4 style="margin-bottom: 10px">Contact</h4>
+        <Row>
+          <Col xlarge="50" width="100">
+            <Phones
+              title="Add Phone (Optional)"
+              errors={$errors.phones}
+              bind:value={$formData.phones}
+            />
+            <p />
+          </Col>
+          <Col xlarge="50" width="100">
+            <Emails
+              title="Add Email (Optional)"
+              errors={$errors.emails}
+              bind:value={$formData.emails}
+            />
+            <p />
+          </Col>
+        </Row>
+        <br />
+        <h4 style="margin-bottom: 10px">Address</h4>
+        <Addresses
+          title="Add Address (Optional)"
+          errors={$errors.addresses}
+          bind:value={$formData.addresses}
+        />
+        <p />
       </Block>
-    </form>
-  </Wizard>
+    </Block>
+  </form>
+</Wizard>

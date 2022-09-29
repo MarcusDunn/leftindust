@@ -12,7 +12,7 @@ const production = process.env.NODE_ENV === 'production';
 export default defineConfig({
   base: '',
   build: {
-    outDir: '../../../../build/record',
+    outDir: '../../../../build/intake',
   },
   server: {
     host: true,

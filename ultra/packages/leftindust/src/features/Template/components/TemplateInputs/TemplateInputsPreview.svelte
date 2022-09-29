@@ -5,7 +5,7 @@
   import { _ } from '@/language';
   
   import Input from '@/features/Input/Input.svelte';
-  import Date from '@/features/Input/components/Date/Date.svelte';
+  import DatePicker from '@/features/Input/components/Date/DatePicker.svelte';
   import Add from '@/features/Input/components/Add/Add.svelte';
   import Checkbox from '@/features/Input/components/Checkbox/Checkbox.svelte';
 
@@ -63,7 +63,7 @@
         </Input>
       {:else if type === SurveyTemplateInputType.Date}
         {#if typeof value === 'number'}
-          <Date title={label} {placeholder} bind:value />
+          <DatePicker {label} {placeholder} bind:value />
         {/if}
       {:else if type === SurveyTemplateInputType.Paragraph}
         <Input title={label} clear>

@@ -62,12 +62,12 @@
       history={!quicklook}
       {f7router}
       right={!quicklook ? [
+        /*
         {
           title: $_('generics.edit'),
           icon: { f7: 'pencil_outline', color: 'gray' },
           condense: true,
         },
-      /*
         {
           title: $_('generics.create'),
           icon: { f7: 'plus_circle_fill', color: 'purple' },
@@ -77,35 +77,39 @@
       ] : []}
     >
       <svelte:fragment slot="left">
-        <SelectButton
-          options={[
-            {
-              text: $_('generics.bundled'),
-              value: Layout.Bundled,
-              icon: {
-                f7: 'rectangle_grid_3x2',
+        <!--
+          <SelectButton
+            options={[
+              {
+                text: $_('generics.bundled'),
+                value: Layout.Bundled,
+                icon: {
+                  f7: 'rectangle_grid_3x2',
+                },
               },
-            },
-            {
-              text: $_('generics.stacked'),
-              value: Layout.Stacked,
-              icon: {
-                f7: 'rectangle_grid_1x2',
+              {
+                text: $_('generics.stacked'),
+                value: Layout.Stacked,
+                icon: {
+                  f7: 'rectangle_grid_1x2',
+                },
               },
-            },
-          ]}
-          bind:value={layout}
-        />
+            ]}
+            bind:value={layout}
+          />
+        -->
         <SelectButton
           options={[
             {
               text: $_('generics.records'),
               value: ClientTab.Records,
             },
+            /*
             {
               text: $_('generics.contacts'),
               value: ClientTab.Contacts,
             },
+            */
           ]}
           bind:value={tab}
         />
