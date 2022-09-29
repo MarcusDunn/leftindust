@@ -60,21 +60,23 @@
     url="/blank/"
     bind:this={viewRef}
   >
+    <!--          
     <Footer>
       <p />
       <div style="float: right; margin: 0 20px">
         <slot name="footer" /> 
-        <Button
-          {color}
-          fill
-          round
-          style="width: 200px"
-          popupClose
-        >
-          {$_('generics.viewFile')}
-        </Button>
-        <p />
-      </div>
-    </Footer>
+          <Button
+            {color}
+            fill
+            round
+            style="width: 200px"
+            popupClose
+          >
+            {$_('generics.viewFile')}
+          </Button>
+          <p />
+        </div>
+      </Footer>
+    -->
   </View>
 </Popup>

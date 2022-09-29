@@ -37,7 +37,7 @@
     {f7router}
   />
   <Block style="height: calc(100% - 120px)">
-    <Request {...$request} refetch={request.reexecute} middle large>
+    <Request style="height: 100%" {...$request} refetch={request.reexecute} middle large>
       {#if templates.length > 0}
         <SpecificGrid
           props={templates.map((template) => ({
