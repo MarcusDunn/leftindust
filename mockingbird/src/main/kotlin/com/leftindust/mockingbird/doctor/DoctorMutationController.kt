@@ -23,7 +23,7 @@ class DoctorMutationController(
     }
 
     @MutationMapping
-    suspend fun editDoctor(doctor: UpdateDoctorDto): DoctorDto? {
+    suspend fun editDoctor(@Argument("editDoctor") doctor: UpdateDoctorDto): DoctorDto? {
         val updatedDoctor = updateDoctorService.editDoctor(doctor)
         return updatedDoctor?.let { doctorToDoctorDtoInfallibleConverter.convert(it) }
     }

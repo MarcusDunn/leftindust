@@ -13,7 +13,7 @@ interface ReadPatientService {
     suspend fun getVisitPatients(visitId: VisitDto.VisitDtoId): List<Patient>
     suspend fun getMany(range: Range): List<Patient>
     suspend fun getByEvent(eventId: EventDto.EventDtoId): List<Patient>?
-    suspend fun searchByExample(example: Example<Patient>): List<Patient>
+    suspend fun searchByExample(example: Example<PatientEntity>): List<Patient>
     suspend fun getByUser(uid: String): Patient?
     suspend fun getBySurveyLink(surveyLinkId: SurveyLinkDto.SurveyLinkDtoId): Patient?
 }
