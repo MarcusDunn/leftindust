@@ -23,6 +23,7 @@
   export let to: number | Date | undefined = undefined;
 
   export let name: string | undefined = undefined;
+  export let error: string[] | string | null | undefined = undefined;
 
   let ref: HTMLInputElement;
   let calendar: Calendar.Calendar;
@@ -100,7 +101,7 @@
 </script>
 
 <div class="input-date">
-  <Input title={label}>
+  <Input {error} title={label}>
     <input
       type="text"
       {name}

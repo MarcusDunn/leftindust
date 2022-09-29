@@ -6,6 +6,7 @@
   import Input from '../../Input.svelte';
 
   import './Select.scss';
+  import InputError from '../../InputError.svelte';
   
   const dispatch = createEventDispatcher();
 
@@ -17,6 +18,8 @@
   export let placeholder = '';
 
   export let name: string | undefined = undefined;
+
+  export let error: string[] | string | null | undefined = undefined;
 </script>
 
 {#key options}
@@ -45,3 +48,13 @@
     </Input>
   </div>
 {/key}
+
+{#if error}
+  {#if Array.isArray(error)}
+    {#each error as e}
+      <InputError message={e} />
+    {/each}
+  {:else}
+    <InputError message={error} />
+  {/if}
+{/if}

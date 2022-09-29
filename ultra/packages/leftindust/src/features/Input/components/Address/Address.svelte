@@ -3,11 +3,21 @@
 
   import { Countries } from '@/api/server';
 
-  import { Row, Col } from 'framework7-svelte'
+  import { Row, Col } from 'framework7-svelte';
   import Input from '../../Input.svelte';
   import Select from '../Select/Select.svelte';
 
   export let value: Partial<CreateAddress>;
+  export let name: string | undefined = undefined;
+
+  export let error: {
+    address: string[] | string | null | undefined,
+    addressType: string[] | string | null | undefined,
+    city: string[] | string | null | undefined,
+    country: string[] | string | null | undefined,
+    postalCode: string[] | string | null | undefined,
+    province: string[] | string | null | undefined,
+  } | any | undefined = undefined;
 </script>
 
 <div style="width: 100%">
@@ -16,7 +26,9 @@
       <Row>
         <Col width="25">
           <Select
-            title="Type"
+            placeholder="Type"
+            name={name ? `${name}.type` : undefined}
+            error={error?.addressType}
             options={[
               {
                 text: 'Home',
@@ -43,20 +55,20 @@
           />
         </Col>
         <Col width="50">
-          <br />
-          <Input clear>
+          <Input error={error?.address} clear style="margin-top: -12px">
             <input 
               type="text"
+              name={name ? `${name}.address` : undefined}
               placeholder="Street Address"
               bind:value={value.address}
             />
           </Input>
         </Col>
         <Col width="25">
-          <br />
-          <Input>
+          <Input error={error?.city} style="margin-top: -12px">
             <input 
               type="text"
+              name={name ? `${name}.city` : undefined}
               placeholder="City"
               bind:value={value.city}
             />
@@ -68,11 +80,13 @@
       <Row>
         <Col>
           <Select
-            title="Country"
+            placeholder="Country"
+            error={error?.country}
+            name={name ? `${name}.country` : undefined}
             options={[
               {
                 text: 'Canada',
-                value: Countries.Canada
+                value: Countries.Canada,
               },
             ]}
             disabled
@@ -81,7 +95,9 @@
         </Col>
         <Col>
           <Select 
-            title="Province"
+            placeholder="Province"
+            error={error?.province}
+            name={name ? `${name}.province` : undefined}
             options={[
               {
                 text: 'Alberta',
@@ -140,13 +156,13 @@
           />
         </Col>
         <Col>
-          <br />
-          <Input clear>
-           <input 
-             type="text"
-             placeholder="Postal Code"
-             bind:value={value.postalCode}
-           />
+          <Input error={error?.postalCode} clear style="margin-top: -12px">
+            <input 
+              type="text"
+              name={name ? `${name}.postalCode` : undefined}
+              placeholder="Postal Code"
+              bind:value={value.postalCode}
+            />
           </Input>
         </Col>
       </Row>

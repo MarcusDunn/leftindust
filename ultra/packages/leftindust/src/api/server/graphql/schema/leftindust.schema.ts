@@ -176,8 +176,8 @@ export type CreateDoctor = {
   emails: Array<CreateEmail>;
   patients: Array<PatientIdInput>;
   phones: Array<CreatePhone>;
-  tile?: InputMaybe<Scalars['String']>;
-  user: CreateDoctorUser;
+  title: Scalars['String'];
+  user?: InputMaybe<CreateDoctorUser>;
 };
 
 export type CreateDoctorUser = {
@@ -451,12 +451,12 @@ export type MutationEditClinicArgs = {
 
 
 export type MutationEditDoctorArgs = {
-  doctor?: InputMaybe<EditDoctor>;
+  editDoctor?: InputMaybe<EditDoctor>;
 };
 
 
 export type MutationEditPatientArgs = {
-  patient?: InputMaybe<EditPatient>;
+  editPatient?: InputMaybe<EditPatient>;
 };
 
 export type NameInfo = {

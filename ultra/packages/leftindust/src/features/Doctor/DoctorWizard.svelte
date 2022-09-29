@@ -2,17 +2,29 @@
   import { _ } from '@/language';
 
   import { Row, Col, Block } from 'framework7-svelte';
+  import Addresses from '../Input/components/Address/Addresses.svelte';
+  import Emails from '../Input/components/Email/Emails.svelte';
+  import Phones from '../Input/components/Phone/Phones.svelte';
 
   import Input from '../Input/Input.svelte';
+  import { closeWizard } from '../Wizard';
   import Wizard from '../Wizard/Wizard.svelte';
   
   import { createDoctorForm } from './';
 
   export let doctorId: string | undefined = undefined;
+  export let fetch: () => void = () => undefined;
 
-  const { form, handleSubmit } = createDoctorForm(doctorId);
+  const { form, data: formData, handleSubmit, errors, reset } = createDoctorForm(doctorId, fetch);
+
+  const close = () => {
+    reset();
+    closeWizard();
+  };
 
   let ref: HTMLFormElement;
+
+  $: console.log();
 </script>
 
 <Wizard
@@ -21,6 +33,7 @@
   color="purple"
   disabled={false}
   on:submit={() => ref?.requestSubmit()}
+  on:close={close}
 > 
   <form use:form on:submit={handleSubmit} bind:this={ref}>
     <Block style="margin-top: 100px">
@@ -52,6 +65,38 @@
             </Row>
           </Col>
         </Row>
+        <br />
+        <br />
+        <h4 style="margin-bottom: 10px">Contact</h4>
+        <Row>
+          <Col xlarge="50" width="100">
+            <Phones
+              title="Add Phone (Optional)"
+              name="phones"
+              bind:value={$formData.phones}
+              errors={$errors.phones}
+            />
+            <p />
+          </Col>
+          <Col xlarge="50" width="100">
+            <Emails
+              title="Add Email (Optional)"
+              name="emails"
+              bind:value={$formData.emails}
+              errors={$errors.emails}
+            />
+            <p />
+          </Col>
+        </Row>
+        <br />
+        <h4 style="margin-bottom: 10px">Address</h4>
+        <Addresses
+          title="Add Address (Optional)"
+          name="addresses"
+          bind:value={$formData.addresses}
+          errors={$errors.addresses}
+        />
+        <p />
       </Block>
     </Block>
   </form>

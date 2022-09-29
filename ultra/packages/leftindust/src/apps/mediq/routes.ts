@@ -23,6 +23,7 @@ import SettingsPage from '@/features/Settings/SettingsPage.svelte';
 import LifecycleErrorPage from '@/features/Errors/LifecycleErrorPage.svelte';
 import TemplatePreviewPage from '@/features/Template/TemplatePreviewPage.svelte';
 import PatientWizard from '@/features/Patient/PatientWizard.svelte';
+import DoctorWizard from '@/features/Doctor/DoctorWizard.svelte';
 
 export type Path =
   | '/dashboard/'
@@ -91,6 +92,10 @@ const routes: Route<Path>[] = [
   {
     path: '/wizard/patient/',
     component: PatientWizard,
+  },
+  {
+    path: '/wizard/doctor/',
+    component: DoctorWizard,
   },
   {
     path: '/wizard/template/',

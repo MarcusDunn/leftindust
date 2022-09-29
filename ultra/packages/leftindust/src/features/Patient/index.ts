@@ -14,6 +14,7 @@ import getNativeAPI from '@/api/bridge';
 import { get } from 'svelte/store';
 
 import { _ } from '@/language';
+import { closeWizard } from '../Wizard';
 
 export enum PatientTab {
   Overview = 'Overview',
@@ -100,8 +101,8 @@ export const addPatient = async (patient: NonNullable<MutationAddPatientArgs['cr
  * @param patient The patient to edit
  * @returns The edited patient
  */
-export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['patient']>): Promise<EditPatientMutation> => {
-  const result = await client.mutation(EditPatientDocument, { patient }).toPromise();
+export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['editPatient']>): Promise<EditPatientMutation> => {
+  const result = await client.mutation(EditPatientDocument, { editPatient: patient }).toPromise();
 
   const data = result.data;
   if (result.error) throw new Error(`Failed to edit patient id ${patient.pid}: ${result.error.message}`);
@@ -112,7 +113,7 @@ export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['
 /**
  * Creates a patient form on submit
  */
-export const createPatientForm = (pid?: string) => createForm<PatientFormSchema>({
+export const createPatientForm = (pid?: string, fetcher?: () => void) => createForm<PatientFormSchema>({
   initialValues: defaultPatientForm,
   onSubmit: async (form) => {
     const patient = {
@@ -121,7 +122,7 @@ export const createPatientForm = (pid?: string) => createForm<PatientFormSchema>
         middleName: form.nameInfo.middleName,
         lastName: form.nameInfo.lastName,
       },
-      dateOfBirth: form.dateOfBirth,
+      dateOfBirth: form.dateOfBirth.replace(/\//g, '-'),
       ethnicity: form.ethnicity,
       sex: form.sex,
       gender: form.gender,
@@ -145,6 +146,9 @@ export const createPatientForm = (pid?: string) => createForm<PatientFormSchema>
       } else {
         await addPatient(patient);
       }
+      
+      fetcher?.();
+      closeWizard();
     } catch (error) {
       void Dialog.alert({
         message: language('errors.internalError'),

@@ -13,7 +13,7 @@
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
-    "@felte/validator-yup": "^1.0.8",
+    "@felte/validator-yup": "^1.0.10",
     "@fullcalendar/core": "^5.11.0",
     "@fullcalendar/daygrid": "^5.11.0",
     "@fullcalendar/interaction": "^5.11.0",
@@ -28,7 +28,7 @@
     "cleave.js": "^1.6.0",
     "date-fns": "^2.29.1",
     "deepmerge": "^4.2.2",
-    "felte": "^1.2.2",
+    "felte": "^1.2.5",
     "firebase": "^9.9.2",
     "framework7": "^7.0.7",
     "framework7-icons": "^5.0.5",

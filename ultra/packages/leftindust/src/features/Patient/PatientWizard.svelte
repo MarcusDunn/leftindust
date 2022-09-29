@@ -17,10 +17,19 @@
   import Phones from '../Input/components/Phone/Phones.svelte';
   import Emails from '../Input/components/Email/Emails.svelte';
   import Addresses from '../Input/components/Address/Addresses.svelte';
+  import { closeWizard } from '../Wizard';
 
   export let patientId: string | undefined = undefined;
+  export let fetch: () => void = () => undefined;
 
-  const { form, data: formData, handleSubmit, errors } = createPatientForm(patientId);
+  const { form, data: formData, handleSubmit, errors, reset } = createPatientForm(patientId, fetch);
+  
+  const close = () => {
+    reset();
+    closeWizard();
+  };
+
+  $: console.log($formData);
 
   let ref: HTMLFormElement;
 </script>
@@ -30,6 +39,7 @@
   subtitle={$_('descriptions.addPatientDescription')}
   color="purple"
   on:submit={() => ref?.requestSubmit()}
+  on:close={close}
 >
   <form use:form on:submit={handleSubmit} bind:this={ref}>
     <Block style="margin-top: 100px">
@@ -57,6 +67,7 @@
                 <p />
                 <Select
                   placeholder="Ethnicity"
+                  error={$errors.ethnicity}
                   options={[
                     {
                       text: 'American Aboriginal',
@@ -88,11 +99,16 @@
               </Col>
               <Col width="100" medium="50">
                 <div style="margin-top: 2px;">
-                  <DatePicker 
-                    placeholder="Birthday" 
+                  <DatePicker
+                    placeholder="Birthday"
+                    error={$errors.dateOfBirth}
                     pastOnly
                     on:change={(e) => {
-                      $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-GB');
+                      $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                      });
                     }}
                   />
                 </div>
@@ -103,6 +119,7 @@
                 <p />
                 <Select
                   placeholder="Sex"
+                  error={$errors.sex}
                   options={[
                     {
                       text: 'Male',
@@ -130,26 +147,42 @@
                 </Input>
               </Col>
             </Row>
-              <Col width="100">
-                <Input error={$errors.insuranceNumber}>
-                  <input type="text" name="insuranceNumber" placeholder="Insurance Number (Optional)" />
-                </Input>
-              </Col>
+            <Col width="100">
+              <Input error={$errors.insuranceNumber}>
+                <input type="text" name="insuranceNumber" placeholder="Insurance Number (Optional)" />
+              </Input>
+            </Col>
           </Col>
         </Row>
         <br />
-        <h4>Contact</h4>
+        <br />
+        <h4 style="margin-bottom: 10px">Contact</h4>
         <Row>
           <Col xlarge="50" width="100">
-            <Phones title="Add Phone (Optional)" bind:value={$formData.phones} />
+            <Phones
+              title="Add Phone (Optional)"
+              errors={$errors.phones}
+              bind:value={$formData.phones}
+            />
+            <p />
           </Col>
           <Col xlarge="50" width="100">
-            <Emails title="Add Email (Optional)" bind:value={$formData.emails} />
+            <Emails
+              title="Add Email (Optional)"
+              errors={$errors.emails}
+              bind:value={$formData.emails}
+            />
+            <p />
           </Col>
         </Row>
         <br />
-        <h4>Address</h4>
-        <Addresses title="Add Address (Optional)" bind:value={$formData.addresses} />
+        <h4 style="margin-bottom: 10px">Address</h4>
+        <Addresses
+          title="Add Address (Optional)"
+          errors={$errors.addresses}
+          bind:value={$formData.addresses}
+        />
+        <p />
       </Block>
     </Block>
   </form>

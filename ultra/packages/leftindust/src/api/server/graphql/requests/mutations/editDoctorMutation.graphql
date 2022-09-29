@@ -1,5 +1,5 @@
-mutation editPatient($patient: EditPatient!) {
-  editPatient (patient: $patient) {
+mutation editDoctor($editDoctor: EditDoctor!) {
+  editDoctor (editDoctor: $editDoctor) {
     id {
       value
     }

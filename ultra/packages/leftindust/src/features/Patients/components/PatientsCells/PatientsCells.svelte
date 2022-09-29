@@ -13,8 +13,6 @@
 
   export let patients: PartialPatientFragment[];
   export let selected: Writable<Data[]>;
-
-  console.log(patients);
 </script>
 
 <Cells selected={$selected}>

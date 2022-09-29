@@ -149,8 +149,8 @@ input CreateDoctor {
   emails: [CreateEmail!]!
   patients: [PatientIdInput!]!
   phones: [CreatePhone!]!
-  tile: String
-  user: CreateDoctorUser!
+  title: String!
+  user: CreateDoctorUser
 }
 
 input CreateDoctorUser {
@@ -384,8 +384,8 @@ type Mutation {
   """ survey link"""
   createSurveyLink(createSurveyLink: CreateSurveyLink): SurveyLink!
   editClinic(clinic: EditClinic!): Clinic
-  editDoctor(doctor: EditDoctor): Doctor
-  editPatient(patient: EditPatient): Patient
+  editDoctor(editDoctor: EditDoctor): Doctor
+  editPatient(editPatient: EditPatient): Patient
 }
 
 type NameInfo {
