@@ -19,12 +19,13 @@
   import { closeWizard } from '../Wizard';
   import { sendTrigger } from '../Triggers';
 
+  export let callback: () => void;
+
   const closeWizardHandler = () => {
     $Template = JSON.parse(JSON.stringify(defaultTemplate));
     $TemplateCalculationsStore = [];
 
-    sendTrigger('template-update');
-    
+    callback();
     closeWizard();
   };
 

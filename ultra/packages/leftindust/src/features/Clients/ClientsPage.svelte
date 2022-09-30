@@ -27,10 +27,36 @@
 
   import PatientsTab from '@/features/Patients/components/PatientsTab/PatientsTab.svelte';
   import DoctorsTab from '../Doctors/components/DoctorsTab/DoctorsTab.svelte';
+  import { operationStore } from '@urql/svelte';
+  import { defaultRangeInput, PartialDoctorsByDoctorIdQueryDocument, PartialDoctorsByRangeQueryDocument, PartialPatientsByPatientIdQueryDocument, PartialPatientsByRangeQueryDocument } from '@/api/server';
+  import { getTimestampedValues } from '../Recents';
+  import { account } from '../Account/store';
+  
 
   export let f7router: Router.Router;
 
   let createMenuRef: Popover.Popover;
+
+  const patientsRequest = operationStore(PartialPatientsByRangeQueryDocument, {
+    range: defaultRangeInput,
+  });
+
+  const patientsRecentsRequest = operationStore(PartialPatientsByPatientIdQueryDocument, {
+    patientIds: getTimestampedValues($account.database.recents.Patient ??= {})
+      .map(id => ({ value: id }))
+      .filter((value) => value != undefined),
+  });
+
+  const doctorsRequest = operationStore(PartialDoctorsByRangeQueryDocument, {
+    range: defaultRangeInput,
+  });
+
+  const doctorsRecentsRequest = operationStore(PartialDoctorsByDoctorIdQueryDocument, {
+    doctorIds: getTimestampedValues($account.database.recents.Doctor ??= [])
+      .map((id) => ({ value: id }))
+      .filter((value) => value != undefined),
+  });
+
 
 </script>
 
@@ -45,7 +71,12 @@
             f7: 'person_2_alt',
             color: 'purple',
           },
-          onClick: () => openWizard('/wizard/patient/'),
+          onClick: () => openWizard('/wizard/patient/', {
+            callback: () => {
+              patientsRequest.reexecute();
+              patientsRecentsRequest.reexecute();
+            },
+          }),
         },
         {
           title: $_('generics.doctor'),
@@ -54,7 +85,12 @@
             f7: 'briefcase_fill',
             color: 'blue',
           },
-          onClick: () => openWizard('/wizard/doctor/'),
+          onClick: () => openWizard('/wizard/doctor/', {
+            callback: () => {
+              doctorsRequest.reexecute();
+              doctorsRecentsRequest.reexecute();
+            },
+          }),
         },
       ]}
       bind:instance={createMenuRef}
@@ -107,10 +143,10 @@
   <PageContent style="padding: 0; overflow: hidden">
     <Tabs style="height: 100%">
       <Tab tabActive={$clientsSelectedTab === ClientsTab.Patients}>
-        <PatientsTab {f7router} />
+        <PatientsTab request={patientsRequest} recentsRequest={patientsRecentsRequest} {f7router} />
       </Tab>
       <Tab tabActive={$clientsSelectedTab === ClientsTab.Doctors}>
-        <DoctorsTab {f7router} />
+        <DoctorsTab request={doctorsRequest} recentsRequest={doctorsRecentsRequest} {f7router} />
       </Tab>
     </Tabs>
   </PageContent>

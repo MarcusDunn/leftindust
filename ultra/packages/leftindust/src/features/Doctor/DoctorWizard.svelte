@@ -15,17 +15,18 @@
 
   export let doctorId: string | undefined = undefined;
 
-  const { form, data: formData, handleSubmit, errors, reset } = createDoctorForm(doctorId);
-
-  const close = () => {
+  export let callback: () => void;
+  
+  const closeWizardHandler = () => {
     reset();
+    callback();
     closeWizard();
     sendTrigger('doctors-update');
   };
 
-  let ref: HTMLFormElement;
+  const { form, data: formData, handleSubmit, errors, reset } = createDoctorForm(closeWizardHandler, doctorId);
 
-  $: console.log();
+  let ref: HTMLFormElement;
 </script>
 
 <Wizard
@@ -34,7 +35,7 @@
   color="purple"
   disabled={false}
   on:submit={() => ref?.requestSubmit()}
-  on:close={close}
+  on:close={closeWizardHandler}
 > 
   <form use:form on:submit={handleSubmit} bind:this={ref}>
     <Block style="margin-top: 100px">
