@@ -15,7 +15,6 @@ import { get } from 'svelte/store';
 
 import { _ } from '@/language';
 import { closeWizard } from '../Wizard';
-import { sendTrigger } from '../Triggers';
 
 export enum PatientTab {
   Overview = 'Overview',
@@ -114,7 +113,7 @@ export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['
 /**
  * Creates a patient form on submit
  */
-export const createPatientForm = (pid?: string) => createForm<PatientFormSchema>({
+export const createPatientForm = (closeWizardHandler: () => void, pid?: string) => createForm<PatientFormSchema>({
   initialValues: defaultPatientForm,
   onSubmit: async (form, { reset }) => {
     const patient = {
@@ -148,10 +147,7 @@ export const createPatientForm = (pid?: string) => createForm<PatientFormSchema>
         await addPatient(patient);
       }
       
-      reset();
-      sendTrigger('patient-update');
-      
-      closeWizard();
+      closeWizardHandler();
     } catch (error) {
       void Dialog.alert({
         message: language('errors.internalError'),
