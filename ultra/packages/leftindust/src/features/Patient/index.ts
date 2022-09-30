@@ -15,6 +15,7 @@ import { get } from 'svelte/store';
 
 import { _ } from '@/language';
 import { closeWizard } from '../Wizard';
+import { sendTrigger } from '../Triggers';
 
 export enum PatientTab {
   Overview = 'Overview',

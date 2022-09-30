@@ -6,6 +6,7 @@ import { get } from 'svelte/store';
 import { _ } from '@/language';
 import { AddDoctorMutationDocument, AddressType, client, Countries, CreateDoctorUserType, EmailType, PhoneType, type AddDoctorMutationMutation, type CreateDoctor, type MutationAddDoctorArgs } from '@/api/server';
 import { closeWizard } from '../Wizard';
+import { sendTrigger } from '../Triggers';
 
 const { Dialog } = getNativeAPI();
 
@@ -68,7 +69,7 @@ export const addDoctor = async (doctor: NonNullable<MutationAddDoctorArgs['creat
  */
 export const createDoctorForm = (closeWizardHandler: () => void, did?: string) => createForm<DoctorFormSchema>({
   initialValues: defaultDoctorForm,
-  onSubmit: async (form) => {
+  onSubmit: async (form, { reset }) => {
     const doctor: CreateDoctor = {
       dateOfBirth: form.dateOfBirth,
       addresses: form.addresses,

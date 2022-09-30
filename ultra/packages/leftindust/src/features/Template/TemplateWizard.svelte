@@ -17,6 +17,7 @@
   import { defaultTemplate, templateForm } from '.';
   import TemplateCategoryInputs from './components/TemplateInputs/TemplateCategoryInputs.svelte';
   import { closeWizard } from '../Wizard';
+  import { sendTrigger } from '../Triggers';
 
   export let callback: () => void;
 
