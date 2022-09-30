@@ -17,10 +17,15 @@
   import { defaultTemplate, templateForm } from '.';
   import TemplateCategoryInputs from './components/TemplateInputs/TemplateCategoryInputs.svelte';
   import { closeWizard } from '../Wizard';
+  import { sendTrigger } from '../Triggers';
+
+  export let callback: () => void;
 
   const closeWizardHandler = () => {
     $Template = JSON.parse(JSON.stringify(defaultTemplate));
     $TemplateCalculationsStore = [];
+
+    callback();
     closeWizard();
   };
 
@@ -35,6 +40,7 @@
   color="deeppurple"
   on:submit={() => ref?.requestSubmit()}
   on:close={() => closeWizardHandler()}
+  disabled={$TemplateNodesModalOpen}
 >
   <svelte:fragment slot="appbar">
     {#if !$TemplateNodesModalOpen && false}

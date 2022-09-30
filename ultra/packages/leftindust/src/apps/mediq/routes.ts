@@ -11,7 +11,6 @@ import SetupPage from '@/features/Setup/SetupPage.svelte';
 
 import PatientPage from '@/features/Patient/PatientPage.svelte';
 import DoctorPage from '@/features/Doctor/DoctorPage.svelte';
-import PeoplePage from '@/features/People/PeoplePage.svelte';
 import TemplateAssignPage from '@/features/Assign/TemplateAssignPage.svelte';
 
 import TemplateWizard from '@/features/Template/TemplateWizard.svelte';
@@ -23,6 +22,8 @@ import SettingsPage from '@/features/Settings/SettingsPage.svelte';
 
 import LifecycleErrorPage from '@/features/Errors/LifecycleErrorPage.svelte';
 import TemplatePreviewPage from '@/features/Template/TemplatePreviewPage.svelte';
+import PatientWizard from '@/features/Patient/PatientWizard.svelte';
+import DoctorWizard from '@/features/Doctor/DoctorWizard.svelte';
 
 export type Path =
   | '/dashboard/'
@@ -39,6 +40,8 @@ export type Path =
   | '/wizard/record/'
   | '/wizard/record/preview/'
   | '/wizard/template/preview/'
+  | '/wizard/patient/'
+  | '/wizard/doctor/'
   | '/account/login/'
   | '/settings/'
   | '/errors/lifecycle/'
@@ -67,10 +70,6 @@ const routes: Route<Path>[] = [
     component: DoctorPage,
   },
   {
-    path: '/people/:data/',
-    component: PeoplePage,
-  },
-  {
     path: '/templates/',
     component: TemplatesPage,
   },
@@ -89,6 +88,14 @@ const routes: Route<Path>[] = [
   {
     path: '/wizard/record/',
     component: RecordWizard,
+  },
+  {
+    path: '/wizard/patient/',
+    component: PatientWizard,
+  },
+  {
+    path: '/wizard/doctor/',
+    component: DoctorWizard,
   },
   {
     path: '/wizard/template/',

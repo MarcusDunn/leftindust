@@ -69,7 +69,7 @@
       {nodeInputs}
       {errors}
       bind:calculations={calculations}
-      bind:calculation
+      {calculation}
     />
     <br />
   {/each}

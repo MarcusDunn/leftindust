@@ -30,6 +30,7 @@
           dispatch('close');
           closeWizard();
         }}
+        {disabled}
       />
       {#if $$slots.title}
         <slot name="title" />

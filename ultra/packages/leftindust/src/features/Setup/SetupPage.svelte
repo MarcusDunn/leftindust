@@ -10,7 +10,7 @@
 </script>
 
 <Page>
-  <Appbar slot="fixed" close={{ popup: true }} />
+  <Appbar slot="fixed" />
   <Block>
 
     <h1 class="no-margin-bottom" style="font-size: 65px">{$_('generics.app')} <span class="text-color-purple">{$_('generics.alpha')}</span></h1>

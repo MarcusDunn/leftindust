@@ -233,18 +233,15 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
             },
             name: {
               __typename: 'NameInfo',
-              firstName: 'John',
+              firstName: user.email ?? '',
               middleName: undefined,
-              lastName: 'Doe',
+              lastName: '',
             },
             group: {
               __typename: 'MediqGroup',
-              name: 'Development',
+              name: 'Administrator',
             },
-            database: {
-              ...accountDatabaseTemplate,
-              data,
-            },
+            database: deepmerge(accountDatabaseTemplate, data),
           }));
         } else {
           // Sign-in user and authenticate with leftindust servers

@@ -31,13 +31,15 @@
     right={[{
       title: $_('generics.create'),
       icon: { f7: 'plus_circle_fill', color: 'deeppurple' },
-      onClick: () => openWizard('/wizard/template/'),
+      onClick: () => openWizard('/wizard/template/', {
+        callback: () => request.reexecute(),
+      }),
     }]}
     history
     {f7router}
   />
-  <Block style="height: calc(100% - 120px)">
-    <Request {...$request} refetch={request.reexecute} middle large>
+  <Block style="height: calc(100% - 120px);overflow-y: scroll">
+    <Request style="height: 100%" {...$request} refetch={request.reexecute} middle large>
       {#if templates.length > 0}
         <SpecificGrid
           props={templates.map((template) => ({

@@ -1,0 +1,7 @@
+#import "../fragments/doctorFragment.graphql"
+
+mutation addDoctorMutation($doctor: CreateDoctor!) {
+    addDoctor(createDoctor: $doctor) {
+        ...doctor
+    }
+}

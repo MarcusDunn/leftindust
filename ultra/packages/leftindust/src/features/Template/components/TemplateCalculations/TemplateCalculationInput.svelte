@@ -184,7 +184,8 @@
   <Input
     style="width: 100%"
     error={// https://github.com/pablo-abc/felte/issues/162
-      $errors?.calculations?.[index]}
+      // @ts-expect-error
+      $errors?.calculations?.[index]?.label}
   >
     <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
     <input
@@ -228,6 +229,7 @@
         }}
         on:click={() => {
           /*
+          // TODO: Add a way to clone calculations while maintaining the index
           calculations = [
             ...calculations.slice(0, index),
             deepmerge({
