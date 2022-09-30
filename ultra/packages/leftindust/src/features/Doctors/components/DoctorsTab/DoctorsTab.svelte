@@ -8,12 +8,10 @@
   import { doctorsSelectedAttachments } from '../../store';
   
   export let f7router: Router.Router;
-  export let f7route: Router.Route;
 
 </script>
 
 <svelte:component 
   this={$clientsSearchQuery || $doctorsSelectedAttachments.length > 0 ? DoctorsTabSearch : DoctorsTabDefault} 
   {f7router} 
-  {f7route} 
 />

@@ -15,6 +15,7 @@ import { get } from 'svelte/store';
 
 import { _ } from '@/language';
 import { closeWizard } from '../Wizard';
+import { sendTrigger } from '../Triggers';
 
 export enum PatientTab {
   Overview = 'Overview',
@@ -39,7 +40,7 @@ const createPatientFormSchema = yup.object({
   ethnicity: yup.mixed<Ethnicity>().oneOf(Object.values(Ethnicity)).required(),
   dateOfBirth: yup.string().required(),
   sex: yup.mixed<Sex>().oneOf(Object.values(Sex)).required(),
-  gender: yup.string().required(),
+  gender: yup.string(),
   insuranceNumber: yup.string(),
   addresses: yup.array(yup.object({
     address: yup.string().required(),
@@ -113,9 +114,9 @@ export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['
 /**
  * Creates a patient form on submit
  */
-export const createPatientForm = (pid?: string, fetcher?: () => void) => createForm<PatientFormSchema>({
+export const createPatientForm = (pid?: string) => createForm<PatientFormSchema>({
   initialValues: defaultPatientForm,
-  onSubmit: async (form) => {
+  onSubmit: async (form, { reset }) => {
     const patient = {
       nameInfo: {
         firstName: form.nameInfo.firstName,
@@ -125,7 +126,7 @@ export const createPatientForm = (pid?: string, fetcher?: () => void) => createF
       dateOfBirth: form.dateOfBirth.replace(/\//g, '-'),
       ethnicity: form.ethnicity,
       sex: form.sex,
-      gender: form.gender,
+      gender: form.gender ?? form.sex,
       insuranceNumber: form.insuranceNumber,
       addresses: form.addresses,
       emails: form.emails,
@@ -147,7 +148,9 @@ export const createPatientForm = (pid?: string, fetcher?: () => void) => createF
         await addPatient(patient);
       }
       
-      fetcher?.();
+      reset();
+      sendTrigger('patient-update');
+      
       closeWizard();
     } catch (error) {
       void Dialog.alert({

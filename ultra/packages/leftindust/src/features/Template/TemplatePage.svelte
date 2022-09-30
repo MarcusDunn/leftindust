@@ -18,6 +18,7 @@
   import CollapsableContentPlaceholder from '../UI/components/Collapsable/CollapsableContentPlaceholder.svelte';
   import { rawCalculationNodes } from '../Nodes';
   import NodesModal from '../Nodes/components/NodesModal/NodesModal.svelte';
+  import { getTrigger } from '../Triggers';
 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
@@ -41,6 +42,9 @@
   const request = operationStore(SurveyTemplateByIdQueryDocument, {
     surveyTemplateId: { value: data.id },
   });
+
+  // TODO: Remove this in favour of graphcache
+  getTrigger('template-update').subscribe(() => request.reexecute());
 
   $: calculations = $template?.calculations.map((calculation) => ({
     ...calculation,

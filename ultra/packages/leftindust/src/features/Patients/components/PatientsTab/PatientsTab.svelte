@@ -8,12 +8,9 @@
   import PatientsTabSearch  from './PatientsTabSearch.svelte';
 
   export let f7router: Router.Router;
-  export let f7route: Router.Route;
-
 </script>
 
 <svelte:component
   this={$clientsSearchQuery || $patientsSelectedAttachments.length > 0 ? PatientsTabSearch : PatientsTabDefault}
   {f7router}
-  {f7route}
 />
