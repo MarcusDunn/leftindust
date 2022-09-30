@@ -7,19 +7,20 @@
   import Phones from '../Input/components/Phone/Phones.svelte';
 
   import Input from '../Input/Input.svelte';
+  import { sendTrigger } from '../Triggers';
   import { closeWizard } from '../Wizard';
   import Wizard from '../Wizard/Wizard.svelte';
   
   import { createDoctorForm } from './';
 
   export let doctorId: string | undefined = undefined;
-  export let fetch: () => void = () => undefined;
 
-  const { form, data: formData, handleSubmit, errors, reset } = createDoctorForm(doctorId, fetch);
+  const { form, data: formData, handleSubmit, errors, reset } = createDoctorForm(doctorId);
 
   const close = () => {
     reset();
     closeWizard();
+    sendTrigger('doctors-update');
   };
 
   let ref: HTMLFormElement;
@@ -43,22 +44,22 @@
           <Col width="100">
             <Row>
               <Col width="100" medium="20">
-                <Input>
+                <Input error={$errors.firstName}>
                   <input type="text" name="firstName" placeholder="First Name" />  
                 </Input>
               </Col>
               <Col width="100" medium="20">
-                <Input>
+                <Input error={$errors.middleName}>
                   <input type="text" name="middleName" placeholder="Middle Name (Optional)" />
                 </Input>
               </Col>
               <Col width="100" medium="20">
-                <Input>
+                <Input error={$errors.lastName}>
                   <input type="text" name="lastName" placeholder="Last Name" />
                 </Input>
               </Col>
-              <Col width="40">
-                <Input>
+              <Col width="100" medium="40">
+                <Input error={$errors.title}>
                   <input type="text" name="title" placeholder="Title" />
                 </Input>
               </Col>
@@ -72,7 +73,6 @@
           <Col xlarge="50" width="100">
             <Phones
               title="Add Phone (Optional)"
-              name="phones"
               bind:value={$formData.phones}
               errors={$errors.phones}
             />
@@ -81,7 +81,6 @@
           <Col xlarge="50" width="100">
             <Emails
               title="Add Email (Optional)"
-              name="emails"
               bind:value={$formData.emails}
               errors={$errors.emails}
             />
@@ -92,7 +91,6 @@
         <h4 style="margin-bottom: 10px">Address</h4>
         <Addresses
           title="Add Address (Optional)"
-          name="addresses"
           bind:value={$formData.addresses}
           errors={$errors.addresses}
         />

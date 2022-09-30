@@ -29,7 +29,6 @@
   import DoctorsTab from '../Doctors/components/DoctorsTab/DoctorsTab.svelte';
 
   export let f7router: Router.Router;
-  export let f7route: Router.Route;
 
   let createMenuRef: Popover.Popover;
 
@@ -108,10 +107,10 @@
   <PageContent style="padding: 0; overflow: hidden">
     <Tabs style="height: 100%">
       <Tab tabActive={$clientsSelectedTab === ClientsTab.Patients}>
-        <PatientsTab {f7router} {f7route}/>
+        <PatientsTab {f7router} />
       </Tab>
       <Tab tabActive={$clientsSelectedTab === ClientsTab.Doctors}>
-        <DoctorsTab {f7router} {f7route} />
+        <DoctorsTab {f7router} />
       </Tab>
     </Tabs>
   </PageContent>

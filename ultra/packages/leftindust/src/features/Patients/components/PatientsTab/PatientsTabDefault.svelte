@@ -22,6 +22,7 @@
   import MasterListLayout from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
   import Request from '@/features/Server/components/Request/Request.svelte';
   import PatientsCells from '../PatientsCells/PatientsCells.svelte';
+  import { getTrigger } from '@/features/Triggers';
 
   export let f7router: Router.Router;
 
@@ -43,6 +44,8 @@
       f7router.navigate(`/patient/${JSON.stringify($clientsSelected[0])}/`);
     }
   };
+
+  getTrigger('patients-update').subscribe(() => request.reexecute());
 
   $: $recentsRequest.variables = {
     patientIds: getTimestampedValues($account.database.recents.Patient ?? {}).map(id => ({ value: id })),

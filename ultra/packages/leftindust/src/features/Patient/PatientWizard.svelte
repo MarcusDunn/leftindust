@@ -18,18 +18,17 @@
   import Emails from '../Input/components/Email/Emails.svelte';
   import Addresses from '../Input/components/Address/Addresses.svelte';
   import { closeWizard } from '../Wizard';
+  import { sendTrigger } from '../Triggers';
 
   export let patientId: string | undefined = undefined;
-  export let fetch: () => void = () => undefined;
 
-  const { form, data: formData, handleSubmit, errors, reset } = createPatientForm(patientId, fetch);
+  const { form, data: formData, handleSubmit, errors, reset } = createPatientForm(patientId);
   
   const close = () => {
     reset();
     closeWizard();
+    sendTrigger('patients-update');
   };
-
-  $: console.log($formData);
 
   let ref: HTMLFormElement;
 </script>
@@ -142,7 +141,7 @@
                   <input
                     type="text"
                     name="gender"
-                    placeholder="Gender Identity"
+                    placeholder="Gender Identity (Optional)"
                   />
                 </Input>
               </Col>
