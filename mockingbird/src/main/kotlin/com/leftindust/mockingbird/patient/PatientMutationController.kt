@@ -10,16 +10,15 @@ import org.springframework.stereotype.Controller
 
 @Controller
 class PatientMutationController(
-    private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>,
+    private val patientToPatientDtoConverter: InfallibleConverter<Patient?, PatientDto>,
     private val createPatientDtoToCreatePatient: FallibleConverter<CreatePatientDto, CreatePatient>,
     private val createPatientService: CreatePatientService,
-    //private val updatePatientService: UpdatePatientService
+    private val updatePatientService: UpdatePatientService
 ) {
-
+    @MutationMapping
     suspend fun editPatient(@Argument("editPatient") patient: UpdatePatientDto): PatientDto {
-        /*val updatedPatient = updatePatientService.update(patient)
-        return patientToPatientDtoConverter.convert(updatedPatient)*/
-        TODO("Update patient service not implemented")
+        val updatedPatient = updatePatientService.update(patient)
+        return patientToPatientDtoConverter.convert(updatedPatient)
     }
 
     @MutationMapping
@@ -29,3 +28,4 @@ class PatientMutationController(
         return patientToPatientDtoConverter.convert(newPatient)
     }
 }
+

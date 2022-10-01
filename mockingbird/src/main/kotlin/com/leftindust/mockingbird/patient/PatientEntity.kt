@@ -2,6 +2,8 @@ package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
+import com.leftindust.mockingbird.doctor.Doctor
+import com.leftindust.mockingbird.doctor.DoctorEntity
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.Email
 import com.leftindust.mockingbird.event.Event
@@ -65,4 +67,21 @@ class PatientEntity(
     fun removeContact(contact: Contact) {
         contacts.remove(contact)
     }
+
+    fun addDoctor(doctor: DoctorEntity){
+        val doctorPatientEntity = DoctorPatientEntity(doctor, this)
+        this.doctors.add(doctorPatientEntity)
+        doctor.patients.add(doctorPatientEntity)
+    }
+
+    fun removeDoctor(doctor: DoctorEntity){
+        val doctorPatientEntity = DoctorPatientEntity(doctor, this)
+        this.doctors.remove(doctorPatientEntity)
+        doctor.patients.remove(doctorPatientEntity)
+    }
+
+    fun clearDoctors(){
+        doctors.forEach{removeDoctor(it.doctor)}
+    }
+
 }
