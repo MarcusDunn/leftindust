@@ -3,6 +3,7 @@ package com.leftindust.mockingbird.util
 import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.address.AddressToAddressDtoConverter
 import com.leftindust.mockingbird.address.AddressType
+import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.country.Countries
 import com.leftindust.mockingbird.country.CountryState
 import java.util.UUID
@@ -44,6 +45,18 @@ object AddressMother {
             )
 
         val dto = addressToAddressDto.convert(entityDetached)
+
+        // TODO
+        val createAddressDto = CreateAddressDto(
+            type = addressType,
+            address = address,
+            city = city,
+            countryState = CountryState(
+                country = country,
+                province = province
+            ),
+            postalCode = postalCode
+        )
     }
 
 

@@ -4,10 +4,13 @@ import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.graphql.types.update
 import com.leftindust.mockingbird.patient.*
+import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfo
 import com.leftindust.mockingbird.person.Sex
+import com.leftindust.mockingbird.person.UpdateNameInfoDto
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
@@ -103,8 +106,79 @@ object PatientMother {
             assignedSurveys = assignedSurveysTransient
         ).apply { id = this@Dan.id }
 
+        val updatePatientDto: UpdatePatientDto = UpdatePatientDto(
+            nameInfo = update(UpdateNameInfoDto(
+                firstName = update("Dann"),
+                lastName = "TheDan",
+                middleName = "Servershani"
+            )),
+            addresses = addressesTransient,
+            emails = emailsTransient,
+            phones = phonesTransient,
+            events = events,
+            user = user,
+            thumbnail = thumbnail,
+            sex = sex,
+            dateOfBirth = dateOfBirth,
+            gender = gender,
+            ethnicity = ethnicity,
+            insuranceNumber = insuranceNumber,
+            contacts = contacts,
+            doctors = doctors,
+            assignedSurveys = assignedSurveysTransient
+        ).apply { id = this@Dan.id }
+
+        val entityUpdatedTransient: PatientEntity = PatientEntity(
+            nameInfo = NameInfo(
+                firstName = "Dann",
+                lastName = "TheDan",
+                middleName = "Servershani"
+            ),
+            addresses = addressesTransient,
+            emails = emailsTransient,
+            phones = phonesTransient,
+            events = events,
+            user = user,
+            thumbnail = thumbnail,
+            sex = sex,
+            dateOfBirth = dateOfBirth,
+            gender = gender,
+            ethnicity = ethnicity,
+            insuranceNumber = insuranceNumber,
+            contacts = contacts,
+            doctors = doctors,
+            assignedSurveys = assignedSurveysTransient
+        ).apply { id = this@Dan.id }
+
+        // TODO
+        val createPatientDto = CreatePatientDto(
+            nameInfo = CreateNameInfoDto(
+                firstName = "Dann",
+                lastName = "TheDan",
+                middleName = "Servershani"
+            ),
+            addresses = listOf(DansHouse.createAddressDto),
+            emails = emailsTransient,
+            phones = phonesTransient,
+            events = events,
+            user = user,
+            thumbnail = thumbnail,
+            sex = sex,
+            dateOfBirth = dateOfBirth,
+            gender = gender,
+            ethnicity = ethnicity,
+            insuranceNumber = insuranceNumber,
+            contacts = contacts,
+            doctors = doctors,
+            assignedSurveys = assignedSurveysTransient
+        )
+
         val domainEntityDetached = patientEntityToPatientConverter.convert(entityDetached)
+        val updatedDomainEntityDetached = patientEntityToPatientConverter.convert(entityUpdatedTransient)
         val dto: PatientDto = patientToPatientDtoConverter.convert(domainEntityDetached)
+        val updatedDto: PatientDto = patientToPatientDtoConverter.convert(updatedDomainEntityDetached)
+
+        // TODO convert CreatePatientDto to CreatePatient domain object (val createPatient)
 
         val domainEntityTransient = patientEntityToPatientConverter.convert(entityTransient)
     }

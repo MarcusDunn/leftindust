@@ -93,6 +93,7 @@ internal class PatientMutationControllerTest(
             .execute()
             .errors()
             .verify()
+
             .path("addPatient.id.value")
             .entity(object : ParameterizedTypeReference<UUID>() {})
             .matches { it.equals(Dan.dto.id.value) }
@@ -104,29 +105,21 @@ internal class PatientMutationControllerTest(
     @Test
     internal fun `check update patient works properly`(){
 
-        coEvery { updatePatientService.update(match{it.pid.value == Dan.id}) } returns Dan.domainEntityDetached.apply {
-        }
+        coEvery { updatePatientService.update(match{it.pid.value == Dan.id}) } returns Dan.updatedDomainEntityDetached
 
         //language=graphql
+        // update fields to be different, clear lists.
         @Language("graphql")
         val mutation = """
             mutation {
-                addPatient(createPatient: {
+                editPatient(editPatient: {
+                    pid: {value: "${Dan.id}"}
                     nameInfo: {
-                        firstName: "${Dan.firstName}"
-                        middleName: "${Dan.middleName}"
-                        lastName: "${Dan.lastName}"
+                        firstName: "Dann"
+                        middleName: "TheDan"
+                        lastName: "Servershani"
                     }
-                    addresses: [
-                        {
-                            addressType: Home
-                            address: "${AddressMother.DansHouse.address}",
-                            city: "${AddressMother.DansHouse.city}",
-                            country: Canada,
-                            province: "${AddressMother.DansHouse.province}",
-                            postalCode: "${AddressMother.DansHouse.postalCode}"
-                        }
-                    ]
+                    addresses: []
                     phones: [
                         {
                             number: "${PhoneMother.DansCell.number}"
@@ -162,16 +155,19 @@ internal class PatientMutationControllerTest(
             }
         """.trimIndent()
 
+
         graphQlTester.document(mutation)
             .execute()
             .errors()
             .verify()
-            .path("addPatient.id.value")
+
+            .path("editPatient.id.value")
             .entity(object : ParameterizedTypeReference<UUID>() {})
             .matches { it.equals(Dan.dto.id.value) }
-            .path("addPatient")
+
+            .path("editPatient")
             .entity(PatientDto::class.java)
-            .isEqualTo(Dan.dto)
+            .isEqualTo(Dan.updatedDto)
     }
 
 }
