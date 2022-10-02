@@ -6,7 +6,9 @@ import com.leftindust.mockingbird.validate.EmailAddress
 import dev.forkhandles.result4k.orThrow
 import dev.forkhandles.values.ofResult4k
 import java.util.UUID
+import org.springframework.stereotype.Component
 
+@Component
 class EmailEntityToEmailConverter : InfallibleConverter<EmailEntity, Email> {
     override fun convert(source: EmailEntity): Email {
         return EmailImpl(
