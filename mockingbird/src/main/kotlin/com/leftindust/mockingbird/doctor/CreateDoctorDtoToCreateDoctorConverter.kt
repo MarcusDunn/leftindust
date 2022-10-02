@@ -5,6 +5,7 @@ import com.leftindust.mockingbird.FallibleConverter
 import com.leftindust.mockingbird.address.CreateAddress
 import com.leftindust.mockingbird.clinic.ClinicDto
 import com.leftindust.mockingbird.email.CreateEmail
+import com.leftindust.mockingbird.email.CreateEmailDto
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.user.MediqUserDto
@@ -14,7 +15,10 @@ import mu.KotlinLogging
 import org.springframework.stereotype.Component
 
 @Component
-class CreateDoctorDtoToCreateDoctorConverter(private val userValidator: FallibleConverter<MediqUserDto.MediqUserUniqueId, ProofOfValidUser>) : FallibleConverter<CreateDoctorDto, CreateDoctor> {
+class CreateDoctorDtoToCreateDoctorConverter(
+    private val userValidator: FallibleConverter<MediqUserDto.MediqUserUniqueId, ProofOfValidUser>,
+    private val createEmailDtoToCreateEmailConverter: FallibleConverter<CreateEmailDto, CreateEmail>,
+) : FallibleConverter<CreateDoctorDto, CreateDoctor> {
     private val logger = KotlinLogging.logger { }
     override fun convert(source: CreateDoctorDto): CreateDoctor? {
         return CreateDoctorImpl(
@@ -22,9 +26,11 @@ class CreateDoctorDtoToCreateDoctorConverter(private val userValidator: Fallible
                 CreateDoctorUserDto.CreateDoctorUserDtoType.NoUser -> CreateDoctor.User.NoUser(
                     nameInfo = source.user.nameInfo ?: return null.also { logger.debug { FailedConversionMessage(source) } }
                 )
+
                 CreateDoctorUserDto.CreateDoctorUserDtoType.Find -> CreateDoctor.User.Find(
                     userUid = source.user.userUid?.value ?: return null.also { logger.debug { FailedConversionMessage(source) } }
                 )
+
                 CreateDoctorUserDto.CreateDoctorUserDtoType.Create -> CreateDoctor.User.Create(
                     uid = source.user.userUid ?: return null.also { logger.debug { FailedConversionMessage(source) } },
                     nameInfo = source.user.nameInfo ?: return null.also { logger.debug { FailedConversionMessage(source) } },
@@ -38,7 +44,7 @@ class CreateDoctorDtoToCreateDoctorConverter(private val userValidator: Fallible
             clinic = source.clinic,
             dateOfBirth = source.dateOfBirth,
             addresses = source.addresses,
-            emails = source.emails,
+            emails = source.emails.map { createEmailDtoToCreateEmailConverter.convert(it) ?: return null.also { logger.debug { FailedConversionMessage(source) } } },
             patients = source.patients,
         )
     }
