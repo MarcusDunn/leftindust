@@ -49,11 +49,11 @@ internal class ReadEmailServiceImplUnitTest {
 
     @Test
     internal fun `check getByDoctorId returns a list of email addresses when matching Doctor Id exists`() = runTest {
-        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityPersisted
+        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityDetached
         val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository, EmailEntityToEmailConverter())
         val emails = readEmailServiceImpl.getByDoctorId(DoctorMother.Jenny.graphqlId)
 
-        assertThat(emails, containsInAnyOrder(DoctorMother.Jenny.emails.map { equalTo(it) }))
+        assertThat(emails, containsInAnyOrder(DoctorMother.Jenny.emailsDetached.map { EmailMother.emailEntityToEmailConverter.convert(it) }.map { equalTo(it) }))
     }
 
     @Test
@@ -72,16 +72,16 @@ internal class ReadEmailServiceImplUnitTest {
         val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository, EmailEntityToEmailConverter())
         val emails = readEmailServiceImpl.getPatientEmails(Dan.graphqlId)
 
-        assertThat(emails, containsInAnyOrder(Dan.emailsDetached.map { equalTo(it) }))
+        assertThat(emails, containsInAnyOrder(Dan.emailsDetached.map { EmailMother.emailEntityToEmailConverter.convert(it) }.map { equalTo(it) }))
     }
 
     @Test
     internal fun `check getContactEmails returns a list of emails addresses corresponding to a user's contact Id`() = runTest {
-        coEvery { readContactService.getByContactId(Aydan.graphqlId) } returns Aydan.entityPersisted
+        coEvery { readContactService.getByContactId(Aydan.graphqlId) } returns Aydan.entityDetached
         val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository, EmailEntityToEmailConverter())
         val emails = readEmailServiceImpl.getContactEmails(Aydan.graphqlId)
 
-        assertThat(emails, containsInAnyOrder(Aydan.email.map { equalTo(it) }))
+        assertThat(emails, containsInAnyOrder(Aydan.emailsDetached.map { EmailMother.emailEntityToEmailConverter.convert(it) }.map { equalTo(it) }))
     }
 }
 
@@ -107,7 +107,7 @@ internal class ReadEmailServiceImplDataTest(
 
     @Test
     internal fun `check returns an email address when queried with an Id from the database with matching Id`() = runTest {
-        val jennyEmailAddressId = testEntityManager.persistAndGetId(EmailMother.jennysEmail, UUID::class.java)
+        val jennyEmailAddressId = testEntityManager.persistAndGetId(EmailMother.DansEmail.entityTransient, UUID::class.java)
         val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository, EmailEntityToEmailConverter())
         val returnedEmail = readEmailServiceImpl.getByEmailId(EmailDto.EmailDtoId(jennyEmailAddressId!!))
 
