@@ -29,17 +29,4 @@ object EmailMother {
         val domain = emailEntityToEmailConverter.convert(entityDetached)
         val dto = emailToEmailDtoConverter.convert(domain)
     }
-
-    val dansEmailEntity = EmailEntity(
-        type = DansEmail.emailType,
-        address = DansEmail.address
-    )
-
-
-    private val `jenny's email type` = EmailType.Personal
-    private const val `jenny's email address` = "jenny.e.white@example.com"
-    val jennysEmail = EmailEntity(
-        type = `jenny's email type`,
-        address = `jenny's email address`
-    )
 }

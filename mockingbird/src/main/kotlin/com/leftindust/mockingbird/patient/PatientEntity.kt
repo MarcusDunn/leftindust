@@ -23,13 +23,13 @@ import javax.persistence.OneToOne
 
 @Entity
 class PatientEntity(
-    @OneToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
+    @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
     var nameInfo: NameInfo,
-    @OneToMany(cascade = [CascadeType.PERSIST])
+    @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     val addresses: MutableSet<Address>,
-    @OneToMany(cascade = [CascadeType.PERSIST])
+    @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     val emails: MutableSet<EmailEntity>,
-    @OneToMany(cascade = [CascadeType.PERSIST])
+    @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     val phones: MutableSet<Phone>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
     val events: MutableSet<PatientEventEntity>,

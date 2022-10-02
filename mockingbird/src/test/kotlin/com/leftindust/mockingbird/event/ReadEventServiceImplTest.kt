@@ -71,7 +71,7 @@ internal class ReadEventServiceImplUnitTest {
 
     @Test
     internal fun `check getByDoctorId returns a doctor's event when doctor exists`() = runTest {
-        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityPersisted
+        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityTransient
         val readEventServiceImpl = ReadEventServiceImpl(eventRepository, patientRepository, readVisitService, doctorRepository)
         val events = readEventServiceImpl.getByDoctorId(DoctorMother.Jenny.graphqlId)
 

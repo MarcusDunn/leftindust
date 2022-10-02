@@ -10,17 +10,20 @@ import java.util.UUID
 
 object ContactMother {
     object Aydan {
+
         const val firstName = "Aydan"
         val middleName: String? = null
         const val lastName = "White"
         val id = UUID.fromString("180f97ca-1dbf-11ed-861d-0242ac120002")
         val graphqlId = ContactDto.ContactDtoId(id)
         val phone = emptySet<Phone>()
-        val email = setOf(EmailMother.jennysEmail)
+        val emailsTransient = setOf(EmailMother.DansEmail.entityTransient)
+        val emailsDetached = setOf(EmailMother.DansEmail.entityDetached)
         val relationship = Relationship.Parent
-        val patient: PatientEntity = PatientMother.Dan.entityDetached
-        val entityPersisted = Contact(
-            patient = patient,
+        val patientDetached: PatientEntity = PatientMother.Dan.entityDetached
+        val patientTransient: PatientEntity = PatientMother.Dan.entityDetached
+        val entityDetached = Contact(
+            patient = patientDetached,
             relationship = relationship,
             nameInfo = NameInfo(
                 firstName = firstName,
@@ -28,7 +31,21 @@ object ContactMother {
                 middleName = middleName
             ),
             phone = phone,
-            email = email,
-        ).apply { id = this@Aydan.id }
+            email = emailsDetached,
+        ).apply {
+            this.id = this@Aydan.id
+        }
+
+        val entityTransient = Contact(
+            patient = patientTransient,
+            relationship = relationship,
+            nameInfo = NameInfo(
+                firstName = firstName,
+                lastName = lastName,
+                middleName = middleName
+            ),
+            phone = phone,
+            email = emailsTransient,
+        )
     }
 }

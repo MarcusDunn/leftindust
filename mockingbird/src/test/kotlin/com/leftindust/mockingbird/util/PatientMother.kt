@@ -50,18 +50,18 @@ object PatientMother {
             get() = mutableSetOf(PhoneMother.DansCell.entityDetached)
         val phonesTransient: MutableSet<Phone>
             get() = mutableSetOf(PhoneMother.DansCell.entityTransient)
-        val addressesDetached: MutableSet<Address>
-            get() = mutableSetOf(DansHouse.entityDetached)
-
         val assignedSurveysTransient: MutableSet<SurveyLinkEntity>
             get() = mutableSetOf()
+
         val assignedSurveysDetached: MutableSet<SurveyLinkEntity>
             get() = mutableSetOf()
-
         val addressesTransient: MutableSet<Address>
             get() = mutableSetOf(DansHouse.entityTransient)
+        val addressesDetached: MutableSet<Address>
+            get() = mutableSetOf(DansHouse.entityDetached)
         val events: MutableSet<PatientEventEntity>
             get() = mutableSetOf()
+
         val nameInfoId = UUID.fromString("e257f4f5-15c5-4375-a99b-da6354e4d0b5")
         val entityDetached: PatientEntity
             get() = PatientEntity(
