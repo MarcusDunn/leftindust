@@ -6,10 +6,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
-    kotlin("jvm") version "1.7.0"
-    kotlin("kapt") version "1.7.0"
-    kotlin("plugin.spring") version "1.7.0"
-    kotlin("plugin.jpa") version "1.7.0"
+    kotlin("jvm") version "1.7.20"
+    kotlin("kapt") version "1.7.20"
+    kotlin("plugin.spring") version "1.7.20"
+    kotlin("plugin.jpa") version "1.7.20"
     id("org.jetbrains.kotlinx.kover") version "0.5.0"
     id("org.springframework.boot") version "2.7.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
