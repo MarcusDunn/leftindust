@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.user
 
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.util.MediqUserMother.Marcus
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -50,7 +50,7 @@ internal class MediqUserQueryControllerUnitTest {
         val mediqUser = MediqUser(
             uniqueId = "hello world",
             group = null,
-            nameInfo = NameInfo("Marcus", "Dunn", null)
+            nameInfoEntity = NameInfoEntity("Marcus", "Dunn", null)
         )
 
         coEvery { readMediqUserService.getByUserUid("hello world") } returns mediqUser
