@@ -10,7 +10,7 @@ services:
       POSTGRES_DB: mediq
       POSTGRES_USER: mediq
       POSTGRES_PASSWORD: mediq
-    image: postgres
+    image: postgres:latest
     volumes:
       - source: pg-data
         target: /var/lib/postgresql/data
@@ -30,3 +30,9 @@ services:
         type: volume
     depends_on:
       - mockingbird-postgres
+  ultra:
+    environment:
+      MOCKINGBIRD_URL: http://mockingbird:8080
+    ports:
+      - "80:80"
+    image: ghcr.io/marcusdunn/ultra:latest
