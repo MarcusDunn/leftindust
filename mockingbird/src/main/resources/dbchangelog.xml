@@ -1049,7 +1049,7 @@
     <changeSet id="1681562721212" author="kelvin">
         <renameTable oldTableName="name_info" newTableName="name_info_entity"/>
     </changeSet>
-    <changeSet author="boris" id="1661518762514">
+    <changeSet author="kelvin" id="1661518762514">
         <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="patient_entity"/>
         <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="doctor_entity"/>
         <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="mediq_user"/>
