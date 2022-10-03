@@ -7,7 +7,7 @@ import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.event.Event
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.person.Ethnicity
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
@@ -24,7 +24,7 @@ import javax.persistence.OneToOne
 @Entity
 class PatientEntity(
     @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
-    var nameInfo: NameInfo,
+    var nameInfoEntity: NameInfoEntity,
     @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     val addresses: MutableSet<Address>,
     @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])

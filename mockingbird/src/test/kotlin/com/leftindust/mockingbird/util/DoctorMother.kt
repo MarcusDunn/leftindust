@@ -7,7 +7,7 @@ import com.leftindust.mockingbird.doctor.DoctorEntityToDoctorConverter
 import com.leftindust.mockingbird.doctor.DoctorEventEntity
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.doctor.DoctorToDoctorDtoConverter
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.JennysHouse
 import com.leftindust.mockingbird.util.PhoneMother.JennysHomePhone
@@ -39,7 +39,7 @@ object DoctorMother {
         val patients = mutableSetOf<DoctorPatientEntity>()
         val entityTransient: DoctorEntity
             get() = DoctorEntity(
-                nameInfo = NameInfo(
+                nameInfoEntity = NameInfoEntity(
                     firstName = firstName,
                     lastName = lastName,
                     middleName = middleName
@@ -58,7 +58,7 @@ object DoctorMother {
 
         val entityDetached: DoctorEntity
             get() = DoctorEntity(
-                nameInfo = NameInfo(
+                nameInfoEntity = NameInfoEntity(
                     firstName = firstName,
                     lastName = lastName,
                     middleName = middleName
@@ -100,7 +100,7 @@ object DoctorMother {
         val patients = mutableSetOf<DoctorPatientEntity>()
 
         val entityDetached = DoctorEntity(
-            nameInfo = NameInfo(
+            nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
                 lastName = lastName,
                 middleName = middleName
