@@ -21,7 +21,7 @@ jobs:
       shell: bash
       env:
           DEV_ENV_FILE : ${{secrets.SERVICE_ACCOUNT_KEY}}
-    - uses: actions/setup-java@v2
+    - uses: actions/setup-java@v3
       with:
         distribution: temurin
         java-version: 17
