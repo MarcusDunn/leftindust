@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.group.MediqGroup
 import com.leftindust.mockingbird.person.CreateNameInfoDto
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.user.CreateMediqUserDto
 import com.leftindust.mockingbird.user.CreateMediqUserDtoToCreateMediqUserConverter
 import com.leftindust.mockingbird.user.MediqGroupToMediqGroupDtoConverter
@@ -28,12 +28,12 @@ object MediqUserMother {
         const val firstName = "Marcus"
         const val lastName = "Dunn"
         val middleName: String? = null
-        val nameInfo = NameInfo(firstName, lastName, middleName)
+        val nameInfoEntity = NameInfoEntity(firstName, lastName, middleName)
         val group: MediqGroup? = null
         val entity = MediqUser(
             uniqueId = uniqueId,
             group = group,
-            nameInfo = nameInfo
+            nameInfoEntity = nameInfoEntity
         )
 
         val domain = entity

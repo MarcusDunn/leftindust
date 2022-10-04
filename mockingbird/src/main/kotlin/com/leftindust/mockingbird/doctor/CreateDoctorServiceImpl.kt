@@ -46,9 +46,9 @@ class CreateDoctorServiceImpl(
             is CreateDoctor.User.Find -> readMediqUserService.getByUserUid(user.userUid) to null
             is CreateDoctor.User.NoUser -> null to createNameInfoService.createNameInfo(user.nameInfo)
         }
-        val notNullNameInfo = nameInfo ?: user?.nameInfo!!
+        val notNullNameInfo = nameInfo ?: user?.nameInfoEntity!!
         val doctor = DoctorEntity(
-            nameInfo = notNullNameInfo,
+            nameInfoEntity = notNullNameInfo,
             addresses = createDoctor.addresses.map { createAddressService.createAddress(it) }.toMutableSet(),
             emails = createDoctor.emails.map { createEmailService.createEmail(it) }.toMutableSet(),
             phones = createDoctor.phones.map { createPhoneService.createPhone(it) }.toMutableSet(),

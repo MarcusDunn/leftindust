@@ -176,10 +176,10 @@ class UpdateDoctorServiceImpl(
     private suspend fun updateNameInfo(nameInfo: Updatable<UpdateNameInfo>, doctor: DoctorEntity) {
         when (nameInfo) {
             is Updatable.Ignore -> {
-                logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::nameInfo) }
+                logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::nameInfoEntity) }
             }
             is Updatable.Update -> {
-                updateNameInfoService.updateNameInfo(nameInfo.value, doctor.nameInfo)
+                updateNameInfoService.updateNameInfo(nameInfo.value, doctor.nameInfoEntity)
             }
         }
     }

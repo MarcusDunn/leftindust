@@ -10,7 +10,7 @@ import com.leftindust.mockingbird.patient.PatientEntityToPatientConverter
 import com.leftindust.mockingbird.patient.PatientEventEntity
 import com.leftindust.mockingbird.patient.PatientToPatientDtoConverter
 import com.leftindust.mockingbird.person.Ethnicity
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
@@ -65,7 +65,7 @@ object PatientMother {
         val nameInfoId = UUID.fromString("e257f4f5-15c5-4375-a99b-da6354e4d0b5")
         val entityDetached: PatientEntity
             get() = PatientEntity(
-                nameInfo = NameInfo(
+                nameInfoEntity = NameInfoEntity(
                     firstName = firstName,
                     lastName = lastName,
                     middleName = middleName
@@ -86,7 +86,7 @@ object PatientMother {
                 assignedSurveys = assignedSurveysDetached
             ).apply { id = this@Dan.id }
         val entityTransient: PatientEntity = PatientEntity(
-            nameInfo = NameInfo(
+            nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
                 lastName = lastName,
                 middleName = middleName

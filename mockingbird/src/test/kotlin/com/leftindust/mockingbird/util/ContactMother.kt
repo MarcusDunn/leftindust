@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.util
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.contact.ContactDto
 import com.leftindust.mockingbird.patient.PatientEntity
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Relationship
 import com.leftindust.mockingbird.phone.Phone
 import java.util.UUID
@@ -25,7 +25,7 @@ object ContactMother {
         val entityDetached = Contact(
             patient = patientDetached,
             relationship = relationship,
-            nameInfo = NameInfo(
+            nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
                 lastName = lastName,
                 middleName = middleName
@@ -39,7 +39,7 @@ object ContactMother {
         val entityTransient = Contact(
             patient = patientTransient,
             relationship = relationship,
-            nameInfo = NameInfo(
+            nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
                 lastName = lastName,
                 middleName = middleName
