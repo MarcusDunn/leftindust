@@ -15,22 +15,22 @@ class UpdateNameInfoServiceImpl(
 ) : UpdateNameInfoService {
     private val logger = KotlinLogging.logger { }
 
-    override suspend fun updateNameInfo(updateNameInfo: UpdateNameInfo, nameInfo: NameInfo) {
-        updateFirstName(updateNameInfo.firstName, nameInfo)
-        updateMiddleName(updateNameInfo.middleName, nameInfo)
-        updateLastName(updateNameInfo.lastName, nameInfo)
-        nameInfoRepository.save(nameInfo)
+    override suspend fun updateNameInfo(updateNameInfo: UpdateNameInfo, nameInfoEntity: NameInfoEntity) {
+        updateFirstName(updateNameInfo.firstName, nameInfoEntity)
+        updateMiddleName(updateNameInfo.middleName, nameInfoEntity)
+        updateLastName(updateNameInfo.lastName, nameInfoEntity)
+        nameInfoRepository.save(nameInfoEntity)
     }
 
-    private fun updateLastName(lastName: Updatable<String>, nameInfo: NameInfo) {
-        lastName.applyUpdatable(nameInfo, nameInfo::lastName, logger)
+    private fun updateLastName(lastName: Updatable<String>, nameInfoEntity: NameInfoEntity) {
+        lastName.applyUpdatable(nameInfoEntity, nameInfoEntity::lastName, logger)
     }
 
-    private fun updateMiddleName(middleName: Deletable<String>, nameInfo: NameInfo) {
-        middleName.applyDeletable(nameInfo, nameInfo::middleName, logger)
+    private fun updateMiddleName(middleName: Deletable<String>, nameInfoEntity: NameInfoEntity) {
+        middleName.applyDeletable(nameInfoEntity, nameInfoEntity::middleName, logger)
     }
 
-    private fun updateFirstName(firstName: Updatable<String>, nameInfo: NameInfo) {
-        firstName.applyUpdatable(nameInfo, nameInfo::firstName, logger)
+    private fun updateFirstName(firstName: Updatable<String>, nameInfoEntity: NameInfoEntity) {
+        firstName.applyUpdatable(nameInfoEntity, nameInfoEntity::firstName, logger)
     }
 }

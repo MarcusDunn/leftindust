@@ -33,7 +33,7 @@ internal class PatientMutationControllerTest(
 
     @Test
     internal fun `check can create patient`() {
-        coEvery { createPatientService.addNewPatient(any()) } returns Dan.domainEntityDetached
+        coEvery { createPatientService.addNewPatient(any()) } returns Dan.domain
 
         @Language("graphql")
         val mutation = """

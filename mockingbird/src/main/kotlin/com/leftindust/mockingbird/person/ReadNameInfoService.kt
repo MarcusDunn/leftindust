@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.person
 import com.leftindust.mockingbird.user.MediqUserDto
 
 interface CreateNameInfoService {
-    suspend fun createNameInfo(createNameInfo: CreateNameInfo): NameInfo
+    suspend fun createNameInfo(createNameInfo: CreateNameInfo): NameInfoEntity
 }
 
 interface ReadNameInfoService {

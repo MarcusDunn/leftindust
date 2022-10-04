@@ -1,5 +1,5 @@
 package com.leftindust.mockingbird.email
 
 interface CreateEmailService {
-    suspend fun createEmail(createEmail: CreateEmail): Email
+    suspend fun createEmail(createEmail: CreateEmail): EmailEntity
 }

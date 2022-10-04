@@ -28,7 +28,7 @@ class CreatePatientServiceImpl(
 
     override suspend fun addNewPatient(patient: CreatePatient): Patient {
         val newPatient = PatientEntity(
-            nameInfo = createNameInfoService.createNameInfo(patient.nameInfo),
+            nameInfoEntity = createNameInfoService.createNameInfo(patient.nameInfo),
             addresses = patient.addresses.map { createAddressService.createAddress(it) }.toMutableSet(),
             emails = patient.emails.map { createEmailService.createEmail(it) }.toMutableSet(),
             phones = patient.phones.map { createPhoneService.createPhone(it) }.toMutableSet(),

@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.email
 
-import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.contact.ContactDto
+import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.patient.PatientDto
 
 interface ReadEmailService {
