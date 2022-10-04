@@ -9,9 +9,9 @@ class ContactDtoConverter : InfallibleConverter<Contact, ContactDto> {
         val contactId = requireNotNull(source.id) { "Contact id cannot be null" }
         return ContactDto(
             id = ContactDto.ContactDtoId(contactId),
-            firstName = source.nameInfo.firstName,
-            middleName = source.nameInfo.middleName,
-            lastName = source.nameInfo.lastName,
+            firstName = source.nameInfoEntity.firstName,
+            middleName = source.nameInfoEntity.middleName,
+            lastName = source.nameInfoEntity.lastName,
             relationship = source.relationship,
         )
     }
