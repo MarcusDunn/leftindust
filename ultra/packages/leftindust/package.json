@@ -51,7 +51,7 @@
     "@graphql-codegen/schema-ast": "^2.5.0",
     "@graphql-codegen/typed-document-node": "^2.3.2",
     "@graphql-codegen/typescript": "^2.7.2",
-    "@graphql-codegen/typescript-operations": "^2.5.2",
+    "@graphql-codegen/typescript-operations": "^2.5.3",
     "@graphql-codegen/typescript-resolvers": "^2.7.2",
     "@graphql-codegen/typescript-urql-graphcache": "^2.3.2",
     "@graphql-codegen/urql-svelte-operations-store": "^1.2.2",
