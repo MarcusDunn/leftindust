@@ -115,7 +115,7 @@ export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['
  */
 export const createPatientForm = (closeWizardHandler: () => void, pid?: string) => createForm<PatientFormSchema>({
   initialValues: defaultPatientForm,
-  onSubmit: async (form, { reset }) => {
+  onSubmit: async (form) => {
     const patient = {
       nameInfo: {
         firstName: form.nameInfo.firstName,

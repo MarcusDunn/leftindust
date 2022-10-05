@@ -19,8 +19,6 @@
       if (url.has('id')) {
         const id = url.get('id');
 
-        console.log(id);
-
         client.query(SurveyLinkByIdQueryDocument, {
           surveyLinkId: { value: id },
         }).toPromise()
@@ -28,6 +26,7 @@
             setTimeout(() => {
               if (data) openWizard('/wizard/', {
                 template: data.surveyLinkById?.surveyTemplate,
+                surveyLinkId: id,
               });
             }, 200);
           }).catch((error) => {

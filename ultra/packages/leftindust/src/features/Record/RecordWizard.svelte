@@ -3,6 +3,7 @@
   import RecordConsumer from './components/RecordConsumer/RecordConsumer.svelte';
 
   export let template: SurveyTemplate;
+  export let surveyLinkId: string;
 </script>
 
-<RecordConsumer bind:template />
+<RecordConsumer {surveyLinkId} bind:template />

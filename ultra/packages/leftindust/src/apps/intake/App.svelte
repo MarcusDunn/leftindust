@@ -18,4 +18,3 @@
   sidebar={false}
   showLoginScreen={false}
 />
-

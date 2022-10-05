@@ -21,6 +21,7 @@
   const language = get(_);
 
   export let template: SurveyTemplate;
+  export let surveyLinkId: string;
 
   let pageRef: HTMLDivElement;
 
@@ -73,7 +74,9 @@
             client.mutation(CreateCompleteSurveyMutationDocument, {
               createCompleteSurvey: {
                 completeSurveyTemplateSections: mapRecordToCompleteSurveyInput(values),
-                surveyLinkId: template.id,
+                surveyLinkId: {
+                  value: surveyLinkId,
+                },
               },
             }).toPromise().then(({ data, error }) => {
               if (data) {
