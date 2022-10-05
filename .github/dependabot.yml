@@ -6,7 +6,7 @@ updates:
     directory: "/ultra"
     schedule:
       interval: "weekly"
-  - package-ecosystem: "maven"
+  - package-ecosystem: "gradle"
     directory: "/mockingbird"
     schedule:
       interval: "weekly"
