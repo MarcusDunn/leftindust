@@ -113,10 +113,6 @@ liquibase {
 // test properties
 tasks.withType<Test> {
     useJUnitPlatform()
-    extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
-        isDisabled = false
-        includes = listOf("com.leftindust.mockingbird.*")
-    }
     testLogging {
         events(
             TestLogEvent.FAILED,
@@ -129,9 +125,16 @@ tasks.withType<Test> {
     }
 }
 
-tasks.koverMergedXmlReport {
-    isEnabled = true
-    xmlReportFile.set(layout.buildDirectory.file("coverage.xml"))
+kover {
+    xmlReport {
+        onCheck.set(true)
+        reportFile.set(layout.buildDirectory.file("coverage.xml"))
+    }
+    filters {
+        classes {
+            includes += "com.leftindust.mockingbird.*"
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {
