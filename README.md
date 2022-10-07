@@ -3,10 +3,6 @@
 
 This is [leftindust's](https://leftindust.com) EMR.
 
-## Ultra
+## Issues
 
-This is the frontend
-
-## Mockingbird 
-
-This is the backend
+Issues are handled via linear - if you find a bug, please report it there.

@@ -10,9 +10,9 @@ plugins {
     kotlin("kapt") version "1.7.20"
     kotlin("plugin.spring") version "1.7.20"
     kotlin("plugin.jpa") version "1.7.20"
-    id("org.jetbrains.kotlinx.kover") version "0.5.0"
-    id("org.springframework.boot") version "2.7.0"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    id("org.springframework.boot") version "2.7.4"
+    id("io.spring.dependency-management") version "1.0.14.RELEASE"
 
     // liquibase
     id("org.liquibase.gradle") version "2.1.1"
@@ -47,7 +47,7 @@ dependencies {
     implementation("dev.forkhandles:result4k")
 
     // ktor
-    implementation(platform("io.ktor:ktor-bom:2.0.0"))
+    implementation(platform("io.ktor:ktor-bom:2.1.2"))
     implementation("io.ktor", "ktor-client")
     implementation("io.ktor", "ktor-client-cio")
     implementation("io.ktor", "ktor-client-content-negotiation")
@@ -113,10 +113,6 @@ liquibase {
 // test properties
 tasks.withType<Test> {
     useJUnitPlatform()
-    extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
-        isDisabled = false
-        includes = listOf("com.leftindust.mockingbird.*")
-    }
     testLogging {
         events(
             TestLogEvent.FAILED,
@@ -129,9 +125,16 @@ tasks.withType<Test> {
     }
 }
 
-tasks.koverMergedXmlReport {
-    isEnabled = true
-    xmlReportFile.set(layout.buildDirectory.file("coverage.xml"))
+kover {
+    xmlReport {
+        onCheck.set(true)
+        reportFile.set(layout.buildDirectory.file("coverage.xml"))
+    }
+    filters {
+        classes {
+            includes += "com.leftindust.mockingbird.*"
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {

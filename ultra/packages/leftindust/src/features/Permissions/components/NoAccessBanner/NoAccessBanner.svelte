@@ -4,7 +4,7 @@
 
 <Notice
   title="Access Denied"
-  text="You do not have permission to access to this page. Talk to your administrator if you need, or would like access."
+  text="You do not have permission to access to this page. Talk to your administrator if you need, or would like, access."
   icon={{ f7: 'lock_circle_fill', color: 'orange' }}
   large
   middle
