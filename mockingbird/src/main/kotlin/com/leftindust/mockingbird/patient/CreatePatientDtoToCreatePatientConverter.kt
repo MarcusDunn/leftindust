@@ -20,6 +20,7 @@ private val logger = KotlinLogging.logger { }
 
 @Component
 class CreatePatientDtoToCreatePatientConverter(
+
     private val createEmailDtoToCreateEmailConverter: FallibleConverter<CreateEmailDto, CreateEmail>,
     private val createContactDtoToCreateContactConverter: FallibleConverter<CreateContactDto, CreateContact>,
     ) : FallibleConverter<CreatePatientDto, CreatePatient> {

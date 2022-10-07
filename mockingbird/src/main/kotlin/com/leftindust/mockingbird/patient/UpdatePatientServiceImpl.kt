@@ -6,7 +6,6 @@ import com.leftindust.mockingbird.address.CreateAddress
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.contact.CreateContact
 import com.leftindust.mockingbird.contact.CreateContactService
-import com.leftindust.mockingbird.doctor.CreateDoctorService
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.email.CreateEmail
@@ -73,10 +72,10 @@ class UpdatePatientServiceImpl(
     private suspend fun updateNameInfo(nameInfo: Updatable<UpdateNameInfo>, patient: PatientEntity) {
         when (nameInfo) {
             is Updatable.Ignore -> {
-                logger.trace { NoOpUpdatedEntityFieldMessage(patient, patient::nameInfo) }
+                logger.trace { NoOpUpdatedEntityFieldMessage(patient, patient::nameInfoEntity) }
             }
             is Updatable.Update -> {
-                updateNameInfoService.updateNameInfo(nameInfo.value, patient.nameInfo)
+                updateNameInfoService.updateNameInfo(nameInfo.value, patient.nameInfoEntity)
             }
         }
     }
@@ -156,7 +155,6 @@ class UpdatePatientServiceImpl(
             }
         }
     }
-
 
 
     private suspend fun updateDoctors(doctors: Updatable<List<DoctorDto.DoctorDtoId>>, patient: PatientEntity) {

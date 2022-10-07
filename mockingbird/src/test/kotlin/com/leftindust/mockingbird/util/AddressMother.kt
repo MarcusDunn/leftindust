@@ -48,15 +48,14 @@ object AddressMother {
 
         // TODO
         val createAddressDto = CreateAddressDto(
-            type = addressType,
+            addressType = addressType,
             address = address,
             city = city,
-            countryState = CountryState(
-                country = country,
-                province = province
-            ),
+            country = country,
+            province = province,
             postalCode = postalCode
         )
+
     }
 
 

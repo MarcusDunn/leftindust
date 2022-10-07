@@ -108,6 +108,7 @@ internal class PatientMutationControllerTest(
         coEvery { updatePatientService.update(match{it.pid.value == Dan.id}) } returns Dan.updatedDomainEntityDetached
 
         //language=graphql
+
         // update fields to be different, clear lists.
         @Language("graphql")
         val mutation = """
@@ -120,25 +121,15 @@ internal class PatientMutationControllerTest(
                         lastName: "Servershani"
                     }
                     addresses: []
-                    phones: [
-                        {
-                            number: "${PhoneMother.DansCell.number}"
-                            type: Cell
-                        }
-                    ]       
-                    emails: [
-                        {
-                            email: "${EmailMother.DansEmail.address}"
-                            type: Work
-                        }
-                    ]                   
-                    insuranceNumber: null
-                    dateOfBirth: "${Dan.dateOfBirth}"
+                    phones: []  
+                    emails: []       
+                    insuranceNumber: ""
+                    dateOfBirth: "${DoctorMother.Jenny.dateOfBirth}"
                     sex: Male
-                    gender: "${Dan.gender}"
-                    ethnicity: null
+                    gender: ""
+                    ethnicity: Asian
                     emergencyContacts: []
-                    doctors: []
+                    doctor: []
                     thumbnail: null
                 })  
                 {

@@ -25,7 +25,7 @@ class UpdatePatientServiceImplTest(
 
     @Test
     internal suspend fun `check can actually update a patient`() {
-        // TODO
+
         createPatientServiceImpl.addNewPatient(PatientMother.Dan.createPatient)
         val updatedPatient = updatePatientServiceImpl.update(PatientMother.Dan.updatePatientDto)
     }

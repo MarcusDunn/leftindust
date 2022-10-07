@@ -1,14 +1,23 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.contact.Contact
-import com.leftindust.mockingbird.contact.ContactDto
+import com.leftindust.mockingbird.FallibleConverter
+import com.leftindust.mockingbird.contact.*
+import com.leftindust.mockingbird.email.CreateEmail
+import com.leftindust.mockingbird.email.CreateEmailDto
+import com.leftindust.mockingbird.email.CreateEmailDtoToCreateEmailFallibleConverter
+import com.leftindust.mockingbird.email.EmailType
 import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Relationship
+import com.leftindust.mockingbird.phone.CreatePhoneDto
 import com.leftindust.mockingbird.phone.Phone
+import com.leftindust.mockingbird.phone.PhoneType
 import java.util.UUID
 
 object ContactMother {
+
+    private val createEmailDtoToCreateEmailConverter = CreateEmailDtoToCreateEmailFallibleConverter()
+    val createContactDtoToCreateContactConverter = CreateContactDtoToCreateContactConverter(createEmailDtoToCreateEmailConverter)
     object Aydan {
 
         const val firstName = "Aydan"
@@ -47,5 +56,26 @@ object ContactMother {
             phone = phone,
             email = emailsTransient,
         )
+
+        val createDto = CreateContactDto(
+            firstName = "Boris",
+            middleName= "",
+            lastName = "V",
+            relationship = Relationship.Other,
+            phones = listOf(
+                CreatePhoneDto(
+                number = "222334",
+                type = PhoneType.Home,
+            )
+            ),
+            emails = listOf(
+                CreateEmailDto(
+                type = EmailType.Personal,
+                email = "Emergency22@gmail.com",
+            )
+            )
+        )
+
+        val create: CreateContact = createContactDtoToCreateContactConverter.convert(createDto)!!
     }
 }
