@@ -10,11 +10,11 @@ import type {
 
 import { Ethnicity, Sex, type EditPatient, type CreatePatient } from '@/api/server';
 
-import getNativeAPI from '@/api/bridge';
 import { get } from 'svelte/store';
 
 import { _ } from '@/language';
 import { closeWizard } from '../Wizard';
+import { openDialog } from '../UI/components/Dialog';
 
 export enum PatientTab {
   Overview = 'Overview',
@@ -22,8 +22,6 @@ export enum PatientTab {
   Records = 'Records',
   Contacts = 'Contacts'
 }
-
-const { Dialog } = getNativeAPI();
 
 const language = get(_);
 
@@ -150,11 +148,15 @@ export const createPatientForm = (pid?: string, fetcher?: () => void) => createF
       fetcher?.();
       closeWizard();
     } catch (error) {
-      void Dialog.alert({
-        message: language('errors.internalError'),
-        detail: (error as Error).message,
-        buttons: [language('generics.ok')],
-        defaultId: 0,
+      openDialog({
+        title:  language('errors.internalError'),
+        text: (error as Error).message,
+        buttons: [
+          {
+            label: language('generics.ok'),
+            primary: true,
+          },
+        ],
       });
     }
   },

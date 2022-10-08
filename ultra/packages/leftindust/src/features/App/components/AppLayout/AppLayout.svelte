@@ -120,6 +120,8 @@
         </svelte:fragment>
       </Sidebar>
     {/if}
+    <Dialog fill />
+  {:else}
+    <Dialog />
   {/if}
-  <Dialog />
 </App>
