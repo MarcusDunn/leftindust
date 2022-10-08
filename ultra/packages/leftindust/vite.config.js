@@ -13,14 +13,15 @@ const outDir = path.resolve(__dirname, 'build');
 // https://vitejs.dev/config/
 export default defineConfig({
   root,
-  base: '',
+  base: production ? '/' : '',
   publicDir: '../public',
+  mode: production ? 'production' : 'development',
   build: {
     outDir,
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'src/index.html'),
-        mediq: path.resolve(__dirname,'src/apps/mediq/index.html'),
+        mediq: path.resolve(__dirname, 'src/apps/mediq/index.html'),
         queue: path.resolve(__dirname, 'src/apps/queue/index.html'),
         intake: path.resolve(__dirname, 'src/apps/intake/index.html'),
       },
@@ -29,7 +30,7 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
-  host: true,
+    host: true,
     port: 5002,
   },
   rollupDedupe: ['svelte', '@fullcalendar/common'],

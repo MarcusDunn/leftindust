@@ -18,6 +18,13 @@ export type Partial<T> = {
   : T[P];
 };
 
+export type RecursivePartial<T> = {
+  [P in keyof T]?:
+    T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends object ? RecursivePartial<T[P]> :
+    T[P];
+};
+
 export type Action<T extends any[], R> = (...args: T) => R;
 
 export interface DOMEvent<T extends EventTarget> extends Event {

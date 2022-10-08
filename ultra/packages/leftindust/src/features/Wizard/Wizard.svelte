@@ -16,7 +16,7 @@
   export let color: Color = 'purple';
   export let submit = true;
 
-  export let disabled = true;
+  export let disabled = false;
   export let overflow = true;
 </script>
 
@@ -30,6 +30,7 @@
           dispatch('close');
           closeWizard();
         }}
+        {disabled}
       />
       {#if $$slots.title}
         <slot name="title" />

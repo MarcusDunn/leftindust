@@ -3,6 +3,8 @@
 
   import './Footer.scss';
 
+  export let style = '';
+
   export const scroll = (node: HTMLElement): void => {
     const page = node.parentNode as HTMLElement;
 
@@ -14,6 +16,6 @@
   };
 </script>
 
-<div class={`ui-footer ${$$restProps.class}`} use:scroll >
+<div class={`ui-footer ${$$restProps.class}`} {style} use:scroll>
   <slot />
 </div>

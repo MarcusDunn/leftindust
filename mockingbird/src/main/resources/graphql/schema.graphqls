@@ -57,6 +57,11 @@ type Mutation {
 
     # patient
     addPatient(createPatient: CreatePatient): Patient
+    editPatient(editPatient: EditPatient): Patient
+
+    # doctor
+    addDoctor(createDoctor: CreateDoctor): Doctor
+    editDoctor(editDoctor: EditDoctor): Doctor
 }
 
 input CreateSurveyLink {
@@ -249,6 +254,28 @@ type SurveyTemplateInput {
     calculationId: Int!
 }
 
+input UpdateNameInfo {
+    firstName: String!
+    middleName: String
+    lastName: String!
+}
+
+input EditPatient {
+    pid: PatientIdInput!
+    nameInfo: UpdateNameInfo
+    phones: [CreatePhone!]!
+    dateOfBirth: LocalDate
+    addresses: [CreateAddress!]!
+    emails: [CreateEmail!]!
+    insuranceNumber: String
+    sex: Sex!
+    gender: String!
+    ethnicity: Ethnicity!
+    emergencyContacts: [CreateContact!]!
+    thumbnail: String
+    doctor: [DoctorIdInput!]!
+}
+
 input CreatePatient {
     nameInfo: CreateNameInfo!
     phones: [CreatePhone!]! = []
@@ -262,6 +289,44 @@ input CreatePatient {
     emergencyContacts: [CreateContact!]! = []
     doctors: [DoctorIdInput!]! = []
     thumbnail: Base64
+}
+
+enum CreateDoctorUserType {
+    NoUser,
+    Find,
+    Create
+}
+
+input CreateDoctorUser {
+    discriminant: CreateDoctorUserType!
+    userUid: MediqGroupIdInput
+    uid: String
+    nameInfo: CreateNameInfo
+    group: MediqGroupIdInput
+}
+
+input CreateDoctor {
+    user: CreateDoctorUser
+    phones: [CreatePhone!]!
+    title: String!
+    clinic: [ClinicIdInput!]!
+    dateOfBirth: LocalDate
+    addresses: [CreateAddress!]!
+    emails: [CreateEmail!]!
+    patients: [PatientIdInput!]!
+}
+
+input EditDoctor {
+    did: DoctorIdInput!
+    userUid: String
+    nameInfo: UpdateNameInfo
+    phones: [CreatePhone!]
+    title: String
+    clinics: [ClinicIdInput!]
+    dateOfBirth: LocalDate
+    addresses: [CreateAddress!]
+    emails: [CreateEmail!]
+    patients: [PatientIdInput!]
 }
 
 input CreateContact {
@@ -408,6 +473,10 @@ type MediqUserId {
     value: String!
 }
 
+input MediqUserUniqueIdInput {
+    value: String!
+}
+
 type MediqGroupId {
     value: UUID!
 }
@@ -466,9 +535,21 @@ input SurveyTemplateSectionIdInput {
     value: UUID!
 }
 
+#this is hayneous but graphql currently doesnt support input union types, only output
 input CreateCompleteSurveyInput {
     surveyTemplateSectionInputId: SurveyTemplateSectionInputIdInput!
-    value: String!
+    type: CompleteSurveyInputType!
+    stringInput: String
+    numberInput: Int
+    stringArrayInput: [String!]
+    numberArrayInput: [Int!]
+}
+
+enum CompleteSurveyInputType {
+    String,
+    Number,
+    StringArray,
+    NumberArray
 }
 
 input SurveyTemplateSectionInputIdInput {
@@ -486,9 +567,28 @@ type CompleteSurveySection {
     inputs: [CompleteSurveySectionInput!]!
 }
 
-type CompleteSurveySectionInput {
+interface CompleteSurveySectionInput {
     id: CompleteSurveySectionInputId!
-    value: String!
+}
+
+type CompleteSurveySectionStringInput implements CompleteSurveySectionInput {
+    id: CompleteSurveySectionInputId!
+    string: String!
+}
+
+type CompleteSurveySectionNumberInput implements CompleteSurveySectionInput {
+    id: CompleteSurveySectionInputId!
+    number: Int!
+}
+
+type CompleteSurveySectionStringArrayInput implements CompleteSurveySectionInput {
+    id: CompleteSurveySectionInputId!
+    stringArray: [String!]!
+}
+
+type CompleteSurveySectionNumberArrayInput implements CompleteSurveySectionInput {
+    id: CompleteSurveySectionInputId!
+    numberArray: [Int!]!
 }
 
 type CompleteSurveySectionInputId {

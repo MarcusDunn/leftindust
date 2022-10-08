@@ -1,0 +1,7 @@
+mutation editDoctor($editDoctor: EditDoctor!) {
+  editDoctor (editDoctor: $editDoctor) {
+    id {
+      value
+    }
+  }
+}

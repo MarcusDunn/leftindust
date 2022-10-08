@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component
 @Component
 class CompleteSurveySectionEntityToCompleteSurveySectionConverter : InfallibleConverter<CompleteSurveySectionEntity, CompleteSurveySection> {
     override fun convert(source: CompleteSurveySectionEntity): CompleteSurveySection {
-        return CompleteSurveySectionImpl(source.id ?: throw NullEntityIdInConverterException(source))
+        return CompleteSurveySectionImpl(
+            id = source.id ?: throw NullEntityIdInConverterException(source)
+        )
     }
 
     class CompleteSurveySectionImpl(override val id: UUID) : CompleteSurveySection

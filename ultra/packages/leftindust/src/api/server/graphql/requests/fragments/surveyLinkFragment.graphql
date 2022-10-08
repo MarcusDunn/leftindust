@@ -1,0 +1,14 @@
+#import "./templateFragment.graphql"
+#import "./completeSurveyFragment.graphql"
+
+fragment surveyLinkFragment on SurveyLink {
+  id {
+    value
+  }
+  completedSurvey {
+    ...completeSurveyFragment
+  }
+  surveyTemplate {
+    ...templateFragment
+  }
+}

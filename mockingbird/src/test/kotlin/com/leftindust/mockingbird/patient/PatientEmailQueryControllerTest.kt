@@ -6,6 +6,7 @@ import com.leftindust.mockingbird.util.EmailMother
 import com.leftindust.mockingbird.util.PatientMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
+import java.util.UUID
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
-import java.util.*
 
 @GraphQlTest(controllers = [PatientQueryController::class, PatientEmailQueryController::class])
 internal class PatientEmailQueryControllerTest(
@@ -30,8 +30,8 @@ internal class PatientEmailQueryControllerTest(
 
     @Test
     internal fun `check can query for patient emails fields`() {
-        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.entityDetached
-        coEvery { readEmailService.getPatientEmails(PatientMother.Dan.graphqlId) } returns listOf(EmailMother.DansEmail.entityDetached)
+        coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.domain
+        coEvery { readEmailService.getPatientEmails(PatientMother.Dan.graphqlId) } returns listOf(EmailMother.DansEmail.domain)
 
         @Language("graphql")
         val query = """

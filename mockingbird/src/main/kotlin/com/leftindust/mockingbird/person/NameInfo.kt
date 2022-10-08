@@ -1,14 +1,10 @@
 package com.leftindust.mockingbird.person
 
-import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
-import javax.persistence.Column
-import javax.persistence.Entity
+import java.util.UUID
 
-@Entity
-class NameInfo(
-    @Column(nullable = false)
-    var firstName: String,
-    @Column(nullable = false)
-    var lastName: String,
-    var middleName: String?,
-) : AbstractJpaPersistable()
+interface NameInfo {
+    val id: UUID?
+    val firstName: String
+    val lastName: String
+    val middleName: String?
+}

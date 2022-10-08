@@ -1,13 +1,15 @@
 <script lang="ts">
-  import { TemplateInputItems } from '@/features/Templates/store';
+  import { Template } from '@/features/Template/store';
+  import type { Template as TemplateType } from '@/features/Template';
 
-  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions, TemplateInputType, type TemplateCalculationSockets, type TemplateInput } from '@/features/Templates';
+  import { getTemplateSocketType, templateCalculationSockets, templateInputSelectOptions } from '@/features/Template';
   import type { Editor, OutputSocket, OutputSockets, Node } from 'function-junctions/types';
   import { _ } from '@/language';
   import { BlockFooter, Button, Link, ListItem } from 'framework7-svelte';
   import Select from '@/features/Input/components/Select/Select.svelte';
   import Input from '@/features/Input/Input.svelte';
   import { get } from 'svelte/store';
+  import type { SurveyTemplateInputType } from '@/api/server';
 
   export let outputs: OutputSockets<{
     Value: OutputSocket<unknown>;
@@ -18,9 +20,6 @@
   
   const { value: Value } = outputs.Value;
   const { current: nodes } = editor.nodes;
-
-  let rerenderSmartSelect = false;
-  let smartSelectOpen = false;
   
   export let store: {
     id: number | undefined;
@@ -28,14 +27,12 @@
     id: undefined,
   };
 
-  let input: TemplateInput & {
+  let input: TemplateType['sections'][number]['inputs'][number] & {
     sectionIndex: number;
     index: number;
   } | undefined;
 
-  let prevType: TemplateInputType;
-
-  outputs.Value.disabled = !$Value;
+  let prevType: SurveyTemplateInputType;
 
   const changeInput = () => {
     input = inputs.find((input) => input.id === store?.id);
@@ -43,7 +40,7 @@
 
   const reevaluateConnections = () => {
     if (input) {
-      if ($TemplateInputItems.sections[input.sectionIndex].inputs[input.index]?.type !== prevType) {
+      if ($Template.sections[input.sectionIndex].inputs[input.index]?.type !== prevType) {
         editor.nodes.current.update(() => Object.keys($nodes).reduce((newNodes: Record<string, Node>, key) => {
           const oldNode = $nodes[key];
           const inputs = oldNode.inputs;
@@ -63,18 +60,18 @@
           return newNodes;
         }, {}));
 
-        prevType = $TemplateInputItems.sections[input.sectionIndex].inputs[input.index]?.type;
+        prevType = $Template.sections[input.sectionIndex].inputs[input.index]?.type;
       }
     }
   };
 
-  $: inputs = $TemplateInputItems.sections.flatMap((section, index) =>
+  $: inputs = $Template.sections.flatMap((section, index) =>
     section.inputs.map((input, inputIndex) => ({
       ...input,
       sectionIndex: index,
       index: inputIndex,
       label: `${input.label}${
-        $TemplateInputItems.sections.length > 1
+        $Template.sections.length > 1
           // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           ? ` (${$_('generics.sectionIndexed', { values: { number: index + 1 } })})`
           : ''
@@ -93,53 +90,43 @@
     
     if (socket) {
       outputs.Value.type = type;
-      outputs.Value.disabled = !$Value;
       outputs.Value.color = socket.color;
     }
   }
 
-  $: if (input && !prevType) prevType = $TemplateInputItems.sections[input.sectionIndex].inputs[input.index].type;
+  $: if (input && !prevType) prevType = $Template.sections[input.sectionIndex].inputs[input.index].type;
 
   $: inputs, reevaluateConnections();
-  
-  // Rerendering bug with key to preserve smartSelect instance when open
-  $: inputs, (() => {
-    if (!smartSelectOpen) rerenderSmartSelect =  !rerenderSmartSelect;
-  })();
 </script>
 
 {#if input}
   <div style="min-width: 430px">
-    <Select
-      title={$_('generics.type')}
-      placeholder={$_('examples.text')}
-      options={templateInputSelectOptions}
-      bind:value={$TemplateInputItems.sections[input.sectionIndex].inputs[input.index].type}
-    />
+    {#if $Template.sections[input.sectionIndex].inputs[input.index]?.type}
+      <Select
+        title={$_('generics.type')}
+        placeholder={$_('examples.text')}
+        options={templateInputSelectOptions}
+        bind:value={$Template.sections[input.sectionIndex].inputs[input.index].type}
+      />
+    {/if}
     <p />
     <Input title="Input" disabled={inputs.length < 1}>
-      {#key rerenderSmartSelect}
-        <ListItem
-          class="input-select"
-          smartSelect
-          smartSelectParams={{
-            openIn: 'popover',
-            closeOnSelect: true,
-            on: {
-              open: () => (smartSelectOpen = true),
-              close: () => (smartSelectOpen = false),
-            },
-          }}
-          title=""
-          slot="content"
-        >
-          <select name="input" bind:value={store.id}>
-            {#each inputs as i}
-              <option value={i.id}>{i.label}</option>
-            {/each}
-          </select>
-        </ListItem>
-      {/key}
+      <ListItem
+        class="input-select"
+        smartSelect
+        smartSelectParams={{
+          openIn: 'popover',
+          closeOnSelect: true,
+        }}
+        title=""
+        slot="content"
+      >
+        <select name="input" bind:value={store.id}>
+          {#each inputs as i}
+            <option value={i.id}>{i.label}</option>
+          {/each}
+        </select>
+      </ListItem>
     </Input>
   </div>
 {:else}
@@ -151,10 +138,6 @@
       smartSelectParams={{
         openIn: 'popover',
         closeOnSelect: true,
-        on: {
-          open: () => (smartSelectOpen = true),
-          close: () => (smartSelectOpen = false),
-        },
       }}
     >
       <Button

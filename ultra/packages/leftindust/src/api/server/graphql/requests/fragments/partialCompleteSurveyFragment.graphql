@@ -1,0 +1,20 @@
+#import "./partialTemplateFragment.graphql"
+
+fragment partialCompleteSurveyFragment on CompleteSurvey {
+  id {
+    value
+  }
+  sections {
+    id {
+      value
+    }
+    inputs {
+      id {
+        value
+      }
+    }
+  }
+  surveyTemplate {
+    ...partialTemplateFragment
+  }
+}

@@ -75,7 +75,7 @@
 
     $patients = $doctor.patients.map((patient) => ({
       type: patient.__typename,
-      id: patient.pid.id,
+      id: patient.id.value,
     }));
 
     input = stripped;

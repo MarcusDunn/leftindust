@@ -1019,4 +1019,39 @@
     <changeSet author="marcus (generated)" id="1661568761512-38">
         <dropColumn columnName="survey_template_id" tableName="complete_survey_entity"/>
     </changeSet>
+    <changeSet author="boris" id="1661568761513">
+        <renameTable oldTableName="patient" newTableName="patient_entity"/>
+        <renameTable oldTableName="patient_emails" newTableName="patient_entity_emails"/>
+        <renameTable oldTableName="patient_addresses" newTableName="patient_entity_addresses"/>
+        <renameTable oldTableName="patient_contacts" newTableName="patient_entity_contacts"/>
+        <renameTable oldTableName="patient_phones" newTableName="patient_entity_phones"/>
+        <renameTable oldTableName="patient_event_entity" newTableName="patient_entity_event_entity"/>
+        <renameTable oldTableName="doctor" newTableName="doctor_entity"/>
+        <renameTable oldTableName="doctor_emails" newTableName="doctor_entity_emails"/>
+        <renameTable oldTableName="doctor_addresses" newTableName="doctor_entity_addresses"/>
+        <renameTable oldTableName="doctor_phones" newTableName="doctor_entity_phones"/>
+    </changeSet>
+    <changeSet author="boris" id="1661568761514">
+        <renameColumn oldColumnName="patient_id" newColumnName="patient_entity_id" tableName="patient_entity_emails"/>
+        <renameColumn oldColumnName="patient_id" newColumnName="patient_entity_id" tableName="patient_entity_addresses"/>
+        <renameColumn oldColumnName="patient_id" newColumnName="patient_entity_id" tableName="patient_entity_contacts"/>
+        <renameColumn oldColumnName="patient_id" newColumnName="patient_entity_id" tableName="patient_entity_phones"/>
+        <renameColumn oldColumnName="doctor_id" newColumnName="doctor_entity_id" tableName="doctor_entity_emails"/>
+        <renameColumn oldColumnName="doctor_id" newColumnName="doctor_entity_id" tableName="doctor_entity_addresses"/>
+        <renameColumn oldColumnName="doctor_id" newColumnName="doctor_entity_id" tableName="doctor_entity_phones"/>
+    </changeSet>
+    <changeSet id="1671568761515" author="marcus">
+        <renameTable oldTableName="email" newTableName="email_entity"/>
+    </changeSet>
+    <changeSet id="1681568761215" author="marcus">
+        <renameTable oldTableName="clinic" newTableName="clinic_entity"/>
+    </changeSet>
+    <changeSet id="1681562721212" author="kelvin">
+        <renameTable oldTableName="name_info" newTableName="name_info_entity"/>
+    </changeSet>
+    <changeSet author="kelvin" id="1661518762514">
+        <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="patient_entity"/>
+        <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="doctor_entity"/>
+        <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="mediq_user"/>
+    </changeSet>
 </databaseChangeLog>

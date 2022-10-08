@@ -1,21 +1,36 @@
-#import "./doctorsFragment.graphql"
-#import "./usersFragment.graphql"
-#import "./patientsFragment.graphql"
-#import "./addressFragment.graphql"
-#import "./phoneFragment.graphql"
-
 fragment doctor on Doctor {
-  ...doctors
+  id {
+    value
+  }
+  title
+  firstName
+  middleName
+  lastName
+  dateOfBirth
+  thumbnail
   addresses {
-      ...address
+    address
+    city
+    country
+    id {
+      value
+    }
+    postalCode
+    province
+    type
   }
-  phones {
-      ...phone
+  emails {
+    email
+    id {
+      value
+    }
+    type
   }
-  user {
-      ...users
-  }
-  patients {
-      ...patients
+  phoneNumbers {
+    id {
+      value
+    }
+    number
+    type
   }
 }

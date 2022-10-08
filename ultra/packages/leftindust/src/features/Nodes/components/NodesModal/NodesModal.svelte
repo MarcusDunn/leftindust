@@ -24,6 +24,8 @@
 
   export let menuNodes: MenuNodes = [];
 
+  export let editable = true;
+
   let modal: Popover.Popover;
 
   const onAdd = (nodes: MenuNode[]) => nodes.forEach((node) => editor?.addNode(node.title, {
@@ -51,14 +53,20 @@
     {nodes}
     bind:state
     bind:instance={editor}
+    {editable}
+    interactable={editable}
+    nodeControlButtons={editable}
   />
   <div class={`nodes-nodes_modal-controls ${open ? 'nodes-nodes_modal-controls-open' : ''}`}>
     <div class="nodes-nodes_modal-controls-content">
-      <MenuButton
-        title="Create"
-        icon={{ f7: 'plus_circle_fill', color: 'blue' }}
-        on:click={openModal}
-      />
+      {#if menuNodes.length > 0}
+        <MenuButton
+          title="Create"
+          icon={{ f7: 'plus_circle_fill', color: 'blue' }}
+          on:click={openModal}
+        />
+      {/if}
+
       <div class="flex-grow" />
       <MenuButton
         title={$_('generics.close')}

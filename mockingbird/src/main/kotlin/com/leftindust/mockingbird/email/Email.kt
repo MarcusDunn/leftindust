@@ -1,13 +1,10 @@
 package com.leftindust.mockingbird.email
 
-import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
-import javax.persistence.Column
-import javax.persistence.Entity
+import com.leftindust.mockingbird.validate.EmailAddress
+import java.util.UUID
 
-@Entity
-class Email(
-    @Column(nullable = false)
-    var type: EmailType,
-    @Column(nullable = false)
-    var address: String,
-) : AbstractJpaPersistable()
+interface Email {
+    val id: UUID
+    val type: EmailType
+    val address: EmailAddress
+}

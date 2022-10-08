@@ -1,0 +1,35 @@
+@use '../../../../style/helpers/Clamps.scss';
+
+.record-record_calculation_tags {
+  display: flex;
+  font-size: 12px;
+  width: 100%;
+
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  min-width: 0;
+
+  flex-wrap: wrap;
+
+  .record-record-calculation_tags-chip {
+    margin-left: 0;
+    .record-record-calculation_tags-text {
+      display: flex;
+      align-items: center;
+  
+      .record-record-calculation_tags-stamp {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+        margin-right: 4px;
+        background: linear-gradient(#228cfd, #007aff);;
+      }
+    }
+  }
+
+  & > * {
+    margin-right: 4px;
+  }
+}

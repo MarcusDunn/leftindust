@@ -3,13 +3,14 @@ package com.leftindust.mockingbird.util
 import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
-import com.leftindust.mockingbird.email.Email
-import com.leftindust.mockingbird.patient.Patient
+import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.patient.PatientEntity
+import com.leftindust.mockingbird.patient.PatientEntityToPatientConverter
 import com.leftindust.mockingbird.patient.PatientEventEntity
 import com.leftindust.mockingbird.patient.PatientToPatientDtoConverter
 import com.leftindust.mockingbird.person.Ethnicity
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
@@ -22,13 +23,14 @@ import java.util.UUID
 
 object PatientMother {
     val patientToPatientDtoConverter = PatientToPatientDtoConverter()
+    val patientEntityToPatientConverter = PatientEntityToPatientConverter()
 
     object Dan {
         const val firstName = "Dan"
         val middleName = "TheMan"
         const val lastName = "Shervershani"
         val dateOfBirth = LocalDate.of(2014, Month.MARCH, 12)
-        val id = UUID.fromString("62d2344c-1dc5-11ed-861d-0242ac120002")
+        val id = UUID.fromString("3444970a-3e31-11ed-b878-0242ac120002")
         val graphqlId = PatientDto.PatientDtoId(id)
         val user: MediqUser? = null
         val thumbnail: ByteArray? = null
@@ -40,30 +42,30 @@ object PatientMother {
             get() = mutableSetOf()
         val doctors: MutableSet<DoctorPatientEntity>
             get() = mutableSetOf()
-        val emailsDetached: MutableSet<Email>
+        val emailsDetached: MutableSet<EmailEntity>
             get() = mutableSetOf(DansEmail.entityDetached)
-        val emailsTransient: MutableSet<Email>
+        val emailsTransient: MutableSet<EmailEntity>
             get() = mutableSetOf(DansEmail.entityTransient)
         val phonesDetached: MutableSet<Phone>
             get() = mutableSetOf(PhoneMother.DansCell.entityDetached)
         val phonesTransient: MutableSet<Phone>
             get() = mutableSetOf(PhoneMother.DansCell.entityTransient)
-        val addressesDetached: MutableSet<Address>
-            get() = mutableSetOf(DansHouse.entityDetached)
-
         val assignedSurveysTransient: MutableSet<SurveyLinkEntity>
             get() = mutableSetOf()
+
         val assignedSurveysDetached: MutableSet<SurveyLinkEntity>
             get() = mutableSetOf()
-
         val addressesTransient: MutableSet<Address>
             get() = mutableSetOf(DansHouse.entityTransient)
+        val addressesDetached: MutableSet<Address>
+            get() = mutableSetOf(DansHouse.entityDetached)
         val events: MutableSet<PatientEventEntity>
             get() = mutableSetOf()
+
         val nameInfoId = UUID.fromString("e257f4f5-15c5-4375-a99b-da6354e4d0b5")
-        val entityDetached: Patient
-            get() = Patient(
-                nameInfo = NameInfo(
+        val entityDetached: PatientEntity
+            get() = PatientEntity(
+                nameInfoEntity = NameInfoEntity(
                     firstName = firstName,
                     lastName = lastName,
                     middleName = middleName
@@ -83,8 +85,8 @@ object PatientMother {
                 doctors = doctors,
                 assignedSurveys = assignedSurveysDetached
             ).apply { id = this@Dan.id }
-        val entityTransient: Patient = Patient(
-            nameInfo = NameInfo(
+        val entityTransient: PatientEntity = PatientEntity(
+            nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
                 lastName = lastName,
                 middleName = middleName
@@ -103,8 +105,9 @@ object PatientMother {
             contacts = contacts,
             doctors = doctors,
             assignedSurveys = assignedSurveysTransient
-        )
+        ).apply { id = this@Dan.id }
 
-        val dto: PatientDto = patientToPatientDtoConverter.convert(entityDetached)
+        val domain = patientEntityToPatientConverter.convert(entityDetached)
+        val dto: PatientDto = patientToPatientDtoConverter.convert(domain)
     }
 }

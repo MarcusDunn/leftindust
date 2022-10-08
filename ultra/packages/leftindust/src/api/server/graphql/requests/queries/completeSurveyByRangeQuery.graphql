@@ -1,0 +1,7 @@
+#import "../fragments/completeSurveyFragment.graphql"
+
+query completeSurveyRangeQuery($range: Range!) {
+  completeSurveyByRange(range: $range) {
+    ...completeSurveyFragment
+  }
+}

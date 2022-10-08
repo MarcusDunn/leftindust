@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.survey.link
 
-import com.leftindust.mockingbird.patient.Patient
+import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyEntity
 import com.leftindust.mockingbird.survey.template.SurveyTemplateEntity
@@ -13,7 +13,7 @@ class SurveyLinkEntity(
     @ManyToOne
     val surveyTemplateEntity: SurveyTemplateEntity,
     @ManyToOne
-    val patient: Patient,
+    val patient: PatientEntity,
     @OneToOne(optional = true)
     val completeSurvey: CompleteSurveyEntity?
 ) : AbstractJpaPersistable()

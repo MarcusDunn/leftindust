@@ -1,22 +1,23 @@
 package com.leftindust.mockingbird.event
 
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.doctor.ReadDoctorService
+import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.applyUpdatable
 import com.leftindust.mockingbird.graphql.types.applyUpdatableGqlId
 import com.leftindust.mockingbird.patient.PatientDto
-import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.patient.PatientRepository
 import javax.transaction.Transactional
 import mu.KotlinLogging
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 @Transactional
 class UpdateEventServiceImpl(
     private val eventRepository: HibernateEventRepository,
-    private val readDoctorService: ReadDoctorService,
-    private val readPatientService: ReadPatientService,
+    private val doctorRepository: DoctorRepository,
+    private val patientRepository: PatientRepository,
 ) : UpdateEventService {
     private val logger = KotlinLogging.logger { }
 
@@ -32,7 +33,7 @@ class UpdateEventServiceImpl(
         doctors.applyUpdatableGqlId(
             entity = event,
             property = event::doctors,
-            addToCollection = { doctorId -> readDoctorService.getByDoctorId(doctorId)?.addEvent(event) },
+            addToCollection = { doctorId -> doctorRepository.findByIdOrNull(doctorId.value)?.addEvent(event) },
             logger = logger
         )
     }
@@ -41,7 +42,7 @@ class UpdateEventServiceImpl(
         patients.applyUpdatableGqlId(
             entity = event,
             property = event::patients,
-            addToCollection = { patientDtoId -> readPatientService.getByPatientId(patientDtoId)?.addEvent(event) },
+            addToCollection = { patientDtoId -> patientRepository.findByIdOrNull(patientDtoId.value)?.addEvent(event) },
             logger = logger
         )
     }

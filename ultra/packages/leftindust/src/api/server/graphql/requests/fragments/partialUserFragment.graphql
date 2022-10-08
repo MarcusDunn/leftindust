@@ -1,0 +1,17 @@
+#import "./nameFragment.graphql"
+
+fragment partialUser on MediqUser {
+    id {
+        value
+    }
+    group {
+        name
+    }
+    accountDetails {
+        email
+        isRegistered
+    }
+    name {
+        ...name
+    }
+}

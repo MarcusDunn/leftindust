@@ -1,12 +1,13 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.doctor.ClinicDoctorEntity
-import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.doctor.DoctorDto
+import com.leftindust.mockingbird.doctor.DoctorEntity
+import com.leftindust.mockingbird.doctor.DoctorEntityToDoctorConverter
 import com.leftindust.mockingbird.doctor.DoctorEventEntity
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.doctor.DoctorToDoctorDtoConverter
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.JennysHouse
 import com.leftindust.mockingbird.util.PhoneMother.JennysHomePhone
@@ -17,6 +18,7 @@ import java.util.UUID
 
 object DoctorMother {
     val doctorToDoctorDto = DoctorToDoctorDtoConverter()
+    val doctorEntityToDoctorConverter = DoctorEntityToDoctorConverter()
 
     object Jenny {
         const val firstName = "Jenny"
@@ -26,7 +28,8 @@ object DoctorMother {
         val id = UUID.fromString("77941cfc-7808-4c7a-bbbe-62c6a637d5f8")
         val graphqlId = DoctorDto.DoctorDtoId(id)
         val addresses = mutableSetOf(JennysHouse.entityPersisted)
-        val emails = mutableSetOf(EmailMother.jennysEmail)
+        val emailsTransient = mutableSetOf(EmailMother.DansEmail.entityTransient)
+        val emailsDetached = mutableSetOf(EmailMother.DansEmail.entityDetached)
         val phones = mutableSetOf(JennysHomePhone.entityPersisted, JennysWorkPhone.entityPersisted)
         val user: MediqUser? = null
         val events = mutableSetOf<DoctorEventEntity>()
@@ -34,25 +37,49 @@ object DoctorMother {
         val title: String? = null
         val clinics = mutableSetOf<ClinicDoctorEntity>()
         val patients = mutableSetOf<DoctorPatientEntity>()
-        val entityPersisted = Doctor(
-            nameInfo = NameInfo(
-                firstName = firstName,
-                lastName = lastName,
-                middleName = middleName
-            ),
-            addresses = addresses,
-            emails = emails,
-            phones = phones,
-            user = user,
-            events = events,
-            thumbnail = thumbnail,
-            title = title,
-            dateOfBirth = dateOfBirth,
-            clinics = clinics,
-            patients = patients,
-        ).apply { id = this@Jenny.id }
+        val entityTransient: DoctorEntity
+            get() = DoctorEntity(
+                nameInfoEntity = NameInfoEntity(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = middleName
+                ),
+                addresses = addresses,
+                emails = emailsTransient,
+                phones = phones,
+                user = user,
+                events = events,
+                thumbnail = thumbnail,
+                title = title,
+                dateOfBirth = dateOfBirth,
+                clinics = clinics,
+                patients = patients,
+            )
 
-        val dto = doctorToDoctorDto.convert(entityPersisted)
+        val entityDetached: DoctorEntity
+            get() = DoctorEntity(
+                nameInfoEntity = NameInfoEntity(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = middleName
+                ),
+                addresses = addresses,
+                emails = emailsTransient,
+                phones = phones,
+                user = user,
+                events = events,
+                thumbnail = thumbnail,
+                title = title,
+                dateOfBirth = dateOfBirth,
+                clinics = clinics,
+                patients = patients,
+            ).apply {
+                this.id = this@Jenny.id
+                this.emails = this@Jenny.emailsDetached
+            }
+
+        val domain = doctorEntityToDoctorConverter.convert(entityDetached)
+        val dto = doctorToDoctorDto.convert(domain)
     }
 
     object Dan {
@@ -63,7 +90,7 @@ object DoctorMother {
         val id = UUID.fromString("c7c89079-ee58-4187-9d31-1fab272aa7f0")
         val graphqlId = DoctorDto.DoctorDtoId(id)
         val addresses = mutableSetOf(AddressMother.DansHouse.entityDetached)
-        val emails = mutableSetOf(EmailMother.dansEmail)
+        val emails = mutableSetOf(EmailMother.DansEmail.entityDetached)
         val phones = mutableSetOf(PhoneMother.DansCell.entityDetached)
         val user: MediqUser? = null
         val events = mutableSetOf<DoctorEventEntity>()
@@ -71,8 +98,9 @@ object DoctorMother {
         val title: String? = null
         val clinics = mutableSetOf<ClinicDoctorEntity>()
         val patients = mutableSetOf<DoctorPatientEntity>()
-        val entityPersisted = Doctor(
-            nameInfo = NameInfo(
+
+        val entityDetached = DoctorEntity(
+            nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
                 lastName = lastName,
                 middleName = middleName
@@ -89,7 +117,8 @@ object DoctorMother {
             patients = patients,
         ).apply { id = this@Dan.id }
 
-        val dto = doctorToDoctorDto.convert(entityPersisted)
+        val domain = (doctorEntityToDoctorConverter.convert(entityDetached))
+        val dto = doctorToDoctorDto.convert(domain)
     }
 
 }

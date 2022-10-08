@@ -23,9 +23,14 @@ module.exports = {
     },
     {
       files: ['*.graphql'],
-      extends: 'plugin:@graphql-eslint/schema-recommended',
+      parser: '@graphql-eslint/eslint-plugin',
+      plugins: ['@graphql-eslint'],
+      rules: {
+        '@graphql-eslint/unique-operation-name': 'error',
+      },
       parserOptions: {
         schema: './src/api/server/graphql/schema/leftindust.schema.graphql',
+        operations: './src/api/server/graphql/requests/**/*.graphql',
       },
     },
   ],

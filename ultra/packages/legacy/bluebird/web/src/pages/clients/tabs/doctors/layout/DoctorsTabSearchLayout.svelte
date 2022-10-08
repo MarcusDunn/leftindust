@@ -49,7 +49,7 @@
         length={$doctors.length}
         description="Showing search results from this clinic"
         on:select={() => {
-          $ClientsSelected = $doctors.map((doctor) => ({ type: doctor.__typename, id: doctor.did.id }));
+          $ClientsSelected = $doctors.map((doctor) => ({ type: doctor.__typename, id: doctor.id?.value }));
           navigate();
         }}
       />

@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.doctor
 
-import com.leftindust.mockingbird.patient.Patient
+import com.leftindust.mockingbird.patient.PatientEntity
 import java.util.Objects
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -11,10 +11,10 @@ import javax.persistence.ManyToOne
 class DoctorPatientEntity(
     @Id
     @ManyToOne
-    val doctor: Doctor,
+    val doctor: DoctorEntity,
     @Id
     @ManyToOne
-    val patient: Patient,
+    val patient: PatientEntity,
 ) : java.io.Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) {

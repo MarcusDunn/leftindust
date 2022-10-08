@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.doctor
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.clinic.*
 import com.leftindust.mockingbird.email.CreateEmailService
-import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.patient.PatientRepository
 import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhoneService
@@ -13,6 +13,7 @@ import com.leftindust.mockingbird.user.MediqGroupDto
 import com.leftindust.mockingbird.user.MediqUserDto
 import com.leftindust.mockingbird.user.ProofOfValidUser
 import com.leftindust.mockingbird.user.ReadMediqUserService
+import org.springframework.data.repository.findByIdOrNull
 import javax.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -21,13 +22,14 @@ import org.springframework.stereotype.Service
 class CreateDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
     private val clinicRepository: ClinicRepository,
+    private val patientRepository: PatientRepository,
     private val createMediqUserService: CreateMediqUserService,
     private val readMediqUserService: ReadMediqUserService,
     private val createAddressService: CreateAddressService,
     private val createEmailService: CreateEmailService,
     private val createNameInfoService: CreateNameInfoService,
     private val createPhoneService: CreatePhoneService,
-    private val readPatientService: ReadPatientService,
+    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter,
 ) : CreateDoctorService {
 
     override suspend fun addDoctor(createDoctor: CreateDoctor): Doctor {
@@ -44,9 +46,9 @@ class CreateDoctorServiceImpl(
             is CreateDoctor.User.Find -> readMediqUserService.getByUserUid(user.userUid) to null
             is CreateDoctor.User.NoUser -> null to createNameInfoService.createNameInfo(user.nameInfo)
         }
-        val notNullNameInfo = nameInfo ?: user?.nameInfo!!
-        val doctor = Doctor(
-            nameInfo = notNullNameInfo,
+        val notNullNameInfo = nameInfo ?: user?.nameInfoEntity!!
+        val doctor = DoctorEntity(
+            nameInfoEntity = notNullNameInfo,
             addresses = createDoctor.addresses.map { createAddressService.createAddress(it) }.toMutableSet(),
             emails = createDoctor.emails.map { createEmailService.createEmail(it) }.toMutableSet(),
             phones = createDoctor.phones.map { createPhoneService.createPhone(it) }.toMutableSet(),
@@ -60,19 +62,20 @@ class CreateDoctorServiceImpl(
         ).apply {
             createDoctor.patients
                 .map {
-                    readPatientService.getByPatientId(it)
+                    patientRepository.findByIdOrNull(it.value)
                         ?: throw IllegalArgumentException("No such patient with id $it")
                 }.forEach { addPatient(it) }
 
-            updateClinics(createDoctor.clinic, this)
+//            updateClinics(createDoctor.clinic, this)
         }
-        return doctorRepository.save(doctor)
+        return doctorEntityToDoctorConverter.convert(doctorRepository.save(doctor))
     }
 
     private suspend fun updateClinics(
         clinicsEdit: List<ClinicDto.ClinicDtoId>,
-        doctor: Doctor
+        doctor: DoctorEntity
     ) {
+        // this always fails
         doctor.id ?: throw IllegalArgumentException("Clinic is missing a doctor id")
 
         clinicsEdit.map {

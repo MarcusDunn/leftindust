@@ -25,29 +25,21 @@
         margin-right: 10px;
       }
     }
-  }
-}
 
-.view-master-detail {
-  .ui-cell {
-    .ui-cell-item {
-      &.ui-cell-item-selected {
-        .item-link, .item-checkbox {
-          background-color: rgb(220, 220, 220);
-        }
+    &.ui-cell-item-selected {
+      .item-link, .item-checkbox {
+        background-color: rgb(220, 220, 220);
       }
     }
   }
 }
 
 .dark {
-  .view-master-detail {
-    .ui-cell {
-      .ui-cell-item {
-        &.ui-cell-item-selected {
-          .item-link, .item-checkbox {
-            background-color: rgba(44, 44, 46);
-          }
+  .ui-cell {
+    .ui-cell-item {
+      &.ui-cell-item-selected {
+        .item-link, .item-checkbox {
+          background-color: rgba(44, 44, 46);
         }
       }
     }

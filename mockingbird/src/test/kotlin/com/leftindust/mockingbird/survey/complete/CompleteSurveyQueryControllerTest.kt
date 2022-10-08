@@ -2,8 +2,6 @@ package com.leftindust.mockingbird.survey.complete
 
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.util.CompleteSurveyMother.FilledOutKoosKneeSurvey
-import com.leftindust.mockingbird.util.DoctorMother
-import com.leftindust.mockingbird.util.PatientMother
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import org.intellij.lang.annotations.Language
@@ -23,9 +21,25 @@ internal class CompleteSurveyQueryControllerWebTest(
     @MockkBean
     private lateinit var readCompleteSurveyService: ReadCompleteSurveyService
 
+    @MockkBean
+    private lateinit var readCompleteSurveySectionService: ReadCompleteSurveySectionService
+
+    @MockkBean
+    private lateinit var readCompleteSurveySectionInputService: ReadCompleteSurveySectionInputService
+
     @Test
     internal fun `check can query by id`() {
         coEvery { readCompleteSurveyService.completeSurveyByCompleteSurveyId(FilledOutKoosKneeSurvey.graphqlId) } returns FilledOutKoosKneeSurvey.domain
+        coEvery { readCompleteSurveySectionService.completeSurveySectionsByCompleteSurveyId(FilledOutKoosKneeSurvey.graphqlId) } returns listOf(
+            CompleteHowMuchPainAreYouInSection.domain
+        )
+        coEvery {
+            readCompleteSurveySectionInputService.completeSurveySectionInputByCompleteSurveySectionId(
+                CompleteHowMuchPainAreYouInSection.graphqlId
+            )
+        } returns listOf(
+            FilledOutHowBadIsThePainWhenIPokeIt.domain
+        )
 
         @Language("graphql")
         val query = """
@@ -62,9 +76,9 @@ internal class CompleteSurveyQueryControllerWebTest(
             .execute()
             .errors()
             .verify()
-            .path("completeSurveyByRange[0]")
-            .entity(CompleteSurveyDto::class.java)
-            .isEqualTo(FilledOutKoosKneeSurvey.dto)
+            .path("completeSurveyByRange[0].id.value")
+            .entity(UUID::class.java)
+            .isEqualTo(FilledOutKoosKneeSurvey.dto.id.value)
     }
 
     @Test

@@ -1,14 +1,13 @@
 package com.leftindust.mockingbird.doctor
 
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.NullEntityIdInConverterException
 import org.springframework.stereotype.Component
 
 @Component
 class DoctorToDoctorDtoConverter : InfallibleConverter<Doctor, DoctorDto> {
     override fun convert(source: Doctor): DoctorDto {
         return DoctorDto(
-            id = DoctorDto.DoctorDtoId(source.id ?: throw NullEntityIdInConverterException(source)),
+            id = DoctorDto.DoctorDtoId(source.id),
             firstName = source.nameInfo.firstName,
             middleName = source.nameInfo.middleName,
             lastName = source.nameInfo.lastName,

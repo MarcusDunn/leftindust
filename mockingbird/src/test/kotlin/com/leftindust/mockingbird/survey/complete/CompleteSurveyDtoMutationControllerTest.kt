@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.survey.complete
 
-import com.leftindust.mockingbird.util.CompleteSurveyInputMother.CompleteRateThePain
+import com.leftindust.mockingbird.util.CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt
 import com.leftindust.mockingbird.util.CompleteSurveyMother.FilledOutKoosKneeSurvey
 import com.leftindust.mockingbird.util.CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection
 import com.ninjasquad.springmockk.MockkBean
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
+import java.util.*
 
 @GraphQlTest(CompleteSurveyDtoMutationController::class)
 internal class  CompleteSurveyDtoMutationControllerTest(
@@ -24,7 +25,7 @@ internal class  CompleteSurveyDtoMutationControllerTest(
 
     @Test
     internal fun `check can create a survey link`() {
-        coEvery { createCompleteSurveyService.createCompleteSurvey(FilledOutKoosKneeSurvey.createDto) } returns FilledOutKoosKneeSurvey.domain
+        coEvery { createCompleteSurveyService.createCompleteSurvey(any()) } returns FilledOutKoosKneeSurvey.domain
 
         @Language("graphql")
         val mutation = """
@@ -36,8 +37,9 @@ internal class  CompleteSurveyDtoMutationControllerTest(
                                 value: "${CompleteHowMuchPainAreYouInSection.surveyTemplateSectionId.value}"
                             }
                             completedSurveyInputs: [{
-                                surveyTemplateSectionInputId: { value: "${CompleteRateThePain.surveyTemplateSectionInputId.value}"}
-                                value: "${CompleteRateThePain.value}"
+                                surveyTemplateSectionInputId: { value: "${FilledOutHowBadIsThePainWhenIPokeIt.surveyTemplateSectionInputId.value}"}
+                                type: String
+                                stringInput: "${FilledOutHowBadIsThePainWhenIPokeIt.createDto.stringInput}"
                             }]
                         }]
                     }) {
@@ -50,8 +52,8 @@ internal class  CompleteSurveyDtoMutationControllerTest(
             .execute()
             .errors()
             .verify()
-            .path("createCompleteSurvey")
-            .entity(CompleteSurveyDto::class.java)
-            .isEqualTo(FilledOutKoosKneeSurvey.dto)
+            .path("createCompleteSurvey.id.value")
+            .entity(UUID::class.java)
+            .isEqualTo(FilledOutKoosKneeSurvey.dto.id.value)
     }
 }

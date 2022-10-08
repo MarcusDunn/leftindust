@@ -1,0 +1,7 @@
+#import "../fragments/partialDoctorFragment.graphql"
+
+query partialDoctorsByRangeQuery($range: Range!) {
+  doctorsByRange(range: $range) {
+    ...partialDoctor
+  }
+}

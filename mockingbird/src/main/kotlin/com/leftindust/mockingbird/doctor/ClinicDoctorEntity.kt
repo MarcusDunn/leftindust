@@ -13,7 +13,7 @@ class ClinicDoctorEntity(
     val clinic: ClinicEntity,
     @Id
     @ManyToOne
-    val doctor: Doctor,
+    val doctor: DoctorEntity,
 ): java.io.Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) {

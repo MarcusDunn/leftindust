@@ -18,6 +18,7 @@ const apps: App[] = [
     cover: MedIQCover,
     onClick: () => window.location.href = '/apps/mediq/',
   },
+  /*
   {
     title: 'Flow',
     cover: FlowCover,
@@ -31,6 +32,7 @@ const apps: App[] = [
     title: 'Administration',
     cover: AdminCover,
   },
+  */
 ];
 
 export default apps;

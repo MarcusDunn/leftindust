@@ -26,9 +26,9 @@
 
 <SelectableItemUI
   title={`${patient.firstName} ${patient?.middleName ? `${patient?.middleName?.charAt(0)}.` : ''} ${patient.lastName}`}
-  selected={$selected.some((selectable) => selectable.id === patient.pid.id)}
+  selected={$selected.some((selectable) => selectable.id === patient.id.value)}
   on:click={(event) => {
-    let selectable = { id: patient.pid.id, type: patient.__typename };
+    let selectable = { id: patient.id.value, type: patient.__typename };
     let reference = patients.map((item) => ({ id: item.pid.id, type: item.__typename }));
 
     $selected = click(event, { selectable, multiselect: multiselect ? { selected: $selected, reference } : undefined });

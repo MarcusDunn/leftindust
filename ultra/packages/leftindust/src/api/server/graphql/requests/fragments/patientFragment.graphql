@@ -1,23 +1,39 @@
-#import "./patientsFragment.graphql"
-#import "./doctorsFragment.graphql"
-#import "./addressFragment.graphql"
-#import "./phoneFragment.graphql"
-#import "./emailFragment.graphql"
-
 fragment patient on Patient {
-  ...patients
+  id {
+    value
+  }
+  firstName
+  middleName
+  lastName
+  dateOfBirth
+  gender
+  sex
+  thumbnail
   insuranceNumber
   ethnicity
   addresses {
-      ...address
-  }
-  phones {
-      ...phone
+    address
+    city
+    country
+    id {
+      value
+    }
+    postalCode
+    province
+    type
   }
   emails {
-      ...email
+    email
+    id {
+      value
+    }
+    type
   }
-  doctors {
-      ...doctors
+  phoneNumbers {
+    id {
+      value
+    }
+    number
+    type
   }
 }

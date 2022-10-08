@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.survey.complete
 
+import com.leftindust.mockingbird.util.CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt
 import com.leftindust.mockingbird.util.CompleteSurveyMother.FilledOutKoosKneeSurvey
 import com.leftindust.mockingbird.util.CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection
 import com.ninjasquad.springmockk.MockkBean
@@ -11,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
+import java.util.*
 
 @GraphQlTest(controllers = [CompleteSurveyQueryController::class, CompleteSurveySectionQueryController::class])
 internal class CompleteSurveySectionQueryControllerWebTest(
@@ -25,10 +27,22 @@ internal class CompleteSurveySectionQueryControllerWebTest(
     @MockkBean
     private lateinit var readCompleteSurveySectionService: ReadCompleteSurveySectionService
 
+    @MockkBean
+    private lateinit var readCompleteSurveySectionInputService: ReadCompleteSurveySectionInputService
+
     @Test
     internal fun `check can query by id`() {
         coEvery { readCompleteSurveyService.completeSurveyByCompleteSurveyId(FilledOutKoosKneeSurvey.graphqlId) } returns FilledOutKoosKneeSurvey.domain
-        coEvery { readCompleteSurveySectionService.completeSurveySectionsByCompleteSurveyId(FilledOutKoosKneeSurvey.graphqlId) } returns listOf(CompleteHowMuchPainAreYouInSection.domain)
+        coEvery { readCompleteSurveySectionService.completeSurveySectionsByCompleteSurveyId(FilledOutKoosKneeSurvey.graphqlId) } returns listOf(
+            CompleteHowMuchPainAreYouInSection.domain
+        )
+        coEvery {
+            readCompleteSurveySectionInputService.completeSurveySectionInputByCompleteSurveySectionId(
+                CompleteHowMuchPainAreYouInSection.graphqlId
+            )
+        } returns listOf(
+            FilledOutHowBadIsThePainWhenIPokeIt.domain
+        )
 
         @Language("graphql")
         val query = """
@@ -45,8 +59,8 @@ internal class CompleteSurveySectionQueryControllerWebTest(
             .execute()
             .errors()
             .verify()
-            .path("completeSurveyById.sections")
-            .entity(object : ParameterizedTypeReference<List<CompleteSurveySectionDto>>() {})
-            .isEqualTo(listOf(CompleteHowMuchPainAreYouInSection.dto))
+            .path("completeSurveyById.sections[0].id.value")
+            .entity(UUID::class.java)
+            .isEqualTo(CompleteHowMuchPainAreYouInSection.dto.id.value)
     }
 }

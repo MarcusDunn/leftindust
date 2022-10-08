@@ -59,7 +59,7 @@
       event.subscribe((value) => {
         if (value)
           $ClientsSelected = [
-            ...value.doctors.map((doctor) => ({ type: 'Doctor', id: doctor.did.id })),
+            ...value.doctors.map((doctor) => ({ type: 'Doctor', id: doctor.did?.id })),
             ...value.patients.map((doctor) => ({ type: 'Patient', id: doctor.pid.id })),
           ] as Selectable[];
       });
@@ -101,13 +101,13 @@
     <ProfileUI drawer={{ visible: false }}>
       <h2 slot="title">{$event.title}</h2>
       <svelte:fragment slot="tags">
-      <Chip
-        text={$event.date}
-        mediaBgColor="pink"
-        outline
-      >
-        <span slot="media"><Icon f7="calendar" /></span>
-      </Chip>
+        <Chip
+          text={$event.date}
+          mediaBgColor="pink"
+          outline
+        >
+          <span slot="media"><Icon f7="calendar" /></span>
+        </Chip>
       </svelte:fragment>
     </ProfileUI>
     <Block style="margin-left: 25px;margin-right: 25px">
