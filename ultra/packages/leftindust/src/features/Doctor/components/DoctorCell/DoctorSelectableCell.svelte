@@ -22,22 +22,24 @@
 
 </script>
 
-<Cell
-  title={`${doctor.firstName} ${doctor?.middleName ? `${doctor?.middleName?.charAt(0)}.` : ''} ${doctor.lastName}`}
-  selected={$selected.some((selectable) => selectable.id === doctor.id?.value)}
-  on:click={(event) => {
-    let selectable = { id: doctor.id?.value, type: doctor.__typename };
-    let reference = doctors.map((item) => ({ id: item.id?.value, type: item.__typename }));
+{#if doctor}
+  <Cell
+    title={`${doctor.firstName} ${doctor?.middleName ? `${doctor?.middleName?.charAt(0)}.` : ''} ${doctor.lastName}`}
+    selected={$selected.some((selectable) => selectable.id === doctor.id?.value)}
+    on:click={(event) => {
+      let selectable = { id: doctor.id?.value, type: doctor.__typename };
+      let reference = doctors.map((item) => ({ id: item.id?.value, type: item.__typename }));
 
-    $selected = click(event, { selectable, multiselect: multiselect ? { selected: $selected, reference } : undefined });
+      $selected = click(event, { selectable, multiselect: multiselect ? { selected: $selected, reference } : undefined });
 
-    void tick().then(() => {
-      dispatch('selected');
-    });
-  }}
->
-  <Boxed slot="media" color="primary" fill round>
-    {`${doctor.firstName.charAt(0)}${doctor.lastName.charAt(0)}`}
-  </Boxed>
-  <DoctorTags slot="text" {...doctor} small outline />
-</Cell>
+      void tick().then(() => {
+        dispatch('selected');
+      });
+    }}
+  >
+    <Boxed slot="media" color="primary" fill round>
+      {`${doctor.firstName.charAt(0)}${doctor.lastName.charAt(0)}`}
+    </Boxed>
+    <DoctorTags slot="text" {...doctor} small outline />
+  </Cell>
+{/if}
