@@ -31,7 +31,7 @@ class ReadCompleteSurveyServiceImpl(
     }
 
     override suspend fun getByPatientId(patientDtoId: PatientDto.PatientDtoId): CompleteSurvey? {
-        val completeSurveyEntity = completeSurveyRepository.findByPatientId(patientDtoId.value)
+        val completeSurveyEntity = surveyLinkRepository.findByPatientId(patientDtoId.value)?.completeSurvey
             ?: return null
         return completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity)
     }

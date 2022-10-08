@@ -13,7 +13,7 @@ import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
 
 @GraphQlTest(CompleteSurveyDtoMutationController::class)
-internal class CompleteSurveyDtoMutationControllerTest(
+internal class  CompleteSurveyDtoMutationControllerTest(
     @Autowired private val graphQlTester: GraphQlTester
 ) {
     @MockkBean

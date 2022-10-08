@@ -13,8 +13,6 @@ class CompleteSurveyEntity(
     val sections: Set<CompleteSurveySectionEntity>,
     @OneToOne
     val surveyLink: SurveyLinkEntity,
-    @OneToOne
-    val patient: Patient,
 ) : AbstractJpaPersistable() {
 
 }
