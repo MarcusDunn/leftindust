@@ -5,8 +5,10 @@ import dev.forkhandles.values.parseResult4k
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.fail
+import kotlin.random.Random
 
 internal class EmailAddressTest {
+    private val random = Random(100)
     @TestFactory
     internal fun valid() = listOf(
         "email@example.com",
@@ -23,10 +25,16 @@ internal class EmailAddressTest {
         "email@example.museum",
         "email@example.co.jp",
         "firstname-lastname@example.com",
-    ).map {
-        dynamicTest("$it is a valid email") {
-            EmailAddress.parseResult4k(it).onFailure { fail(it.reason) }
-        }
+    ).flatMap { allLower ->
+        val randomCase = String(allLower.map { if (random.nextBoolean()) { it.uppercaseChar() } else { it }  }.toCharArray())
+        listOf(
+            dynamicTest("$allLower is a valid email") {
+                EmailAddress.parseResult4k(allLower).onFailure { fail(it.reason) }
+            },
+            dynamicTest("$randomCase is a valid email") {
+                EmailAddress.parseResult4k(randomCase).onFailure { fail(it.reason) }
+            }
+        )
     }
 
     @TestFactory
@@ -45,10 +53,17 @@ internal class EmailAddressTest {
         "email@example",
         "email@-example.com",
         "Abc..123@example.com"
-    ).map {
-        dynamicTest("$it is an invalid email") {
-            val success = EmailAddress.parseResult4k(it).onFailure { return@dynamicTest }
-            fail(Exception("$success is not a valid email yet we accepted it"))
-        }
+    ).map { allLower ->
+        val randomCase = String(allLower.map { if (random.nextBoolean()) { it.uppercaseChar() } else { it }  }.toCharArray())
+        listOf(
+            dynamicTest("$allLower is an invalid email") {
+                val success = EmailAddress.parseResult4k(allLower).onFailure { return@dynamicTest }
+                fail(Exception("$success is not a valid email yet we accepted it"))
+            },
+            dynamicTest("$randomCase is an invalid email") {
+                val success = EmailAddress.parseResult4k(randomCase).onFailure { return@dynamicTest }
+                fail(Exception("$success is not a valid email yet we accepted it"))
+            }
+        )
     }
 }
