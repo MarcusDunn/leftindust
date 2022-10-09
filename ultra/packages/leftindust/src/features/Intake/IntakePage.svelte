@@ -20,8 +20,6 @@
       if (url.has('id')) {
         const id = url.get('id');
 
-        console.log(id);
-
         client.query(SurveyLinkByIdQueryDocument, {
           surveyLinkId: { value: id },
         }).toPromise()

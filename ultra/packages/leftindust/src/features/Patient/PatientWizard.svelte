@@ -29,8 +29,6 @@
     closeWizard();
   };
 
-  $: console.log($formData);
-
   let ref: HTMLFormElement;
 </script>
 

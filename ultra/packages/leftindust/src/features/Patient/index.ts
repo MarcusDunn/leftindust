@@ -160,6 +160,6 @@ export const createPatientForm = (pid?: string, fetcher?: () => void) => createF
       });
     }
   },
-  onError: (error) => console.log(error),
+  onError: (error) => console.error(error),
   extend: [validator({ schema: createPatientFormSchema })],
 });

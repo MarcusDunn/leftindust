@@ -23,8 +23,6 @@
   };
 
   let ref: HTMLFormElement;
-
-  $: console.log();
 </script>
 
 <Wizard

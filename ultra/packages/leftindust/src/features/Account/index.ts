@@ -163,7 +163,16 @@ export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): v
         showSignInError(language('errors.offline'));
       }
     })
-    .catch(() => console.log('Error'));
+    .catch(() => openDialog({
+      title:  language('generics.signIn'),
+      text: 'There was an error signing in. Please try again.',
+      buttons: [
+        {
+          label: language('generics.ok'),
+          primary: true,
+        },
+      ],
+    }));
 };
 
 export const signOut = (): void => {

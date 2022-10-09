@@ -116,6 +116,6 @@ export const createDoctorForm = (did?: string, fetcher?: () => void) => createFo
       });
     }
   },
-  onError: (error) => console.log(error),
+  onError: (error) => console.error(error),
   extend: [validator({ schema: createDoctorFormSchema })],
 });
