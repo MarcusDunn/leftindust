@@ -121,6 +121,7 @@
   ];
 
   $: calculation.editor = editor;
+  $: console.log($value);
 
   $: if ($TemplateCalculations?.[index] && JSON.stringify($TemplateCalculations[index].deserializedCalculation) !== JSON.stringify(calculation.deserializedCalculation))
     $TemplateCalculations[index].deserializedCalculation = calculation.deserializedCalculation;
