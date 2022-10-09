@@ -5,7 +5,7 @@ import com.leftindust.mockingbird.graphql.types.search.combineWithStrict
 import com.leftindust.mockingbird.graphql.types.search.filter.CaseAgnosticStringFilterDto
 import com.leftindust.mockingbird.graphql.types.search.filter.DateFilterDto
 import com.leftindust.mockingbird.graphql.types.search.filter.WhiteSpaceAgnosticStringFilterDto
-import com.leftindust.mockingbird.person.NameInfo_
+import com.leftindust.mockingbird.person.NameInfoEntity_
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
@@ -18,10 +18,10 @@ data class PatientExampleDto(
     override val strict: Boolean,
 ) : Example<PatientEntity> {
     override fun toPredicate(criteriaBuilder: CriteriaBuilder, root: Root<PatientEntity>): Predicate {
-        val patientNameInfoJoin = root.join(PatientEntity_.nameInfo)
+        val patientNameInfoJoin = root.join(PatientEntity_.nameInfoEntity)
         val predicates = listOfNotNull(
-            firstName?.toPredicate(criteriaBuilder, patientNameInfoJoin, NameInfo_.firstName),
-            lastName?.toPredicate(criteriaBuilder, patientNameInfoJoin, NameInfo_.lastName),
+            firstName?.toPredicate(criteriaBuilder, patientNameInfoJoin, NameInfoEntity_.firstName),
+            lastName?.toPredicate(criteriaBuilder, patientNameInfoJoin, NameInfoEntity_.lastName),
             dateOfBirth?.toPredicate(criteriaBuilder, root, PatientEntity_.dateOfBirth),
             insuranceNumber?.toPredicate(criteriaBuilder, root, PatientEntity_.insuranceNumber)
         ).toTypedArray()

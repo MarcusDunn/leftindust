@@ -13,8 +13,9 @@ import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.*
-import org.junit.jupiter.api.Disabled
+import org.hamcrest.Matchers.containsInAnyOrder
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.nullValue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,14 +41,14 @@ internal class ReadClinicServiceImplUnitTest {
 
     @Test
     internal fun `check getByDoctorId returns a doctor's clinics when the doctor exists`() = runTest {
-        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityPersisted
+        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityTransient
         val readClinicService = ReadClinicServiceImpl(clinicEntityToClinicConverter, clinicRepository, doctorRepository)
         val clinics = readClinicService.getByDoctorId(DoctorMother.Jenny.graphqlId)
 
         coVerify(exactly = 1) { doctorRepository.findByIdOrNull(DoctorMother.Jenny.graphqlId.value) }
         assertThat(
             clinics,
-            containsInAnyOrder(DoctorMother.Jenny.clinics.map { equalTo(clinicEntityToClinicConverter.convert(it)) })
+            containsInAnyOrder(DoctorMother.Jenny.clinics.map { equalTo(clinicEntityToClinicConverter.convert(it.clinic)) })
         )
     }
 
@@ -100,7 +101,6 @@ internal class ReadClinicServiceImplDataTest(
     }
 
     @Test
-    @Disabled
     internal fun `check returns null when the database has no matching clinic`() = runTest {
         // create a fake UUID we know does not exist in the database
         val someNonExistentUuid = UUID.fromString("d25292ba-ba8e-4098-8295-806712f70bd1")
@@ -113,6 +113,5 @@ internal class ReadClinicServiceImplDataTest(
 
         // assert that there is no clinic returned
         assertThat(returnedClinic, nullValue())
-        TODO("Fix this test so that calling clinicRepository.findByIdOrNull does not throw (called in getClinicById) when the record is not found")
     }
 }

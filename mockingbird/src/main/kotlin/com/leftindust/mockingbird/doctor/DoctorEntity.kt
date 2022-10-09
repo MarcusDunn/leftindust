@@ -1,11 +1,11 @@
 package com.leftindust.mockingbird.doctor
 
 import com.leftindust.mockingbird.address.Address
-import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.event.Event
 import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
@@ -18,11 +18,11 @@ import javax.persistence.OneToOne
 @Entity
 class DoctorEntity(
     @OneToOne(optional = false)
-    var nameInfo: NameInfo,
+    var nameInfoEntity: NameInfoEntity,
     @OneToMany
     var addresses: MutableSet<Address>,
     @OneToMany
-    var emails: MutableSet<Email>,
+    var emails: MutableSet<EmailEntity>,
     @OneToMany
     var phones: MutableSet<Phone>,
     @OneToOne

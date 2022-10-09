@@ -1,6 +1,6 @@
 {
   "mockingbird": {
-    "address": "http://emr.leftindust.com/api"
+    "address": "http://192.168.4.29:8081"
   },
   "firebase": {
     "apiKey": "AIzaSyDwHAnFFB6ouYkL068TmFubVpa8Mlp8UBE",

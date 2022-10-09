@@ -6,14 +6,25 @@
 
   import PatientsTabDefault from './PatientsTabDefault.svelte';
   import PatientsTabSearch  from './PatientsTabSearch.svelte';
+  import type { OperationStore } from '@urql/svelte';
+  import type { PartialPatientsByPatientIdQueryQuery, PartialPatientsByRangeQueryQuery, Range } from '@/api/server';
+
+  export let request: OperationStore<PartialPatientsByRangeQueryQuery, {
+    range: Range;
+  }, PartialPatientsByRangeQueryQuery>;
+
+  export let recentsRequest: OperationStore<PartialPatientsByPatientIdQueryQuery, {
+    patientIds: {
+      value: string;
+    }[];
+  }, PartialPatientsByPatientIdQueryQuery>;
 
   export let f7router: Router.Router;
-  export let f7route: Router.Route;
-
 </script>
 
 <svelte:component
   this={$clientsSearchQuery || $patientsSelectedAttachments.length > 0 ? PatientsTabSearch : PatientsTabDefault}
   {f7router}
-  {f7route}
+  {request}
+  {recentsRequest}
 />

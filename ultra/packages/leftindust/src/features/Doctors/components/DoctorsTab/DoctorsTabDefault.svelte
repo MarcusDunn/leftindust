@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { Router } from 'framework7/types';
 
-  import { defaultRangeInput, PartialDoctorsByDoctorIdQueryDocument, PartialDoctorsByRangeQueryDocument, type PartialDoctorFragment } from '@/api/server';
+  import type { PartialDoctorFragment, PartialDoctorsByDoctorIdQueryQuery, PartialDoctorsByRangeQueryQuery, Range } from '@/api/server';
   import { clientsSelected } from '@/features/Clients/store';
 
   import { _ } from '@/language';
-  import { operationStore, query } from '@urql/svelte';
+  import { query, type OperationStore } from '@urql/svelte';
   import { account } from '@/features/Account/store';
   import { sortRecents, updateRecents } from '@/features/Recents';
   import { getTimestampedValues } from '@/features/Recents';
@@ -17,19 +17,22 @@
   import MasterListLayout from '@/features/Entity/components/MasterListLayout/MasterListLayout.svelte';
   import Request from '@/features/Server/components/Request/Request.svelte';
   import DoctorsCells from '../DoctorsCells/DoctorsCells.svelte';
+  import { getTrigger } from '@/features/Triggers';
 
   export let f7router: Router.Router;
 
+  export let request: OperationStore<PartialDoctorsByRangeQueryQuery, {
+    range: Range;
+  }, PartialDoctorsByRangeQueryQuery>;
+
+  export let recentsRequest: OperationStore<PartialDoctorsByDoctorIdQueryQuery, {
+    doctorIds: {
+      value: string;
+    }[];
+  }, PartialDoctorsByDoctorIdQueryQuery>;
+
   let doctors: PartialDoctorFragment[] = [];
   let recents: PartialDoctorFragment[];
-
-  const request = operationStore(PartialDoctorsByRangeQueryDocument, {
-    range: defaultRangeInput,
-  });
-
-  const recentsRequest = operationStore(PartialDoctorsByDoctorIdQueryDocument, {
-    doctorIds: getTimestampedValues($account.database.recents.Doctor ??= []).map((id) => ({ value: id })),
-  });
 
   const navigate = (multiple: boolean) => {
     if (multiple) {
@@ -39,14 +42,18 @@
     }
   };
 
+  getTrigger('doctors-update').subscribe(() => request.reexecute());
+
   $: $recentsRequest.variables = {
-    doctorIds: getTimestampedValues($account.database.recents.Doctor ?? []).map((id) => ({ value: id })),
+    doctorIds: getTimestampedValues($account.database.recents.Doctor ?? [])
+      .map((id) => ({ value: id }))
+      .filter((value) => value != undefined),
   };
 
-  $: doctors = $request.data?.doctorsByRange ?? [];
+  $: doctors = $request.data?.doctorsByRange.filter((value) => value != undefined) ?? [];
   $: timestampedRecents = $account.database.recents.Doctor ?? {};
   $: recents = sortRecents(
-    $recentsRequest.data?.doctorsByDoctorIds ?? [],
+    $recentsRequest.data?.doctorsByDoctorIds.filter((value) => value != undefined) ?? [],
     timestampedRecents,
     ((doctor) => doctor?.id?.value ?? ''),
   ) as PartialDoctorFragment[];

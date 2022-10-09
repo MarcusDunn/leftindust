@@ -9,7 +9,6 @@ import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasSize
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -29,14 +28,15 @@ internal class ReadPatientServiceImplJpaTest(
     private val readPatientServiceImpl = ReadPatientServiceImpl(patientRepository, surveyLinkRepository, patientEntityToPatientConverter)
 
     @Test
-    @Disabled
     internal fun `recreate issue 145`() = runTest {
-        patientRepository.save(PatientMother.Dan.entityTransient)
+        val x = patientRepository.save(PatientMother.Dan.entityTransient)
 
         val patients = readPatientServiceImpl.getMany(object : Range {
             override val from = 0
             override val to = 1
         })
+
+        println(x)
 
         assertThat(patients, hasSize(equalTo(1)))
     }

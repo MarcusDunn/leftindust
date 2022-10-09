@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service
 @Service
 @Transactional
 class CreateNameInfoServiceImpl(private val nameInfoRepository: NameInfoRepository) : CreateNameInfoService {
-    override suspend fun createNameInfo(createNameInfo: CreateNameInfo): NameInfo {
-        val nameInfo = NameInfo(createNameInfo.firstName, createNameInfo.lastName, createNameInfo.middleName)
+    override suspend fun createNameInfo(createNameInfo: CreateNameInfo): NameInfoEntity {
+        val nameInfo = NameInfoEntity(createNameInfo.firstName, createNameInfo.lastName, createNameInfo.middleName)
         return nameInfoRepository.save(nameInfo)
     }
 }

@@ -18,16 +18,19 @@
   import Emails from '../Input/components/Email/Emails.svelte';
   import Addresses from '../Input/components/Address/Addresses.svelte';
   import { closeWizard } from '../Wizard';
+  import { sendTrigger } from '../Triggers';
 
   export let patientId: string | undefined = undefined;
-  export let fetch: () => void = () => undefined;
 
-  const { form, data: formData, handleSubmit, errors, reset } = createPatientForm(patientId, fetch);
-  
-  const close = () => {
+  export let callback: () => void;
+
+  const closeWizardHandler = () => {
     reset();
+    callback();
     closeWizard();
   };
+
+  const { form, data: formData, handleSubmit, errors, reset } = createPatientForm(closeWizardHandler, patientId);
 
   let ref: HTMLFormElement;
 </script>
@@ -37,7 +40,7 @@
   subtitle={$_('descriptions.addPatientDescription')}
   color="purple"
   on:submit={() => ref?.requestSubmit()}
-  on:close={close}
+  on:close={closeWizardHandler}
 >
   <form use:form on:submit={handleSubmit} bind:this={ref}>
     <Block style="margin-top: 100px">
@@ -140,7 +143,7 @@
                   <input
                     type="text"
                     name="gender"
-                    placeholder="Gender Identity"
+                    placeholder="Gender Identity (Optional)"
                   />
                 </Input>
               </Col>

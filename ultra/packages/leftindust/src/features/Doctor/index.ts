@@ -64,9 +64,9 @@ export const addDoctor = async (doctor: NonNullable<MutationAddDoctorArgs['creat
 /**
  * Creates a doctor form on submit
  */
-export const createDoctorForm = (did?: string, fetcher?: () => void) => createForm<DoctorFormSchema>({
+export const createDoctorForm = (closeWizardHandler: () => void, did?: string) => createForm<DoctorFormSchema>({
   initialValues: defaultDoctorForm,
-  onSubmit: async (form) => {
+  onSubmit: async (form, { reset }) => {
     const doctor: CreateDoctor = {
       dateOfBirth: form.dateOfBirth,
       addresses: form.addresses,
@@ -85,7 +85,6 @@ export const createDoctorForm = (did?: string, fetcher?: () => void) => createFo
       },
     };
 
-
     try {
       if (did) {
         /*
@@ -101,8 +100,7 @@ export const createDoctorForm = (did?: string, fetcher?: () => void) => createFo
         await addDoctor(doctor);
       }
       
-      fetcher?.();
-      closeWizard();
+      closeWizardHandler();
     } catch (error) {
       openDialog({
         title:  language('errors.internalError'),

@@ -34,8 +34,6 @@
 
   let prevType: SurveyTemplateInputType;
 
-  outputs.Value.disabled = !$Value;
-
   const changeInput = () => {
     input = inputs.find((input) => input.id === store?.id);
   };
@@ -92,7 +90,6 @@
     
     if (socket) {
       outputs.Value.type = type;
-      outputs.Value.disabled = !$Value;
       outputs.Value.color = socket.color;
     }
   }

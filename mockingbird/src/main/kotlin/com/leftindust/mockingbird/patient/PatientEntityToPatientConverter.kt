@@ -14,7 +14,7 @@ class PatientEntityToPatientConverter : InfallibleConverter<PatientEntity, Patie
     override fun convert(source: PatientEntity): Patient {
         return PatientImpl(
             id = source.id ?: throw NullEntityIdInConverterException(source),
-            nameInfo = source.nameInfo,
+            nameInfo = source.nameInfoEntity,
             thumbnail = source.thumbnail,
             sex = source.sex,
             dateOfBirth = source.dateOfBirth,
@@ -32,6 +32,6 @@ class PatientEntityToPatientConverter : InfallibleConverter<PatientEntity, Patie
         override val dateOfBirth: LocalDate,
         override val gender: String,
         override val ethnicity: Ethnicity?,
-        override val insuranceNumber: String?
+        override val insuranceNumber: String?,
     ) : Patient
 }

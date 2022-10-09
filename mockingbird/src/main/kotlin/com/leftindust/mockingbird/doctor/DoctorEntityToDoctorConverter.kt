@@ -12,7 +12,7 @@ class DoctorEntityToDoctorConverter : InfallibleConverter<DoctorEntity, Doctor> 
     override fun convert(source: DoctorEntity): Doctor {
         return DoctorImpl(
             id = source.id ?: throw NullEntityIdInConverterException(source),
-            nameInfo = source.nameInfo,
+            nameInfo = source.nameInfoEntity,
             thumbnail = source.thumbnail,
             title = source.title,
             dateOfBirth = source.dateOfBirth,
