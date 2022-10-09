@@ -12,9 +12,7 @@
   import { _ } from '@/language';
   import Footer from '../UI/components/Footer/Footer.svelte';
   import Input from '../Input/Input.svelte';
-  import getNativeAPI from '@/api/bridge';
-
-  const { Dialog } = getNativeAPI();
+  import { openDialog } from '../UI/components/Dialog';
 
   export let data: Data;
 
@@ -32,11 +30,15 @@
     range: defaultRangeInput,
   });
 
-  const showErrorDialog = (error: Error) => void Dialog.alert({
-    message: $_('errors.internalError'),
-    detail: error.message,
-    buttons: [$_('generics.ok')],
-    defaultId: 0,
+  const showErrorDialog = (error: Error) => openDialog({
+    title:  $_('errors.internalError'),
+    text: error.message,
+    buttons: [
+      {
+        label: $_('generics.ok'),
+        primary: true,
+      },
+    ],
   });
 
   const generateLink = () => {
