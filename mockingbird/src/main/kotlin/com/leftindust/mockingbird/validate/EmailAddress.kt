@@ -14,6 +14,6 @@ private const val emailRegex =
 value class EmailAddress private constructor(override val value: String) : Value<String> {
     companion object : StringValueFactory<EmailAddress>(
         fn = ::EmailAddress,
-        validation = emailRegex.regex,
+        validation = { emailRegex.regex(it.lowercase()) },
     )
 }
