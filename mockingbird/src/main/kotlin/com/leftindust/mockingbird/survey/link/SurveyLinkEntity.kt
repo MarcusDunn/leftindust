@@ -15,5 +15,9 @@ class SurveyLinkEntity(
     @ManyToOne
     val patient: PatientEntity,
     @OneToOne(optional = true)
-    val completeSurvey: CompleteSurveyEntity?
-) : AbstractJpaPersistable()
+    var completeSurvey: CompleteSurveyEntity?
+) : AbstractJpaPersistable() {
+    fun addCompleteSurvey(survey: CompleteSurveyEntity) {
+        this.completeSurvey = survey
+    }
+}

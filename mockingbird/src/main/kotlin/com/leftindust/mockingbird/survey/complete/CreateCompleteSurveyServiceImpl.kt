@@ -37,6 +37,7 @@ class CreateCompleteSurveyServiceImpl(
             }
         )
         val completeSurveyEntity = completeSurveyRepository.save(newCompleteSurvey)
+        completeSurveyEntity.surveyLink.addCompleteSurvey(completeSurveyEntity)
         return completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity)
     }
 }
