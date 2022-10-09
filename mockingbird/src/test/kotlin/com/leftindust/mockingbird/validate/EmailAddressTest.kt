@@ -53,7 +53,7 @@ internal class EmailAddressTest {
         "email@example",
         "email@-example.com",
         "Abc..123@example.com"
-    ).map { allLower ->
+    ).flatMap { allLower ->
         val randomCase = String(allLower.map { if (random.nextBoolean()) { it.uppercaseChar() } else { it }  }.toCharArray())
         listOf(
             dynamicTest("$allLower is an invalid email") {
