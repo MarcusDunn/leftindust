@@ -10,6 +10,7 @@
   import { openWizard } from '../Wizard';
 
   import { _ } from '@/language';
+  import { openDialog } from '../UI/components/Dialog';
 
   const { Dialog } = getNativeAPI();
 
@@ -18,8 +19,6 @@
       const url = new URLSearchParams(window.location.search);
       if (url.has('id')) {
         const id = url.get('id');
-
-        console.log(id);
 
         client.query(SurveyLinkByIdQueryDocument, {
           surveyLinkId: { value: id },
@@ -31,19 +30,27 @@
               });
             }, 200);
           }).catch((error) => {
-            void Dialog.alert({
-              message: 'Form Intake',
-              detail: error.message,
-              buttons: [$_('generics.ok')],
-              defaultId: 0,
+            openDialog({
+              title:  'Form Intake',
+              text: error.message,
+              buttons: [
+                {
+                  label: $_('generics.ok'),
+                  primary: true,
+                },
+              ],
             });
           });
       } else {
-        void Dialog.alert({
-          message: 'Form Intake',
-          detail: 'No form link was provided.',
-          buttons: [$_('generics.ok')],
-          defaultId: 0,
+        openDialog({
+          title:  'Form Intake',
+          text: 'No form link was provided.',
+          buttons: [
+            {
+              label: $_('generics.ok'),
+              primary: true,
+            },
+          ],
         });
       }
     });

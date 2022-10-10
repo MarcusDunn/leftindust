@@ -1,11 +1,11 @@
 package com.leftindust.mockingbird.util
 
+import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionInputData
 import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionInputEntity
 import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionInputEntityToCompleteSurveySectionInputConverter
 import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionInputToCompleteSurveySectionInputDtoConverter
-import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveyDtoToCreateCompleteSurveyConverter
+import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveyInput
 import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveyInputDto
-import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionInputData
 import com.leftindust.mockingbird.survey.complete.SurveyInputType
 import java.util.UUID
 
@@ -31,9 +31,9 @@ object CompleteSurveySectionInputMother {
             numberArrayInput = null
         )
 
-        val create = CreateCompleteSurveyDtoToCreateCompleteSurveyConverter.CreateCompleteSurveyInputImpl(
-            surveyTemplateSectionInputId = surveyTemplateSectionInputId,
-            value = CompleteSurveySectionInputData.StringValue(value)
-        )
+        val create = object : CreateCompleteSurveyInput {
+            override val surveyTemplateSectionInputId = this@FilledOutHowBadIsThePainWhenIPokeIt.surveyTemplateSectionInputId
+            override val value = CompleteSurveySectionInputData.StringValue(this@FilledOutHowBadIsThePainWhenIPokeIt.value)
+        }
     }
 }

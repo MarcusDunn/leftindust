@@ -104,8 +104,6 @@
   $: inputs, (() => {
     if (!smartSelectOpen) rerenderSmartSelect =  !rerenderSmartSelect;
   })();
-
-  $: console.log(store);
 </script>
 
 <div style="min-width: 430px; max-width: 430px">

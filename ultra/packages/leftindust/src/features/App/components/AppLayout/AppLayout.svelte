@@ -27,6 +27,7 @@
   import Dragbar from '@/features/UI/components/Dragbar/Dragbar.svelte';
   import { setClient } from '@urql/svelte';
   import { initAutoDarkTheme } from '@/features/UI';
+  import Dialog from '@/features/UI/components/Dialog/Dialog.svelte';
 
   const { System } = getNativeAPI();
   
@@ -119,5 +120,8 @@
         </svelte:fragment>
       </Sidebar>
     {/if}
+    <Dialog fill />
+  {:else}
+    <Dialog />
   {/if}
 </App>
