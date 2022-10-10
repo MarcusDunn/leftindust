@@ -37,9 +37,9 @@ import deepmerge from 'deepmerge';
 
 import { _ } from '@/language';
 
-import getNativeAPI from '@/api/bridge';
 import type { TimestampedRecents } from '../Recents';
 import { config } from '@/features/App';
+import { openDialog } from '../UI/components/Dialog';
 
 export type AccountRecentsTemplate = Record<keyof ResolversTypes, TimestampedRecents>;
 
@@ -89,7 +89,6 @@ export type SignInStatus = {
   signedIn: boolean;
 };
 
-const { Dialog } = getNativeAPI();
 const language = get(_);
 
 export const accountRecentsTemplate: AccountRecentsTemplate = {
@@ -164,7 +163,16 @@ export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): v
         showSignInError(language('errors.offline'));
       }
     })
-    .catch(() => console.log('Error'));
+    .catch(() => openDialog({
+      title:  language('generics.signIn'),
+      text: 'There was an error signing in. Please try again.',
+      buttons: [
+        {
+          label: language('generics.ok'),
+          primary: true,
+        },
+      ],
+    }));
 };
 
 export const signOut = (): void => {
@@ -286,11 +294,15 @@ export const loginForm = () => {
       }
     },
     onError: (error) => {
-      void Dialog.alert({
-        message: language('generics.signIn'),
-        detail: (error as Error).message,
-        buttons: [language('generics.ok')],
-        defaultId: 0,
+      openDialog({
+        title:  language('generics.signIn'),
+        text: (error as Error).message,
+        buttons: [
+          {
+            label: language('generics.ok'),
+            primary: true,
+          },
+        ],
       });
     },
     extend: [
