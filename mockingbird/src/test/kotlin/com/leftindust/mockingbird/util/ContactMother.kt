@@ -16,7 +16,7 @@ import java.util.UUID
 
 object ContactMother {
 
-    private val createEmailDtoToCreateEmailConverter = CreateEmailDtoToCreateEmailFallibleConverter()
+    val createEmailDtoToCreateEmailConverter = CreateEmailDtoToCreateEmailFallibleConverter()
     val createContactDtoToCreateContactConverter = CreateContactDtoToCreateContactConverter(createEmailDtoToCreateEmailConverter)
     object Aydan {
 

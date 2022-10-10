@@ -109,7 +109,6 @@ internal class PatientMutationControllerTest(
 
         //language=graphql
 
-        // update fields to be different, clear lists.
         @Language("graphql")
         val mutation = """
             mutation {
@@ -121,8 +120,8 @@ internal class PatientMutationControllerTest(
                         lastName: "Servershani"
                     }
                     addresses: []
-                    phones: []  
-                    emails: []       
+                    phones: []
+                    emails: []
                     insuranceNumber: ""
                     dateOfBirth: "${DoctorMother.Jenny.dateOfBirth}"
                     sex: Male
@@ -131,7 +130,7 @@ internal class PatientMutationControllerTest(
                     emergencyContacts: []
                     doctor: []
                     thumbnail: null
-                })  
+                })
                 {
                     id { value }
                     firstName
@@ -141,24 +140,20 @@ internal class PatientMutationControllerTest(
                     insuranceNumber
                     sex
                     gender
-                    ethnicity                    
-                }                        
+                    ethnicity
+                }
             }
         """.trimIndent()
-
 
         graphQlTester.document(mutation)
             .execute()
             .errors()
             .verify()
-
             .path("editPatient.id.value")
             .entity(object : ParameterizedTypeReference<UUID>() {})
             .matches { it.equals(Dan.dto.id.value) }
-
             .path("editPatient")
             .entity(PatientDto::class.java)
             .isEqualTo(Dan.updatedDto)
     }
-
 }
