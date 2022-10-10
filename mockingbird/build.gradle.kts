@@ -89,7 +89,7 @@ dependencies {
     testImplementation("org.junit.jupiter", "junit-jupiter-engine")
     testImplementation("com.h2database", "h2")
 
-    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.7.20")
+    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.4")
 
     testImplementation("com.ninja-squad", "springmockk", "3.1.1")
 }
