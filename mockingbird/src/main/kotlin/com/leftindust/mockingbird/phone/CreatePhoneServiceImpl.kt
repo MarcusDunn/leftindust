@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 @Transactional
-class CreatePhoneServiceImpl(private val phoneRepository: HibernatePhoneRepository) : CreatePhoneService {
+class CreatePhoneServiceImpl(private val phoneRepository: PhoneRepository) : CreatePhoneService {
     private val logger = KotlinLogging.logger { }
 
     override suspend fun createPhone(createPhone: CreatePhone): Phone {

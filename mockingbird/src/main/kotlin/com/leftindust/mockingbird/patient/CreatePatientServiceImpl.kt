@@ -1,16 +1,25 @@
 package com.leftindust.mockingbird.patient
 
+import com.leftindust.mockingbird.MockingbirdException
 import com.leftindust.mockingbird.address.CreateAddressService
+import com.leftindust.mockingbird.contact.CreateContact
 import com.leftindust.mockingbird.contact.CreateContactService
 import com.leftindust.mockingbird.doctor.DoctorRepository
+import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.person.CreateNameInfoService
+import com.leftindust.mockingbird.person.Relationship
+import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.CreatePhoneService
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 @Transactional
@@ -26,7 +35,7 @@ class CreatePatientServiceImpl(
 ) : CreatePatientService {
     private val logger = KotlinLogging.logger { }
 
-    override suspend fun addNewPatient(patient: CreatePatient): Patient {
+    override suspend fun addNewPatient(patient: CreatePatient): Result4k<Patient, MockingbirdException> {
         val newPatient = PatientEntity(
             nameInfoEntity = createNameInfoService.createNameInfo(patient.nameInfo),
             addresses = patient.addresses.map { createAddressService.createAddress(it) }.toMutableSet(),
@@ -44,11 +53,6 @@ class CreatePatientServiceImpl(
             doctors = mutableSetOf(),
             assignedSurveys = mutableSetOf(),
         )
-
-        patient.contacts
-            .map { createContactService.createContact(it) }
-            .forEach { newPatient.addContact(it) }
-
         patient.doctors
             .map { it to doctorRepository.findByIdOrNull(it.value) }
             .forEach {
@@ -56,6 +60,46 @@ class CreatePatientServiceImpl(
                     ?: logger.debug { "did not add a doctor in addNewPatient with ${it.first}" }
             }
 
-        return patientEntityToPatientConverter.convert(patientRepository.save(newPatient))
+        val savedPatient = patientRepository.save(newPatient)
+
+        savedPatient.id?.let { uuid ->
+            patient.contacts
+                .map {
+                    CreateContactPatientImpl(
+                        patientId = uuid,
+                        firstName = it.firstName,
+                        middleName = it.middleName,
+                        lastName = it.lastName,
+                        relationship = it.relationship,
+                        phones = it.phones,
+                        emails = it.emails
+                    )
+                }
+                .map { createContactService.createContact(it) }
+                .map { it.onFailure { failure -> return failure } }
+                .forEach { newPatient.addContact(it) }
+        }
+
+        return Success(patientEntityToPatientConverter.convert(patientRepository.save(savedPatient)))
     }
 }
+
+interface CreateContactPatient : CreateContact {
+    val patientId: UUID
+    override val firstName: String
+    override val middleName: String?
+    override val lastName: String
+    override val relationship: Relationship
+    override val phones: List<CreatePhone>
+    override val emails: List<CreateEmail>
+}
+
+data class CreateContactPatientImpl(
+    override val patientId: UUID,
+    override val firstName: String,
+    override val middleName: String?,
+    override val lastName: String,
+    override val relationship: Relationship,
+    override val phones: List<CreatePhone>,
+    override val emails: List<CreateEmail>
+) : CreateContactPatient

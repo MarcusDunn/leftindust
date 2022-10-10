@@ -55,7 +55,6 @@ class NoOpUpdatedEntityFieldMessage<T>(targetEntity: AbstractJpaPersistable, pro
 sealed class MockingbirdException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
 
 class NullEntityIdInConverterException(entity: AbstractJpaPersistable) : MockingbirdException("Tried to convert but $entity has a null id")
-
 class NullSubQueryException(origin: AbstractGraphQLDto<*>, functionName: KCallable<*>) :
     MockingbirdException("${functionName.name} returned null when called used to resolve a sub query of $origin.")
 
@@ -68,5 +67,11 @@ class InconvertibleDtoException(dto: Any, kClass: KClass<*>) : MockingbirdExcept
 class InconvertibleEntityException(entity: AbstractJpaPersistable, kClass: KClass<*>) : MockingbirdException("Tried to convert $entity to ${kClass.simpleName} but failed") {
     companion object {
         inline operator fun <reified T> invoke(entity: AbstractJpaPersistable): InconvertibleEntityException = InconvertibleEntityException(entity, T::class)
+    }
+}
+
+class EntityNotFoundException(entityId: Any, entity : KClass<*>) : MockingbirdException("Tried to find entity of type ${entity.simpleName} with id $entityId but failed") {
+    companion object {
+        inline operator fun <reified T> invoke(entity: Any): EntityNotFoundException = EntityNotFoundException(entity, T::class)
     }
 }
