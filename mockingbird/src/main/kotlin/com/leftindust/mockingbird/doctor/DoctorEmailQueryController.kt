@@ -3,6 +3,7 @@ package com.leftindust.mockingbird.doctor
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullSubQueryException
 import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.email.EmailDto
 import com.leftindust.mockingbird.email.ReadEmailService
 import org.springframework.graphql.data.method.annotation.SchemaMapping

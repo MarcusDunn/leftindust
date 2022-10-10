@@ -29,7 +29,7 @@
     callback();
     closeWizard();
   };
-  
+
   const { form, data: formData, handleSubmit, errors, reset } = createPatientForm(closeWizardHandler, patientId);
 
   let ref: HTMLFormElement;

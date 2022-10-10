@@ -3,27 +3,33 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
-import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.event.Event
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.person.Ethnicity
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.Lob
+import javax.persistence.OneToMany
+import javax.persistence.OneToOne
 
 @Entity
 class PatientEntity(
-    @OneToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
-    var nameInfo: NameInfo,
-    @OneToMany(cascade = [CascadeType.PERSIST])
+    @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
+    var nameInfoEntity: NameInfoEntity,
+    @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     val addresses: MutableSet<Address>,
-    @OneToMany(cascade = [CascadeType.PERSIST])
-    val emails: MutableSet<Email>,
-    @OneToMany(cascade = [CascadeType.PERSIST])
+    @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    val emails: MutableSet<EmailEntity>,
+    @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     val phones: MutableSet<Phone>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
     val events: MutableSet<PatientEventEntity>,

@@ -3,10 +3,14 @@ package com.leftindust.mockingbird.util
 import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
-import com.leftindust.mockingbird.email.Email
-import com.leftindust.mockingbird.patient.*
+import com.leftindust.mockingbird.email.EmailEntity
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.patient.PatientEntity
+import com.leftindust.mockingbird.patient.PatientEntityToPatientConverter
+import com.leftindust.mockingbird.patient.PatientEventEntity
+import com.leftindust.mockingbird.patient.PatientToPatientDtoConverter
 import com.leftindust.mockingbird.person.Ethnicity
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
@@ -38,30 +42,30 @@ object PatientMother {
             get() = mutableSetOf()
         val doctors: MutableSet<DoctorPatientEntity>
             get() = mutableSetOf()
-        val emailsDetached: MutableSet<Email>
+        val emailsDetached: MutableSet<EmailEntity>
             get() = mutableSetOf(DansEmail.entityDetached)
-        val emailsTransient: MutableSet<Email>
+        val emailsTransient: MutableSet<EmailEntity>
             get() = mutableSetOf(DansEmail.entityTransient)
         val phonesDetached: MutableSet<Phone>
             get() = mutableSetOf(PhoneMother.DansCell.entityDetached)
         val phonesTransient: MutableSet<Phone>
             get() = mutableSetOf(PhoneMother.DansCell.entityTransient)
-        val addressesDetached: MutableSet<Address>
-            get() = mutableSetOf(DansHouse.entityDetached)
-
         val assignedSurveysTransient: MutableSet<SurveyLinkEntity>
             get() = mutableSetOf()
+
         val assignedSurveysDetached: MutableSet<SurveyLinkEntity>
             get() = mutableSetOf()
-
         val addressesTransient: MutableSet<Address>
             get() = mutableSetOf(DansHouse.entityTransient)
+        val addressesDetached: MutableSet<Address>
+            get() = mutableSetOf(DansHouse.entityDetached)
         val events: MutableSet<PatientEventEntity>
             get() = mutableSetOf()
+
         val nameInfoId = UUID.fromString("e257f4f5-15c5-4375-a99b-da6354e4d0b5")
         val entityDetached: PatientEntity
             get() = PatientEntity(
-                nameInfo = NameInfo(
+                nameInfoEntity = NameInfoEntity(
                     firstName = firstName,
                     lastName = lastName,
                     middleName = middleName
@@ -82,7 +86,7 @@ object PatientMother {
                 assignedSurveys = assignedSurveysDetached
             ).apply { id = this@Dan.id }
         val entityTransient: PatientEntity = PatientEntity(
-            nameInfo = NameInfo(
+            nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
                 lastName = lastName,
                 middleName = middleName
@@ -103,9 +107,7 @@ object PatientMother {
             assignedSurveys = assignedSurveysTransient
         ).apply { id = this@Dan.id }
 
-        val domainEntityDetached = patientEntityToPatientConverter.convert(entityDetached)
-        val dto: PatientDto = patientToPatientDtoConverter.convert(domainEntityDetached)
-
-        val domainEntityTransient = patientEntityToPatientConverter.convert(entityTransient)
+        val domain = patientEntityToPatientConverter.convert(entityDetached)
+        val dto: PatientDto = patientToPatientDtoConverter.convert(domain)
     }
 }

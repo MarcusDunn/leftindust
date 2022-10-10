@@ -1040,4 +1040,18 @@
         <renameColumn oldColumnName="doctor_id" newColumnName="doctor_entity_id" tableName="doctor_entity_addresses"/>
         <renameColumn oldColumnName="doctor_id" newColumnName="doctor_entity_id" tableName="doctor_entity_phones"/>
     </changeSet>
+    <changeSet id="1671568761515" author="marcus">
+        <renameTable oldTableName="email" newTableName="email_entity"/>
+    </changeSet>
+    <changeSet id="1681568761215" author="marcus">
+        <renameTable oldTableName="clinic" newTableName="clinic_entity"/>
+    </changeSet>
+    <changeSet id="1681562721212" author="kelvin">
+        <renameTable oldTableName="name_info" newTableName="name_info_entity"/>
+    </changeSet>
+    <changeSet author="kelvin" id="1661518762514">
+        <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="patient_entity"/>
+        <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="doctor_entity"/>
+        <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="mediq_user"/>
+    </changeSet>
 </databaseChangeLog>

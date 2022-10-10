@@ -14,7 +14,6 @@ import { createForm } from 'felte';
 import { validator } from '@felte/validator-yup';
 import { type CreateSurveyTemplateCalculation, SurveyTemplateInputType, SurveyTemplateCategory, TemplateInputUploadType, client, SurveyTemplateMutationDocument } from '@/api/server';
 import { Template, TemplateCalculations } from './store';
-import getNativeAPI from '@/api/bridge';
 import TemplateOutputNode from '../Node/components/TemplateOutputNode';
 import TemplateInputsNode from '../Node/components/TemplateInputsNode';
 import TemplateInputNode from '../Node/components/TemplateInputNode';
@@ -23,9 +22,9 @@ import NumberNode from '../Node/components/NumberNode';
 import TextNode from '../Node/components/TextNode';
 import DateNode from '../Node/components/DateNode';
 import AverageNode from '../Node/components/AverageNode';
+import { openDialog } from '../UI/components/Dialog';
 
 const language = get(_);
-const { Dialog } = getNativeAPI();
  
 export type TemplateCalculationWithInstance = Omit<CreateSurveyTemplateCalculation, 'calculation'> & {
   editor?: Editor;
@@ -234,11 +233,15 @@ export const templateForm = (closeWizardHandler: () => void) => createForm<Templ
 
 
     const showTemplateError = (error: string) => {
-      void Dialog.alert({
-        message: 'Something went wrong',
-        detail: error,
-        buttons: [language('generics.ok')],
-        defaultId: 0,
+      openDialog({
+        title:  'Something went wrong',
+        text: error,
+        buttons: [
+          {
+            label: language('generics.ok'),
+            primary: true,
+          },
+        ],
       });
     };
 

@@ -1,0 +1,61 @@
+.ui-dialog {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  display: block;
+  z-index: 1000000 !important;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+  transition:
+    background-color 350ms ease-out 190ms,
+    backdrop-filter 200ms ease-out 190ms,
+    opacity 350ms ease-out 190ms;
+
+  pointer-events: none;
+  opacity: 0;
+
+  &.ui-dialog-open {
+    pointer-events: all;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    opacity: 1;
+    transition: -webkit-backdrop-filter 200ms ease-out 0s,
+      backdrop-filter 200ms ease-out 0s,
+      opacity 250ms ease-out 0s,
+      background-color 250ms ease-in 250ms;
+
+    &.ui-dialog-fill {
+      background-color: white;
+    }
+
+    .ui-dialog-content {
+      opacity: 1;
+      transition: opacity 250ms ease-in 400ms;
+    }
+  }
+
+  .ui-dialog-content {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 150ms ease-in 0ms;
+  }
+}
+
+.dark {
+  .ui-dialog {
+    background: rgba(28, 28, 28, 0.2);
+
+    &.ui-dialog-open {
+      &.ui-dialog-fill {
+        background-color: rgb(28, 28, 28);
+      }
+    }
+  }
+}

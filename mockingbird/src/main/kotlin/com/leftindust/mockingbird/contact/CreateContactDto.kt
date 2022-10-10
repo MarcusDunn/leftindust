@@ -5,11 +5,11 @@ import com.leftindust.mockingbird.person.Relationship
 import com.leftindust.mockingbird.phone.CreatePhoneDto
 
 data class CreateContactDto(
-    override val firstName: String,
-    override val middleName: String?,
-    override val lastName: String,
-    override val relationship: Relationship,
-    override val phones: List<CreatePhoneDto>,
-    override val emails: List<CreateEmailDto>,
-) : CreateContact
+    val firstName: String,
+    val middleName: String?,
+    val lastName: String,
+    val relationship: Relationship,
+    val phones: List<CreatePhoneDto>,
+    val emails: List<CreateEmailDto>,
+)
 

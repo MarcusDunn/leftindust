@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.user
 
 import com.leftindust.mockingbird.group.MediqGroup
 import com.leftindust.mockingbird.persistance.JpaEntity
-import com.leftindust.mockingbird.person.NameInfo
+import com.leftindust.mockingbird.person.NameInfoEntity
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.ManyToOne
@@ -15,7 +15,7 @@ class MediqUser(
     @ManyToOne
     var group: MediqGroup?,
     @OneToOne
-    var nameInfo: NameInfo,
+    var nameInfoEntity: NameInfoEntity,
 ) : JpaEntity {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

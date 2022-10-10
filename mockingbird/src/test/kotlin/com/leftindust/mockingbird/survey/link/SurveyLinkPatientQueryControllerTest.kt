@@ -29,7 +29,7 @@ internal class SurveyLinkPatientQueryControllerTest(
     @Test
     internal fun `check can get a survey link by id`() {
         coEvery { readSurveyLinkService.surveyLinkBySurveyLinkId(SurveyLinkMother.KoosKneeSurveyLink.graphqlId) } returns SurveyLinkMother.KoosKneeSurveyLink.domain
-        coEvery { readPatientService.getBySurveyLink(SurveyLinkMother.KoosKneeSurveyLink.graphqlId) } returns PatientMother.Dan.domainEntityDetached
+        coEvery { readPatientService.getBySurveyLink(SurveyLinkMother.KoosKneeSurveyLink.graphqlId) } returns PatientMother.Dan.domain
 
         @Language("graphql")
         val query = """

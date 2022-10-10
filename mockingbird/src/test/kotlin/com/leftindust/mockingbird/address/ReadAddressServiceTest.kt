@@ -33,7 +33,7 @@ internal class ReadAddressServiceTest {
 
     @Test
     internal fun `check getByDoctorId returns a list of addresses when matching Doctor Id exists`() = runTest {
-        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityPersisted
+        coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityTransient
         val readAddressServiceImpl = ReadAddressServiceImpl(patientRepository, doctorRepository)
 
         val addresses = readAddressServiceImpl.getByDoctorId(DoctorMother.Jenny.graphqlId)

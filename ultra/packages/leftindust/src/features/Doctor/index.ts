@@ -1,14 +1,11 @@
 import { validator } from '@felte/validator-yup';
 import { createForm } from 'felte';
 import * as yup from 'yup';
-import getNativeAPI from '@/api/bridge';
 import { get } from 'svelte/store';
 import { _ } from '@/language';
 import { AddDoctorMutationDocument, AddressType, client, Countries, CreateDoctorUserType, EmailType, PhoneType, type AddDoctorMutationMutation, type CreateDoctor, type MutationAddDoctorArgs } from '@/api/server';
 import { closeWizard } from '../Wizard';
-import { sendTrigger } from '../Triggers';
-
-const { Dialog } = getNativeAPI();
+import { openDialog } from '../UI/components/Dialog';
 
 const language = get(_);
 
@@ -105,14 +102,18 @@ export const createDoctorForm = (closeWizardHandler: () => void, did?: string) =
       
       closeWizardHandler();
     } catch (error) {
-      void Dialog.alert({
-        message: language('errors.internalError'),
-        detail: (error as Error).message,
-        buttons: [language('generics.ok')],
-        defaultId: 0,
+      openDialog({
+        title:  language('errors.internalError'),
+        text: (error as Error).message,
+        buttons: [
+          {
+            label: language('generics.ok'),
+            primary: true,
+          },
+        ],
       });
     }
   },
-  onError: (error) => console.log(error),
+  onError: (error) => console.error(error),
   extend: [validator({ schema: createDoctorFormSchema })],
 });
