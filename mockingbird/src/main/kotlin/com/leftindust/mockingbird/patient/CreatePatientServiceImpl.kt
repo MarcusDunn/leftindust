@@ -7,6 +7,7 @@ import com.leftindust.mockingbird.contact.CreateContactService
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.CreateEmailService
+import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.person.Relationship
 import com.leftindust.mockingbird.phone.CreatePhone
@@ -67,9 +68,7 @@ class CreatePatientServiceImpl(
                 .map {
                     CreateContactPatientImpl(
                         patientId = uuid,
-                        firstName = it.firstName,
-                        middleName = it.middleName,
-                        lastName = it.lastName,
+                        nameInfo = it.nameInfo,
                         relationship = it.relationship,
                         phones = it.phones,
                         emails = it.emails
@@ -86,9 +85,7 @@ class CreatePatientServiceImpl(
 
 interface CreateContactPatient : CreateContact {
     val patientId: UUID
-    override val firstName: String
-    override val middleName: String?
-    override val lastName: String
+    override val nameInfo: CreateNameInfo
     override val relationship: Relationship
     override val phones: List<CreatePhone>
     override val emails: List<CreateEmail>
@@ -96,9 +93,7 @@ interface CreateContactPatient : CreateContact {
 
 data class CreateContactPatientImpl(
     override val patientId: UUID,
-    override val firstName: String,
-    override val middleName: String?,
-    override val lastName: String,
+    override val nameInfo: CreateNameInfo,
     override val relationship: Relationship,
     override val phones: List<CreatePhone>,
     override val emails: List<CreateEmail>

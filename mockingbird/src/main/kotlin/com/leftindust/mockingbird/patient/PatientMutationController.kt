@@ -3,6 +3,8 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.FallibleConverter
 import com.leftindust.mockingbird.InconvertibleDtoException
 import com.leftindust.mockingbird.InfallibleConverter
+import dev.forkhandles.result4k.get
+import dev.forkhandles.result4k.onFailure
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
@@ -25,7 +27,7 @@ class PatientMutationController(
     @MutationMapping
     suspend fun addPatient(@Argument("createPatient") createPatientDto: CreatePatientDto, dataFetchingEnvironment: DataFetchingEnvironment): PatientDto {
         val createPatient = createPatientDtoToCreatePatient.convert(createPatientDto)
-        val newPatient = createPatientService.addNewPatient(createPatient ?: throw InconvertibleDtoException<CreatePatient>(createPatientDto))
+        val newPatient = createPatientService.addNewPatient(createPatient ?: throw InconvertibleDtoException<CreatePatient>(createPatientDto)).onFailure { throw it.get() }
         return patientToPatientDtoConverter.convert(newPatient)
     }
 }
