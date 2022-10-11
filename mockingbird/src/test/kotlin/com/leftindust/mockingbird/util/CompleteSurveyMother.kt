@@ -3,10 +3,8 @@ package com.leftindust.mockingbird.util
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyDto
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyEntity
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyEntityToCompleteSurvey
-import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionEntityToCompleteSurveySectionConverter
-import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionInputEntityToCompleteSurveySectionInputConverter
+import com.leftindust.mockingbird.survey.complete.CreateCompleteSurvey
 import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveyDto
-import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveyDtoToCreateCompleteSurveyConverter
 import com.leftindust.mockingbird.util.CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection
 import com.leftindust.mockingbird.util.SurveyLinkMother.KoosKneeSurveyLink
 import java.util.UUID
@@ -31,10 +29,10 @@ object CompleteSurveyMother {
 
         val domain = completeSurveyEntityToCompleteSurvey.convert(entityPersisted)
 
-        val createDomain = CreateCompleteSurveyDtoToCreateCompleteSurveyConverter.CreateCompleteSurveyImpl(
-            surveyLinkId = surveyLinkId,
-            completeSurveyTemplateSections = createCompleteSurveyTemplateSections
-        )
+        val createDomain = object : CreateCompleteSurvey {
+            override val surveyLinkId = this@FilledOutKoosKneeSurvey.surveyLinkId
+            override val completeSurveyTemplateSections = this@FilledOutKoosKneeSurvey.createCompleteSurveyTemplateSections
+        }
 
         val dto = CompleteSurveyDto(
             id = graphqlId

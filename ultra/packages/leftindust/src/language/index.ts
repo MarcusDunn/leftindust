@@ -172,6 +172,9 @@ export type Dictionary = {
     totalPlateletCount: string;
     mcl: string;
     text: string;
+    number: string;
+    date: string;
+    select: string;
     section: string;
     calculation: string;
   };

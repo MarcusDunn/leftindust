@@ -7,7 +7,6 @@
   import Phones from '../Input/components/Phone/Phones.svelte';
 
   import Input from '../Input/Input.svelte';
-  import { sendTrigger } from '../Triggers';
   import { closeWizard } from '../Wizard';
   import Wizard from '../Wizard/Wizard.svelte';
   
@@ -21,10 +20,9 @@
     reset();
     callback();
     closeWizard();
-    sendTrigger('doctors-update');
   };
 
-  const { form, data: formData, handleSubmit, errors, reset } = createDoctorForm(closeWizardHandler, doctorId);
+  const { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctorId);
 
   let ref: HTMLFormElement;
 </script>
@@ -34,6 +32,7 @@
   subtitle={$_('descriptions.addDoctorDescription')}
   color="purple"
   disabled={false}
+  interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}
   on:close={closeWizardHandler}
 > 

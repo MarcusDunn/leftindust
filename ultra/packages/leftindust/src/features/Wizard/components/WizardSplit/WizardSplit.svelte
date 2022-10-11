@@ -14,6 +14,7 @@
   export let subtitle: string | undefined = undefined;
   export let color: Color = 'purple';
 
+  export let interacted = false;
   export let disabled = false;
 
   const scroll = (node: HTMLElement): void => {
@@ -49,6 +50,7 @@
   {subtitle}
   {disabled}
   {color}
+  {interacted}
   overflow={false}
   on:submit={() => dispatch('submit')}
   on:close={() => dispatch('close')}

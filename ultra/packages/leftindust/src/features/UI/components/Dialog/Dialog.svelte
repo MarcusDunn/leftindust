@@ -9,7 +9,7 @@
   $: $dialogBackdropOpen = $dialogs.length > 0;
 </script>
 
-<div class={`ui-dialog${$dialogBackdropOpen ? ' ui-dialog-open' : ''}${fill ? 'ui-dialog-fill' : ''}`}>
+<div class={`ui-dialog${$dialogBackdropOpen ? ' ui-dialog-open' : ''}${fill ? ' ui-dialog-fill' : ''}`}>
   {#each $dialogs as dialog, index}
     <div out:fade={{ duration: 200 }} class="ui-dialog-content">
       <div style="width: 400px">
