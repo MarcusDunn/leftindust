@@ -200,7 +200,7 @@ export const templateInputSelectOptions = [
 
 export const templateForm = (closeWizardHandler: () => void) => createForm<TemplateSchema>({
   initialValues: defaultTemplateSchema,
-  onSubmit: () => {
+  onSubmit: (_, { reset }) => {
     const form = get(Template);
     const formCalculations = get(TemplateCalculations);
 
@@ -252,6 +252,7 @@ export const templateForm = (closeWizardHandler: () => void) => createForm<Templ
       .then(({ data, error }) => {
         if (data?.addSurveyTemplate) {
           closeWizardHandler();
+          reset();
           return;
         }
         

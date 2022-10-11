@@ -66,7 +66,19 @@
         {#key index}
           <Select
             title={$_('generics.type')}
-            placeholder={$_('examples.text')}
+            placeholder={(() => {
+              switch (type) {
+                case SurveyTemplateInputType.Number:
+                  return $_('examples.number');
+                case SurveyTemplateInputType.Date:
+                  return $_('examples.date');
+                case SurveyTemplateInputType.SingleSelect:
+                case SurveyTemplateInputType.MultiSelect:
+                  return $_('examples.select');
+                default:
+                  return $_('examples.text');
+              }
+            })()}
             options={templateInputSelectOptions}
             name={`sections.${sectionIndex}.inputs.${index}.type`}
             bind:value={type}
