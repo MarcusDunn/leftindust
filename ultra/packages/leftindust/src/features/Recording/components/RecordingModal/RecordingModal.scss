@@ -1,0 +1,66 @@
+.recording-recording_modal {
+  .recording-recording_modal-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    bottom: 70px;
+
+    transition: opacity 200ms ease-in 0s;
+
+    opacity: 0;
+
+    width: 100%;
+
+    &.recording-recording_modal-controls-open {
+      opacity: 1;
+      transition: opacity 200ms ease-out 400ms;
+
+      .recording-recording_modal-controls-content {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+    }
+
+    .recording-recording_modal-controls-content {
+      display: flex;
+      align-items: center;
+
+      border-radius: 40px;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(0);
+      -webkit-backdrop-filter: blur(0);
+
+      transition: -webkit-backdrop-filter 300ms ease-in-out, backdrop-filter 300ms ease-in-out;
+
+      height: 70px;
+      width: 500px;
+      padding: 0 25px;
+      margin: 0 25px;
+
+      z-index: 10;
+
+      box-shadow: 0 10px 28px 0 rgba(0, 0, 0, .2);
+    }
+  }
+}
+
+.dark {
+  .recording-recording_modal {
+    .recording-recording_modal-controls {
+      .recording-recording_modal-controls-content {
+        background: rgb(42, 42, 42);
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .recording-recording_modal {
+    .recording-recording_modal-controls {
+      bottom: 30px;
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import type { SvelteComponentDev } from 'svelte/internal';
 import type { Color, Framework7Icon } from '../..';
 import { dialogs } from './store';
 
@@ -7,11 +8,12 @@ export type DialogParams = {
   icon?: Framework7Icon;
   color?: Color;
   vertical?: boolean;
+  component?: typeof SvelteComponentDev;
   link?: {
     label: string;
     onClick?: () => void;
   };
-  buttons: {
+  buttons?: {
     label: string;
     primary?: boolean;
     onClick?: () => void;

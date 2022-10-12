@@ -393,7 +393,7 @@ input:-internal-autofill-selected {
   }
 
   /* Master Detail */
-  &:not(.with-panel-left-reveal):not(.wizard-open) {
+  &:not(.with-panel-left-reveal):not(.wizard-open).with-sidebar {
     .views {
       .view {
         &.view-master-detail {

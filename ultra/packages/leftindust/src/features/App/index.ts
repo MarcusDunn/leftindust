@@ -20,7 +20,7 @@ export enum AppViews {
   Wizard = 'view-wizard',
   Popup = 'view-popup',
   Main = 'view-main',
-  Hub = 'view-hub'
+  Hub = 'view-hub',
 }
 
 export enum AppRootRoutes {
