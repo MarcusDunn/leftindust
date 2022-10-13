@@ -1,16 +1,14 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.address.Address
-import com.leftindust.mockingbird.address.AddressToAddressDtoConverter
 import com.leftindust.mockingbird.address.AddressType
+import com.leftindust.mockingbird.address.toAddressDto
 import com.leftindust.mockingbird.country.Countries
 import com.leftindust.mockingbird.country.CountryState
 import java.util.UUID
 
 
 object AddressMother {
-    val addressToAddressDto = AddressToAddressDtoConverter()
-
     object DansHouse {
         val addressType = AddressType.Home
         const val address = "842 Main Street"
@@ -43,7 +41,7 @@ object AddressMother {
                 postalCode = postalCode
             )
 
-        val dto = addressToAddressDto.convert(entityDetached)
+        val dto = entityDetached.toAddressDto()
     }
 
 
@@ -66,7 +64,7 @@ object AddressMother {
             postalCode = postalCode
         ).apply { id = this@JennysHouse.id }
 
-        val dto = addressToAddressDto.convert(entityPersisted)
+        val dto = entityPersisted.toAddressDto()
     }
 
 }
