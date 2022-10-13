@@ -6,7 +6,7 @@ import java.util.UUID
 object EmailMother {
     val emailEntityToEmailConverter = EmailEntityToEmailConverter()
     val emailToEmailDtoConverter = EmailToEmailDtoConverter()
-    val createEmailDtoToCreateEmailConverter = CreateEmailDtoToCreateEmailFallibleConverter()
+
 
     object DansEmail {
         val id = UUID.fromString("10845c82-1d17-11ed-861d-0242ac120002")
@@ -31,6 +31,6 @@ object EmailMother {
             type = EmailType.Personal,
             email = "NewEmail@gmail.com"
         )
-        val create: CreateEmail = createEmailDtoToCreateEmailConverter.convert(createDto)!!
+        val create: CreateEmail = createDto.toCreateEmail()!!
     }
 }

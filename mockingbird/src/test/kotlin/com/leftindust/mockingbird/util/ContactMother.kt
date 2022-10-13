@@ -1,10 +1,7 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.FallibleConverter
 import com.leftindust.mockingbird.contact.*
-import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.CreateEmailDto
-import com.leftindust.mockingbird.email.CreateEmailDtoToCreateEmailFallibleConverter
 import com.leftindust.mockingbird.email.EmailType
 import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.person.NameInfoEntity
@@ -16,8 +13,6 @@ import java.util.UUID
 
 object ContactMother {
 
-    val createEmailDtoToCreateEmailConverter = CreateEmailDtoToCreateEmailFallibleConverter()
-    val createContactDtoToCreateContactConverter = CreateContactDtoToCreateContactConverter(createEmailDtoToCreateEmailConverter)
     object Aydan {
 
         const val firstName = "Aydan"
@@ -76,6 +71,6 @@ object ContactMother {
             )
         )
 
-        val create: CreateContact = createContactDtoToCreateContactConverter.convert(createDto)!!
+        val create = createDto.toCreateContact()
     }
 }

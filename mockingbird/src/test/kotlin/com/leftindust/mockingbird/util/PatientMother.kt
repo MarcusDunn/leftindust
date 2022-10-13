@@ -4,12 +4,10 @@ import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.contact.CreateContactDto
-import com.leftindust.mockingbird.contact.CreateContactDtoToCreateContactConverter
 import com.leftindust.mockingbird.country.Countries
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.*
-import com.leftindust.mockingbird.graphql.types.update
 import com.leftindust.mockingbird.patient.*
 import com.leftindust.mockingbird.person.*
 import com.leftindust.mockingbird.phone.CreatePhoneDto
@@ -24,12 +22,9 @@ import java.time.Month
 import java.util.UUID
 
 object PatientMother {
-    val createEmailDtoToCreateEmailConverter = CreateEmailDtoToCreateEmailFallibleConverter()
-    val createContactDtoToCreateContactConverter = CreateContactDtoToCreateContactConverter(createEmailDtoToCreateEmailConverter)
+
     val patientToPatientDtoConverter = PatientToPatientDtoConverter()
     val patientEntityToPatientConverter = PatientEntityToPatientConverter()
-    val createPatientDtoToCreatePatientConverter = CreatePatientDtoToCreatePatientConverter(createEmailDtoToCreateEmailConverter, createContactDtoToCreateContactConverter)
-
 
     object Dan {
         const val firstName = "Dan"
@@ -164,36 +159,36 @@ object PatientMother {
         )
 
         val updatePatientDto: UpdatePatientDto = UpdatePatientDto(
-            nameInfo = update(UpdateNameInfoDto(
-                firstName = update("Dann"),
-                lastName = update("TheDan"),
-                middleName = update("Servershani")
-            )),
-            addresses = update(listOf(CreateAddressDto(
+            pid = Dan.graphqlId,
+            nameInfo = UpdateNameInfoDto(
+                firstName = "Dann",
+                lastName = "TheDan",
+                middleName = "Servershani"
+            ),
+            addresses = listOf(CreateAddressDto(
                 addressType = AddressMother.JennysHouse.addressType,
                 address = "",
                 city = "",
                 country = Countries.Canada,
                 province = "",
                 postalCode = ""
-            ))),
-            emails = update(listOf(DansEmail.create)),
+            )),
+            emails = listOf(DansEmail.createDto),
 
-            phones = update(listOf(CreatePhoneDto(
+            phones = listOf(CreatePhoneDto(
                 number = "111111111",
                 type = PhoneType.Home
-            ))),
-            thumbnail =update(""),
-            sex = update(Sex.Male),
-            dateOfBirth = update(LocalDate.of(2001, Month.MAY, 11)),
-            gender = update("NewGender"),
-            ethnicity = update(Ethnicity.White),
-            insuranceNumber = update("NewInsurance"),
-            doctors = update(listOf(DoctorDto.DoctorDtoId(
+            )),
+            thumbnail ="",
+            sex = Sex.Male,
+            dateOfBirth = LocalDate.of(2001, Month.MAY, 11),
+            gender = "NewGender",
+            ethnicity = Ethnicity.White,
+            insuranceNumber = "NewInsurance",
+            doctors = listOf(DoctorDto.DoctorDtoId(
                 DoctorMother.Jenny.id
-            ))),
-            emergencyContacts = update(listOf(ContactMother.Aydan.create)),
-            pid = Dan.graphqlId
+            )),
+            emergencyContacts = listOf(ContactMother.Aydan.createDto),
         )
 
         val entityUpdatedTransient: PatientEntity = PatientEntity(
@@ -226,7 +221,7 @@ object PatientMother {
         val updatedDto: PatientDto = patientToPatientDtoConverter.convert(updatedDomainEntityDetached)
 
         val domainEntityTransient = patientEntityToPatientConverter.convert(entityTransient)
-        val createPatient = createPatientDtoToCreatePatientConverter.convert(createPatientDto)!!
+        val createPatient = createPatientDto.toCreatePatient()
 
     }
 }
