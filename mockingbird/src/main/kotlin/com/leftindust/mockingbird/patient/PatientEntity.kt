@@ -49,7 +49,7 @@ class PatientEntity(
     var gender: String = sex.toString(),
     var ethnicity: Ethnicity?,
     var insuranceNumber: String?,
-    @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     var contacts: MutableSet<Contact>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
     var doctors: MutableSet<DoctorPatientEntity>,
