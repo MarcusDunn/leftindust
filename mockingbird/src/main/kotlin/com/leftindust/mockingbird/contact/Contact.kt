@@ -15,8 +15,6 @@ import javax.persistence.OneToOne
 
 @Entity
 class Contact(
-    @ManyToOne(optional = false)
-    var patient: PatientEntity, //Patient information should not be optional for a contact info
     @Enumerated(EnumType.STRING)
     var relationship: Relationship,
     @OneToOne

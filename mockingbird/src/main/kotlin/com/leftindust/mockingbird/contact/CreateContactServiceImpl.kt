@@ -32,7 +32,6 @@ class CreateContactServiceImpl(
         )
         val contact = Contact(
             nameInfoEntity = createNameInfoService.createNameInfo(createContact.nameInfo),
-            patient = patient,
             relationship = createContact.relationship,
             phone = createContact.phones.map { createPhoneService.createPhone(it) }.toMutableSet(),
             email = createContact.emails.map { createEmailService.createEmail(it) }.toMutableSet()
