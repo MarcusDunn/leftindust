@@ -260,7 +260,7 @@ input UpdateNameInfo {
 
 input EditPatient {
     pid: PatientIdInput!
-    nameInfo: UpdateNameInfo
+    nameInfo: UpdateNameInfo!
     phones: [CreatePhone!]!
     dateOfBirth: LocalDate
     addresses: [CreateAddress!]!
@@ -271,7 +271,7 @@ input EditPatient {
     ethnicity: Ethnicity!
     emergencyContacts: [CreateContact!]!
     thumbnail: String
-    doctor: [DoctorIdInput!]!
+    doctors: [DoctorIdInput!]!
 }
 
 input CreatePatient {

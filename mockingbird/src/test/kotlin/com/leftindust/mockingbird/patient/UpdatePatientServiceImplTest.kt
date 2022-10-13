@@ -29,13 +29,14 @@ class UpdatePatientServiceImplTest(
     @Test
     internal suspend fun `check update patient works properly '`(){
 
-        createPatientServiceImpl.addNewPatient(PatientMother.Dan.createPatient)
-        val updatedPatient = updatePatientServiceImpl.update(PatientMother.Dan.updatePatientDto)
-
-        checkNotNull(updatedPatient)
-        val readPatient = readPatientServiceImpl.getByPatientId(PatientMother.Dan.updatePatientDto.pid)
-
-        assertThat(updatedPatient.dateOfBirth, equalTo(PatientMother.Dan.updatePatientDto.dateOfBirth))
-        assertThat(readPatient, equalTo(updatedPatient.id))
+        TODO()
+//        createPatientServiceImpl.addNewPatient(PatientMother.Dan.createPatient)
+//        val updatedPatient = updatePatientServiceImpl.update(PatientMother.Dan.updatePatientDto)
+//
+//        checkNotNull(updatedPatient)
+//        val readPatient = readPatientServiceImpl.getByPatientId(PatientMother.Dan.updatePatientDto.pid)
+//
+//        assertThat(updatedPatient.dateOfBirth, equalTo(PatientMother.Dan.updatePatientDto.dateOfBirth))
+//        assertThat(readPatient, equalTo(updatedPatient.id))
     }
 }

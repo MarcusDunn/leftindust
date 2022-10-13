@@ -3,11 +3,8 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.util.*
 import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.ninjasquad.springmockk.MockkBean
-import graphql.GraphQL
 import io.mockk.coEvery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -128,7 +125,7 @@ internal class PatientMutationControllerTest(
                     gender: ""
                     ethnicity: Asian
                     emergencyContacts: []
-                    doctor: []
+                    doctors: []
                     thumbnail: null
                 })
                 {

@@ -10,6 +10,7 @@ import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.CreateEmailService
+import com.leftindust.mockingbird.graphql.types.Deletable
 import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.applyDeletable
 import com.leftindust.mockingbird.graphql.types.applyUpdatable
@@ -45,7 +46,7 @@ class UpdatePatientServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun update(patientInput: UpdatePatientDto): Patient? {
+    override suspend fun update(patientInput: UpdatePatient): Patient? {
         val patient = patientRepository.findById(patientInput.pid.value).orElse(null)
             ?: run {
                 logger.warn { NoUpdatesOccurredNoEntityWithId(PatientEntity::class, patientInput.pid.value) }
@@ -57,6 +58,7 @@ class UpdatePatientServiceImpl(
         patientInput.gender.applyUpdatable(patient, patient::gender, logger)
         patientInput.sex.applyUpdatable(patient, patient::sex, logger)
         patientInput.insuranceNumber.applyDeletable(patient, patient::insuranceNumber, logger)
+
 
         updateNameInfo(patientInput.nameInfo, patient)
         updateEmails(patientInput.emails, patient)
@@ -144,7 +146,7 @@ class UpdatePatientServiceImpl(
     }
 
 
-    private suspend fun updateThumbnail(thumbnail: Updatable<String>, patient: PatientEntity) {
+    private suspend fun updateThumbnail(thumbnail: Deletable<String>, patient: PatientEntity) {
         when (thumbnail) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(patient, patient::thumbnail) }
@@ -152,6 +154,10 @@ class UpdatePatientServiceImpl(
             is Updatable.Update -> {
                 val newThumbnail = Base64.getDecoder().decode(thumbnail.value)
                 patient.thumbnail = newThumbnail
+            }
+            is Deletable.Delete -> {
+                logger.trace { SetToNullEntityFieldMessage(patient, patient::thumbnail) }
+                patient.thumbnail = null
             }
         }
     }
