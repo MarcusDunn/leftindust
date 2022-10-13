@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.util
 
+import com.leftindust.mockingbird.email.CreateEmailDto
 import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.email.EmailEntityToEmailConverter
 import com.leftindust.mockingbird.email.EmailToEmailDtoConverter
@@ -28,5 +29,10 @@ object EmailMother {
 
         val domain = emailEntityToEmailConverter.convert(entityDetached)
         val dto = emailToEmailDtoConverter.convert(domain)
+
+        val createDto = CreateEmailDto(
+            email = "dan.shervershani@example.com",
+            type = EmailType.Work
+        )
     }
 }
