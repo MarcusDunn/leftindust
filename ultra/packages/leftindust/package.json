@@ -37,6 +37,7 @@
     "framework7-svelte": "^7.0.8",
     "function-junctions": "^0.0.27",
     "graphql": "^16.5.0",
+    "microphone-stream": "^6.0.1",
     "sanitize-html": "^2.7.1",
     "svelte-dnd-action": "^0.9.19",
     "svelte-fullcalendar": "^2.0.0-beta.0",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.19.3",
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@graphql-codegen/add": "^3.2.0",
     "@graphql-codegen/cli": "^2.11.3",
     "@graphql-codegen/import-types-preset": "^2.2.2",

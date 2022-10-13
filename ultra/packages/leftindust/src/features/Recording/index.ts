@@ -1,5 +1,6 @@
 import { TranscribeStreamingClient } from '@aws-sdk/client-transcribe-streaming';
 import { config } from '../App';
+import { Buffer } from 'buffer';
 
 export const detectRecordingDevice = (devices: MediaDeviceInfo[]): { id: string, value: string }[] => {
   let newDevices: { id: string, value: string }[] = [];
@@ -15,6 +16,30 @@ export const detectRecordingDevice = (devices: MediaDeviceInfo[]): { id: string,
   }
   
   return newDevices;
+};
+
+export const convertBlock = (buffer: ArrayBuffer): Float32Array => {
+  const incomingData = new Uint8Array(buffer);
+  let i: number;
+  const l = incomingData.length; // length, we need this for the loop
+  const outputData = new Float32Array(incomingData.length); // create the Float32Array for output
+  for (i = 0; i < l; i++) {
+    outputData[i] = (incomingData[i] - 128) / 128.0; // convert audio to float
+  }
+  return outputData; // return the Float32Array
+};
+
+export const pcmEncodeChunk = (chunk: Float32Array) => {
+  let offset = 0;
+  const buffer = new ArrayBuffer(chunk.length * 2);
+  const view = new DataView(buffer);
+  for (let i = 0; i < chunk.length; i++, offset += 2) {
+    
+    const s = Math.max(-1, Math.min(1, chunk[i]));
+    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+  }
+  
+  return Buffer.from(buffer);
 };
 
 export const awsTranscribeClient = new TranscribeStreamingClient({
