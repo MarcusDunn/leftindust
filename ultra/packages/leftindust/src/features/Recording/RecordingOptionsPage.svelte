@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { f7, Toggle } from 'framework7-svelte';
+  import { f7, Preloader, Toggle } from 'framework7-svelte';
+  import { onMount } from 'svelte';
+  import { detectRecordingDevice } from '.';
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
   import Control from '../UI/components/Control/Control.svelte';
   import Footer from '../UI/components/Footer/Footer.svelte';
@@ -7,9 +9,21 @@
   import SelectButton from '../UI/components/SelectButton/SelectButton.svelte';
   import RecordingButton from './components/RecordingButton/RecordingButton.svelte';
 
-  import { recordingSequenceStarted, recordingTimer } from './store';
+  import { recordingSequenceStarted, recordingTimer, defaultAudioDeviceId } from './store';
+
+  let microphones: { id: string, value: string }[] | undefined = undefined;
 
   export let callback: () => void = () => undefined;
+
+  onMount(() => {
+    navigator.mediaDevices.enumerateDevices()
+      .then((devices) => {
+        microphones = detectRecordingDevice(devices);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
 </script>
 
 <Page>
@@ -92,6 +106,25 @@
         style="width: 200px"
         bind:value={$recordingTimer}
       />
+    </Control>
+    <br />
+    <Control
+      title="Microphone"
+      text="The microphone used to record audio"
+      icon={{ f7: 'mic_fill', color: 'orange' }}
+    >
+      {#if microphones}
+        <SelectButton
+          options={microphones.map((microphone) => ({
+            text: microphone.value,
+            value: microphone.id,
+          }))}
+          style="width: 200px"
+          bind:value={$defaultAudioDeviceId}
+        />
+      {:else}
+        <Preloader />
+      {/if}
     </Control>
   </div>
 </Page>

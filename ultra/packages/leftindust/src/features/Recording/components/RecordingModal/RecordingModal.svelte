@@ -6,16 +6,24 @@
 
   import './RecordingModal.scss';
   import RecordingIndicator from '../RecordingIndicator/RecordingIndicator.svelte';
-  import { fade } from 'svelte/transition';
+  import DialogContent from '@/features/UI/components/Dialog/DialogContent.svelte';
+  import { defaultAudioDeviceId } from '../../store';
+  import { StartStreamTranscriptionCommand } from '@aws-sdk/client-transcribe-streaming';
+  import { awsTranscribeClient } from '../..';
 
   export let open: Writable<boolean>;
 
   let media: BlobPart[] = [];
   let mediaRecorder: MediaRecorder;
+  let audioContext: AudioContext;
 
   let audioRef: HTMLAudioElement;
 
   let playing = false;
+
+  let initalized = false;
+
+  let error = '';
 
   let pausedDuration = 0;
 
@@ -29,34 +37,64 @@
     return h + ':' + m + ':' + s;
   };
 
-  onMount(() => {
+  
+  onMount(async () => {
     if (audioRef) {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {        
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia(
+          {
+            audio: {
+              deviceId: {
+                exact: $defaultAudioDeviceId,
+              },
+            },
+          },
+        );
+
         mediaRecorder = new MediaRecorder(stream);
+        audioContext = new AudioContext();
+
+        audioContext.createMediaStreamSource(stream);
+
+        const command = new StartStreamTranscriptionCommand({
+          // The language code for the input audio. Valid values are en-GB, en-US, es-US, fr-CA, and fr-FR
+          LanguageCode: 'en-US',
+          // The encoding used for the input audio. The only valid value is pcm.
+          MediaEncoding: 'pcm',
+          // The sample rate of the input audio in Hertz. We suggest that you use 8000 Hz for low-quality audio and 16000 Hz for
+          // high-quality audio. The sample rate must match the sample rate in the audio file.
+          MediaSampleRateHertz: 44100,
+        });
+
+        const response = await awsTranscribeClient.send(command);
+
+        initalized = true;
+
         // Get time offset from recording init
         const differenceBetweenClocks = (performance.now() / 1000) - audioRef.currentTime;
+
         mediaRecorder.ondataavailable = ({ timeStamp, data }) => {
           const audioContextTime = (timeStamp / 1000) - differenceBetweenClocks;
 
           if (playing) {
             time = formatTimestamp(audioContextTime - pausedDuration);
           }
-  
+
           media.push(data);
         };
-  
+
         mediaRecorder.onstart = () => {
           playing = true;
         };
-  
+
         mediaRecorder.onstop = () => {
-          const blob = new Blob(media, { 'type' : 'audio/mpeg' });
+          const blob = new Blob(media, { 'type' : 'audio/wav' });
           media = [];
           audioRef.src = window.URL.createObjectURL(blob);
         };
-      }).catch((err) => {
-        console.error(err);
-      });
+      } catch(err) {
+        error = err as string;
+      }
     }
   });
   
@@ -97,32 +135,50 @@
 
 <div class="recording-recording_modal">
   <audio bind:this={audioRef} controls />
-  <div class={`recording-recording_modal-controls ${$open ? 'recording-recording_modal-controls-open' : ''}`}>
-    <div class="recording-recording_modal-controls-content">
-      <RecordingIndicator {time} pulse={playing} />
+  {#if !initalized}
+    {#if error}
+      <DialogContent dialog={{
+        title: 'Failed to start recording',
+        text: error,
+        buttons: [
+          {
+            label: $_('generics.ok'),
+            onClick: () => $open = false,
+          },
+        ],
+      }}
+      />
+    {/if}
+  {/if}
 
-      <div class="flex-grow" />
-      {#key playing}
+  {#if initalized}
+    <div class={`recording-recording_modal-controls ${$open ? 'recording-recording_modal-controls-open' : ''}`}>
+      <div class="recording-recording_modal-controls-content">
+        <RecordingIndicator {time} pulse={playing} />
+
+        <div class="flex-grow" />
+        {#key playing}
+          <MenuButton
+            title={playing ? $_('generics.pause') :  $_('generics.play')}
+            icon={{ f7: playing ? 'pause_fill' : 'play_fill', color: 'gray' }}
+            on:click={() => {
+              if (playing) {
+                pauseRecording();
+              } else {
+                playRecording();
+              }
+            }}
+          />
+        {/key}
         <MenuButton
-          title={playing ? $_('generics.pause') :  $_('generics.play')}
-          icon={{ f7: playing ? 'pause_fill' : 'play_fill', color: 'gray' }}
+          title={$_('generics.stop')}
+          icon={{ f7: 'square_fill', color: 'red' }}
           on:click={() => {
-            if (playing) {
-              pauseRecording();
-            } else {
-              playRecording();
-            }
+            stopRecording();
+          // $open = false;
           }}
         />
-      {/key}
-      <MenuButton
-        title={$_('generics.stop')}
-        icon={{ f7: 'square_fill', color: 'red' }}
-        on:click={() => {
-          stopRecording();
-        // $open = false;
-        }}
-      />
+      </div>
     </div>
-  </div>
+  {/if}
 </div>

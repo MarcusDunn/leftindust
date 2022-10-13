@@ -42,6 +42,13 @@
       color: rgb(87, 87, 87);
     }
   }
+
+  .ui-select-button-selected {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(100% - 20px);
+  }
 }
 
 .dark {

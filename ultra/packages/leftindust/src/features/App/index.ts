@@ -58,6 +58,10 @@ export interface AppConfig {
     messagingSenderId: string;
     appId: string;
   },
+  aws: {
+    accessKeyId: string;
+    secretAccessKey: string;
+  }
   development: {
     skipLoginValidation: boolean;
   }
