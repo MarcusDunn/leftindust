@@ -7,6 +7,7 @@ import com.leftindust.mockingbird.contact.CreateContactDtoToCreateContactConvert
 import com.leftindust.mockingbird.email.CreateEmailDto
 import com.leftindust.mockingbird.email.CreateEmailDtoToCreateEmailFallibleConverter
 import com.leftindust.mockingbird.email.Email
+import com.leftindust.mockingbird.patient.CreateContactPatientImpl
 import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.NameInfoEntity
@@ -31,6 +32,7 @@ object ContactMother {
         val patientDetached: PatientEntity = PatientMother.Dan.entityDetached
         val patientTransient: PatientEntity = PatientMother.Dan.entityDetached
         val entityDetached = Contact(
+            patientEntity = patientDetached,
             relationship = relationship,
             nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
@@ -44,6 +46,7 @@ object ContactMother {
         }
 
         val entityTransient = Contact(
+            patientEntity = patientTransient,
             relationship = relationship,
             nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
@@ -54,7 +57,8 @@ object ContactMother {
             email = emailsTransient,
         )
 
-        val createDto = CreateContactDto(
+        val createDomain = CreateContactPatientImpl(
+            patientId = patientDetached.id!!,
             nameInfo = CreateNameInfoDto(
                 firstName = "Aydan",
                 middleName = null,
@@ -62,9 +66,7 @@ object ContactMother {
             ),
             relationship = Relationship.Parent,
             phones = emptyList(),
-            emails = listOf(EmailMother.DansEmail.createDto)
+            emails = listOf(EmailMother.DansEmail.createDomain)
         )
-
-        val createDomain = CreateContactDtoToCreateContactConverter.convert(createDto)!!
     }
 }
