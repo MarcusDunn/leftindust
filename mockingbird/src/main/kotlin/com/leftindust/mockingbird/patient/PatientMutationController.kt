@@ -27,7 +27,7 @@ class PatientMutationController(
     @MutationMapping
     suspend fun addPatient(@Argument("createPatient") createPatientDto: CreatePatientDto, dataFetchingEnvironment: DataFetchingEnvironment): PatientDto {
         val createPatient = createPatientDtoToCreatePatient.convert(createPatientDto)
-        val newPatient = createPatientService.addNewPatient(createPatient ?: throw InconvertibleDtoException<CreatePatient>(createPatientDto)).onFailure { throw it.get() }
+        val newPatient = createPatientService.addNewPatient(createPatient ?: throw InconvertibleDtoException<CreatePatient>(createPatientDto)).onFailure { throw it.reason.toException() }
         return patientToPatientDtoConverter.convert(newPatient)
     }
 }

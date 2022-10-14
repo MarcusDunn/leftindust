@@ -6,19 +6,19 @@ import com.leftindust.mockingbird.patient.PatientRepository
 import com.leftindust.mockingbird.person.CreateNameInfoServiceImpl
 import com.leftindust.mockingbird.person.NameInfoRepository
 import com.leftindust.mockingbird.phone.CreatePhoneServiceImpl
-import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.phone.PhoneRepository
 import com.leftindust.mockingbird.util.ContactMother
 import com.leftindust.mockingbird.util.EmailMother
 import com.leftindust.mockingbird.util.PatientMother
 import com.ninjasquad.springmockk.MockkBean
+import dev.forkhandles.result4k.onFailure
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,14 +27,13 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.web.server.SecurityWebFilterChain
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.fail
-import org.hamcrest.MatcherAssert
-import org.hamcrest.Matchers
-import org.springframework.stereotype.Component
+import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.MatcherAssert.assertThat
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @DataJpaTest
 @ExtendWith(MockKExtension::class)
-internal class CreateContactServiceImplTest(
+internal class CreateContactServiceDatabaseTest(
     @Autowired
     private val contactRepository: ContactRepository,
     @Autowired
@@ -48,26 +47,31 @@ internal class CreateContactServiceImplTest(
     @MockkBean
     private lateinit var httpSecurity: SecurityWebFilterChain
 
+    @MockK
+    private lateinit var patientRepository: PatientRepository
+
     @Test
     internal fun `check can save entity`() = runTest {
+        coEvery { patientRepository.findByIdOrNull(any()) } returns PatientMother.Dan.entityDetached
         val createPhoneService = CreatePhoneServiceImpl(phoneRepository)
         val createEmailService = CreateEmailServiceImpl(emailRepository)
         val createNameInfoService = CreateNameInfoServiceImpl(nameInfoRepository)
         val createContactService = CreateContactServiceImpl(
             contactRepository,
+            patientRepository,
             createPhoneService,
             createEmailService,
             createNameInfoService
         )
 
         val newContact = createContactService.createContact(ContactMother.Aydan.createDomain)
-        MatcherAssert.assertThat(contactRepository.findByIdOrNull(newContact.id ?: fail("null id")), Matchers.notNullValue())
+        assertThat(contactRepository.findByIdOrNull(newContact.onFailure { fail("persistence failed") }.id ?: fail("null id")), notNullValue())
     }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
-class CreateContactServiceDatabaseTest {
+class CreateContactServiceImplTest {
 
     @MockkBean
     private lateinit var httpSecurity: SecurityWebFilterChain
@@ -84,18 +88,23 @@ class CreateContactServiceDatabaseTest {
     @MockK
     private lateinit var nameInfoRepository: NameInfoRepository
 
+    @MockK
+    private lateinit var patientRepository: PatientRepository
+
     @Test
     internal fun `check can create contact entity`() = runTest {
         every { contactRepository.save(any()) } returns ContactMother.Aydan.entityDetached
         every { phoneRepository.save(any()) } returns mockk()
         every { emailRepository.save(any()) } returns EmailMother.DansEmail.entityDetached
         every { nameInfoRepository.save(any()) } returns mockk()
+        every { patientRepository.findByIdOrNull(any()) } returns PatientMother.Dan.entityDetached
 
         val createPhoneService = CreatePhoneServiceImpl(phoneRepository)
         val createEmailService = CreateEmailServiceImpl(emailRepository)
         val createNameInfoService = CreateNameInfoServiceImpl(nameInfoRepository)
         val createContactService = CreateContactServiceImpl(
             contactRepository,
+            patientRepository,
             createPhoneService,
             createEmailService,
             createNameInfoService

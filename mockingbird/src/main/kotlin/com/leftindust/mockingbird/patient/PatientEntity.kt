@@ -67,6 +67,7 @@ class PatientEntity(
 
     fun addContact(contact: Contact) {
         contacts.add(contact)
+        contact.patientEntity = this
     }
 
     fun removeContact(contact: Contact) {
