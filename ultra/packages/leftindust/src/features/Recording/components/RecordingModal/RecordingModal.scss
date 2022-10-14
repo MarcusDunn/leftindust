@@ -1,6 +1,36 @@
 .recording-recording_modal {
   height: 100%;
   width: 100%;
+
+  .recording-recording_modal-transcription-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-top: -70px;
+
+
+    .recording-recording_modal-transcription {
+      height: calc(100% - 400px);
+      overflow-y: scroll;
+      width: 70%;
+      font-size: 30px;
+      font-weight: 700;
+      white-space: pre-line;
+    }
+
+    .recording-recording_modal-transcription-taper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 500px;
+      background: linear-gradient(transparent 10%, rgba(255, 255, 255, 0.7));
+      pointer-events: none;
+    }
+  }
+
   .recording-recording_modal-controls {
     display: flex;
     justify-content: center;
@@ -50,6 +80,11 @@
 
 .dark {
   .recording-recording_modal {
+    .recording-recording_modal-transcription-container {
+      .recording-recording_modal-transcription-taper {
+        background: linear-gradient(transparent 10%, rgba(0, 0, 0, 0.7));
+      }
+    }
     .recording-recording_modal-controls {
       .recording-recording_modal-controls-content {
         background: rgb(42, 42, 42);

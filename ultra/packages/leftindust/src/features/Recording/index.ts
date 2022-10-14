@@ -1,6 +1,8 @@
-import { TranscribeStreamingClient } from '@aws-sdk/client-transcribe-streaming';
+import { AudioStream, TranscribeStreamingClient } from '@aws-sdk/client-transcribe-streaming';
 import { config } from '../App';
 import { Buffer } from 'buffer';
+
+import Microphone from 'microphone-stream';
 
 export const detectRecordingDevice = (devices: MediaDeviceInfo[]): { id: string, value: string }[] => {
   let newDevices: { id: string, value: string }[] = [];
@@ -42,6 +44,38 @@ export const pcmEncodeChunk = (chunk: Float32Array) => {
   return Buffer.from(buffer);
 };
 
+export const audioStream = async function* (stream: Microphone): AsyncIterable<AudioStream> {
+  let exhausted = false;
+
+  const onData = async (): Promise<AudioStream> =>
+    new Promise((resolve) => {
+      stream.once('data', (chunk: Uint8Array) => {
+        resolve({
+          AudioEvent: {
+            AudioChunk: pcmEncodeChunk(Microphone.toRaw(chunk)),
+          },
+        });
+      });
+    });
+  
+  try {
+    while (true) {
+      const chunk = await onData();
+
+      if (chunk == undefined) {
+        exhausted = true;
+        break;
+      }
+        
+      yield chunk;
+    }
+  } finally {
+    if (!exhausted) {
+      stream.destroy();
+    }
+  }
+};
+
 export const awsTranscribeClient = new TranscribeStreamingClient({
   region: 'us-east-1',
   credentials: {
@@ -49,3 +83,18 @@ export const awsTranscribeClient = new TranscribeStreamingClient({
     secretAccessKey: config.aws.secretAccessKey,
   },
 });
+
+export const animateIncomingText = (node: HTMLElement, params?: { delay: number, duration: number, easing: number }) => {
+  const { duration, delay, easing } = params || {};
+  const { color } = window.getComputedStyle(node);
+  return {
+    duration,
+    delay,
+    easing,
+    css(t: number) {
+      const percentage = t * 200;
+
+      return `opacity: ${percentage}%`;
+    },
+  };
+};

@@ -12,13 +12,16 @@
 
   let recordingSequenceEnded = false;
 
+  $forceRecordingSequence = false;
+
   const dispatch = createEventDispatcher();
 
   $: counter = parseInt($recordingTimer);
 
-  $: if ($forceRecordingSequence) {
-    dispatch('start');
-    $forceRecordingSequence = false;
+  $: {
+    if ($forceRecordingSequence) {
+      dispatch('start');
+    }
   }
 
   $: {

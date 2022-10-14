@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { LanguageCode, Specialty } from '@aws-sdk/client-transcribe-streaming';
   import { f7, Preloader, Toggle } from 'framework7-svelte';
   import { onMount } from 'svelte';
   import { detectRecordingDevice } from '.';
@@ -9,7 +10,14 @@
   import SelectButton from '../UI/components/SelectButton/SelectButton.svelte';
   import RecordingButton from './components/RecordingButton/RecordingButton.svelte';
 
-  import { recordingSequenceStarted, recordingTimer, defaultAudioDeviceId } from './store';
+  import {
+    recordingSequenceStarted,
+    recordingTimer,
+    defaultAudioDeviceId,
+    recordingLanguage,
+    recordingMedicalSpecialty,
+    recordingConversation,
+  } from './store';
 
   let microphones: { id: string, value: string }[] | undefined = undefined;
 
@@ -53,12 +61,32 @@
       <SelectButton
         options={[
           {
-            text: 'Practitioner',
-            value: 'practitioner',
+            text: 'General Physician',
+            value: Specialty.PRIMARYCARE,
+          },
+          {
+            text: 'Cardiologist',
+            value: Specialty.CARDIOLOGY,
+          },
+          {
+            text: 'Neurologist',
+            value: Specialty.NEUROLOGY,
+          },
+          {
+            text: 'Oncologist',
+            value: Specialty.ONCOLOGY,
+          },
+          {
+            text: 'Radiologist',
+            value: Specialty.RADIOLOGY,
+          },
+          {
+            text: 'Urologist',
+            value: Specialty.UROLOGY,
           },
         ]}
         style="width: 230px"
-        value="practitioner"
+        bind:value={$recordingMedicalSpecialty}
       />
     </Control>
     <br />
@@ -70,7 +98,58 @@
       <Toggle
         class="aurora"
         color="blue"
+        bind:checked={$recordingConversation}
       />
+    </Control>
+    <br />
+    <Control
+      title="Language"
+      text="Select the primary language to record in"
+      icon={{ f7: 'globe', color: 'primary' }}
+    >
+      <SelectButton
+        options={[
+          {
+            text: 'English',
+            value: LanguageCode.EN_US,
+          },
+          {
+            text: 'French',
+            value: LanguageCode.FR_FR,
+          },
+          {
+            text: 'Spanish',
+            value: LanguageCode.ES_US,
+          },
+          {
+            text: 'German',
+            value: LanguageCode.DE_DE,
+          },
+          {
+            text: 'Italian',
+            value: LanguageCode.IT_IT,
+          },
+          {
+            text: 'Japanese',
+            value: LanguageCode.JA_JP,
+          },
+          {
+            text: 'Korean',
+            value: LanguageCode.KO_KR,
+          },
+          {
+            text: 'Portuguese',
+            value: LanguageCode.PT_BR,
+          },
+          {
+            text: 'Chinese (PRC)',
+            value: LanguageCode.ZH_CN,
+          },
+        ]}
+        style="width: 230px"
+        bind:value={$recordingLanguage}
+      />
+    
     </Control>
     <br />
     <br />
