@@ -3,6 +3,9 @@ package com.leftindust.mockingbird
 import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import dev.forkhandles.result4k.Failure
+import graphql.ErrorClassification
+import graphql.GraphQLError
+import graphql.language.SourceLocation
 import java.util.UUID
 import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
@@ -105,7 +108,11 @@ class InconvertibleEntityException(entity: AbstractJpaPersistable, kClass: KClas
     }
 }
 
-sealed interface PersistenceError {
+interface MockingbirdError {
+    fun toException(): Exception
+}
+
+sealed interface PersistenceError : MockingbirdError, GraphQLError {
     class FindException(private val entity: KClass<*>, private val id: UUID) : PersistenceError {
         companion object {
             operator fun invoke(entity: KClass<*>, id: UUID): Failure<PersistenceError> {
@@ -113,45 +120,30 @@ sealed interface PersistenceError {
             }
         }
 
+        private val message = "Could not find entity of type ${entity.simpleName} given the id $id"
+
+        override fun getMessage() = message
+        override fun getLocations(): MutableList<SourceLocation>? = null
+        override fun getErrorType(): ErrorClassification? = null
         override fun toException(): Exception {
-            return RuntimeException("Could not find entity of type ${entity.simpleName} given the id $id")
+            return RuntimeException(message)
         }
     }
 
-    class CreateException(private val entity: KClass<*>) : PersistenceError {
+    class CreateException(private val entity: KClass<*>, private val cause : String) : PersistenceError {
         companion object {
-            operator fun invoke(entity: KClass<*>): Failure<PersistenceError> {
-                return Failure(CreateException(entity))
+            operator fun invoke(entity: KClass<*>, cause: String): Failure<PersistenceError> {
+                return Failure(CreateException(entity, cause))
             }
         }
 
+        private val message = "Could not create entity of type ${entity.simpleName}, cause: $cause"
+        override fun getMessage() = message
+
+        override fun getLocations(): MutableList<SourceLocation>? = null
+        override fun getErrorType(): ErrorClassification? = null
         override fun toException(): Exception {
-            return RuntimeException("Could not create entity of type ${entity.simpleName}")
+            return RuntimeException(message)
         }
     }
-
-    class ReadException<T : AbstractJpaPersistable>(entity: AbstractJpaPersistable, message: String, id: UUID) : PersistenceError {
-        override fun toException(): Exception {
-            TODO("Not yet implemented")
-        }
-
-    }
-    class UpdateException<T : AbstractJpaPersistable>(
-        entity: AbstractJpaPersistable,
-        property: KProperty<T>,
-        message: String,
-        id: UUID
-    ) : PersistenceError {
-        override fun toException(): Exception {
-            TODO("Not yet implemented")
-        }
-
-    }
-    class DeleteException(entity: AbstractJpaPersistable, message: String, id: UUID) : PersistenceError {
-        override fun toException(): Exception {
-            TODO("Not yet implemented")
-        }
-
-    }
-    fun toException(): Exception
 }
