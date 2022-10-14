@@ -18,7 +18,7 @@ import javax.persistence.OneToOne
 class Contact(
     @ManyToOne(optional = false, targetEntity = PatientEntity::class)
     @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false)
-    val patientEntity: PatientEntity,
+    var patientEntity: PatientEntity,
     @Enumerated(EnumType.STRING)
     var relationship: Relationship,
     @OneToOne
