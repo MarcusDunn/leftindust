@@ -102,56 +102,58 @@
       />
     </Control>
     <br />
-    <Control
-      title="Language"
-      text="Select the primary language to record in"
-      icon={{ f7: 'globe', color: 'primary' }}
-    >
-      <SelectButton
-        options={[
-          {
-            text: 'English',
-            value: LanguageCode.EN_US,
-          },
-          {
-            text: 'French',
-            value: LanguageCode.FR_FR,
-          },
-          {
-            text: 'Spanish',
-            value: LanguageCode.ES_US,
-          },
-          {
-            text: 'German',
-            value: LanguageCode.DE_DE,
-          },
-          {
-            text: 'Italian',
-            value: LanguageCode.IT_IT,
-          },
-          {
-            text: 'Japanese',
-            value: LanguageCode.JA_JP,
-          },
-          {
-            text: 'Korean',
-            value: LanguageCode.KO_KR,
-          },
-          {
-            text: 'Portuguese',
-            value: LanguageCode.PT_BR,
-          },
-          {
-            text: 'Chinese (PRC)',
-            value: LanguageCode.ZH_CN,
-          },
-        ]}
-        style="width: 230px"
-        bind:value={$recordingLanguage}
-      />
-    
-    </Control>
-    <br />
+    <!--      
+      <Control
+        title="Language"
+        text="Select the primary language to record in"
+        icon={{ f7: 'globe', color: 'primary' }}
+      >
+        <SelectButton
+          options={[
+            {
+              text: 'English',
+              value: LanguageCode.EN_US,
+            },
+            {
+              text: 'French',
+              value: LanguageCode.FR_FR,
+            },
+            {
+              text: 'Spanish',
+              value: LanguageCode.ES_US,
+            },
+            {
+              text: 'German',
+              value: LanguageCode.DE_DE,
+            },
+            {
+              text: 'Italian',
+              value: LanguageCode.IT_IT,
+            },
+            {
+              text: 'Japanese',
+              value: LanguageCode.JA_JP,
+            },
+            {
+              text: 'Korean',
+              value: LanguageCode.KO_KR,
+            },
+            {
+              text: 'Portuguese',
+              value: LanguageCode.PT_BR,
+            },
+            {
+              text: 'Chinese (PRC)',
+              value: LanguageCode.ZH_CN,
+            },
+          ]}
+          style="width: 230px"
+          bind:value={$recordingLanguage}
+        />
+      
+      </Control>
+      <br />
+    -->
     <br />
     <br />
     <Control

@@ -31,7 +31,7 @@
   let pausedDuration = 0;
   let time = '00:00:00';
 
-  let bufferedTranscript: string[] = [''];
+  let bufferedTranscript: { time: string; text: string }[] = [{ time: '00:00:00', text: '' }];
   let transcript = '';
 
   const formatTimestamp = (timestamp: number): string => {
@@ -114,14 +114,22 @@
                 const [alternative] = alternatives;
                 const text = alternative.Transcript;
                 if (final) {
-                  bufferedTranscript[bufferedTranscript.length - 1] = `${text}\n` ?? '';
-                  bufferedTranscript = [...bufferedTranscript, ''];
+                  bufferedTranscript[bufferedTranscript.length - 1] = {
+                    time,
+                    text: `${text}\n` ?? '',
+                  };
+                  bufferedTranscript = [...bufferedTranscript, {
+                    time,
+                    text: '',
+                  }];
                 } else {
-                  bufferedTranscript[bufferedTranscript.length - 1] = text ?? '';
+                  bufferedTranscript[bufferedTranscript.length - 1] = {
+                    time,
+                    text: text ?? '',
+                  };
                 }
               }
-            }
-              
+            }  
           }
         }
       } catch(err) {
@@ -130,7 +138,7 @@
     }
   });
 
-  $: transcript = bufferedTranscript.join(' ');
+  $: transcript = bufferedTranscript.map(({ text }) => text).join(' ');
   
   $: {
     const timeout = setTimeout(() => {
