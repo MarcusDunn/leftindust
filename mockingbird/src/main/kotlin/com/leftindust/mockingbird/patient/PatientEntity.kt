@@ -44,7 +44,7 @@ class PatientEntity(
     @Column(nullable = false)
     var dateOfBirth: LocalDate,
     @Column
-    var gender: String? = sex.toString(),
+    var gender: String?,
     var ethnicity: Ethnicity?,
     var insuranceNumber: String?,
     @OneToMany
