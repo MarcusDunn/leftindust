@@ -12,7 +12,7 @@ interface Patient {
     val thumbnail: ByteArray?
     val sex: Sex
     val dateOfBirth: LocalDate
-    val gender: String
+    val gender: String?
     val ethnicity: Ethnicity?
     val insuranceNumber: String?
 }
