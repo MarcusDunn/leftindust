@@ -30,7 +30,7 @@ class PatientEntityToPatientConverter : InfallibleConverter<PatientEntity, Patie
         override val thumbnail: ByteArray?,
         override val sex: Sex,
         override val dateOfBirth: LocalDate,
-        override val gender: String,
+        override val gender: String?,
         override val ethnicity: Ethnicity?,
         override val insuranceNumber: String?,
     ) : Patient
