@@ -16,6 +16,8 @@ import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.onFailure
 import java.time.LocalDate
+import mu.KotlinLogging
+import org.springframework.stereotype.Component
 
 fun CreatePatientDto.toCreatePatient(): Result4k<CreatePatient, ConversionError<CreatePatientDto, CreatePatient>> {
     return Success(
@@ -24,9 +26,8 @@ fun CreatePatientDto.toCreatePatient(): Result4k<CreatePatient, ConversionError<
             phones = phones,
             addresses = addresses,
             emails = emails.map {
-                it.toCreateEmail() ?: return ConversionFailure(
-                    Exception("Invalid Email type")
-                )
+                it.toCreateEmail()
+                    .onFailure { e -> return ConversionFailure(e.reason) }
             },
 
             dateOfBirth = dateOfBirth,
@@ -44,17 +45,18 @@ fun CreatePatientDto.toCreatePatient(): Result4k<CreatePatient, ConversionError<
     )
 }
 
-private data class CreatePatientImpl(
-    override val nameInfo: CreateNameInfoDto,
-    override val phones: List<CreatePhone>,
-    override val dateOfBirth: LocalDate,
-    override val addresses: List<CreateAddress>,
-    override val emails: List<CreateEmail>,
-    override val insuranceNumber: String?,
-    override val sex: Sex,
-    override val gender: String,
-    override val ethnicity: Ethnicity?,
-    override val contacts: List<CreateContact>,
-    override val doctors: List<DoctorDto.DoctorDtoId>,
-    override val thumbnail: String?
-) : CreatePatient
+    private data class CreatePatientImpl(
+        override val nameInfo: CreateNameInfoDto,
+        override val phones: List<CreatePhone>,
+        override val dateOfBirth: LocalDate,
+        override val addresses: List<CreateAddress>,
+        override val emails: List<CreateEmail>,
+        override val insuranceNumber: String?,
+        override val sex: Sex,
+        override val gender: String?,
+        override val ethnicity: Ethnicity?,
+        override val contacts: List<CreateContact>,
+        override val doctors: List<DoctorDto.DoctorDtoId>,
+        override val thumbnail: String?
+    ) : CreatePatient
+}

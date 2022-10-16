@@ -267,7 +267,7 @@ input EditPatient {
     emails: [CreateEmail!]!
     insuranceNumber: String
     sex: Sex!
-    gender: String!
+    gender: String
     ethnicity: Ethnicity!
     emergencyContacts: [CreateContact!]!
     thumbnail: String
@@ -282,7 +282,7 @@ input CreatePatient {
     addresses: [CreateAddress!]! = []
     insuranceNumber: String
     sex: Sex!
-    gender: String!
+    gender: String
     ethnicity: Ethnicity
     emergencyContacts: [CreateContact!]! = []
     doctors: [DoctorIdInput!]! = []
@@ -360,7 +360,7 @@ type Patient {
     dateOfBirth: LocalDate!
     insuranceNumber: String
     sex: Sex!
-    gender: String!
+    gender: String
     ethnicity: Ethnicity
 }
 
