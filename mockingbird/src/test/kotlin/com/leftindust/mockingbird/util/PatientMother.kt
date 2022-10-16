@@ -1,18 +1,13 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.address.Address
-import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.contact.Contact
-import com.leftindust.mockingbird.contact.CreateContactDto
-import com.leftindust.mockingbird.country.Countries
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.*
 import com.leftindust.mockingbird.patient.*
 import com.leftindust.mockingbird.person.*
-import com.leftindust.mockingbird.phone.CreatePhoneDto
 import com.leftindust.mockingbird.phone.Phone
-import com.leftindust.mockingbird.phone.PhoneType
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.DansHouse
@@ -28,17 +23,24 @@ object PatientMother {
 
     object Dan {
         const val firstName = "Dan"
+        const val newFirstName = "Jack"
         val middleName = "TheMan"
+        val newMiddleName = ""
         const val lastName = "Shervershani"
+        const val newLastName = "Alexander"
         val dateOfBirth = LocalDate.of(2014, Month.MARCH, 12)
+        val newDateOfBirth = LocalDate.of(2001, Month.APRIL, 22)
         val id = UUID.fromString("3444970a-3e31-11ed-b878-0242ac120002")
         val graphqlId = PatientDto.PatientDtoId(id)
         val user: MediqUser? = null
         val thumbnail: ByteArray? = null
         val sex = Sex.Male
         val gender: String = "female"
+        val newGender: String = "Male"
         val ethnicity: Ethnicity? = null
+        val newEthnicity: Ethnicity = Ethnicity.White
         val insuranceNumber: String? = null
+        val newInsuranceNumber: String = "120938457"
         val contacts: MutableSet<Contact>
             get() = mutableSetOf()
         val doctors: MutableSet<DoctorPatientEntity>
@@ -62,8 +64,6 @@ object PatientMother {
             get() = mutableSetOf(DansHouse.entityDetached)
         val events: MutableSet<PatientEventEntity>
             get() = mutableSetOf()
-
-
 
         val nameInfoId = UUID.fromString("e257f4f5-15c5-4375-a99b-da6354e4d0b5")
         val entityDetached: PatientEntity
@@ -110,92 +110,59 @@ object PatientMother {
             assignedSurveys = assignedSurveysTransient
         ).apply { id = this@Dan.id }
 
-        val createPatientDto = CreatePatientDto(
-            nameInfo = CreateNameInfoDto(
-                firstName = "Dan",
-                lastName = "Shirvani",
-                middleName = ""
-            ),
-            addresses = listOf(CreateAddressDto(
-                addressType = AddressMother.JennysHouse.addressType,
-                address = "",
-                city = "",
-                country = Countries.Canada,
-                province = "",
-                postalCode = ""
-            )),
-            emails = listOf(CreateEmailDto(
-                type = EmailType.Personal,
-                email = "NewEmail@gmail.com"
-            )),
-            phones = listOf(CreatePhoneDto(
-                number = "111111111",
-                type = PhoneType.Home
-            )),
-            thumbnail = "",
-            sex = Sex.Male,
-            dateOfBirth = dateOfBirth,
-            gender = gender,
-            ethnicity = ethnicity,
-            insuranceNumber = insuranceNumber,
-            doctors = listOf(
-                DoctorDto.DoctorDtoId(
-                DoctorMother.Jenny.id
-            )),
-            emergencyContacts = listOf(CreateContactDto(
-                firstName = "Sep",
-                middleName= "",
-                lastName = "Radmehr",
-                relationship = Relationship.Other,
-                phones = listOf(CreatePhoneDto(
-                    number = "778221",
-                    type = PhoneType.Cell
-                )),
-                emails = listOf(CreateEmailDto(
-                    type = EmailType.Personal,
-                    email = "Emergency@gmail.com"
-                ))
-            ))
-        )
+        val createPatientDto: CreatePatientDto
+            get() = CreatePatientDto(
+                nameInfo = CreateNameInfoDto(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = middleName
+                ),
+                addresses = listOf(AddressMother.JennysHouse.createDto),
+                emails = listOf(DansEmail.createDto),
+                phones = listOf(PhoneMother.DansCell.createDto),
+                thumbnail = "",
+                sex = Sex.Male,
+                dateOfBirth = dateOfBirth,
+                gender = gender,
+                ethnicity = ethnicity,
+                insuranceNumber = insuranceNumber,
+                doctors = listOf(
+                    DoctorDto.DoctorDtoId(
+                        DoctorMother.Jenny.id
+                    )
+                ),
+                emergencyContacts = listOf(ContactMother.Aydan.createDto)
+            )
 
         val updatePatientDto: UpdatePatientDto = UpdatePatientDto(
             pid = Dan.graphqlId,
             nameInfo = UpdateNameInfoDto(
-                firstName = "Dann",
-                lastName = "TheDan",
-                middleName = "Servershani"
+                firstName = newFirstName,
+                lastName = newLastName,
+                middleName = newMiddleName
             ),
-            addresses = listOf(CreateAddressDto(
-                addressType = AddressMother.JennysHouse.addressType,
-                address = "",
-                city = "",
-                country = Countries.Canada,
-                province = "",
-                postalCode = ""
-            )),
-            emails = listOf(DansEmail.createDto),
-
-            phones = listOf(CreatePhoneDto(
-                number = "111111111",
-                type = PhoneType.Home
-            )),
-            thumbnail ="",
+            addresses = listOf(AddressMother.JennysHouse.createDto),
+            emails = listOf(DansEmail.createUpdatedDto),
+            phones = listOf(PhoneMother.DansCell.createUpdatedDto),
+            thumbnail = "",
             sex = Sex.Male,
-            dateOfBirth = LocalDate.of(2001, Month.MAY, 11),
-            gender = "NewGender",
-            ethnicity = Ethnicity.White,
-            insuranceNumber = "NewInsurance",
-            doctors = listOf(DoctorDto.DoctorDtoId(
-                DoctorMother.Jenny.id
-            )),
-            emergencyContacts = listOf(ContactMother.Aydan.createDto),
+            dateOfBirth = newDateOfBirth,
+            gender = newGender,
+            ethnicity = newEthnicity,
+            insuranceNumber = newInsuranceNumber,
+            doctors = listOf(
+                DoctorDto.DoctorDtoId(
+                    DoctorMother.Dan.id
+                )
+            ),
+            emergencyContacts = listOf(ContactMother.Aydan.createUpdatedDto),
         )
 
         val entityUpdatedTransient: PatientEntity = PatientEntity(
             nameInfoEntity = NameInfoEntity(
-                firstName = "Dann",
-                lastName = "TheDan",
-                middleName = "Servershani"
+                firstName = newFirstName,
+                lastName = newLastName,
+                middleName = newMiddleName
             ),
             addresses = addressesTransient,
             emails = emailsTransient,
@@ -213,8 +180,6 @@ object PatientMother {
             assignedSurveys = assignedSurveysTransient
         ).apply { id = this@Dan.id }
 
-
-
         val domain = patientEntityToPatientConverter.convert(entityDetached)
         val updatedDomainEntityDetached = patientEntityToPatientConverter.convert(entityUpdatedTransient)
         val dto: PatientDto = patientToPatientDtoConverter.convert(domain)
@@ -222,6 +187,5 @@ object PatientMother {
 
         val domainEntityTransient = patientEntityToPatientConverter.convert(entityTransient)
         val createPatient = createPatientDto.toCreatePatient()
-
     }
 }

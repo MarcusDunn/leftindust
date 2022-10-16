@@ -53,6 +53,25 @@ object ContactMother {
         )
 
         val createDto = CreateContactDto(
+            firstName = firstName,
+            middleName= middleName,
+            lastName = lastName,
+            relationship = relationship,
+            phones = listOf(
+                CreatePhoneDto(
+                    number = "33425",
+                    type = PhoneType.Home,
+                )
+            ),
+            emails = listOf(
+                CreateEmailDto(
+                    type = EmailType.Work,
+                    email = "Emergency@gmail.com",
+                )
+            )
+        )
+
+        val createUpdatedDto = CreateContactDto(
             firstName = "Boris",
             middleName= "",
             lastName = "V",
@@ -66,11 +85,10 @@ object ContactMother {
             emails = listOf(
                 CreateEmailDto(
                 type = EmailType.Personal,
-                email = "Emergency22@gmail.com",
+                email = "newEmergency@gmail.com",
             )
             )
         )
 
-        val create = createDto.toCreateContact()
     }
 }
