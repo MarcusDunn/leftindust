@@ -8,6 +8,7 @@ import com.leftindust.mockingbird.person.Relationship
 import com.leftindust.mockingbird.phone.CreatePhone
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 
 fun CreateContactDto.toCreateContact(): Result4k<CreateContact, ConversionError<CreateContactDto, CreateContact>> {
     return Success(
@@ -17,11 +18,8 @@ fun CreateContactDto.toCreateContact(): Result4k<CreateContact, ConversionError<
             lastName = lastName,
             relationship = relationship,
             phones = phones,
-            emails = emails.map {
-                it.toCreateEmail() ?: return ConversionFailure(
-                    Exception("Invalid Email type")
-                )
-            },
+            emails = emails.map {it.toCreateEmail().onFailure {e -> return ConversionFailure(e.reason)}}
+            ,
         )
     )
 }

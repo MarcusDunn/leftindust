@@ -1,25 +1,22 @@
 package com.leftindust.mockingbird.email
 
+import com.leftindust.mockingbird.ConversionError
+import com.leftindust.mockingbird.ConversionError.Companion.ConversionFailure
 import com.leftindust.mockingbird.validate.EmailAddress
-import dev.forkhandles.result4k.peekFailure
-import dev.forkhandles.result4k.valueOrNull
+import dev.forkhandles.result4k.*
 import dev.forkhandles.values.ofResult4k
-import mu.KotlinLogging
 
-private val logger = KotlinLogging.logger { }
-
-
-fun CreateEmailDto.toCreateEmail(): CreateEmail? {
-    return CreateEmailImpl(
+fun CreateEmailDto.toCreateEmail(): Result4k<CreateEmail, ConversionError<CreateEmailDto, CreateEmail>> {
+    return Success(CreateEmailImpl(
         type = type,
         email = EmailAddress
             .ofResult4k(email)
-            .peekFailure { logger.warn { it } }
-            .valueOrNull() ?: return null
+            .onFailure { return ConversionFailure(it.reason) }
+    )
     )
 }
 
-data class CreateEmailImpl(
+private data class CreateEmailImpl(
     override val type: EmailType,
     override val email: EmailAddress,
 ) : CreateEmail

@@ -16,8 +16,7 @@ import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.onFailure
 import java.time.LocalDate
-import mu.KotlinLogging
-import org.springframework.stereotype.Component
+
 
 fun CreatePatientDto.toCreatePatient(): Result4k<CreatePatient, ConversionError<CreatePatientDto, CreatePatient>> {
     return Success(
@@ -59,4 +58,3 @@ fun CreatePatientDto.toCreatePatient(): Result4k<CreatePatient, ConversionError<
         override val doctors: List<DoctorDto.DoctorDtoId>,
         override val thumbnail: String?
     ) : CreatePatient
-}

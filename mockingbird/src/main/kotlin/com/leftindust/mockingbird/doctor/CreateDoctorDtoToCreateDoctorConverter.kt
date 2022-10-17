@@ -12,6 +12,7 @@ import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.user.MediqUserUniqueIdToProofOfValidUserConverter
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 import java.time.LocalDate
 
 fun CreateDoctorDto.toCreateDoctor(): Result4k<CreateDoctor, ConversionError<CreateDoctorDto, CreateDoctor>> {
@@ -23,7 +24,7 @@ fun CreateDoctorDto.toCreateDoctor(): Result4k<CreateDoctor, ConversionError<Cre
             user = when (user.discriminant) {
                 CreateDoctorUserDto.CreateDoctorUserDtoType.NoUser -> CreateDoctor.User.NoUser(
                     nameInfo = user.nameInfo
-                        ?: return ConversionFailure(Exception("Invalid Input $user")) //is invalid input correct?
+                        ?: return ConversionFailure(Exception("Invalid Input $user"))
                 )
 
                 CreateDoctorUserDto.CreateDoctorUserDtoType.Find -> CreateDoctor.User.Find(
@@ -45,9 +46,7 @@ fun CreateDoctorDto.toCreateDoctor(): Result4k<CreateDoctor, ConversionError<Cre
             dateOfBirth = dateOfBirth,
             addresses = addresses,
             emails = emails.map {
-                it.toCreateEmail() ?: return ConversionFailure(
-                    Exception("Invalid Email type")
-                )
+                it.toCreateEmail().onFailure { e -> return ConversionFailure(e.reason) }
             },
             patients = patients,
         )
