@@ -116,20 +116,31 @@ class InconvertibleEntityException(entity: AbstractJpaPersistable, kClass: KClas
 }
 
 sealed interface PersistenceError {
-    class FindException(entity: KClass<*>, id: UUID) : PersistenceError,
-        MockingbirdException("Could not find entity of type ${entity.simpleName} given the id $id") {
+    fun toMockingbirdException(): MockingbirdException
+
+    class FindError(private val entity: KClass<*>, private val id: UUID) : PersistenceError {
+
+        class FindException(message: String, cause: Throwable? = null) : MockingbirdException(message, cause)
+
+        override fun toMockingbirdException(): MockingbirdException =
+            FindException("Could not find entity of type ${entity.simpleName} given the id $id")
+
         companion object {
             operator fun invoke(entity: KClass<*>, id: UUID): Failure<PersistenceError> {
-                return Failure(FindException(entity, id))
+                return Failure(FindError(entity, id))
             }
         }
     }
 
-    class CreateException(entity: KClass<*>, override val message: String) : PersistenceError,
-        MockingbirdException("Could not create entity of type ${entity.simpleName}, cause: $message") {
+    class CreateError(private val entity: KClass<*>, val message: String) : PersistenceError {
+        class CreateException(message: String, cause: Throwable? = null) : MockingbirdException(message, cause)
+
+        override fun toMockingbirdException(): MockingbirdException =
+            CreateException("Could not create entity of type ${entity.simpleName}, cause: $message")
+
         companion object {
             operator fun invoke(entity: KClass<*>, cause: String): Failure<PersistenceError> {
-                return Failure(CreateException(entity, cause))
+                return Failure(CreateError(entity, cause))
             }
         }
     }

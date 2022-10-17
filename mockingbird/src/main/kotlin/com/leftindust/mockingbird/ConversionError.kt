@@ -21,14 +21,14 @@ class ConversionError<T : Any, S : Any>(
             source: T,
             cause: ConversionError<*, *>,
         ): Failure<ConversionError<T, S>> {
-            return Failure(ConversionError(source, S::class, cause.toException()))
+            return Failure(ConversionError(source, S::class, cause.toMockingbirdException()))
         }
 
         inline fun <T : Any, reified S : Any> T.ConversionFailure(cause: ConversionError<*, *>): Failure<ConversionError<T, S>> {
-            return Failure(this, cause.toException())
+            return Failure(this, cause.toMockingbirdException())
         }
     }
 
     class ConversionException(message: String, cause: Throwable? = null) : MockingbirdException(message, cause)
-    fun toException(): Exception = ConversionException("Could not convert $source to $target", cause)
+    fun toMockingbirdException(): MockingbirdException = ConversionException("Could not convert $source to $target", cause)
 }

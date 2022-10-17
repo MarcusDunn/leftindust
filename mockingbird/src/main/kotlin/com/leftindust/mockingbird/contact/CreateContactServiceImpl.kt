@@ -23,7 +23,7 @@ class CreateContactServiceImpl(
 ) : CreateContactService {
     override suspend fun createContact(createContact: CreateContactPatient): Result4k<Contact, PersistenceError> {
         val patient =
-            patientRepository.findByIdOrNull(createContact.patientId) ?: return PersistenceError.FindException.invoke(
+            patientRepository.findByIdOrNull(createContact.patientId) ?: return PersistenceError.FindError.invoke(
                 PatientEntity::class,
                 createContact.patientId
             )

@@ -69,7 +69,7 @@ class CreatePatientServiceImpl(
                 .map {
                     CreateContactPatientImpl(
                         patientId = savedPatient.id
-                            ?: return PersistenceError.CreateException.invoke(PatientEntity::class, "null entity id returned on persist"),
+                            ?: return PersistenceError.CreateError.invoke(PatientEntity::class, "null entity id returned on persist"),
                         nameInfo = it.nameInfo,
                         relationship = it.relationship,
                         phones = it.phones,

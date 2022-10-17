@@ -37,7 +37,7 @@ class CreateCompleteSurveyServiceImpl(
                 .toSet(),
             surveyLink = run {
                 surveyLinkRepository.findByIdOrNull(createCompleteSurvey.surveyLinkId.value)
-                    ?: return PersistenceError.FindException.invoke(
+                    ?: return PersistenceError.FindError.invoke(
                         CompleteSurveyEntity::class,
                         createCompleteSurvey.surveyLinkId.value
                     )
