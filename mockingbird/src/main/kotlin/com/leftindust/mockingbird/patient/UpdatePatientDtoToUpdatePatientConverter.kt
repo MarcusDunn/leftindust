@@ -29,9 +29,8 @@ fun UpdatePatientDto.toUpdatePatient(): Result4k<UpdatePatient, ConversionError<
             phones = Updatable.Update(phones),
             addresses = Updatable.Update(addresses),
             emails = Updatable.Update(emails.map {
-                it.toCreateEmail() ?: return ConversionFailure(
-                    Exception("Invalid Email type")
-                )
+                it.toCreateEmail()
+                    .onFailure { e -> return ConversionFailure(e.reason) }
             }),
             dateOfBirth = Updatable.Update(dateOfBirth),
             insuranceNumber = Updatable.Update(insuranceNumber),
