@@ -48,7 +48,7 @@ class CreatePatientDtoToCreatePatientConverter(
         override val emails: List<CreateEmail>,
         override val insuranceNumber: String?,
         override val sex: Sex,
-        override val gender: String,
+        override val gender: String?,
         override val ethnicity: Ethnicity?,
         override val contacts: List<CreateContact>,
         override val doctors: List<DoctorDto.DoctorDtoId>,

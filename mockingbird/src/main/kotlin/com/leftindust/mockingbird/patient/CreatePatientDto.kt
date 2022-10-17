@@ -18,7 +18,7 @@ data class CreatePatientDto(
     val emails: List<CreateEmailDto>,
     val insuranceNumber: String?,
     val sex: Sex,
-    val gender: String,
+    val gender: String?,
     val ethnicity: Ethnicity?,
     val emergencyContacts: List<CreateContactDto>,
     val doctors: List<DoctorDto.DoctorDtoId>,
