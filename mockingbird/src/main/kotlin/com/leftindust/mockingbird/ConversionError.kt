@@ -7,7 +7,7 @@ class ConversionError<T : Any, S : Any>(
     private val source: T,
     private val target: KClass<S>,
     private val cause: Exception,
-) : MockingbirdError {
+) {
     companion object {
         inline fun <T : Any, reified S : Any> Failure(source: T, cause: Exception): Failure<ConversionError<T, S>> {
             return Failure(ConversionError(source, S::class, cause))
@@ -29,7 +29,6 @@ class ConversionError<T : Any, S : Any>(
         }
     }
 
-    override fun toException(): Exception {
-        return RuntimeException("Could not convert $source to $target", cause)
-    }
+    class ConversionException(message: String, cause: Throwable? = null) : MockingbirdException(message, cause)
+    fun toException(): Exception = ConversionException("Could not convert $source to $target", cause)
 }

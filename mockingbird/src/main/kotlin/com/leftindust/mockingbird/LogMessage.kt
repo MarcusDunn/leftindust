@@ -3,9 +3,9 @@ package com.leftindust.mockingbird
 import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import dev.forkhandles.result4k.Failure
-import graphql.ErrorClassification
+import graphql.ErrorType
 import graphql.GraphQLError
-import graphql.language.SourceLocation
+import graphql.GraphqlErrorBuilder
 import java.util.UUID
 import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
@@ -84,7 +84,14 @@ class NoOpUpdatedEntityFieldMessage<T>(
 ) :
     UpdatedEntityFieldMessage<T>(targetEntity, property, "No update ${reason?.let { ". Cause: $it" }}")
 
-sealed class MockingbirdException(errorMessage: String, cause: Throwable? = null) : RuntimeException(errorMessage, cause)
+sealed class MockingbirdException(private val errorMessage: String, cause: Throwable? = null) :
+    RuntimeException(errorMessage, cause) {
+    fun toGraphQLError(): GraphQLError? {
+        return GraphqlErrorBuilder.newError().message(this.errorMessage + (cause?.let { ", cause: $cause" } ?: ""))
+            .errorType(ErrorType.DataFetchingException)
+            .build()
+    }
+}
 
 class NullEntityIdInConverterException(entity: AbstractJpaPersistable) :
     MockingbirdException("Tried to convert but $entity has a null id")
@@ -109,37 +116,21 @@ class InconvertibleEntityException(entity: AbstractJpaPersistable, kClass: KClas
 }
 
 sealed interface PersistenceError {
-    class FindException(private val entity: KClass<*>, private val id: UUID)
-        : PersistenceError, GraphQLError, MockingbirdException("Could not find entity of type ${entity.simpleName} given the id $id")
-    {
+    class FindException(entity: KClass<*>, id: UUID) : PersistenceError,
+        MockingbirdException("Could not find entity of type ${entity.simpleName} given the id $id") {
         companion object {
             operator fun invoke(entity: KClass<*>, id: UUID): Failure<PersistenceError> {
                 return Failure(FindException(entity, id))
             }
         }
-
-        override fun <e: GraphQLError> getMessage(): String {
-            super<MockingbirdException>.message
-        }
-
-        override fun getLocations(): MutableList<SourceLocation>? = null
-        override fun getErrorType(): ErrorClassification? = null
     }
 
-    class CreateException(private val entity: KClass<*>, private val cause : String) : PersistenceError {
+    class CreateException(entity: KClass<*>, override val message: String) : PersistenceError,
+        MockingbirdException("Could not create entity of type ${entity.simpleName}, cause: $message") {
         companion object {
             operator fun invoke(entity: KClass<*>, cause: String): Failure<PersistenceError> {
                 return Failure(CreateException(entity, cause))
             }
-        }
-
-        private val message = "Could not create entity of type ${entity.simpleName}, cause: $cause"
-        override fun getMessage() = message
-
-        override fun getLocations(): MutableList<SourceLocation>? = null
-        override fun getErrorType(): ErrorClassification? = null
-        override fun toException(): MockingbirdException {
-            return MockingbirdException(message)
         }
     }
 }

@@ -14,16 +14,10 @@ class GraphQLExceptionHandler : DataFetcherExceptionResolverAdapter() {
 
     private val logger = KotlinLogging.logger { }
 
-
     override fun resolveToSingleError(e: Throwable, env: DataFetchingEnvironment): GraphQLError? {
         return when (e) {
-            is MockingbirdException -> toGraphQLError(e)
-            else -> super.resolveToSingleError(e, env)
+            is MockingbirdException -> e.toGraphQLError()
+            else -> super.resolveToSingleError(e, env).also { logger.warn("Caught an unhandled exception: ${e.message}", e) }
         }
-    }
-
-    private fun toGraphQLError(e: Throwable): GraphQLError? {
-        logger.warn("Exception while handling request", e)
-        return GraphqlErrorBuilder.newError().message(e.message).errorType(ErrorType.DataFetchingException).build()
     }
 }
