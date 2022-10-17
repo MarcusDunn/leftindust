@@ -363,6 +363,7 @@ type Patient {
     sex: Sex!
     gender: String!
     ethnicity: Ethnicity
+    assignedSurveys: [SurveyLink!]!
 }
 
 input CreatePhone {
