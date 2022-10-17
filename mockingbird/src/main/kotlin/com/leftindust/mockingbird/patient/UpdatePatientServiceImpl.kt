@@ -1,4 +1,3 @@
-
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.*
@@ -37,7 +36,7 @@ class UpdatePatientServiceImpl(
     private val doctorRepository: DoctorRepository,
 
 
-) : UpdatePatientService {
+    ) : UpdatePatientService {
 
     private val logger = KotlinLogging.logger { }
 
@@ -55,7 +54,7 @@ class UpdatePatientServiceImpl(
 
         patientInput.dateOfBirth.applyUpdatable(patient, patient::dateOfBirth, logger)
         patientInput.ethnicity.applyDeletable(patient, patient::ethnicity, logger)
-        patientInput.gender.applyUpdatable(patient, patient::gender, logger)
+        patientInput.gender.applyDeletable(patient, patient::gender, logger)
         patientInput.sex.applyUpdatable(patient, patient::sex, logger)
         patientInput.insuranceNumber.applyDeletable(patient, patient::insuranceNumber, logger)
 

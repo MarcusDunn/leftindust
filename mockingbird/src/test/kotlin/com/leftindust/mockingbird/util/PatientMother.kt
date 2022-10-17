@@ -12,6 +12,7 @@ import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.DansHouse
 import com.leftindust.mockingbird.util.EmailMother.DansEmail
+import dev.forkhandles.result4k.valueOrNull
 import java.time.LocalDate
 import java.time.Month
 import java.util.UUID
@@ -186,6 +187,6 @@ object PatientMother {
         val updatedDto: PatientDto = patientToPatientDtoConverter.convert(updatedDomainEntityDetached)
 
         val domainEntityTransient = patientEntityToPatientConverter.convert(entityTransient)
-        val createPatient = createPatientDto.toCreatePatient()
+        val createPatient = createPatientDto.toCreatePatient().valueOrNull()!!
     }
 }

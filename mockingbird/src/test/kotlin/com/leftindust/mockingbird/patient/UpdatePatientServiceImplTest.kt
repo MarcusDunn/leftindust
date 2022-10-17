@@ -2,6 +2,7 @@ package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.util.PatientMother
 import com.ninjasquad.springmockk.MockkBean
+import dev.forkhandles.result4k.valueOrNull
 import io.ktor.util.reflect.*
 import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,7 +32,7 @@ class UpdatePatientServiceImplTest(
 
         TODO()
 //        createPatientServiceImpl.addNewPatient(PatientMother.Dan.createPatient)
-//        val updatedPatient = updatePatientServiceImpl.update(PatientMother.Dan.updatePatientDto)
+//        val updatedPatient = updatePatientServiceImpl.update(PatientMother.Dan.updatePatientDto.toUpdatePatient().valueOrNull()!!)
 //
 //        checkNotNull(updatedPatient)
 //        val readPatient = readPatientServiceImpl.getByPatientId(PatientMother.Dan.updatePatientDto.pid)
