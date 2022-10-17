@@ -4,10 +4,10 @@ import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionDto
 import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionEntity
 import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionEntityToCompleteSurveySectionConverter
 import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionToCompleteSurveySectionDtoConverter
-import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveyDtoToCreateCompleteSurveyConverter
+import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveySection
 import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveySectionDto
-import com.leftindust.mockingbird.util.SurveyTemplateSectionMother.HowMuchPainAreYouInSection
 import com.leftindust.mockingbird.util.CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt
+import com.leftindust.mockingbird.util.SurveyTemplateSectionMother.HowMuchPainAreYouInSection
 import java.util.UUID
 
 object CompleteSurveySectionMother {
@@ -32,10 +32,9 @@ object CompleteSurveySectionMother {
             completedSurveyInputs = completedSurveyInputs
         )
 
-        val create = CreateCompleteSurveyDtoToCreateCompleteSurveyConverter.CreateCompleteSurveySectionImpl(
-            surveyTemplateSectionId = surveyTemplateSectionId,
-            completedSurveyInputs = createCompletedSurveyInputs
-        )
-
+        val create = object : CreateCompleteSurveySection {
+            override val surveyTemplateSectionId = this@CompleteHowMuchPainAreYouInSection.surveyTemplateSectionId
+            override val completedSurveyInputs = this@CompleteHowMuchPainAreYouInSection.createCompletedSurveyInputs
+        }
     }
 }

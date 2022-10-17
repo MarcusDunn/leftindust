@@ -17,7 +17,6 @@
   import { defaultTemplate, templateForm } from '.';
   import TemplateCategoryInputs from './components/TemplateInputs/TemplateCategoryInputs.svelte';
   import { closeWizard } from '../Wizard';
-  import { sendTrigger } from '../Triggers';
 
   export let callback: () => void;
 
@@ -29,7 +28,7 @@
     closeWizard();
   };
 
-  const { form, errors, data } = templateForm(closeWizardHandler);
+  const { form, errors, data, interacted } = templateForm(closeWizardHandler);
 
   let ref: HTMLFormElement;
 </script>
@@ -38,6 +37,7 @@
   title="New Template"
   subtitle="Create a new template"
   color="deeppurple"
+  interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}
   on:close={() => closeWizardHandler()}
   disabled={$TemplateNodesModalOpen}

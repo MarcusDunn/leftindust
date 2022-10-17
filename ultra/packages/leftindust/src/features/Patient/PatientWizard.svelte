@@ -30,7 +30,7 @@
     closeWizard();
   };
 
-  const { form, data: formData, handleSubmit, errors, reset } = createPatientForm(closeWizardHandler, patientId);
+  const { form, data: formData, handleSubmit, errors, reset, interacted } = createPatientForm(closeWizardHandler, patientId);
 
   let ref: HTMLFormElement;
 </script>
@@ -39,6 +39,7 @@
   title={$_('generics.newPatient')}
   subtitle={$_('descriptions.addPatientDescription')}
   color="purple"
+  interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}
   on:close={closeWizardHandler}
 >
