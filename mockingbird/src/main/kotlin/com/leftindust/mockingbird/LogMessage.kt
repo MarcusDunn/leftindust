@@ -84,7 +84,7 @@ class NoOpUpdatedEntityFieldMessage<T>(
 ) :
     UpdatedEntityFieldMessage<T>(targetEntity, property, "No update ${reason?.let { ". Cause: $it" }}")
 
-sealed class MockingbirdException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
+sealed class MockingbirdException(errorMessage: String, cause: Throwable? = null) : RuntimeException(errorMessage, cause)
 
 class NullEntityIdInConverterException(entity: AbstractJpaPersistable) :
     MockingbirdException("Tried to convert but $entity has a null id")
@@ -108,26 +108,22 @@ class InconvertibleEntityException(entity: AbstractJpaPersistable, kClass: KClas
     }
 }
 
-interface MockingbirdError {
-    fun toException(): Exception
-}
-
-sealed interface PersistenceError : MockingbirdError, GraphQLError {
-    class FindException(private val entity: KClass<*>, private val id: UUID) : PersistenceError {
+sealed interface PersistenceError {
+    class FindException(private val entity: KClass<*>, private val id: UUID)
+        : PersistenceError, GraphQLError, MockingbirdException("Could not find entity of type ${entity.simpleName} given the id $id")
+    {
         companion object {
             operator fun invoke(entity: KClass<*>, id: UUID): Failure<PersistenceError> {
                 return Failure(FindException(entity, id))
             }
         }
 
-        private val message = "Could not find entity of type ${entity.simpleName} given the id $id"
+        override fun <e: GraphQLError> getMessage(): String {
+            super<MockingbirdException>.message
+        }
 
-        override fun getMessage() = message
         override fun getLocations(): MutableList<SourceLocation>? = null
         override fun getErrorType(): ErrorClassification? = null
-        override fun toException(): Exception {
-            return RuntimeException(message)
-        }
     }
 
     class CreateException(private val entity: KClass<*>, private val cause : String) : PersistenceError {
@@ -142,8 +138,8 @@ sealed interface PersistenceError : MockingbirdError, GraphQLError {
 
         override fun getLocations(): MutableList<SourceLocation>? = null
         override fun getErrorType(): ErrorClassification? = null
-        override fun toException(): Exception {
-            return RuntimeException(message)
+        override fun toException(): MockingbirdException {
+            return MockingbirdException(message)
         }
     }
 }

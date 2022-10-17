@@ -17,13 +17,13 @@ class GraphQLExceptionHandler : DataFetcherExceptionResolverAdapter() {
 
     override fun resolveToSingleError(e: Throwable, env: DataFetchingEnvironment): GraphQLError? {
         return when (e) {
-            is RuntimeException -> toGraphQLError(e)
+            is MockingbirdException -> toGraphQLError(e)
             else -> super.resolveToSingleError(e, env)
         }
     }
 
     private fun toGraphQLError(e: Throwable): GraphQLError? {
-        logger.warn("Exception while handling request: ${e.message}", e)
+        logger.warn("Exception while handling request", e)
         return GraphqlErrorBuilder.newError().message(e.message).errorType(ErrorType.DataFetchingException).build()
     }
 }
