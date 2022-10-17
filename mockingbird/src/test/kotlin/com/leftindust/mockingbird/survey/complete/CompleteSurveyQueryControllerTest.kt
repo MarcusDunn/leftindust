@@ -2,6 +2,8 @@ package com.leftindust.mockingbird.survey.complete
 
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.util.CompleteSurveyMother.FilledOutKoosKneeSurvey
+import com.leftindust.mockingbird.util.CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection
+import com.leftindust.mockingbird.util.CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import org.intellij.lang.annotations.Language
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
+import java.util.*
 
 @GraphQlTest(CompleteSurveyQueryController::class)
 internal class CompleteSurveyQueryControllerWebTest(
@@ -79,27 +82,5 @@ internal class CompleteSurveyQueryControllerWebTest(
             .path("completeSurveyByRange[0].id.value")
             .entity(UUID::class.java)
             .isEqualTo(FilledOutKoosKneeSurvey.dto.id.value)
-    }
-
-    @Test
-    internal fun `check can query by patient id`() {
-        coEvery { readCompleteSurveyService.getByPatientId(PatientMother.Dan.graphqlId) } returns FilledOutKoosKneeSurvey.domain
-
-        @Language("graphql")
-        val query = """
-            query {
-                completeSurveyByPatientId(patientId: {value: "${PatientMother.Dan.id}" }) {
-                    id { value }
-                }
-            }
-        """.trimIndent()
-
-        graphQlTester.document(query)
-            .execute()
-            .errors()
-            .verify()
-            .path("completeSurveyByPatientId")
-            .entity(CompleteSurveyDto::class.java)
-            .isEqualTo(FilledOutKoosKneeSurvey.dto)
     }
 }

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service
 @Service
 class ReadCompleteSurveyServiceImpl(
     private val completeSurveyRepository: CompleteSurveyRepository,
-    private val surveyLinkRepository: SurveyLinkRepository,
     private val completeSurveyEntityToCompleteSurvey: InfallibleConverter<CompleteSurveyEntity, CompleteSurvey>
 ) : ReadCompleteSurveyService {
     override suspend fun completeSurveyByCompleteSurveyId(completeSurveyId: CompleteSurveyDto.CompleteSurveyDtoId): CompleteSurvey? {
@@ -26,12 +25,6 @@ class ReadCompleteSurveyServiceImpl(
 
     override suspend fun getBySurveyLink(surveyLinkDtoId: SurveyLinkDto.SurveyLinkDtoId): CompleteSurvey? {
         val completeSurveyEntity = completeSurveyRepository.findBySurveyLinkId(surveyLinkDtoId.value)
-            ?: return null
-        return completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity)
-    }
-
-    override suspend fun getByPatientId(patientDtoId: PatientDto.PatientDtoId): CompleteSurvey? {
-        val completeSurveyEntity = surveyLinkRepository.findByPatientId(patientDtoId.value)?.completeSurvey
             ?: return null
         return completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity)
     }
