@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service
 @Service
 class CreateCompleteSurveyServiceImpl(
     private val completeSurveyRepository: CompleteSurveyRepository,
-    private val surveyTemplateRepository: SurveyTemplateRepository,
     private val surveyLinkRepository: SurveyLinkRepository,
     private val completeSurveyEntityToCompleteSurvey: CompleteSurveyEntityToCompleteSurvey,
 ) : CreateCompleteSurveyService {

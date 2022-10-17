@@ -17,7 +17,7 @@ class CreateEmailDtoToCreateEmailFallibleConverter : FallibleConverter<CreateEma
         return CreateEmailImpl(
             type = source.type,
             email = EmailAddress
-                .ofResult4k(source.email.lowercase())
+                .ofResult4k(source.email)
                 .peekFailure { logger.warn { FailedConversionMessage(source) } }
                 .valueOrNull() ?: return null
         )
