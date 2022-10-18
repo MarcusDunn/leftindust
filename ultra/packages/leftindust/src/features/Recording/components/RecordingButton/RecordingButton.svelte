@@ -4,7 +4,7 @@
   import { cubicInOut } from 'svelte/easing';
   import { scale } from 'svelte/transition';
   import { recordingSequenceStarted, recordingTimer, forceRecordingSequence } from '../../store';
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, tick } from 'svelte';
 
   export let label = 'Start Recording';
 
@@ -21,6 +21,9 @@
   $: {
     if ($forceRecordingSequence) {
       dispatch('start');
+      void tick().then(() => {
+        $forceRecordingSequence = false;
+      });
     }
   }
 

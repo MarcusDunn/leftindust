@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { Button, Searchbar } from 'framework7-svelte';
+  import { Searchbar } from 'framework7-svelte';
+  import type { RecordingTranscript } from '../Recording';
   import RecordingButton from '../Recording/components/RecordingButton/RecordingButton.svelte';
   import RecordingModal from '../Recording/components/RecordingModal/RecordingModal.svelte';
   import { recordingSequenceStarted } from '../Recording/store';
@@ -9,6 +10,10 @@
   import MenuButton from '../UI/components/MenuButton/MenuButton.svelte';
   import Page from '../UI/components/Page/Page.svelte';
   import { openPopupUrl } from '../View';
+
+  const reciveTranscript = (transcript: string, bufferedTranscript: RecordingTranscript) => {
+    console.log(transcript, bufferedTranscript);
+  };
 </script>
 
 <Page style="overflow: hidden">
@@ -33,7 +38,12 @@
           style="margin-right: 20px;"
           on:start={() => openDialog({
             title: 'Recording',
-            component: RecordingModal,
+            component: {
+              component: RecordingModal,
+              params: {
+                onStop: reciveTranscript,
+              },
+            },
           })}
         />
         <MenuButton

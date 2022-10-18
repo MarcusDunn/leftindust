@@ -9,7 +9,7 @@
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
   import { closeWizard } from '.';
   import { openDialog } from '../UI/components/Dialog';
-  
+   
   const dispatch = createEventDispatcher();
 
   export let title: string | undefined = undefined;

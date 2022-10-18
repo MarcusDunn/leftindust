@@ -4,6 +4,8 @@ import { Buffer } from 'buffer';
 
 import Microphone from 'microphone-stream';
 
+export type RecordingTranscript = { time: string; text: string }[];
+
 export const detectRecordingDevice = (devices: MediaDeviceInfo[]): { id: string, value: string }[] => {
   let newDevices: { id: string, value: string }[] = [];
   for (let i = 0; i !== devices.length; i++) {

@@ -8,13 +8,15 @@
   import RecordingIndicator from '../RecordingIndicator/RecordingIndicator.svelte';
   import DialogContent from '@/features/UI/components/Dialog/DialogContent.svelte';
   import { defaultAudioDeviceId, recordingConversation, recordingLanguage, recordingMedicalSpecialty } from '../../store';
-  import { StartMedicalStreamTranscriptionCommand, StartStreamTranscriptionCommand } from '@aws-sdk/client-transcribe-streaming';
-  import { animateIncomingText, audioStream, awsTranscribeClient } from '../..';
+  import { StartMedicalStreamTranscriptionCommand } from '@aws-sdk/client-transcribe-streaming';
+  import { audioStream, awsTranscribeClient, type RecordingTranscript } from '../..';
   import Microphone from 'microphone-stream';
-  import { Block } from 'framework7-svelte';
-  import { fade, scale } from 'svelte/transition';
+  import { fade } from 'svelte/transition';
 
   export let open: Writable<boolean>;
+  export let close: () => void;
+
+  export let onStop: (transcript: string, data: RecordingTranscript) => void;
 
   const refreshDuration = 500;
 
@@ -31,7 +33,7 @@
   let pausedDuration = 0;
   let time = '00:00:00';
 
-  let bufferedTranscript: { time: string; text: string }[] = [{ time: '00:00:00', text: '' }];
+  let bufferedTranscript: RecordingTranscript = [{ time: '00:00:00', text: '' }];
   let transcript = '';
 
   const formatTimestamp = (timestamp: number): string => {
@@ -99,6 +101,8 @@
           const blob = new Blob(media, { 'type' : 'audio/wav' });
           media = [];
           audioRef.src = window.URL.createObjectURL(blob);
+
+          onStop(transcript, bufferedTranscript);
         };
 
         const response = await awsTranscribeClient.send(command);
@@ -186,7 +190,7 @@
         buttons: [
           {
             label: $_('generics.ok'),
-            onClick: () => $open = false,
+            onClick: close,
           },
         ],
       }}
@@ -230,7 +234,7 @@
           icon={{ f7: 'square_fill', color: 'red' }}
           on:click={() => {
             stopRecording();
-            $open = false;
+            close();
           }}
         />
       </div>
