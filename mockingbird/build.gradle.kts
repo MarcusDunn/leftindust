@@ -81,17 +81,17 @@ dependencies {
     liquibaseRuntime(sourceSets.main.get().output)
 
     // spring testing
-    testImplementation("org.springframework.boot", "spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-        exclude(module = "mockito-core")
-    }
-    testImplementation("com.h2database", "h2", "2.1.212")
+    testImplementation("org.springframework.boot", "spring-boot-test")
+    testImplementation("org.springframework.boot", "spring-boot-test-autoconfigure")
     testImplementation("org.springframework.security", "spring-security-test")
     testImplementation("org.springframework.graphql", "spring-graphql-test")
-    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.2")
+    testImplementation("org.junit.jupiter", "junit-jupiter-api")
+    testImplementation("org.junit.jupiter", "junit-jupiter-engine")
+    testImplementation("com.h2database", "h2")
+
+    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.4")
 
     testImplementation("com.ninja-squad", "springmockk", "3.1.1")
-    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.6.2")
 }
 
 liquibase {
