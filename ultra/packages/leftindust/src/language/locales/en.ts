@@ -9,6 +9,8 @@ const language: Dictionary = {
     addDoctor: 'Add a new doctor to this clinic',
     addDoctorDescription: 'Add a new doctor to this clinic',
     addPatientDescription: 'Add a new patient to this clinic',
+    editPatientDescription: 'Edit patient information',
+    editDoctorDescription: 'Edit doctor information',
     noRecents: 'No recents found...',
     noPatients: 'No patients found...',
     noDoctors: 'No doctors found...',

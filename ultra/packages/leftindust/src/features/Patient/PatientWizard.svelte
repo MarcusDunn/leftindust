@@ -18,10 +18,8 @@
   import Emails from '../Input/components/Email/Emails.svelte';
   import Addresses from '../Input/components/Address/Addresses.svelte';
   import { closeWizard } from '../Wizard';
-  import { sendTrigger } from '../Triggers';
 
   export let patientId: string | undefined = undefined;
-
   export let callback: () => void;
 
   const closeWizardHandler = () => {
@@ -36,8 +34,8 @@
 </script>
 
 <Wizard
-  title={$_('generics.newPatient')}
-  subtitle={$_('descriptions.addPatientDescription')}
+  title={patientId ? $_('generics.editPatient') : $_('generics.newPatient')}
+  subtitle={patientId ? $_('descriptions.editPatientDescription') : $_('descriptions.addPatientDescription')}
   color="purple"
   interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}

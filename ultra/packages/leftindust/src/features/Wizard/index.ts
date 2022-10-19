@@ -7,7 +7,7 @@ import { wizardOpen, wizardViewPrevious } from './store';
 
 export const openWizard = (
   url: Path | string,
-  props = {},
+  props: Record<string, unknown> = {},
 ): boolean => {
   const router: View['View']['router'] = f7.views.get('#view-wizard').router;
 

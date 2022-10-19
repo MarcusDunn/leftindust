@@ -313,16 +313,16 @@ export type EditDoctor = {
 };
 
 export type EditPatient = {
-  addresses: Array<CreateAddress>;
-  dateOfBirth?: InputMaybe<Scalars['LocalDate']>;
-  doctor: Array<DoctorIdInput>;
-  emails: Array<CreateEmail>;
-  emergencyContacts: Array<CreateContact>;
-  ethnicity: Ethnicity;
+  addresses?: Array<CreateAddress>;
+  dateOfBirth: InputMaybe<Scalars['LocalDate']>;
+  doctor?: Array<DoctorIdInput>;
+  emails?: Array<CreateEmail>;
+  emergencyContacts?: Array<CreateContact>;
+  ethnicity?: Ethnicity;
   gender: Scalars['String'];
   insuranceNumber?: InputMaybe<Scalars['String']>;
-  nameInfo?: InputMaybe<UpdateNameInfo>;
-  phones: Array<CreatePhone>;
+  nameInfo: InputMaybe<UpdateNameInfo>;
+  phones?: Array<CreatePhone>;
   pid: PatientIdInput;
   sex: Sex;
   thumbnail?: InputMaybe<Scalars['String']>;

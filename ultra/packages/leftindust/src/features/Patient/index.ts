@@ -133,15 +133,12 @@ export const createPatientForm = (closeWizardHandler: () => void, pid?: string) 
 
     try {
       if (pid) {
-        /*
-          TODO: Edit patient
-          await editPatient({
-            pid: {
-              value: pid,
-            },
-            ...patient,
-          });
-          */
+        await editPatient({
+          pid: {
+            value: pid,
+          },
+          ...patient,
+        });
       } else {
         await addPatient(patient);
       }
