@@ -49,7 +49,7 @@ class PatientEntity(
     var gender: String?,
     var ethnicity: Ethnicity?,
     var insuranceNumber: String?,
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     var contacts: MutableSet<Contact>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
     var doctors: MutableSet<DoctorPatientEntity>,
@@ -67,7 +67,7 @@ class PatientEntity(
 
     fun addContact(contact: Contact) {
         contacts.add(contact)
-        contact.patient = this
+        contact.patientEntity = this
     }
 
     fun removeContact(contact: Contact) {

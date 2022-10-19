@@ -1054,4 +1054,62 @@
         <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="doctor_entity"/>
         <renameColumn oldColumnName="name_info_id" newColumnName="name_info_entity_id" tableName="mediq_user"/>
     </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-44">
+        <dropForeignKeyConstraint baseTableName="patient_entity_event_entity" constraintName="fk7tht6a0qkgspidmdykpkg1klk"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-45">
+        <dropForeignKeyConstraint baseTableName="patient_entity_event_entity" constraintName="fkahisv2vpr7gjseupi05e932ng"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-47">
+        <dropTable tableName="patient_entity_event_entity"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-36">
+        <createTable tableName="patient_event_entity">
+            <column name="patient_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="patient_event_entity_pkey"/>
+            </column>
+            <column name="event_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="patient_event_entity_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-37">
+        <addColumn tableName="contact">
+            <column name="name_info_entity_id" type="uuid"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-38">
+        <addColumn tableName="contact">
+            <column name="patient_entity_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-39">
+        <addForeignKeyConstraint baseColumnNames="name_info_entity_id" baseTableName="contact" constraintName="fk1o543mdwdvjsi31ti2p7vob5g" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="name_info_entity" validate="true"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-40">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="patient_event_entity" constraintName="fkahisv2vpr7gjseupi05e932ng" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="event" validate="true"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-41">
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="patient_event_entity" constraintName="fkppl20yaci3ael4u61nurlqui1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient_entity" validate="true"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-42">
+        <addForeignKeyConstraint baseColumnNames="patient_entity_id" baseTableName="contact" constraintName="fktafrw79qtp8j3jtg7inkyc79j" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patient_entity" validate="true"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-43">
+        <dropForeignKeyConstraint baseTableName="contact" constraintName="fk2ygsb9t4baokpt9iqb5b9pdcc"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-46">
+        <dropForeignKeyConstraint baseTableName="contact" constraintName="fkfqe08txe7xx016vommoew1lmc"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-48">
+        <dropColumn columnName="name_info_id" tableName="contact"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-49">
+        <dropColumn columnName="patient_id" tableName="contact"/>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666048249276-9">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="gender" tableName="patient_entity"/>
+    </changeSet>
 </databaseChangeLog>
