@@ -2,13 +2,19 @@ package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.contact.ContactDto
+import com.leftindust.mockingbird.contact.CreateContactDtoToCreateContactConverter
+import com.leftindust.mockingbird.email.CreateEmailDtoToCreateEmailFallibleConverter
+import com.leftindust.mockingbird.patient.CreatePatientServiceImpl
 import com.leftindust.mockingbird.patient.PatientEntity
+import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Relationship
 import com.leftindust.mockingbird.phone.Phone
 import java.util.UUID
 
 object ContactMother {
+    private val createEmailDtoToEmailDtoConverter = CreateEmailDtoToCreateEmailFallibleConverter()
+    private val CreateContactDtoToCreateContactConverter = CreateContactDtoToCreateContactConverter(createEmailDtoToEmailDtoConverter,)
     object Aydan {
 
         const val firstName = "Aydan"
@@ -23,7 +29,7 @@ object ContactMother {
         val patientDetached: PatientEntity = PatientMother.Dan.entityDetached
         val patientTransient: PatientEntity = PatientMother.Dan.entityDetached
         val entityDetached = Contact(
-            patient = patientDetached,
+            patientEntity = patientDetached,
             relationship = relationship,
             nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
@@ -37,7 +43,7 @@ object ContactMother {
         }
 
         val entityTransient = Contact(
-            patient = patientTransient,
+            patientEntity = patientTransient,
             relationship = relationship,
             nameInfoEntity = NameInfoEntity(
                 firstName = firstName,
@@ -46,6 +52,18 @@ object ContactMother {
             ),
             phone = phone,
             email = emailsTransient,
+        )
+
+        val createDomain = CreatePatientServiceImpl.CreateContactPatientImpl(
+            patientId = patientDetached.id!!,
+            nameInfo = CreateNameInfoDto(
+                firstName = "Aydan",
+                middleName = null,
+                lastName = "White"
+            ),
+            relationship = Relationship.Parent,
+            phones = emptyList(),
+            emails = listOf(EmailMother.DansEmail.createDomain)
         )
     }
 }

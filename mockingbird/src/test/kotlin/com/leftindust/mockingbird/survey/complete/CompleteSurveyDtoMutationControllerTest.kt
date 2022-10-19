@@ -4,6 +4,7 @@ import com.leftindust.mockingbird.util.CompleteSurveySectionInputMother.FilledOu
 import com.leftindust.mockingbird.util.CompleteSurveyMother.FilledOutKoosKneeSurvey
 import com.leftindust.mockingbird.util.CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection
 import com.ninjasquad.springmockk.MockkBean
+import dev.forkhandles.result4k.Success
 import io.mockk.coEvery
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
@@ -25,7 +26,7 @@ internal class CompleteSurveyDtoMutationControllerTest(
 
     @Test
     internal fun `check can create a survey link`() {
-        coEvery { createCompleteSurveyService.createCompleteSurvey(any()) } returns FilledOutKoosKneeSurvey.domain
+        coEvery { createCompleteSurveyService.createCompleteSurvey(any()) } returns Success(FilledOutKoosKneeSurvey.domain)
 
         @Language("graphql")
         val mutation = """
