@@ -64,27 +64,24 @@ class CreatePatientServiceImpl(
 
         val savedPatient = patientRepository.save(newPatient)
 
-        savedPatient.id?.let { uuid ->
-            patient.contacts
-                .map {
-                    CreateContactPatientImpl(
-                        patientId = savedPatient.id
-                            ?: return PersistenceError.CreateError.invoke(PatientEntity::class, "null entity id returned on persist"),
-                        nameInfo = it.nameInfo,
-                        relationship = it.relationship,
-                        phones = it.phones,
-                        emails = it.emails
-                    )
-                }
-                .map { createContactService.createContact(it).onFailure { error ->  return error } }
-                .forEach { newPatient.addContact(it) }
-        }
+        patient.contacts
+            .map {
+                CreateContactPatientImpl(
+                    patientId = savedPatient.id!!,
+                    nameInfo = it.nameInfo,
+                    relationship = it.relationship,
+                    phones = it.phones,
+                    emails = it.emails
+                )
+            }
+            .map { createContactService.createContact(it).onFailure { error ->  return error } }
+            .forEach { newPatient.addContact(it) }
 
         return Success(patientEntityToPatientConverter.convert(savedPatient))
     }
 }
 
-data class CreateContactPatientImpl(
+private data class CreateContactPatientImpl(
     override val patientId: UUID,
     override val nameInfo: CreateNameInfo,
     override val relationship: Relationship,
