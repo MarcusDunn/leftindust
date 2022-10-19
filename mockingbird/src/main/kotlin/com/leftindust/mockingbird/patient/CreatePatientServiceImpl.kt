@@ -79,12 +79,12 @@ class CreatePatientServiceImpl(
 
         return Success(patientEntityToPatientConverter.convert(savedPatient))
     }
-}
 
-private data class CreateContactPatientImpl(
-    override val patientId: UUID,
-    override val nameInfo: CreateNameInfo,
-    override val relationship: Relationship,
-    override val phones: List<CreatePhone>,
-    override val emails: List<CreateEmail>
-) : CreateContactPatient
+    data class CreateContactPatientImpl(
+        override val patientId: UUID,
+        override val nameInfo: CreateNameInfo,
+        override val relationship: Relationship,
+        override val phones: List<CreatePhone>,
+        override val emails: List<CreateEmail>
+    ) : CreateContactPatient
+}

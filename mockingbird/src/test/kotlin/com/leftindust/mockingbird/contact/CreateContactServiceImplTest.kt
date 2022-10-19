@@ -26,9 +26,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.web.server.SecurityWebFilterChain
 import kotlinx.coroutines.test.runTest
-import org.assertj.core.api.Assertions.fail
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.jupiter.api.fail
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @DataJpaTest

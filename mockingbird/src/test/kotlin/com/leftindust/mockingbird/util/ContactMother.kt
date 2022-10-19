@@ -2,12 +2,9 @@ package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.contact.ContactDto
-import com.leftindust.mockingbird.contact.CreateContactDto
 import com.leftindust.mockingbird.contact.CreateContactDtoToCreateContactConverter
-import com.leftindust.mockingbird.email.CreateEmailDto
 import com.leftindust.mockingbird.email.CreateEmailDtoToCreateEmailFallibleConverter
-import com.leftindust.mockingbird.email.Email
-import com.leftindust.mockingbird.patient.CreateContactPatientImpl
+import com.leftindust.mockingbird.patient.CreatePatientServiceImpl
 import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.NameInfoEntity
@@ -57,7 +54,7 @@ object ContactMother {
             email = emailsTransient,
         )
 
-        val createDomain = CreateContactPatientImpl(
+        val createDomain = CreatePatientServiceImpl.CreateContactPatientImpl(
             patientId = patientDetached.id!!,
             nameInfo = CreateNameInfoDto(
                 firstName = "Aydan",
