@@ -9,6 +9,7 @@ import com.leftindust.mockingbird.phone.Phone
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
+import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
@@ -16,7 +17,7 @@ import javax.persistence.OneToOne
 @Entity
 class Contact(
     @ManyToOne(optional = false)
-    var patient: PatientEntity, //Patient information should not be optional for a contact info
+    var patientEntity: PatientEntity,
     @Enumerated(EnumType.STRING)
     var relationship: Relationship,
     @OneToOne

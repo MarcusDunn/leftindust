@@ -1,12 +1,6 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.doctor.ClinicDoctorEntity
-import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.doctor.DoctorEntity
-import com.leftindust.mockingbird.doctor.DoctorEntityToDoctorConverter
-import com.leftindust.mockingbird.doctor.DoctorEventEntity
-import com.leftindust.mockingbird.doctor.DoctorPatientEntity
-import com.leftindust.mockingbird.doctor.DoctorToDoctorDtoConverter
+import com.leftindust.mockingbird.doctor.*
 import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.JennysHouse
@@ -78,6 +72,8 @@ object DoctorMother {
                 this.emails = this@Jenny.emailsDetached
             }
 
+
+
         val domain = doctorEntityToDoctorConverter.convert(entityDetached)
         val dto = doctorToDoctorDto.convert(domain)
     }
@@ -116,6 +112,28 @@ object DoctorMother {
             clinics = clinics,
             patients = patients,
         ).apply { id = this@Dan.id }
+
+        // TODO: 2022-10-15 Make CreateDto and CreateUpdatedDto for this section
+//        val createDto = CreateDoctorDto(
+//            user = ,
+//            phones = ,
+//            title = ,
+//            clinic = ,
+//            dateOfBirth = ,
+//            addresses = ,
+//            emails = ,
+//            patients = ,
+//        )
+        //val createUpdatedDto = CreateDoctorDto(
+//            user = ,
+//            phones = ,
+//            title = ,
+//            clinic = ,
+//            dateOfBirth = ,
+//            addresses = ,
+//            emails = ,
+//            patients = ,
+//        )
 
         val domain = (doctorEntityToDoctorConverter.convert(entityDetached))
         val dto = doctorToDoctorDto.convert(domain)
