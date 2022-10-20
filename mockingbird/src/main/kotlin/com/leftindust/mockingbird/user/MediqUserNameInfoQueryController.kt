@@ -16,7 +16,7 @@ class MediqUserNameInfoQueryController(
     @QueryMapping
     suspend fun name(mediqUser: MediqUserDto): NameInfoDto {
         val nameInfo = readNameInfoService.getByUniqueId(mediqUser.id)
-            ?: throw NullSubQueryException(mediqUser, ReadNameInfoService::getByPatientId)
+            ?: throw NullSubQueryException(mediqUser, ReadNameInfoService::getByUniqueId)
         return nameInfoToNameInfoDtoConverter.convert(nameInfo)
     }
 }
