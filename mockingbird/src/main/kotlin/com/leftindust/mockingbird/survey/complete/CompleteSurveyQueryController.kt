@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.survey.complete
 
-import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyDto.CompleteSurveyDtoId
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Controller
 @Controller
 class CompleteSurveyQueryController(
     private val readCompleteSurveyService: ReadCompleteSurveyService,
-    private val completeSurveyToCompleteSurveyDtoConverter: InfallibleConverter<CompleteSurvey, CompleteSurveyDto>
 ) {
 
     @QueryMapping("completeSurveyById")
@@ -20,12 +18,12 @@ class CompleteSurveyQueryController(
         val completeSurveyByCompleteSurveyId =
             readCompleteSurveyService.completeSurveyByCompleteSurveyId(completeSurveyDtoId)
                 ?: return null
-        return completeSurveyToCompleteSurveyDtoConverter.convert(completeSurveyByCompleteSurveyId)
+        return completeSurveyByCompleteSurveyId.toCompleteSurveyDto()
     }
 
     @QueryMapping("completeSurveyByRange")
     suspend fun completeSurveyByRange(@Argument("range") completeSurveyDtoIds: RangeDto): List<CompleteSurveyDto> {
-        return readCompleteSurveyService.getMany(completeSurveyDtoIds).map { completeSurveyToCompleteSurveyDtoConverter.convert(it) }
+        return readCompleteSurveyService.getMany(completeSurveyDtoIds).map { it.toCompleteSurveyDto() }
     }
 }
 

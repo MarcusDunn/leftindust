@@ -4,6 +4,7 @@ import com.leftindust.mockingbird.FailedConversionMessage.Companion.FailedConver
 import com.leftindust.mockingbird.FallibleConverter
 import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.CreateEmailDto
+import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.person.Relationship
 import com.leftindust.mockingbird.phone.CreatePhone
 import mu.KotlinLogging
@@ -17,9 +18,7 @@ class CreateContactDtoToCreateContactConverter(
 ) : FallibleConverter<CreateContactDto, CreateContact> {
     override fun convert(source: CreateContactDto): CreateContact? {
         return CreateContactImpl(
-            firstName = source.firstName,
-            middleName = source.middleName,
-            lastName = source.lastName,
+            nameInfo = source.nameInfo,
             relationship = source.relationship,
             phones = source.phones,
             emails = source.emails.map { createEmailDtoToCreateEmailConverter.convert(it) ?: return null.also { logger.warn { FailedConversionMessage(source) } }},
@@ -27,9 +26,7 @@ class CreateContactDtoToCreateContactConverter(
     }
 
     data class CreateContactImpl(
-        override val firstName: String,
-        override val middleName: String?,
-        override val lastName: String,
+        override val nameInfo: CreateNameInfo,
         override val relationship: Relationship,
         override val phones: List<CreatePhone>,
         override val emails: List<CreateEmail>,

@@ -1,7 +1,9 @@
 package com.leftindust.mockingbird.survey.complete
 
+import com.leftindust.mockingbird.PersistenceError
 import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
-import com.leftindust.mockingbird.survey.template.SurveyTemplateRepository
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -15,7 +17,8 @@ class CreateCompleteSurveyServiceImpl(
     private val completeSurveyEntityToCompleteSurvey: CompleteSurveyEntityToCompleteSurvey,
 ) : CreateCompleteSurveyService {
     private val logger = KotlinLogging.logger { }
-    override suspend fun createCompleteSurvey(createCompleteSurvey: CreateCompleteSurvey): CompleteSurvey? {
+
+    override suspend fun createCompleteSurvey(createCompleteSurvey: CreateCompleteSurvey): Result4k<CompleteSurvey, PersistenceError> {
         val newCompleteSurvey = CompleteSurveyEntity(
             sections = createCompleteSurvey.completeSurveyTemplateSections
                 .map { createCompleteSurveySection ->
@@ -23,7 +26,7 @@ class CreateCompleteSurveyServiceImpl(
                         inputs = createCompleteSurveySection.completedSurveyInputs
                             .map { createCompleteSurveyInput ->
                                 CompleteSurveySectionInputEntity(
-                                    value =  createCompleteSurveyInput.value
+                                    value = createCompleteSurveyInput.value
                                 )
                             }
                             .toSet()
@@ -32,11 +35,15 @@ class CreateCompleteSurveyServiceImpl(
                 .toSet(),
             surveyLink = run {
                 surveyLinkRepository.findByIdOrNull(createCompleteSurvey.surveyLinkId.value)
-                    ?: return null.also { logger.debug { "Did not find a surveyTemplateLink with id [${createCompleteSurvey.surveyLinkId.value}] while creating $createCompleteSurvey" } }
+                    ?: return PersistenceError.FindError.invoke(
+                        CompleteSurveyEntity::class,
+                        createCompleteSurvey.surveyLinkId.value
+                    )
+                        .also { logger.debug { "Did not find a surveyTemplateLink with id [${createCompleteSurvey.surveyLinkId.value}] while creating $createCompleteSurvey" } }
             }
         )
         val completeSurveyEntity = completeSurveyRepository.save(newCompleteSurvey)
         completeSurveyEntity.surveyLink.addCompleteSurvey(completeSurveyEntity)
-        return completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity)
+        return Success(completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity))
     }
 }
