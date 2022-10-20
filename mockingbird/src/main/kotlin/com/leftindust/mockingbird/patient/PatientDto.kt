@@ -9,9 +9,6 @@ import java.util.UUID
 
 data class PatientDto(
     override val id: PatientDtoId,
-    val firstName: String,
-    val middleName: String?,
-    val lastName: String,
     val dateOfBirth: LocalDate,
     val insuranceNumber: String?,
     val sex: Sex,

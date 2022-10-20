@@ -14,7 +14,6 @@ class PatientEntityToPatientConverter : InfallibleConverter<PatientEntity, Patie
     override fun convert(source: PatientEntity): Patient {
         return PatientImpl(
             id = source.id ?: throw NullEntityIdInConverterException(source),
-            nameInfo = source.nameInfoEntity,
             thumbnail = source.thumbnail,
             sex = source.sex,
             dateOfBirth = source.dateOfBirth,
@@ -26,7 +25,6 @@ class PatientEntityToPatientConverter : InfallibleConverter<PatientEntity, Patie
 
     private data class PatientImpl(
         override val id: UUID,
-        override val nameInfo: NameInfo,
         override val thumbnail: ByteArray?,
         override val sex: Sex,
         override val dateOfBirth: LocalDate,
