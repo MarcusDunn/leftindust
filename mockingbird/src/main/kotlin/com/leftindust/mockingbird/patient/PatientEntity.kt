@@ -2,6 +2,8 @@ package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
+import com.leftindust.mockingbird.doctor.Doctor
+import com.leftindust.mockingbird.doctor.DoctorEntity
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.event.Event
@@ -43,11 +45,11 @@ class PatientEntity(
     var sex: Sex,
     @Column(nullable = false)
     var dateOfBirth: LocalDate,
-    @Column(nullable = false)
-    var gender: String = sex.toString(),
+    @Column
+    var gender: String?,
     var ethnicity: Ethnicity?,
     var insuranceNumber: String?,
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     var contacts: MutableSet<Contact>,
     @OneToMany(mappedBy = "patient", cascade = [CascadeType.ALL], orphanRemoval = true)
     var doctors: MutableSet<DoctorPatientEntity>,
@@ -65,10 +67,27 @@ class PatientEntity(
 
     fun addContact(contact: Contact) {
         contacts.add(contact)
-        contact.patient = this
+        contact.patientEntity = this
     }
 
     fun removeContact(contact: Contact) {
         contacts.remove(contact)
     }
+
+    fun addDoctor(doctor: DoctorEntity){
+        val doctorPatientEntity = DoctorPatientEntity(doctor, this)
+        this.doctors.add(doctorPatientEntity)
+        doctor.patients.add(doctorPatientEntity)
+    }
+
+    fun removeDoctor(doctor: DoctorEntity){
+        val doctorPatientEntity = DoctorPatientEntity(doctor, this)
+        this.doctors.remove(doctorPatientEntity)
+        doctor.patients.remove(doctorPatientEntity)
+    }
+
+    fun clearDoctors(){
+        doctors.forEach{removeDoctor(it.doctor)}
+    }
+
 }

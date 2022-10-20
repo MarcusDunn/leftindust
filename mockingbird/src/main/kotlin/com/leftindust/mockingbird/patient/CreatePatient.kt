@@ -18,7 +18,7 @@ interface CreatePatient {
     val emails: List<CreateEmail>
     val insuranceNumber: String?
     val sex: Sex
-    val gender: String
+    val gender: String?
     val ethnicity: Ethnicity?
     val contacts: List<CreateContact>
     val doctors: List<DoctorDto.DoctorDtoId>
