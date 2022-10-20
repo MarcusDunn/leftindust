@@ -10,6 +10,7 @@ import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Relationship
+import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.CreatePhoneDto
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.phone.PhoneType
@@ -55,22 +56,12 @@ object ContactMother {
             email = emailsTransient,
         )
 
-        val createDomain = CreatePatientServiceImpl.CreateContactPatientImpl(
-            patientId = patientDetached.id!!,
-            nameInfo = CreateNameInfoDto(
-                firstName = "Aydan",
-                middleName = null,
-                lastName = "White"
-            ),
-            relationship = Relationship.Parent,
-            phones = emptyList(),
-            emails = listOf(EmailMother.DansEmail.createDomain)
-        )
-
         val createDto = CreateContactDto(
-            firstName = firstName,
-            middleName= middleName,
-            lastName = lastName,
+            nameInfo = CreateNameInfoDto(
+                firstName = firstName,
+                middleName = middleName,
+                lastName = lastName
+            ),
             relationship = relationship,
             phones = listOf(
                 CreatePhoneDto(
@@ -87,23 +78,37 @@ object ContactMother {
         )
 
         val createUpdatedDto = CreateContactDto(
-            firstName = "Boris",
-            middleName= "",
-            lastName = "V",
+            nameInfo = CreateNameInfoDto(
+                firstName = "Boris",
+                middleName = "",
+                lastName = "V"
+            ),
             relationship = Relationship.Other,
             phones = listOf(
                 CreatePhoneDto(
-                number = "222334",
-                type = PhoneType.Home,
-            )
+                    number = "222334",
+                    type = PhoneType.Home,
+                )
             ),
             emails = listOf(
                 CreateEmailDto(
-                type = EmailType.Personal,
-                email = "newEmergency@gmail.com",
-            )
+                    type = EmailType.Personal,
+                    email = "newEmergency@gmail.com",
+                )
             )
         )
 
+
+        val createDomain: CreateContact
+            get() = object : CreateContact {
+                override val nameInfo = CreateNameInfoDto(
+                    firstName = "Aydan",
+                    middleName = null,
+                    lastName = "White"
+                )
+                override val relationship = Relationship.Parent
+                override val phones = emptyList<CreatePhone>()
+                override val emails = listOf(EmailMother.DansEmail.createDomain)
+            }
     }
 }

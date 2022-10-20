@@ -17,6 +17,8 @@ import com.leftindust.mockingbird.person.UpdateNameInfo
 import com.leftindust.mockingbird.person.UpdateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.CreatePhoneService
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -115,18 +117,23 @@ class UpdatePatientServiceImpl(
     private suspend fun updateEmergencyContacts(
         emergencyContacts: Updatable<List<CreateContact>>,
         patient: PatientEntity
-    ) {
+    ): Result4k<Unit, PersistenceError> {
         when (emergencyContacts) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(patient, patient::contacts) }
             }
             is Updatable.Update -> {
-                val newEmergencyContacts = emergencyContacts.value.map { createContactService.createContact(it) }
+                val newEmergencyContacts = emergencyContacts.value.map {
+                    createContactService.createContact(
+                        it, (patientEntityToPatientConverter.convert(patient))
+                    )
+                }
                 logger.trace { ClearedEntityCollectionMessage(patient, patient::contacts) }
                 patient.contacts.addAll(newEmergencyContacts)
                 logger.trace { AddedAllEntityCollectionMessage(patient, patient::contacts, newEmergencyContacts) }
             }
         }
+        return Success(Unit)
     }
 
     private suspend fun updatePhones(phones: Updatable<List<CreatePhone>>, patient: PatientEntity) {

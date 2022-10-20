@@ -16,7 +16,7 @@ class DoctorMutationController(
     @MutationMapping
     suspend fun addDoctor(@Argument("createDoctor") createDoctorDto: CreateDoctorDto): DoctorDto {
         val createDoctor = createDoctorDto.toCreateDoctor()
-        val newDoctor = createDoctorService.addDoctor(createDoctor.onFailure { throw it.reason.toException()})
+        val newDoctor = createDoctorService.addDoctor(createDoctor.onFailure { throw it.reason.toMockingbirdException()})
         return doctorToDoctorDtoInfallibleConverter.convert(newDoctor)
     }
 

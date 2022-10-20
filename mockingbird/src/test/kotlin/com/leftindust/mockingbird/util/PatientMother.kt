@@ -12,7 +12,7 @@ import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.DansHouse
 import com.leftindust.mockingbird.util.EmailMother.DansEmail
-import dev.forkhandles.result4k.valueOrNull
+import dev.forkhandles.result4k.onFailure
 import java.time.LocalDate
 import java.time.Month
 import java.util.UUID
@@ -94,7 +94,7 @@ object PatientMother {
                 firstName = firstName,
                 lastName = lastName,
                 middleName = middleName
-            ),
+            ).apply { id = nameInfoId },
             addresses = addressesTransient,
             emails = emailsTransient,
             phones = phonesTransient,
@@ -109,9 +109,9 @@ object PatientMother {
             contacts = contacts,
             doctors = doctors,
             assignedSurveys = assignedSurveysTransient
-        )
+        ).apply { id = this@Dan.id }
 
-        val createPatientDto: CreatePatientDto
+        val createPatientDto:CreatePatientDto
             get() = CreatePatientDto(
                 nameInfo = CreateNameInfoDto(
                     firstName = firstName,
@@ -135,36 +135,37 @@ object PatientMother {
                 emergencyContacts = listOf(ContactMother.Aydan.createDto)
             )
 
-        val updatePatientDto: UpdatePatientDto = UpdatePatientDto(
-            pid = Dan.graphqlId,
-            nameInfo = UpdateNameInfoDto(
-                firstName = newFirstName,
-                lastName = newLastName,
-                middleName = newMiddleName
-            ),
-            addresses = listOf(AddressMother.JennysHouse.createDto),
-            emails = listOf(DansEmail.createUpdatedDto),
-            phones = listOf(PhoneMother.DansCell.createUpdatedDto),
-            thumbnail = "",
-            sex = Sex.Male,
-            dateOfBirth = newDateOfBirth,
-            gender = newGender,
-            ethnicity = newEthnicity,
-            insuranceNumber = newInsuranceNumber,
-            doctors = listOf(
-                DoctorDto.DoctorDtoId(
-                    DoctorMother.Dan.id
-                )
-            ),
-            emergencyContacts = listOf(ContactMother.Aydan.createUpdatedDto),
-        )
+        val updatePatientDto: UpdatePatientDto
+            get() = UpdatePatientDto(
+                pid = Dan.graphqlId,
+                nameInfo = UpdateNameInfoDto(
+                    firstName = newFirstName,
+                    lastName = newLastName,
+                    middleName = newMiddleName
+                ),
+                addresses = listOf(AddressMother.JennysHouse.createDto),
+                emails = listOf(DansEmail.createUpdatedDto),
+                phones = listOf(PhoneMother.DansCell.createUpdatedDto),
+                thumbnail = "",
+                sex = Sex.Male,
+                dateOfBirth = newDateOfBirth,
+                gender = newGender,
+                ethnicity = newEthnicity,
+                insuranceNumber = newInsuranceNumber,
+                doctors = listOf(
+                    DoctorDto.DoctorDtoId(
+                        DoctorMother.Dan.id
+                    )
+                ),
+                emergencyContacts = listOf(ContactMother.Aydan.createUpdatedDto),
+            )
 
         val entityUpdatedTransient: PatientEntity = PatientEntity(
             nameInfoEntity = NameInfoEntity(
                 firstName = newFirstName,
                 lastName = newLastName,
                 middleName = newMiddleName
-            ),
+            ).apply { id = nameInfoId },
             addresses = addressesTransient,
             emails = emailsTransient,
             phones = phonesTransient,
@@ -187,6 +188,7 @@ object PatientMother {
         val updatedDto: PatientDto = patientToPatientDtoConverter.convert(updatedDomainEntityDetached)
 
         val domainEntityTransient = patientEntityToPatientConverter.convert(entityTransient)
-        val createPatient = createPatientDto.toCreatePatient().valueOrNull()!!
+        val createPatient: CreatePatient
+            get() = createPatientDto.toCreatePatient().onFailure { throw it.reason.toMockingbirdException() }
     }
 }

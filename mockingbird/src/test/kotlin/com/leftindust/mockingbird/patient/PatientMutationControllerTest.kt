@@ -3,7 +3,6 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.util.*
 import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.ninjasquad.springmockk.MockkBean
-import dev.forkhandles.result4k.Success
 import io.mockk.coEvery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.intellij.lang.annotations.Language
@@ -26,9 +25,12 @@ internal class PatientMutationControllerTest(
     @MockkBean
     private lateinit var createPatientService: CreatePatientService
 
+    @MockkBean
+    private lateinit var updatePatientService: UpdatePatientService
+
     @Test
     internal fun `check can create patient`() {
-        coEvery { createPatientService.addNewPatient(any()) } returns Success(Dan.domain)
+        coEvery { createPatientService.addNewPatient(any()) } returns Dan.domain
 
         @Language("graphql")
         val mutation = """
@@ -98,7 +100,7 @@ internal class PatientMutationControllerTest(
 
     @Test
     internal fun `check can create patient with a contact`() {
-        coEvery { createPatientService.addNewPatient(any()) } returns Success(Dan.domain)
+        coEvery { createPatientService.addNewPatient(any()) } returns Dan.domain
 
         @Language("graphql")
         val mutation = """
@@ -188,9 +190,9 @@ internal class PatientMutationControllerTest(
     }
 
     @Test
-    internal fun `check update patient works properly`(){
+    internal fun `check update patient works properly`() {
 
-        coEvery { updatePatientService.update(match{it.pid.value == Dan.id}) } returns Dan.updatedDomainEntityDetached
+        coEvery { updatePatientService.update(match { it.pid.value == Dan.id }) } returns Dan.updatedDomainEntityDetached
 
         //language=graphql
 

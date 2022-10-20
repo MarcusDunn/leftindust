@@ -1,8 +1,8 @@
 package com.leftindust.mockingbird.patient
 
-import com.leftindust.mockingbird.FallibleConverter
-import com.leftindust.mockingbird.InconvertibleDtoException
+
 import com.leftindust.mockingbird.InfallibleConverter
+import dev.forkhandles.result4k.onFailure
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
@@ -14,18 +14,22 @@ class PatientMutationController(
     private val createPatientService: CreatePatientService,
     private val updatePatientService: UpdatePatientService,
 
-) {
+    ) {
     @MutationMapping
     suspend fun editPatient(@Argument("editPatient") patient: UpdatePatientDto): PatientDto {
         val convertedPatient = patient.toUpdatePatient()
-        val updatedPatient = updatePatientService.update(convertedPatient.onFailure { throw it.reason.toException() })
+        val updatedPatient =
+            updatePatientService.update(convertedPatient.onFailure { throw it.reason.toMockingbirdException() })
         return patientToPatientDtoConverter.convert(updatedPatient)
     }
 
     @MutationMapping
-    suspend fun addPatient(@Argument("createPatient") createPatientDto: CreatePatientDto, dataFetchingEnvironment: DataFetchingEnvironment): PatientDto {
-        val createPatient = createPatientDtoToCreatePatient.convert(createPatientDto) ?: throw InconvertibleDtoException<CreatePatient>(createPatientDto)
-        val newPatient = createPatientService.addNewPatient(createPatient).onFailure { throw it.reason.toMockingbirdException() }
+    suspend fun addPatient(
+        @Argument("createPatient") createPatientDto: CreatePatientDto,
+        dataFetchingEnvironment: DataFetchingEnvironment
+    ): PatientDto {
+        val createPatient = createPatientDto.toCreatePatient().onFailure { throw it.reason.toMockingbirdException() }
+        val newPatient = createPatientService.addNewPatient(createPatient)
         return patientToPatientDtoConverter.convert(newPatient)
     }
 }
