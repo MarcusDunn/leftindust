@@ -60,11 +60,7 @@
         fill
         round
         color="primary"
-        style="
-          height: 100%;
-          margin: 0 2px;
-        "
-
+        style="height: 100%;margin: 0 2px;"
         on:click={() => {
           if (counter > 0) {
             $recordingSequenceStarted = true;
