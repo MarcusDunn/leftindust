@@ -1,27 +1,16 @@
 package com.leftindust.mockingbird.patient
 
-import com.leftindust.mockingbird.MockingbirdException
-import com.leftindust.mockingbird.PersistenceError
 import com.leftindust.mockingbird.address.CreateAddressService
-import com.leftindust.mockingbird.contact.CreateContactPatient
 import com.leftindust.mockingbird.contact.CreateContactService
 import com.leftindust.mockingbird.doctor.DoctorRepository
-import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.CreateEmailService
-import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.person.CreateNameInfoService
-import com.leftindust.mockingbird.person.Relationship
-import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.CreatePhoneService
-import dev.forkhandles.result4k.Result4k
-import dev.forkhandles.result4k.Success
-import dev.forkhandles.result4k.onFailure
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 @Transactional
@@ -37,7 +26,7 @@ class CreatePatientServiceImpl(
 ) : CreatePatientService {
     private val logger = KotlinLogging.logger { }
 
-    override suspend fun addNewPatient(patient: CreatePatient): Result4k<Patient, PersistenceError> {
+    override suspend fun addNewPatient(patient: CreatePatient): Patient {
         val newPatient = PatientEntity(
             nameInfoEntity = createNameInfoService.createNameInfo(patient.nameInfo),
             addresses = patient.addresses.map { createAddressService.createAddress(it) }.toMutableSet(),
@@ -65,26 +54,10 @@ class CreatePatientServiceImpl(
         val savedPatient = patientRepository.save(newPatient)
 
         patient.contacts
-            .map {
-                CreateContactPatientImpl(
-                    patientId = savedPatient.id!!,
-                    nameInfo = it.nameInfo,
-                    relationship = it.relationship,
-                    phones = it.phones,
-                    emails = it.emails
-                )
-            }
-            .map { createContactService.createContact(it).onFailure { error ->  return error } }
+            .map { createContactService.createContact(it, patientEntityToPatientConverter.convert(savedPatient)) }
             .forEach { newPatient.addContact(it) }
 
-        return Success(patientEntityToPatientConverter.convert(savedPatient))
+        return patientEntityToPatientConverter.convert(savedPatient)
     }
 
-    data class CreateContactPatientImpl(
-        override val patientId: UUID,
-        override val nameInfo: CreateNameInfo,
-        override val relationship: Relationship,
-        override val phones: List<CreatePhone>,
-        override val emails: List<CreateEmail>
-    ) : CreateContactPatient
 }

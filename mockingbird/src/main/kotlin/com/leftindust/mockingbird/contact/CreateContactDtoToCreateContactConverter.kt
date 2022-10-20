@@ -1,35 +1,31 @@
 package com.leftindust.mockingbird.contact
 
-import com.leftindust.mockingbird.FailedConversionMessage.Companion.FailedConversionMessage
-import com.leftindust.mockingbird.FallibleConverter
+import com.leftindust.mockingbird.ConversionError
+import com.leftindust.mockingbird.ConversionError.Companion.ConversionFailure
 import com.leftindust.mockingbird.email.CreateEmail
-import com.leftindust.mockingbird.email.CreateEmailDto
+import com.leftindust.mockingbird.email.toCreateEmail
 import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.person.Relationship
 import com.leftindust.mockingbird.phone.CreatePhone
-import mu.KotlinLogging
-import org.springframework.stereotype.Component
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 
-private val logger = KotlinLogging.logger {  }
-
-@Component
-class CreateContactDtoToCreateContactConverter(
-    private val createEmailDtoToCreateEmailConverter: FallibleConverter<CreateEmailDto, CreateEmail>,
-) : FallibleConverter<CreateContactDto, CreateContact> {
-    override fun convert(source: CreateContactDto): CreateContact? {
-        return CreateContactImpl(
-            nameInfo = source.nameInfo,
-            relationship = source.relationship,
-            phones = source.phones,
-            emails = source.emails.map { createEmailDtoToCreateEmailConverter.convert(it) ?: return null.also { logger.warn { FailedConversionMessage(source) } }},
+fun CreateContactDto.toCreateContact(): Result4k<CreateContact, ConversionError<CreateContactDto, CreateContact>> {
+    return Success(
+        CreateContactImpl(
+            nameInfo = nameInfo,
+            relationship = relationship,
+            phones = phones,
+            emails = emails.map {it.toCreateEmail().onFailure {e -> return ConversionFailure(e.reason)}}
+            ,
         )
-    }
-
-    data class CreateContactImpl(
-        override val nameInfo: CreateNameInfo,
-        override val relationship: Relationship,
-        override val phones: List<CreatePhone>,
-        override val emails: List<CreateEmail>,
-    ) : CreateContact
-
+    )
 }
+
+private data class CreateContactImpl(
+    override val nameInfo: CreateNameInfo,
+    override val relationship: Relationship,
+    override val phones: List<CreatePhone>,
+    override val emails: List<CreateEmail>,
+) : CreateContact

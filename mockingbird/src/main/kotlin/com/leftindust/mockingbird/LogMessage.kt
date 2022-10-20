@@ -16,6 +16,13 @@ sealed class LogMessage(private val message: String) {
     override fun toString() = message
 }
 
+interface IntoMockingbirdException{
+    fun toMockingbirdException(): MockingbirdException
+}
+
+
+
+
 class CreatedEntityMessage<T : AbstractJpaPersistable>(entity: T) : LogMessage("Created $entity")
 
 class FailedConversionMessage<G : Any, T : Any>(val source: T, target: KClass<G>) :
@@ -115,8 +122,8 @@ class InconvertibleEntityException(entity: AbstractJpaPersistable, kClass: KClas
     }
 }
 
-sealed interface PersistenceError {
-    fun toMockingbirdException(): MockingbirdException
+sealed interface PersistenceError: IntoMockingbirdException{
+    override fun toMockingbirdException(): MockingbirdException
 
     class FindError(private val entity: KClass<*>, private val id: UUID) : PersistenceError {
 
