@@ -10,6 +10,8 @@
 
   export let style = '';
 
+  let counter = 0;
+
   let recordingSequenceEnded = false;
 
   $forceRecordingSequence = false;
