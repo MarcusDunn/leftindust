@@ -3,9 +3,11 @@ import { createForm } from 'felte';
 import * as yup from 'yup';
 import { get } from 'svelte/store';
 import { _ } from '@/language';
-import { AddDoctorMutationDocument, AddressType, client, Countries, CreateDoctorUserType, EmailType, PhoneType, type AddDoctorMutationMutation, type CreateDoctor, type MutationAddDoctorArgs } from '@/api/server';
+import { AddDoctorMutationDocument, AddressType, client, Countries, CreateDoctorUserType, EditDoctorDocument, EmailType, PhoneType, type AddDoctorMutationMutation, type CreateDoctor, type DoctorIdInput, type EditDoctor, type EditDoctorMutation, type MutationAddDoctorArgs, type MutationEditDoctorArgs } from '@/api/server';
 import { closeWizard } from '../Wizard';
 import { openDialog } from '../UI/components/Dialog';
+import { da } from 'date-fns/locale';
+import { format } from 'date-fns';
 
 const language = get(_);
 
@@ -36,7 +38,7 @@ const createDoctorFormSchema = yup.object({
   })).required(),
 });
 
-type DoctorFormSchema = yup.InferType<typeof createDoctorFormSchema>;
+export type DoctorFormSchema = yup.InferType<typeof createDoctorFormSchema>;
 
 /**
  * Default fields for a doctor form
@@ -62,41 +64,79 @@ export const addDoctor = async (doctor: NonNullable<MutationAddDoctorArgs['creat
 };
 
 /**
+ * Edits a doctor object's data
+ * @param doctor The doctor object to edit
+ * @returns The edited doctor object
+ */
+export const editDoctor = async (doctor: NonNullable<MutationEditDoctorArgs['editDoctor']>): Promise<EditDoctorMutation> => {
+  const result = await client.mutation(EditDoctorDocument, { editDoctor: doctor }).toPromise();
+
+  console.log('Result', result);
+
+  const data = result.data;
+  if (result.error) throw new Error(`Failed to edit doctor id ${doctor.did}: ${result.error.message}`);
+  else if (!data) throw new Error(`Failed to edit doctor id ${doctor.did}: No data returned`);
+
+  return data;
+};
+
+/**
  * Creates a doctor form on submit
  */
 export const createDoctorForm = (closeWizardHandler: () => void, did?: string) => createForm<DoctorFormSchema>({
-  initialValues: defaultDoctorForm,
+  initialValues: did ? {
+    firstName: 'Test',
+    middleName: '1',
+    lastName: '2',
+    title: '3',
+    dateOfBirth: undefined,
+    addresses: [],
+    emails: [],
+    phones: [],
+  } : defaultDoctorForm,
   onSubmit: async (form, { reset }) => {
-    const doctor: CreateDoctor = {
-      dateOfBirth: form.dateOfBirth,
-      addresses: form.addresses,
-      emails: form.emails,
-      phones: form.phones,
-      title: form.title,
-      clinic: [],
-      patients: [],
-      user: {
-        discriminant: CreateDoctorUserType.NoUser,
-        nameInfo: {
-          firstName: form.firstName,
-          middleName: form.middleName,
-          lastName: form.lastName,
-        },
-      },
-    };
-
     try {
       if (did) {
-        /*
-          TODO: Edit patient
-          await editDoctor({
-            pid: {
-              value: pid,
-            },
-            ...patient,
-          });
-          */
+        // Modify doctor with specified ID, if one exists
+        const doctor: EditDoctor = {
+          addresses: form.addresses,
+          clinics: [],
+          dateOfBirth: form.dateOfBirth,
+          did: {
+            value: did,
+          },
+          emails: form.emails,
+          nameInfo: {
+            firstName: form.firstName,
+            middleName: form.middleName,
+            lastName: form.lastName,
+          },
+          patients: [],
+          phones: form.phones,
+          title: form.title,
+        };
+
+        await editDoctor(doctor);
       } else {
+        // Otherwise, add new doctor with this ID
+        const doctor: CreateDoctor = {
+          dateOfBirth: form.dateOfBirth,
+          addresses: form.addresses,
+          emails: form.emails,
+          phones: form.phones,
+          title: form.title,
+          clinic: [],
+          patients: [],
+          user: {
+            discriminant: CreateDoctorUserType.NoUser,
+            nameInfo: {
+              firstName: form.firstName,
+              middleName: form.middleName,
+              lastName: form.lastName,
+            },
+          },
+        };
+
         await addDoctor(doctor);
       }
       

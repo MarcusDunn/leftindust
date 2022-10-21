@@ -1,8 +1,11 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { database } from '@/api/server';
   import { _ } from '@/language';
 
   import { Row, Col, Block } from 'framework7-svelte';
   import Addresses from '../Input/components/Address/Addresses.svelte';
+  import DatePicker from '../Input/components/Date/DatePicker.svelte';
   import Emails from '../Input/components/Email/Emails.svelte';
   import Phones from '../Input/components/Phone/Phones.svelte';
 
@@ -10,7 +13,7 @@
   import { closeWizard } from '../Wizard';
   import Wizard from '../Wizard/Wizard.svelte';
   
-  import { createDoctorForm } from './';
+  import { createDoctorForm, type DoctorFormSchema } from './';
 
   export let doctorId: string | undefined = undefined;
 
@@ -22,16 +25,23 @@
     closeWizard();
   };
 
-  const { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctorId);
+  let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctorId);
+  
+  let doctor: DoctorFormSchema;
+
+  formData.subscribe(value => {
+    doctor = value;
+  });
+
+  console.log('did', doctorId);
 
   let ref: HTMLFormElement;
 </script>
 
 <Wizard
-  title={$_('generics.newDoctor')}
-  subtitle={$_('descriptions.addDoctorDescription')}
+  title={doctorId ? $_('generics.editDoctor') : $_('generics.newDoctor')}
+  subtitle={doctorId ? $_('descriptions.editDoctorDescription') : $_('descriptions.addDoctorDescription')}
   color="purple"
-  disabled={false}
   interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}
   on:close={closeWizardHandler}
@@ -45,22 +55,22 @@
             <Row>
               <Col width="100" medium="20">
                 <Input error={$errors.firstName}>
-                  <input type="text" name="firstName" placeholder="First Name" />  
+                  <input type="text" name="firstName" placeholder={doctor.firstName ?? 'First Name'} />  
                 </Input>
               </Col>
               <Col width="100" medium="20">
                 <Input error={$errors.middleName}>
-                  <input type="text" name="middleName" placeholder="Middle Name (Optional)" />
+                  <input type="text" name="middleName" placeholder={doctor.middleName ?? 'Middle Name (Optional)'} />
                 </Input>
               </Col>
               <Col width="100" medium="20">
                 <Input error={$errors.lastName}>
-                  <input type="text" name="lastName" placeholder="Last Name" />
+                  <input type="text" name="lastName" placeholder={doctor.lastName ?? 'Last Name'} />
                 </Input>
               </Col>
               <Col width="100" medium="40">
                 <Input error={$errors.title}>
-                  <input type="text" name="title" placeholder="Title" />
+                  <input type="text" name="title" placeholder={doctor.title ?? 'Title'} />
                 </Input>
               </Col>
             </Row>

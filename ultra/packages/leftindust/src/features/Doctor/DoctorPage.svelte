@@ -45,6 +45,7 @@
   });
 
   $: doctor = $request.data?.doctorsByDoctorIds[0];
+  $: doctorId = doctor?.id?.value;
 
   query(request);
 </script>
@@ -67,7 +68,9 @@
           title: $_('generics.edit'),
           icon: { f7: 'pencil_outline', color: 'gray' },
           condense: true,
-          onClick: () => openWizard('/wizard/doctor/', { }),
+          onClick: () => openWizard('/wizard/doctor/', { doctorId, callback: () => {
+            $request.reexecute();
+          } }),
         },
         // {
         //   title: $_('generics.create'),
