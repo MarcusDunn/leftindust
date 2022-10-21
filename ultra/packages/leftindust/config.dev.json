@@ -11,6 +11,10 @@
     "messagingSenderId": "710125939146",
     "appId": "1:710125939146:web:b4d6cebab35d37d7f5c733"
   },
+  "aws": {
+    "accessKeyId": "AKIA3ZYMEOXZIHFGKFEO",
+    "secretAccessKey": "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"
+  },
   "development": {
     "skipLoginValidation": true
   }

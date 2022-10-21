@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import sveltePreprocess from 'svelte-preprocess';
 import path from 'path';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 
 const graphql = require('@rollup/plugin-graphql');
 
@@ -24,6 +25,7 @@ export default defineConfig({
         mediq: path.resolve(__dirname, 'src/apps/mediq/index.html'),
         queue: path.resolve(__dirname, 'src/apps/queue/index.html'),
         intake: path.resolve(__dirname, 'src/apps/intake/index.html'),
+        iris: path.resolve(__dirname, 'src/apps/iris/index.html'),
       },
     },
     assetsInlineLimit: 0,
@@ -58,6 +60,18 @@ export default defineConfig({
   optimizeDeps: {
     include: ['fast-json-stable-stringify', 'zen-observable', '@fullcalendar/common'],
     exclude: ['@urql/svelte'],
+    esbuildOptions: {
+      // Node.js global to browser globalThis
+      define: {
+          global: 'globalThis'
+      },
+      // Enable esbuild polyfill plugins
+      plugins: [
+          NodeGlobalsPolyfillPlugin({
+              buffer: true
+          })
+      ]
+  }
   },
   resolve: {
     alias: {

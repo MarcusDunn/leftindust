@@ -20,7 +20,7 @@ export enum AppViews {
   Wizard = 'view-wizard',
   Popup = 'view-popup',
   Main = 'view-main',
-  Hub = 'view-hub'
+  Hub = 'view-hub',
 }
 
 export enum AppRootRoutes {
@@ -58,6 +58,10 @@ export interface AppConfig {
     messagingSenderId: string;
     appId: string;
   },
+  aws: {
+    accessKeyId: string;
+    secretAccessKey: string;
+  }
   development: {
     skipLoginValidation: boolean;
   }

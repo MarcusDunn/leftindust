@@ -7,6 +7,8 @@
   export let value: string;
   export let options: SelectButtonOption[];
 
+  export let style = '';
+
   let icons = options.some((option) => option.icon);
   $: selected = options[options.findIndex((option) => option.value === value)];
 </script>
@@ -18,6 +20,7 @@
     openIn: 'popover',
     closeOnSelect: true,
   }}
+  {style}
   on:click
 >
   {#if icons}

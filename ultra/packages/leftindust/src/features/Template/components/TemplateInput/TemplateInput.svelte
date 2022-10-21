@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { templateForm, templateInputSelectOptions, type Template as TemplateType } from '../..';
+  import { getInputType, templateForm, templateInputSelectOptions, type Template as TemplateType } from '../..';
   import { _ } from 'svelte-i18n';
   import {
     Button,
@@ -66,19 +66,7 @@
         {#key index}
           <Select
             title={$_('generics.type')}
-            placeholder={(() => {
-              switch (type) {
-                case SurveyTemplateInputType.Number:
-                  return $_('examples.number');
-                case SurveyTemplateInputType.Date:
-                  return $_('examples.date');
-                case SurveyTemplateInputType.SingleSelect:
-                case SurveyTemplateInputType.MultiSelect:
-                  return $_('examples.select');
-                default:
-                  return $_('examples.text');
-              }
-            })()}
+            placeholder={getInputType(type)}
             options={templateInputSelectOptions}
             name={`sections.${sectionIndex}.inputs.${index}.type`}
             bind:value={type}
