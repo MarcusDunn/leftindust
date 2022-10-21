@@ -33,10 +33,10 @@ fun UpdatePatientDto.toUpdatePatient(): Result4k<UpdatePatient, ConversionError<
                     .onFailure { e -> return ConversionFailure(e.reason) }
             }),
             dateOfBirth = Updatable.Update(dateOfBirth),
-            insuranceNumber = Updatable.Update(insuranceNumber),
+            insuranceNumber = insuranceNumber?.let { Updatable.Update(it) } ?: Deletable.Delete(),
             sex = Updatable.Update(sex),
-            gender = Updatable.Update(gender),
-            ethnicity = Updatable.Update(ethnicity),
+            gender = gender?.let { Updatable.Update(it) } ?: Deletable.Delete(),
+            ethnicity = ethnicity?.let { Updatable.Update(it) } ?: Deletable.Delete(),
             emergencyContacts = Updatable.Update(emergencyContacts.map {
                 it.toCreateContact()
                     .onFailure { e -> return ConversionFailure(e.reason) }
@@ -54,11 +54,11 @@ private data class UpdatePatientImpl(
     override val dateOfBirth: Updatable<LocalDate>,
     override val addresses: Updatable<List<CreateAddress>>,
     override val emails: Updatable<List<CreateEmail>>,
-    override val insuranceNumber: Updatable<String>,
+    override val insuranceNumber: Deletable<String>?,
     override val sex: Updatable<Sex>,
-    override val gender: Updatable<String>,
-    override val ethnicity: Updatable<Ethnicity>,
+    override val gender: Deletable<String>?,
+    override val ethnicity: Deletable<Ethnicity>?,
     override val emergencyContacts: Updatable<List<CreateContact>>,
     override val doctors: Updatable<List<DoctorDto.DoctorDtoId>>,
-    override val thumbnail: Deletable<String>
+    override val thumbnail: Deletable<String>?
 ) : UpdatePatient

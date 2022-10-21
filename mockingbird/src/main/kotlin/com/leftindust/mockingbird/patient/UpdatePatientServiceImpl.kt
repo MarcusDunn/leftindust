@@ -55,10 +55,10 @@ class UpdatePatientServiceImpl(
             }
 
         patientInput.dateOfBirth.applyUpdatable(patient, patient::dateOfBirth, logger)
-        patientInput.ethnicity.applyDeletable(patient, patient::ethnicity, logger)
-        patientInput.gender.applyDeletable(patient, patient::gender, logger)
+        patientInput.ethnicity?.applyDeletable(patient, patient::ethnicity, logger)
+        patientInput.gender?.applyDeletable(patient, patient::gender, logger)
         patientInput.sex.applyUpdatable(patient, patient::sex, logger)
-        patientInput.insuranceNumber.applyDeletable(patient, patient::insuranceNumber, logger)
+        patientInput.insuranceNumber?.applyDeletable(patient, patient::insuranceNumber, logger)
 
 
         updateNameInfo(patientInput.nameInfo, patient)
@@ -67,7 +67,7 @@ class UpdatePatientServiceImpl(
         updatePhones(patientInput.phones, patient)
         updateEmergencyContacts(patientInput.emergencyContacts, patient)
         updateDoctors(patientInput.doctors, patient)
-        updateThumbnail(patientInput.thumbnail, patient)
+        patientInput.thumbnail?.let { updateThumbnail(it, patient) }
 
         return patientEntityToPatientConverter.convert(patient)
     }

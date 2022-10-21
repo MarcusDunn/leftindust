@@ -19,11 +19,11 @@ interface  UpdatePatient {
     val dateOfBirth: Updatable<LocalDate>
     val addresses: Updatable<List<CreateAddress>>
     val emails: Updatable<List<CreateEmail>>
-    val insuranceNumber: Updatable<String>
+    val insuranceNumber: Deletable<String>?
     val sex: Updatable<Sex>
-    val gender: Updatable<String>
-    val ethnicity: Updatable<Ethnicity>
+    val gender: Deletable<String>?
+    val ethnicity: Deletable<Ethnicity>?
     val emergencyContacts: Updatable<List<CreateContact>>
     val doctors: Updatable<List<DoctorDto.DoctorDtoId>>
-    val thumbnail: Deletable<String>
+    val thumbnail: Deletable<String>?
 }
