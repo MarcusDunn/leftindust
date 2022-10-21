@@ -106,7 +106,7 @@ internal class UpdatePatientServiceImplTest(
 
         assertThat(
             patientEntity.contacts.map { it.email.map { it.address } },
-            equalTo(PatientMother.Dan.updatePatientDto.emergencyContacts.map { it.emails.map { it.email } })
+            equalTo(PatientMother.Dan.updatePatientDto.emergencyContacts?.map { it.emails.map { it.email } })
         )
         assertThat(
             patientEntity.contacts.map { it.email.map { it.address } },

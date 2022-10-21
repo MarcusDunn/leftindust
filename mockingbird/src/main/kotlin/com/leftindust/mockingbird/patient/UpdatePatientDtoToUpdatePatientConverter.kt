@@ -26,22 +26,22 @@ fun UpdatePatientDto.toUpdatePatient(): Result4k<UpdatePatient, ConversionError<
         UpdatePatientImpl(
             pid = pid,
             nameInfo = Updatable.Update(nameInfo.toUpdateNameInfo()),
-            phones = Updatable.Update(phones),
-            addresses = Updatable.Update(addresses),
-            emails = Updatable.Update(emails.map {
+            phones = phones?.let { Updatable.Update(it) } ?: Updatable.Ignore(),
+            addresses = addresses?.let { Updatable.Update(it) } ?: Updatable.Ignore(),
+            emails = emails?.let {Updatable.Update(emails.map {
                 it.toCreateEmail()
                     .onFailure { e -> return ConversionFailure(e.reason) }
-            }),
+            })} ?: Updatable.Ignore(),
             dateOfBirth = Updatable.Update(dateOfBirth),
             insuranceNumber = insuranceNumber?.let { Updatable.Update(it) } ?: Deletable.Delete(),
             sex = Updatable.Update(sex),
             gender = gender?.let { Updatable.Update(it) } ?: Deletable.Delete(),
             ethnicity = ethnicity?.let { Updatable.Update(it) } ?: Deletable.Delete(),
-            emergencyContacts = Updatable.Update(emergencyContacts.map {
+            emergencyContacts = emergencyContacts?.let {Updatable.Update(emergencyContacts.map {
                 it.toCreateContact()
                     .onFailure { e -> return ConversionFailure(e.reason) }
-            }),
-            doctors = Updatable.Update(doctors),
+            })} ?: Updatable.Ignore(),
+            doctors = doctors?.let { Updatable.Update(it) } ?: Updatable.Ignore(),
             thumbnail = thumbnail?.let { Updatable.Update(it) } ?: Deletable.Delete()
         )
     )

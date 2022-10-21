@@ -261,17 +261,17 @@ input UpdateNameInfo {
 input EditPatient {
     pid: PatientIdInput!
     nameInfo: UpdateNameInfo!
-    phones: [CreatePhone!]!
+    phones: [CreatePhone!]
     dateOfBirth: LocalDate
-    addresses: [CreateAddress!]!
-    emails: [CreateEmail!]!
+    addresses: [CreateAddress!]
+    emails: [CreateEmail!]
     insuranceNumber: String
     sex: Sex!
     gender: String
     ethnicity: Ethnicity!
-    emergencyContacts: [CreateContact!]!
+    emergencyContacts: [CreateContact!]
     thumbnail: String
-    doctors: [DoctorIdInput!]!
+    doctors: [DoctorIdInput!]
 }
 
 input CreatePatient {

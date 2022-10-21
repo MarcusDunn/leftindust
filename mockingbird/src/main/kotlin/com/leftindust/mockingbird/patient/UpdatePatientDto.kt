@@ -13,16 +13,16 @@ import java.time.LocalDate
 data class UpdatePatientDto(
     val pid: PatientDto.PatientDtoId,
     val nameInfo: UpdateNameInfoDto,
-    val phones: List<CreatePhoneDto>,
+    val phones: List<CreatePhoneDto>?,
     val dateOfBirth: LocalDate,
-    val addresses: List<CreateAddressDto>,
-    val emails: List<CreateEmailDto>,
+    val addresses: List<CreateAddressDto>?,
+    val emails: List<CreateEmailDto>?,
     val insuranceNumber: String?,
     val sex: Sex,
     val gender: String?,
     val ethnicity: Ethnicity?,
-    val emergencyContacts: List<CreateContactDto>,
-    val doctors: List<DoctorDto.DoctorDtoId>,
+    val emergencyContacts: List<CreateContactDto>?,
+    val doctors: List<DoctorDto.DoctorDtoId>?,
     val thumbnail: String?,
 )
 
