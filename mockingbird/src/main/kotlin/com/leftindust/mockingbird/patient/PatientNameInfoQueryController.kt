@@ -26,6 +26,4 @@ class PatientNameInfoQueryController(
         return readNameInfoService.getByPatientId(patientDto.id)?.lastName
             ?: throw NullSubQueryException(patientDto, ReadNameInfoService::getByPatientId)
     }
-
-
 }

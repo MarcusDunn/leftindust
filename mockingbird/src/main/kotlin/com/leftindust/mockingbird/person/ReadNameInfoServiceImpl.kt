@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.person
 
-import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.PatientRepository
 import com.leftindust.mockingbird.user.MediqUserRepository
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional
 class ReadNameInfoServiceImpl(
     @Autowired private val mediqUserRepository: MediqUserRepository,
     val patientRepository: PatientRepository,
-    val nameInfoEntityToNameInfoConverter: InfallibleConverter<NameInfoEntity, NameInfo>,
 
     ) : ReadNameInfoService {
     override fun getByUniqueId(mediqUserUniqueId: MediqUserDto.MediqUserUniqueId): NameInfo? {
@@ -24,6 +22,6 @@ class ReadNameInfoServiceImpl(
     override fun getByPatientId(patientDtoId: PatientDto.PatientDtoId): NameInfo? {
         val patientEntity = patientRepository.findByIdOrNull(patientDtoId.value)
             ?: return null
-        return nameInfoEntityToNameInfoConverter.convert(patientEntity.nameInfoEntity);
+        return patientEntity.nameInfoEntity.toNameInfo()
     }
 }
