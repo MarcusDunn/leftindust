@@ -113,6 +113,9 @@ internal class UpdatePatientServiceImplTest(
             not(equalTo(PatientMother.Dan.contacts.map { it.email.map { it.address } }))
         )
 
+        assertThat(patientEntity.insuranceNumber, equalTo(PatientMother.Dan.updatePatientDto.insuranceNumber))
+        assertThat(patientEntity.insuranceNumber, not(equalTo(PatientMother.Dan.insuranceNumber)))
+
         assertThat(updatedPatient, notNullValue())
     }
 
