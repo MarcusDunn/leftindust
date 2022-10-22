@@ -1,6 +1,12 @@
 package com.leftindust.mockingbird.patient
 
-import com.leftindust.mockingbird.*
+import com.leftindust.mockingbird.AddedAllEntityCollectionMessage
+import com.leftindust.mockingbird.ClearedEntityCollectionMessage
+import com.leftindust.mockingbird.MissedCollectionAddNoEntityWithId
+import com.leftindust.mockingbird.NoOpUpdatedEntityFieldMessage
+import com.leftindust.mockingbird.NoUpdatesOccurredNoEntityWithId
+import com.leftindust.mockingbird.PersistenceError
+import com.leftindust.mockingbird.SetToNullEntityFieldMessage
 import com.leftindust.mockingbird.address.CreateAddress
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.contact.CreateContact
@@ -19,15 +25,14 @@ import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.CreatePhoneService
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
+import java.util.Base64
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.util.Base64
 
 
 @Service
 class UpdatePatientServiceImpl(
-
     private val patientRepository: PatientRepository,
     private val updateNameInfoService: UpdateNameInfoService,
     private val patientEntityToPatientConverter: PatientEntityToPatientConverter,
@@ -36,9 +41,7 @@ class UpdatePatientServiceImpl(
     private val createPhoneService: CreatePhoneService,
     private val createContactService: CreateContactService,
     private val doctorRepository: DoctorRepository,
-
-
-    ) : UpdatePatientService {
+) : UpdatePatientService {
 
     private val logger = KotlinLogging.logger { }
 
@@ -55,10 +58,10 @@ class UpdatePatientServiceImpl(
             }
 
         patientInput.dateOfBirth.applyUpdatable(patient, patient::dateOfBirth, logger)
-        patientInput.ethnicity?.applyDeletable(patient, patient::ethnicity, logger)
-        patientInput.gender?.applyDeletable(patient, patient::gender, logger)
+        patientInput.ethnicity.applyDeletable(patient, patient::ethnicity, logger)
+        patientInput.gender.applyDeletable(patient, patient::gender, logger)
         patientInput.sex.applyUpdatable(patient, patient::sex, logger)
-        patientInput.insuranceNumber?.applyDeletable(patient, patient::insuranceNumber, logger)
+        patientInput.insuranceNumber.applyDeletable(patient, patient::insuranceNumber, logger)
 
 
         updateNameInfo(patientInput.nameInfo, patient)
@@ -67,7 +70,7 @@ class UpdatePatientServiceImpl(
         updatePhones(patientInput.phones, patient)
         updateEmergencyContacts(patientInput.emergencyContacts, patient)
         updateDoctors(patientInput.doctors, patient)
-        patientInput.thumbnail?.let { updateThumbnail(it, patient) }
+        updateThumbnail(patientInput.thumbnail, patient)
 
         return patientEntityToPatientConverter.convert(patient)
     }
@@ -88,6 +91,7 @@ class UpdatePatientServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(patient, patient::emails) }
             }
+
             is Updatable.Update -> {
                 val newEmails = emails.value.map { createEmailService.createEmail(it) }
                 patient.emails.clear()
@@ -103,6 +107,7 @@ class UpdatePatientServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(patient, patient::addresses) }
             }
+
             is Updatable.Update -> {
                 val newAddresses = addresses.value.map { createAddressService.createAddress(it) }
                 patient.addresses.clear()
@@ -116,12 +121,13 @@ class UpdatePatientServiceImpl(
 
     private suspend fun updateEmergencyContacts(
         emergencyContacts: Updatable<List<CreateContact>>,
-        patient: PatientEntity
+        patient: PatientEntity,
     ): Result4k<Unit, PersistenceError> {
         when (emergencyContacts) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(patient, patient::contacts) }
             }
+
             is Updatable.Update -> {
                 val newEmergencyContacts = emergencyContacts.value.map {
                     createContactService.createContact(
@@ -141,6 +147,7 @@ class UpdatePatientServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(patient, patient::phones) }
             }
+
             is Updatable.Update -> {
                 val newPhones = phones.value.map { createPhoneService.createPhone(it) }
                 patient.phones.clear()
@@ -154,13 +161,15 @@ class UpdatePatientServiceImpl(
 
     private suspend fun updateThumbnail(thumbnail: Deletable<String>, patient: PatientEntity) {
         when (thumbnail) {
-            is Updatable.Ignore -> {
+            is Deletable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(patient, patient::thumbnail) }
             }
-            is Updatable.Update -> {
+
+            is Deletable.Update -> {
                 val newThumbnail = Base64.getDecoder().decode(thumbnail.value)
                 patient.thumbnail = newThumbnail
             }
+
             is Deletable.Delete -> {
                 logger.trace { SetToNullEntityFieldMessage(patient, patient::thumbnail) }
                 patient.thumbnail = null
@@ -174,6 +183,7 @@ class UpdatePatientServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(patient, patient::doctors) }
             }
+
             is Updatable.Update -> {
 
                 patient.clearDoctors()
