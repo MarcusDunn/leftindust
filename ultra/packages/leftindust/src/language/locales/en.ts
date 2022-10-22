@@ -163,6 +163,9 @@ const language: Dictionary = {
     complete: 'Complete',
     submit: 'Submit',
     continue: 'Continue',
+    stop: 'Stop',
+    play: 'Play',
+    pause: 'Pause',
   },
   examples: {
     totalPlateletCount: 'Eg. Total platelet count',

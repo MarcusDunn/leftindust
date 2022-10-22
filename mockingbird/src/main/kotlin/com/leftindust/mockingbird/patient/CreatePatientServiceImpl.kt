@@ -44,11 +44,6 @@ class CreatePatientServiceImpl(
             doctors = mutableSetOf(),
             assignedSurveys = mutableSetOf(),
         )
-
-        patient.contacts
-            .map { createContactService.createContact(it) }
-            .forEach { newPatient.addContact(it) }
-
         patient.doctors
             .map { it to doctorRepository.findByIdOrNull(it.value) }
             .forEach {
@@ -56,6 +51,13 @@ class CreatePatientServiceImpl(
                     ?: logger.debug { "did not add a doctor in addNewPatient with ${it.first}" }
             }
 
-        return patientEntityToPatientConverter.convert(patientRepository.save(newPatient))
+        val savedPatient = patientRepository.save(newPatient)
+
+        patient.contacts
+            .map { createContactService.createContact(it, patientEntityToPatientConverter.convert(savedPatient)) }
+            .forEach { newPatient.addContact(it) }
+
+        return patientEntityToPatientConverter.convert(savedPatient)
     }
+
 }

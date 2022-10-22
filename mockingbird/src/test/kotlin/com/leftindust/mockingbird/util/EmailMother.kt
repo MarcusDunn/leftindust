@@ -1,9 +1,12 @@
 package com.leftindust.mockingbird.util
 
+import com.leftindust.mockingbird.email.*
+import com.leftindust.mockingbird.email.CreateEmailDto
 import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.email.EmailEntityToEmailConverter
 import com.leftindust.mockingbird.email.EmailToEmailDtoConverter
 import com.leftindust.mockingbird.email.EmailType
+import dev.forkhandles.result4k.valueOrNull
 import java.util.UUID
 
 object EmailMother {
@@ -28,5 +31,18 @@ object EmailMother {
 
         val domain = emailEntityToEmailConverter.convert(entityDetached)
         val dto = emailToEmailDtoConverter.convert(domain)
+
+        val createDto = CreateEmailDto(
+            type = emailType,
+            email = address
+        )
+
+
+        val createUpdatedDto = CreateEmailDto(
+            type = EmailType.Personal,
+            email = "NewDanEmail@example.com"
+
+        )
+        val createDomain = createDto.toCreateEmail().valueOrNull()!!
     }
 }

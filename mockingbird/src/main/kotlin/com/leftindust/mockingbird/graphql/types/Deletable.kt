@@ -16,17 +16,20 @@ import mu.KLogger
 
 sealed class Deletable<out T : Any> {
     class Delete<T : Any> : Deletable<T>()
+    class Ignore<T : Any> : Deletable<T>()
+    data class Update<T : Any>(val value: T) : Deletable<T>()
 
     override fun toString(): String = when (this) {
         is Delete -> "Delete"
-        is Updatable -> this.toString()
+        is Ignore -> "Ignore"
+        is Update -> "Update to $value"
     }
 
     inline fun <G : Any> map(transform: (T) -> G): Deletable<G> {
         return when (this) {
             is Delete -> delete()
-            is Updatable.Ignore -> ignore()
-            is Updatable.Update -> update(transform(this.value))
+            is Ignore -> Ignore()
+            is Update -> Update(transform(this.value))
         }
     }
 }
@@ -37,10 +40,10 @@ fun <T : Any> Deletable<T>.applyDeletable(entity: AbstractJpaPersistable, setter
             logger.trace { SetToNullEntityFieldMessage(entity, setter) }
             setter.set(null)
         }
-        is Updatable.Ignore -> {
+        is Deletable.Ignore -> {
             logger.trace { NoOpUpdatedEntityFieldMessage(entity, setter) }
         }
-        is Updatable.Update -> {
+        is Deletable.Update -> {
             logger.trace { SetEntityFieldMessage(entity, setter, this.value) }
             setter.set(this.value)
         }
@@ -80,13 +83,20 @@ suspend fun <G : JpaEntity, T: AbstractGraphQLDto.GraphQLID<UUID>> Updatable<Lis
     }
 }
 
-sealed class Updatable<out T : Any> : Deletable<T>() {
+sealed class Updatable<out T : Any> {
     class Ignore<T : Any> : Updatable<T>()
     data class Update<T : Any>(val value: T) : Updatable<T>()
 
     override fun toString() = when (this) {
         is Ignore -> "Ignore"
         is Update -> "Update to $value"
+    }
+
+    inline fun <G : Any> map(transform: (T) -> G): Updatable<G> {
+        return when (this) {
+            is Ignore -> Ignore()
+            is Update -> Update(transform(this.value))
+        }
     }
 }
 

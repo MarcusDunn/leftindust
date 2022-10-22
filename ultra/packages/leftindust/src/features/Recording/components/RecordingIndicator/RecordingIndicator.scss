@@ -1,0 +1,47 @@
+.recording-recording_indicator {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  .recording-recording_indicator-dot {
+    background: var(--f7-color-red);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 var(--f7-color-red);
+    margin: 10px;
+    height: 20px;
+    width: 20px;
+    transform: scale(1);
+    animation: pulse 1.75s infinite;
+  }
+
+  .recording-recording_indicator-timestamp {
+    margin-left: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    position: absolute;
+    left: 40px;
+
+    transition: left 150ms ease-in 100ms;
+    
+    &.recording-recording_indicator-timestamp-slide {
+      left: 0;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+  }
+  
+  70% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 8px rgba(255, 82, 82, 0);
+  }
+  
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+  }
+}

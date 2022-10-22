@@ -26,7 +26,6 @@ import com.leftindust.mockingbird.person.UpdateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.CreatePhoneService
 import com.leftindust.mockingbird.user.ReadMediqUserService
-import java.time.LocalDate
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -60,9 +59,9 @@ class UpdateDoctorServiceImpl(
         updateUserUid(updateDoctor.userUid, doctor)
         updateNameInfo(updateDoctor.nameInfo, doctor)
         updatePhones(updateDoctor.phones, doctor)
-        updateTitle(updateDoctor.title, doctor)
+        updateDoctor.title.applyDeletable(doctor, doctor::title, logger)
         updateClinics(updateDoctor.clinics, doctor)
-        updateDateOfBirth(updateDoctor.dateOfBirth, doctor)
+        updateDoctor.dateOfBirth.applyDeletable(doctor, doctor::dateOfBirth, logger)
         updateAddresses(updateDoctor.addresses, doctor)
         updateEmails(updateDoctor.emails, doctor)
         updatePatients(updateDoctor.patients, doctor)
@@ -115,10 +114,6 @@ class UpdateDoctorServiceImpl(
                 logger.trace { AddedAllEntityCollectionMessage(doctor, doctor::addresses, newAddresses) }
             }
         }
-    }
-
-    private fun updateDateOfBirth(dateOfBirth: Updatable<LocalDate>, doctor: DoctorEntity) {
-        dateOfBirth.applyDeletable(doctor, doctor::dateOfBirth, logger)
     }
 
     private suspend fun updateClinics(clinics: Updatable<List<ClinicDto.ClinicDtoId>>, doctor: DoctorEntity) {
@@ -187,10 +182,10 @@ class UpdateDoctorServiceImpl(
 
     private suspend fun updateUserUid(userUid: Deletable<String>, doctor: DoctorEntity) {
         when (userUid) {
-            is Updatable.Ignore -> {
+            is Deletable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::user) }
             }
-            is Updatable.Update -> {
+            is Deletable.Update -> {
                 val user = readMediqUserService.getByUserUid(userUid.value)
                 if (user == null) {
                     logger.warn { NoOpUpdatedEntityFieldMessage(doctor, doctor::user, "no user with id $userUid") }

@@ -21,9 +21,9 @@ class ClinicMutationController(
     }
 
     @MutationMapping
-    @Suppress("UNCHECKED_CAST")
     suspend fun editClinic(@Argument args: Map<String, Any?>): ClinicDto? {
         val clinic = args["clinic"]
+        @Suppress("UNCHECKED_CAST")
         val clinicEdit = MapDelegatingUpdateClinicDto(clinic as Map<String, Any?>)
         val editedClinic = clinicUpdaterService.editClinic(clinicEdit) ?: return null
         return clinicToClinicDtoConverter.convert(editedClinic)
