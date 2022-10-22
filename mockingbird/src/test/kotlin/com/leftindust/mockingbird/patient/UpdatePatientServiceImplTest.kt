@@ -79,8 +79,7 @@ internal class UpdatePatientServiceImplTest(
 
     @Test
     internal fun `Check Update Patient returns null when missing the patient from db`() = runTest {
-        val updatedPatient =
-            updatePatientServiceImpl.update(PatientMother.Dan.updatePatientDto.toUpdatePatient().valueOrThrow())
+        val updatedPatient = updatePatientServiceImpl.update(PatientMother.Dan.updatePatientDto().toUpdatePatient().valueOrThrow())
 
         assertThat(updatedPatient, equalTo(null))
     }
@@ -90,15 +89,15 @@ internal class UpdatePatientServiceImplTest(
 
         val patientEntity = patientRepository.save(PatientMother.Dan.entityTransient)
 
-        val updatingPatient =
-            PatientMother.Dan.updatePatientDto.copy(pid = PatientDto.PatientDtoId(patientEntity.id!!)).toUpdatePatient()
-                .valueOrThrow()
+        val updatingPatient = PatientMother.Dan.updatePatientDto(pid = PatientDto.PatientDtoId(patientEntity.id!!))
+            .toUpdatePatient()
+            .valueOrThrow()
 
         val updatedPatient = updatePatientServiceImpl.update(updatingPatient)!!
 
-        assertThat(updatedPatient.nameInfo.firstName, equalTo(PatientMother.Dan.updatePatientDto.nameInfo.firstName))
-        assertThat(updatedPatient.nameInfo.lastName, equalTo(PatientMother.Dan.updatePatientDto.nameInfo.lastName))
-        assertThat(updatedPatient.nameInfo.middleName, equalTo(PatientMother.Dan.updatePatientDto.nameInfo.middleName))
+        assertThat(updatedPatient.nameInfo.firstName, equalTo(PatientMother.Dan.newFirstName))
+        assertThat(updatedPatient.nameInfo.lastName, equalTo(PatientMother.Dan.newLastName))
+        assertThat(updatedPatient.nameInfo.middleName, equalTo(PatientMother.Dan.newMiddleName))
 
         assertThat(updatedPatient.nameInfo.firstName, not(equalTo(PatientMother.Dan.firstName)))
         assertThat(updatedPatient.nameInfo.lastName, not(equalTo(PatientMother.Dan.lastName)))
@@ -106,12 +105,15 @@ internal class UpdatePatientServiceImplTest(
 
         assertThat(
             patientEntity.contacts.map { it.email.map { it.address } },
-            equalTo(PatientMother.Dan.updatePatientDto.emergencyContacts.map { it.emails.map { it.email } })
+            equalTo(PatientMother.Dan.updatedContacts.map { it.emails.map { it.email } })
         )
         assertThat(
             patientEntity.contacts.map { it.email.map { it.address } },
             not(equalTo(PatientMother.Dan.contacts.map { it.email.map { it.address } }))
         )
+
+        assertThat(patientEntity.insuranceNumber, equalTo(PatientMother.Dan.newInsuranceNumber))
+        assertThat(patientEntity.insuranceNumber, not(equalTo(PatientMother.Dan.insuranceNumber)))
 
         assertThat(updatedPatient, notNullValue())
     }

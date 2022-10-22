@@ -4,6 +4,7 @@ import com.leftindust.mockingbird.util.*
 import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
+import java.util.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
@@ -12,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
-import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @GraphQlTest(controllers = [PatientMutationController::class])
@@ -195,12 +195,10 @@ internal class PatientMutationControllerTest(
         coEvery { updatePatientService.update(match { it.pid.value == Dan.id }) } returns Dan.updatedDomainEntityDetached
 
         //language=graphql
-
-        @Language("graphql")
         val mutation = """
             mutation {
                 editPatient(editPatient: {
-                    pid: {value: "${Dan.id}"}
+                    pid: { value: "${Dan.id}" }
                     nameInfo: {
                         firstName: "Dann"
                         middleName: "TheDan"
@@ -237,7 +235,7 @@ internal class PatientMutationControllerTest(
             .errors()
             .verify()
             .path("editPatient.id.value")
-            .entity(object : ParameterizedTypeReference<UUID>() {})
+            .entity(UUID::class.java)
             .matches { it.equals(Dan.dto.id.value) }
             .path("editPatient")
             .entity(PatientDto::class.java)

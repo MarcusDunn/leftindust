@@ -2,7 +2,6 @@ package com.leftindust.mockingbird.graphql.types.input
 
 import com.leftindust.mockingbird.graphql.types.Deletable
 import com.leftindust.mockingbird.graphql.types.Updatable
-import com.leftindust.mockingbird.graphql.types.delete
 import com.leftindust.mockingbird.graphql.types.ignore
 import com.leftindust.mockingbird.graphql.types.update
 import kotlin.properties.ReadOnlyProperty
@@ -20,14 +19,14 @@ class DeletableMapDelegate<in G, out T : Any>(private val map: Map<String, Any?>
         return if (map.containsKey(property.name)) {
             map[property.name]?.let {
                 if (it is Map<*, *>) {
-                    update(clazz.constructors.first().call(map))
+                    Deletable.Update(clazz.constructors.first().call(it))
                 } else {
                     // if this throws there is likely a mismatch between the schema and the class
-                    update(it as T)
+                    Deletable.Update(it as T)
                 }
-            } ?: delete()
+            } ?: Deletable.Delete()
         } else {
-            ignore()
+            Deletable.Ignore()
         }
     }
 }
@@ -41,9 +40,9 @@ class UpdatableMapDelegate<in G, out T : Any>(map: Map<String, Any?>, clazz: KCl
         }
     }
 
-    override fun getValue(thisRef: G, property: KProperty<*>) = when (val value = deletableMapDeletable.getValue(thisRef, property)) {
+    override fun getValue(thisRef: G, property: KProperty<*>): Updatable<T> = when (val value = deletableMapDeletable.getValue(thisRef, property)) {
         is Deletable.Delete -> ignore()
-        is Updatable.Ignore -> value
-        is Updatable.Update -> value
+        is Deletable.Ignore -> ignore()
+        is Deletable.Update -> update(value.value)
     }
 }
