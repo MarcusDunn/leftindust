@@ -32,7 +32,7 @@ class MapDelegatingUpdatePatientDto(val map: Map<String, Any?>) : UpdatePatientD
     override val pid: PatientDto.PatientDtoId = runCatching {
         PatientDto.PatientDtoId((map["pid"]!! as Map<*, *>)["value"]!! as UUID)
     }.getOrElse {
-        throw IllegalArgumentException("cid is required", it)
+        throw IllegalArgumentException("pid is required", it)
     }
     override val nameInfo: Updatable<MapDelegatingUpdateNameInfoDto> by UpdatableMapDelegate(map)
     override val phones: Updatable<List<CreatePhoneDto>> by UpdatableMapDelegate(map)

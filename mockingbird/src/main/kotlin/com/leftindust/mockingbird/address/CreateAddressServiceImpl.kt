@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class CreateAddressServiceImpl(private val addressRepository: AddressRepository) : CreateAddressService {
     override suspend fun createAddress(createAddress: CreateAddress): Address {
         val address = Address(
-            type = createAddress.addressType,
+            type = createAddress.type,
             address = createAddress.address,
             city = createAddress.city,
             countryState = CountryState(createAddress.country, createAddress.province),

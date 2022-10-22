@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.address
 import com.leftindust.mockingbird.country.Countries
 
 data class CreateAddressDto(
-    override val addressType: AddressType,
+    override val type: AddressType,
     override val address: String,
     override val city: String,
     override val country: Countries,
