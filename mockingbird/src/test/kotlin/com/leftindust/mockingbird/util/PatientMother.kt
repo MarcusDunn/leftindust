@@ -4,9 +4,24 @@ import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
-import com.leftindust.mockingbird.email.*
-import com.leftindust.mockingbird.patient.*
-import com.leftindust.mockingbird.person.*
+import com.leftindust.mockingbird.email.EmailEntity
+import com.leftindust.mockingbird.graphql.types.Deletable
+import com.leftindust.mockingbird.graphql.types.delete
+import com.leftindust.mockingbird.graphql.types.update
+import com.leftindust.mockingbird.patient.CreatePatient
+import com.leftindust.mockingbird.patient.CreatePatientDto
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.patient.PatientEntity
+import com.leftindust.mockingbird.patient.PatientEntityToPatientConverter
+import com.leftindust.mockingbird.patient.PatientEventEntity
+import com.leftindust.mockingbird.patient.PatientToPatientDtoConverter
+import com.leftindust.mockingbird.patient.UpdatePatientDto
+import com.leftindust.mockingbird.patient.toCreatePatient
+import com.leftindust.mockingbird.person.CreateNameInfoDto
+import com.leftindust.mockingbird.person.Ethnicity
+import com.leftindust.mockingbird.person.NameInfoEntity
+import com.leftindust.mockingbird.person.Sex
+import com.leftindust.mockingbird.person.UpdateNameInfoDto
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
@@ -111,7 +126,7 @@ object PatientMother {
             assignedSurveys = assignedSurveysTransient
         ).apply { id = this@Dan.id }
 
-        val createPatientDto:CreatePatientDto
+        val createPatientDto: CreatePatientDto
             get() = CreatePatientDto(
                 nameInfo = CreateNameInfoDto(
                     firstName = firstName,
@@ -135,30 +150,37 @@ object PatientMother {
                 emergencyContacts = listOf(ContactMother.Aydan.createDto)
             )
 
-        val updatePatientDto: UpdatePatientDto
-            get() = UpdatePatientDto(
-                pid = Dan.graphqlId,
-                nameInfo = UpdateNameInfoDto(
-                    firstName = newFirstName,
-                    lastName = newLastName,
-                    middleName = newMiddleName
-                ),
-                addresses = listOf(AddressMother.JennysHouse.createDto),
-                emails = listOf(DansEmail.createUpdatedDto),
-                phones = listOf(PhoneMother.DansCell.createUpdatedDto),
-                thumbnail = "",
-                sex = Sex.Male,
-                dateOfBirth = newDateOfBirth,
-                gender = newGender,
-                ethnicity = newEthnicity,
-                insuranceNumber = newInsuranceNumber,
-                doctors = listOf(
-                    DoctorDto.DoctorDtoId(
-                        DoctorMother.Dan.id
+        val updatedContacts = listOf(ContactMother.Aydan.createUpdatedDto)
+
+        fun updatePatientDto(pid: PatientDto.PatientDtoId = graphqlId): UpdatePatientDto {
+            return object : UpdatePatientDto {
+                override val pid = pid
+                override val nameInfo = update(
+                    object : UpdateNameInfoDto {
+                        override val firstName = update(newFirstName)
+                        override val lastName = update(newLastName)
+                        override val middleName = Deletable.Update(newMiddleName)
+                    }
+                )
+                override val addresses = update(listOf(AddressMother.JennysHouse.createDto))
+                override val emails = update(listOf(DansEmail.createUpdatedDto))
+                override val phones = update(listOf(PhoneMother.DansCell.createUpdatedDto))
+                override val thumbnail = delete<String>()
+                override val sex = update(Sex.Male)
+                override val dateOfBirth = update(newDateOfBirth)
+                override val gender = Deletable.Update(newGender)
+                override val ethnicity = Deletable.Update(newEthnicity)
+                override val insuranceNumber = Deletable.Update(newInsuranceNumber)
+                override val doctors = update(
+                    listOf(
+                        DoctorDto.DoctorDtoId(
+                            DoctorMother.Dan.id
+                        )
                     )
-                ),
-                emergencyContacts = listOf(ContactMother.Aydan.createUpdatedDto),
-            )
+                )
+                override val emergencyContacts = update(updatedContacts)
+            }
+        }
 
         val entityUpdatedTransient: PatientEntity = PatientEntity(
             nameInfoEntity = NameInfoEntity(

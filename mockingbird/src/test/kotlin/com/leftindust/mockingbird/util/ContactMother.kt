@@ -1,11 +1,11 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.contact.*
-import com.leftindust.mockingbird.email.CreateEmailDto
-import com.leftindust.mockingbird.email.EmailType
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.contact.ContactDto
-import com.leftindust.mockingbird.patient.CreatePatientServiceImpl
+import com.leftindust.mockingbird.contact.CreateContact
+import com.leftindust.mockingbird.contact.CreateContactDto
+import com.leftindust.mockingbird.email.CreateEmailDto
+import com.leftindust.mockingbird.email.EmailType
 import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.NameInfoEntity
@@ -28,33 +28,37 @@ object ContactMother {
         val emailsTransient = setOf(EmailMother.DansEmail.entityTransient)
         val emailsDetached = setOf(EmailMother.DansEmail.entityDetached)
         val relationship = Relationship.Parent
-        val patientDetached: PatientEntity = PatientMother.Dan.entityDetached
-        val patientTransient: PatientEntity = PatientMother.Dan.entityDetached
-        val entityDetached = Contact(
-            patientEntity = patientDetached,
-            relationship = relationship,
-            nameInfoEntity = NameInfoEntity(
-                firstName = firstName,
-                lastName = lastName,
-                middleName = middleName
-            ),
-            phone = phone,
-            email = emailsDetached,
-        ).apply {
-            this.id = this@Aydan.id
-        }
+        val patientDetached: PatientEntity
+            get() = PatientMother.Dan.entityDetached
+        val patientTransient: PatientEntity
+            get() = PatientMother.Dan.entityDetached
+        val entityDetached: Contact
+            get() = Contact(
+                patientEntity = patientDetached,
+                relationship = relationship,
+                nameInfoEntity = NameInfoEntity(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = middleName
+                ),
+                phone = phone,
+                email = emailsDetached,
+            ).apply {
+                this.id = this@Aydan.id
+            }
 
-        val entityTransient = Contact(
-            patientEntity = patientTransient,
-            relationship = relationship,
-            nameInfoEntity = NameInfoEntity(
-                firstName = firstName,
-                lastName = lastName,
-                middleName = middleName
-            ),
-            phone = phone,
-            email = emailsTransient,
-        )
+        val entityTransient: Contact
+            get() = Contact(
+                patientEntity = patientTransient,
+                relationship = relationship,
+                nameInfoEntity = NameInfoEntity(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = middleName
+                ),
+                phone = phone,
+                email = emailsTransient,
+            )
 
         val createDto = CreateContactDto(
             nameInfo = CreateNameInfoDto(

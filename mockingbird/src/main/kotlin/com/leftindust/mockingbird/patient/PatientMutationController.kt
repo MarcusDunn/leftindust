@@ -13,20 +13,19 @@ class PatientMutationController(
     private val patientToPatientDtoConverter: InfallibleConverter<Patient?, PatientDto>,
     private val createPatientService: CreatePatientService,
     private val updatePatientService: UpdatePatientService,
-
-    ) {
-    @MutationMapping
-    suspend fun editPatient(@Argument("editPatient") patient: UpdatePatientDto): PatientDto {
-        val convertedPatient = patient.toUpdatePatient()
-        val updatedPatient =
-            updatePatientService.update(convertedPatient.onFailure { throw it.reason.toMockingbirdException() })
+) {
+    @MutationMapping("editPatient")
+    suspend fun editPatient(@Argument args: Map<String, Any?>): PatientDto {
+        @Suppress("UNCHECKED_CAST")
+        val patient = MapDelegatingUpdatePatientDto(args["editPatient"] as Map<String, Any?>)
+        val updatedPatient = updatePatientService.update(patient.toUpdatePatient().onFailure { throw it.reason.toMockingbirdException() })
         return patientToPatientDtoConverter.convert(updatedPatient)
     }
 
-    @MutationMapping
+    @MutationMapping("addPatient")
     suspend fun addPatient(
         @Argument("createPatient") createPatientDto: CreatePatientDto,
-        dataFetchingEnvironment: DataFetchingEnvironment
+        dataFetchingEnvironment: DataFetchingEnvironment,
     ): PatientDto {
         val createPatient = createPatientDto.toCreatePatient().onFailure { throw it.reason.toMockingbirdException() }
         val newPatient = createPatientService.addNewPatient(createPatient)
