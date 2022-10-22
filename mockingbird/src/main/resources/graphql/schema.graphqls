@@ -253,25 +253,25 @@ type SurveyTemplateInput {
 }
 
 input UpdateNameInfo {
-    firstName: String!
+    firstName: String
     middleName: String
-    lastName: String!
+    lastName: String
 }
 
 input EditPatient {
     pid: PatientIdInput!
     nameInfo: UpdateNameInfo
-    phones: [CreatePhone!]!
+    phones: [CreatePhone!]
     dateOfBirth: LocalDate
-    addresses: [CreateAddress!]!
-    emails: [CreateEmail!]!
+    addresses: [CreateAddress!]
+    emails: [CreateEmail!]
     insuranceNumber: String
-    sex: Sex!
+    sex: Sex
     gender: String
-    ethnicity: Ethnicity!
-    emergencyContacts: [CreateContact!]!
+    ethnicity: Ethnicity
+    emergencyContacts: [CreateContact!]
     thumbnail: String
-    doctor: [DoctorIdInput!]!
+    doctors: [DoctorIdInput!]
 }
 
 input CreatePatient {

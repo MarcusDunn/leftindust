@@ -280,3 +280,17 @@ export const getYupInputTypeFromTemplateCategory = (type: SurveyTemplateInputTyp
       return yup.string();
   }
 };
+
+export const getInputType = (type: SurveyTemplateInputType) => {
+  switch (type) {
+    case SurveyTemplateInputType.Number:
+      return language('examples.number');
+    case SurveyTemplateInputType.Date:
+      return language('examples.date');
+    case SurveyTemplateInputType.SingleSelect:
+    case SurveyTemplateInputType.MultiSelect:
+      return language('examples.select');
+    default:
+      return language('examples.text');
+  }
+};

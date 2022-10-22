@@ -1,0 +1,34 @@
+.recording-recording_button_container {
+  width: 100%;
+  height: 30px;
+  position: relative;
+  user-select: none;
+
+  .recording-recording_button_placeholder {
+    border-radius: 30px;
+    height: calc(var(--f7-button-height) + 4px);
+    position: absolute;
+    width: 100%;
+    top: -4.5px;
+    left: -3px;
+  }
+
+  .recording-recording_button_counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 600;
+    position: absolute;
+    width: 100%;
+    cursor: pointer;
+  }
+}
+
+.dark {
+  .recording-recording_button_container {
+    .recording-recording_button_placeholder {
+      border: 3px solid white;
+    }
+  }
+}
