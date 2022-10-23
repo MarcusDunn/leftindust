@@ -5,7 +5,7 @@ import com.leftindust.mockingbird.NullEntityIdInConverterException
 fun Address.toAddressDto(): AddressDto {
     return AddressDto(
         id = AddressDto.AddressDtoId(id ?: throw NullEntityIdInConverterException(this)),
-        type = type,
+        addressType = type,
         address = address,
         city = city,
         country = countryState.country,
