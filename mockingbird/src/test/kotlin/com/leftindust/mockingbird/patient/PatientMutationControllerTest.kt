@@ -113,7 +113,7 @@ internal class PatientMutationControllerTest(
                     }
                     addresses: [
                         {
-                            addressType: Home
+                             addressType: Home
                             address: "${AddressMother.DansHouse.address}",
                             city: "${AddressMother.DansHouse.city}",
                             country: Canada,

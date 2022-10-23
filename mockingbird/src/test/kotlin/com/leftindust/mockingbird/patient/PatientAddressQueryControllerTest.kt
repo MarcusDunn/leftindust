@@ -40,7 +40,7 @@ internal class PatientAddressQueryControllerTest(
                 patientsByPatientId(patientIds: [{ value: "${PatientMother.Dan.id}" }]) {
                     addresses {
                         id { value }
-                        type
+                        addressType
                         address
                         city
                         country
