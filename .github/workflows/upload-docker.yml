@@ -33,7 +33,7 @@ jobs:
           images: ${{ env.REGISTRY }}/marcusdunn/mockingbird
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@c84f38281176d4c9cdb1626ffafcd6b3911b5d94
+        uses: docker/build-push-action@c56af957549030174b10d6867f20e78cfd7debc5
         with:
           context: mockingbird
           push: true
@@ -62,7 +62,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/marcusdunn/ultra
       - name: Build and push Docker image
-        uses: docker/build-push-action@c84f38281176d4c9cdb1626ffafcd6b3911b5d94
+        uses: docker/build-push-action@c56af957549030174b10d6867f20e78cfd7debc5
         with:
           context: ultra
           push: true

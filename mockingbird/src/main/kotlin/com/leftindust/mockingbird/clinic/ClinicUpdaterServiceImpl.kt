@@ -7,6 +7,7 @@ import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.graphql.types.Updatable
+import com.leftindust.mockingbird.graphql.types.applyUpdatable
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -34,24 +35,9 @@ class ClinicUpdaterServiceImpl(
         else {
             updateAddress(clinicEdit.address, existingClinic)
             updateDoctors(clinicEdit.doctors, existingClinic)
-            updateName(clinicEdit.name, existingClinic)
+            clinicEdit.name.applyUpdatable(existingClinic, existingClinic::name, logger)
             clinicRepository.save(existingClinic)
             return clinicEntityToClinicConverter.convert(existingClinic)
-        }
-    }
-
-    private fun updateName(
-        nameEdit: Updatable<String>,
-        clinic: ClinicEntity,
-    ) {
-        return when (nameEdit) {
-            is Updatable.Ignore -> {
-                logger.trace { NoOpUpdatedEntityFieldMessage(clinic, clinic::name) }
-            }
-            is Updatable.Update -> {
-                clinic.name = nameEdit.value
-                logger.trace { SetEntityFieldMessage(clinic, clinic::name, nameEdit.value) }
-            }
         }
     }
 

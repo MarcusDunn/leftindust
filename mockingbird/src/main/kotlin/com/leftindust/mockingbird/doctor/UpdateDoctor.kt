@@ -15,9 +15,9 @@ interface UpdateDoctor {
     val userUid: Deletable<String>
     val nameInfo: Updatable<UpdateNameInfo>
     val phones: Updatable<List<CreatePhone>>
-    val title: Updatable<String>
+    val title: Deletable<String>
     val clinics: Updatable<List<ClinicDto.ClinicDtoId>>
-    val dateOfBirth: Updatable<LocalDate>
+    val dateOfBirth: Deletable<LocalDate>
     val addresses: Updatable<List<CreateAddress>>
     val emails: Updatable<List<CreateEmail>>
     val patients: Updatable<List<PatientDto.PatientDtoId>>

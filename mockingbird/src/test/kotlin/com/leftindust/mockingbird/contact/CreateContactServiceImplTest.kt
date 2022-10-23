@@ -64,7 +64,7 @@ internal class CreateContactServiceDatabaseTest(
             createNameInfoService
         )
 
-        val newContact = createContactService.createContact(ContactMother.Aydan.createDomain)
+        val newContact = createContactService.createContact(ContactMother.Aydan.createDomain, PatientMother.Dan.id)
         assertThat(contactRepository.findByIdOrNull(newContact.onFailure { fail("persistence failed") }.id ?: fail("null id")), notNullValue())
     }
 }
@@ -110,7 +110,7 @@ class CreateContactServiceImplTest {
             createNameInfoService
         )
 
-        val contact = createContactService.createContact(ContactMother.Aydan.createDomain)
+        val contact = createContactService.createContact(ContactMother.Aydan.createDomain, PatientMother.Dan.id)
         verify(exactly = 1) { contactRepository.save(any()) }
     }
 

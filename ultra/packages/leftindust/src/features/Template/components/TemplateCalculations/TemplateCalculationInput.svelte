@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type templateForm, type TemplateCalculationWithInstance, templateCalculationNodes } from '../..';
+  import { type templateForm, type TemplateCalculationWithInstance, templateCalculationNodes, getInputType } from '../..';
   import Input from '@/features/Input/Input.svelte';
   import { writable, type Writable } from 'svelte/store';
   import { _ } from 'svelte-i18n';
@@ -142,7 +142,7 @@
 <div>
   <Select
     title={$_('generics.type')}
-    placeholder={$_('examples.text')}
+    placeholder={calculation.inputType ? getInputType(calculation.inputType) : ''}
     options={[
       {
         text: $_('generics.text'),

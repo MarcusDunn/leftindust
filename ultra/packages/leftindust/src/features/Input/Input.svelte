@@ -1,5 +1,7 @@
 <script lang="ts">
   import { Icon } from 'framework7-svelte';
+  import RecordingModal from '../Recording/components/RecordingModal/RecordingModal.svelte';
+  import { openDialog } from '../UI/components/Dialog';
   import MenuButton from '../UI/components/MenuButton/MenuButton.svelte';
 
   import './Input.scss';
@@ -8,13 +10,22 @@
   export let title = '';
 
   export let clear = false;
-  export let microphone = false;
 
   export let disabled = false;
 
   export let style = '';
 
   export let error: string[] | string | null | undefined = undefined;
+
+  let input: HTMLInputElement | null;
+
+  const reciveTranscript = (transcript: string) => {
+    if (input) input.value = transcript;
+  };
+
+  const microphone = (node: HTMLInputElement) => {
+    input = node;
+  };
 </script>
  
 <div
@@ -44,23 +55,38 @@
             </div>
           {/if}
           <div class="item-input-wrap">
-            <slot />
-            {#if clear}
-              <span class="input-clear-button" />
-            {/if}
+            <div class="display-flex">
+              <slot {microphone} />
+  
+              <div style="margin-top: 5px">
+                {#if input}
+                  <MenuButton
+                    on:click={() => openDialog({
+                      title: 'Recording',
+                      component: {
+                        component: RecordingModal,
+                        params: {
+                          onStop: reciveTranscript,
+                        },
+                      },
+                    })}
+                  >
+                    <Icon
+                      color="blue"
+                      f7="mic_fill"
+                      style="font-size: 21px"
+                    />
+                  </MenuButton>
+                {/if}
+              </div>
+
+              {#if clear}
+                <span class="input-clear-button" />
+              {/if}
+            </div>
           </div>
         </div>
-        {#if microphone}
-          <div class="item-media">
-            <MenuButton>
-              <Icon
-                color="purple"
-                f7="mic_fill"
-                style="font-size: 21px"
-              />
-            </MenuButton>
-          </div>
-        {/if}
+
       </li>
     {/if}
   </ul>

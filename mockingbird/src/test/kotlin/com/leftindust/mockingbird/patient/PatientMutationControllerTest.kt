@@ -1,14 +1,10 @@
 package com.leftindust.mockingbird.patient
 
-import com.leftindust.mockingbird.contact.ContactDto
-import com.leftindust.mockingbird.util.AddressMother
-import com.leftindust.mockingbird.util.ContactMother
-import com.leftindust.mockingbird.util.EmailMother
+import com.leftindust.mockingbird.util.*
 import com.leftindust.mockingbird.util.PatientMother.Dan
-import com.leftindust.mockingbird.util.PhoneMother
 import com.ninjasquad.springmockk.MockkBean
-import dev.forkhandles.result4k.Success
 import io.mockk.coEvery
+import java.util.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
@@ -17,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
-import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @GraphQlTest(controllers = [PatientMutationController::class])
@@ -30,9 +25,12 @@ internal class PatientMutationControllerTest(
     @MockkBean
     private lateinit var createPatientService: CreatePatientService
 
+    @MockkBean
+    private lateinit var updatePatientService: UpdatePatientService
+
     @Test
     internal fun `check can create patient`() {
-        coEvery { createPatientService.addNewPatient(any()) } returns Success(Dan.domain)
+        coEvery { createPatientService.addNewPatient(any()) } returns Dan.domain
 
         @Language("graphql")
         val mutation = """
@@ -102,7 +100,7 @@ internal class PatientMutationControllerTest(
 
     @Test
     internal fun `check can create patient with a contact`() {
-        coEvery { createPatientService.addNewPatient(any()) } returns Success(Dan.domain)
+        coEvery { createPatientService.addNewPatient(any()) } returns Dan.domain
 
         @Language("graphql")
         val mutation = """
@@ -189,5 +187,58 @@ internal class PatientMutationControllerTest(
             .path("addPatient")
             .entity(PatientDto::class.java)
             .isEqualTo(Dan.dto)
+    }
+
+    @Test
+    internal fun `check update patient works properly`() {
+
+        coEvery { updatePatientService.update(match { it.pid.value == Dan.id }) } returns Dan.updatedDomainEntityDetached
+
+        //language=graphql
+        val mutation = """
+            mutation {
+                editPatient(editPatient: {
+                    pid: { value: "${Dan.id}" }
+                    nameInfo: {
+                        firstName: "Dann"
+                        middleName: "TheDan"
+                        lastName: "Servershani"
+                    }
+                    addresses: []
+                    phones: []
+                    emails: []
+                    insuranceNumber: ""
+                    dateOfBirth: "${DoctorMother.Jenny.dateOfBirth}"
+                    sex: Male
+                    gender: ""
+                    ethnicity: Asian
+                    emergencyContacts: []
+                    doctors: []
+                    thumbnail: null
+                })
+                {
+                    id { value }
+                    firstName
+                    middleName
+                    lastName
+                    dateOfBirth
+                    insuranceNumber
+                    sex
+                    gender
+                    ethnicity
+                }
+            }
+        """.trimIndent()
+
+        graphQlTester.document(mutation)
+            .execute()
+            .errors()
+            .verify()
+            .path("editPatient.id.value")
+            .entity(UUID::class.java)
+            .matches { it.equals(Dan.dto.id.value) }
+            .path("editPatient")
+            .entity(PatientDto::class.java)
+            .isEqualTo(Dan.updatedDto)
     }
 }
