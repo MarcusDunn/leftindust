@@ -66,7 +66,7 @@ object AddressMother {
         ).apply { id = this@JennysHouse.id }
 
         val createDto: CreateAddressDto = CreateAddressDto(
-            type = DansHouse.addressType,
+            addressType = DansHouse.addressType,
                 address = DansHouse.address,
                 city = DansHouse.city,
                 country = country,

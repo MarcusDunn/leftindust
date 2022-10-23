@@ -135,7 +135,7 @@ enum Countries {
 }
 
 input CreateAddress {
-    type: AddressType!
+    addressType: AddressType!
     address: String!
     city: String!
     country: Countries!
