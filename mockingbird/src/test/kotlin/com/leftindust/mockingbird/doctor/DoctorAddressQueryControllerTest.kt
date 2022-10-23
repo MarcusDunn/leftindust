@@ -39,7 +39,7 @@ internal class DoctorAddressQueryControllerTest(
                 doctorsByDoctorIds(doctorIds: [{ value: "${DoctorMother.Jenny.id}" }]) {
                     addresses {
                         id { value }
-                        type
+                        addressType
                         address
                         city
                         country
