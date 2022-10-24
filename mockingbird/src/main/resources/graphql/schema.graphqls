@@ -391,7 +391,7 @@ type PhoneId {
 
 type Address {
     id: AddressId!
-    type: AddressType
+    addressType: AddressType
     address: String!
     city: String!
     country: Countries!
