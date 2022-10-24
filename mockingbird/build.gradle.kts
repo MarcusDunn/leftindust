@@ -42,7 +42,7 @@ dependencies {
 
     // logging
     implementation("io.github.microutils", "kotlin-logging-jvm", "2.1.20")
-    implementation(platform("dev.forkhandles:forkhandles-bom:2.2.0.0"))
+    implementation(platform("dev.forkhandles:forkhandles-bom:2.3.0.0"))
     implementation("dev.forkhandles:values4k")
     implementation("dev.forkhandles:result4k")
 
