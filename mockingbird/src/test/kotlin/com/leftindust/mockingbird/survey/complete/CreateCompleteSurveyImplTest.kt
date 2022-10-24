@@ -1,10 +1,21 @@
 package com.leftindust.mockingbird.survey.complete
 
+import com.leftindust.mockingbird.graphql.AbstractGraphQLDto
+import com.leftindust.mockingbird.patient.PatientRepository
+import com.leftindust.mockingbird.survey.link.CreateSurveyLinkServiceImpl
+import com.leftindust.mockingbird.survey.link.SurveyLinkDto
+import com.leftindust.mockingbird.survey.link.SurveyLinkEntityToSurveyLinkConverter
+import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateServiceImpl
 import com.leftindust.mockingbird.survey.template.SurveyTemplateEntityToSurveyTemplateConverter
 import com.leftindust.mockingbird.survey.template.SurveyTemplateRepository
+import com.leftindust.mockingbird.util.CompleteSurveyMother
+import com.leftindust.mockingbird.util.PatientMother
+import com.leftindust.mockingbird.util.SurveyLinkMother
 import com.leftindust.mockingbird.util.SurveyTemplateMother
 import com.ninjasquad.springmockk.MockkBean
+import dev.forkhandles.result4k.onFailure
+import dev.forkhandles.result4k.valueOrNull
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -15,6 +26,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.fail
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.repository.findByIdOrNull
@@ -24,32 +36,57 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class CreateCompleteSurveyImplUnitTest {
     @MockK
-    private lateinit var surveyTemplateRepository: SurveyTemplateRepository
+    private lateinit var completeSurveyRepository: CompleteSurveyRepository
+    @MockK
+    private lateinit var surveyLinkRepository: SurveyLinkRepository
 
-    private val surveyTemplateEntityToSurveyTemplateConverter = SurveyTemplateEntityToSurveyTemplateConverter()
+    private val completeSurveyEntityToCompleteSurveyConverter = CompleteSurveyEntityToCompleteSurvey()
 
     @Test
     internal fun `check saves a new entity`() = runTest {
-        every { surveyTemplateRepository.save(any()) } returns SurveyTemplateMother.KoosKneeSurvey.entityDetached
-        val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, surveyTemplateEntityToSurveyTemplateConverter)
-        createSurveyTemplateServiceImpl.createSurveyTemplate(SurveyTemplateMother.KoosKneeSurvey.createDomain)
-        verify(exactly = 1) { surveyTemplateRepository.save(any()) }
+        every { completeSurveyRepository.save(any()) } returns CompleteSurveyMother.FilledOutKoosKneeSurvey.entityDetached
+        every { surveyLinkRepository.findByIdOrNull(any()) } returns SurveyLinkMother.KoosKneeSurveyLink.entityDetached
+        val createCompleteSurveyService = CreateCompleteSurveyServiceImpl(completeSurveyRepository, surveyLinkRepository, completeSurveyEntityToCompleteSurveyConverter)
+        createCompleteSurveyService.createCompleteSurvey(CompleteSurveyMother.FilledOutKoosKneeSurvey.createDomain)
+        verify(exactly = 1) { completeSurveyRepository.save(any()) }
     }
 }
 
 @DataJpaTest
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class CreateCompleteSurveyImplDatabaseTest(
-    @Autowired private val surveyTemplateRepository: SurveyTemplateRepository,
+    @Autowired
+    private val completeSurveyRepository: CompleteSurveyRepository,
+    @Autowired
+    private val surveyLinkRepository: SurveyLinkRepository,
 ) {
     @MockkBean
     private lateinit var serverHttpSecurity: SecurityWebFilterChain
 
-    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, SurveyTemplateEntityToSurveyTemplateConverter())
+    @MockK
+    private lateinit var surveyTemplateRepository: SurveyTemplateRepository
+    @MockK
+    private lateinit var patientRepository: PatientRepository
+
+    private val completeSurveyEntityToCompleteSurveyConverter = CompleteSurveyEntityToCompleteSurvey()
+    private val surveyLinkEntityToSurveyLinkConverter = SurveyLinkEntityToSurveyLinkConverter()
 
     @Test
     internal fun `check persists a new surveyTemplate`() = runTest {
-        val surveyTemplate = createSurveyTemplateServiceImpl.createSurveyTemplate(SurveyTemplateMother.KoosKneeSurvey.createDomain)
-        assertThat(surveyTemplateRepository.findByIdOrNull(surveyTemplate.id), notNullValue())
+        val createCompleteSurveyService = CreateCompleteSurveyServiceImpl(completeSurveyRepository, surveyLinkRepository, completeSurveyEntityToCompleteSurveyConverter)
+        val createSurveyLinkService = CreateSurveyLinkServiceImpl(surveyLinkRepository, surveyTemplateRepository, patientRepository, surveyLinkEntityToSurveyLinkConverter)
+
+        every { surveyTemplateRepository.findByIdOrNull(any()) } returns SurveyTemplateMother.KoosKneeSurvey.entityDetached
+        every { patientRepository.findByIdOrNull(any()) } returns PatientMother.Dan.entityDetached
+        val createdSurveyLink = createSurveyLinkService.createSurveyLink(SurveyLinkMother.KoosKneeSurveyLink.createDto)
+            ?: fail("could not create survey link")
+        val newSurvey = object : CreateCompleteSurvey {
+            override val surveyLinkId = SurveyLinkDto.SurveyLinkDtoId(createdSurveyLink.id)
+            override val completeSurveyTemplateSections = CompleteSurveyMother.FilledOutKoosKneeSurvey.createCompleteSurveyTemplateSections
+        }
+        val completeSurvey = createCompleteSurveyService.createCompleteSurvey(newSurvey).onFailure { fail("failed to persist survey") }
+        assertThat(completeSurveyRepository.findByIdOrNull(completeSurvey.id), notNullValue())
+        assertThat(surveyLinkRepository.findByIdOrNull(createdSurveyLink.id), notNullValue())
+        assertThat(surveyLinkRepository.findByIdOrNull(createdSurveyLink.id)?.completeSurvey, notNullValue())
     }
 }
