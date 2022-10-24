@@ -3,6 +3,7 @@ package com.leftindust.mockingbird.survey.complete
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.graphql.types.input.Range
 import com.leftindust.mockingbird.graphql.types.input.toPageable
+import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.survey.link.SurveyLinkDto
 import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import org.springframework.data.domain.Sort
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service
 @Service
 class ReadCompleteSurveyServiceImpl(
     private val completeSurveyRepository: CompleteSurveyRepository,
-    private val surveyLinkRepository: SurveyLinkRepository,
     private val completeSurveyEntityToCompleteSurvey: InfallibleConverter<CompleteSurveyEntity, CompleteSurvey>
 ) : ReadCompleteSurveyService {
     override suspend fun completeSurveyByCompleteSurveyId(completeSurveyId: CompleteSurveyDto.CompleteSurveyDtoId): CompleteSurvey? {
