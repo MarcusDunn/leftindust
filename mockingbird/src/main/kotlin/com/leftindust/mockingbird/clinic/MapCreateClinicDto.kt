@@ -1,9 +1,9 @@
 package com.leftindust.mockingbird.clinic
 
-import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.input.UpdatableMapDelegate
+import com.leftindust.mockingbird.patient.UpdateAddressDto
 import java.util.UUID
 
 class MapDelegatingUpdateClinicDto(val map: Map<String, Any?>) : ClinicEdit {
@@ -13,6 +13,6 @@ class MapDelegatingUpdateClinicDto(val map: Map<String, Any?>) : ClinicEdit {
         throw IllegalArgumentException("cid is required", it)
     }
     override val name: Updatable<String> by UpdatableMapDelegate(map)
-    override val address: Updatable<CreateAddressDto> by UpdatableMapDelegate(map)
+    override val address: Updatable<UpdateAddressDto> by UpdatableMapDelegate(map)
     override val doctors: Updatable<List<DoctorDto.DoctorDtoId>> by UpdatableMapDelegate(map)
 }

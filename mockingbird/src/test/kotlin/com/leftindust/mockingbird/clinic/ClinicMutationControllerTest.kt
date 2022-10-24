@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
+import java.util.*
 
 @GraphQlTest(controllers = [ClinicMutationController::class])
 internal class ClinicMutationControllerWebTest(
@@ -26,12 +27,20 @@ internal class ClinicMutationControllerWebTest(
 
     @Test
     internal fun `test change clinic name is an accepted query`() {
-        coEvery { updateClinicService.editClinic(match { it.cid.value == DansClinic.id }) } returns DansClinic.domain
+//        coEvery { updateClinicService.editClinic(match { it.cid.value == DansClinic.id }) } returns DansClinic.domain
         //language=graphql
         val mutation = """mutation {
             |    editClinic(clinic: {
             |        cid: { value: "${DansClinic.id}" },
             |        name: "${DansClinic.dansClinicName}"
+            |        address: {
+                        address: "2583 Diamond Crescent",
+                        addressType: Work,
+                        city: "Coquitlam",
+                        country: Canada,
+                        postalCode: "V3E 2Z9",
+                        province: "BC"
+            |        }
             |    }) {
             |        name
             |    } }""".trimMargin()

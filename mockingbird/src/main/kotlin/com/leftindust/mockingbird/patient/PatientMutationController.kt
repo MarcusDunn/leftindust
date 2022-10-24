@@ -15,10 +15,10 @@ class PatientMutationController(
     private val updatePatientService: UpdatePatientService,
 ) {
     @MutationMapping("editPatient")
-    suspend fun editPatient(@Argument args: Map<String, Any?>): PatientDto {
+    suspend fun editPatient(@Argument("createPatient") editPatient: UpdatePatientDto): PatientDto {
         @Suppress("UNCHECKED_CAST")
-        val patient = MapDelegatingUpdatePatientDto(args["editPatient"] as Map<String, Any?>)
-        val updatedPatient = updatePatientService.update(patient.toUpdatePatient().onFailure { throw it.reason.toMockingbirdException() })
+        val patient = MapDelegatingUpdatePatientDto(editPatient.asMap(), editPatient)
+        val updatedPatient = updatePatientService.update(patient)
         return patientToPatientDtoConverter.convert(updatedPatient)
     }
 
