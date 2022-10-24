@@ -150,7 +150,7 @@ internal class SurveyTemplateMutationControllerWebTest(
     }
 
     @Test
-    internal fun `check creating an insput and section with calculationIds returns them`() {
+    internal fun `check creating an input with multiple sections with calculationIds returns them`() {
         coEvery { readSurveyTemplateSectionService.surveyTemplateSectionServiceBySurveySectionId(KoosKneeSurvey.graphqlId) } returns listOf(HowMuchPainAreYouInSection.domain)
         coEvery { readSurveyTemplateSectionInputService.surveyTemplateSectionInputBySurveySection(HowMuchPainAreYouInSection.graphqlId) } returns listOf(HowMuchPainAreYouInSectionInput.domain)
 

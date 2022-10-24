@@ -23,6 +23,7 @@ type Query {
     # complete survey
     completeSurveyById(completeSurveyId: CompleteSurveyIdInput): CompleteSurvey
     completeSurveyByRange(range: Range!): [CompleteSurvey!]!
+
     # patient
     patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!
     patientsByRange(range: Range!): [Patient!]!
@@ -362,6 +363,7 @@ type Patient {
     sex: Sex!
     gender: String
     ethnicity: Ethnicity
+    assignedSurveys: [SurveyLink!]!
 }
 
 input CreatePhone {

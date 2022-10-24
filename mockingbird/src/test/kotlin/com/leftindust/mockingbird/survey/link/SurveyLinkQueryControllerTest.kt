@@ -22,7 +22,7 @@ internal class SurveyLinkQueryControllerWebTest(
 
     @Test
     internal fun `check can create a survey link`() {
-        coEvery { readSurveyLinkService.surveyLinkBySurveyLinkId(KoosKneeSurveyLink.graphqlId) } returns KoosKneeSurveyLink.domain
+        coEvery { readSurveyLinkService.getBySurveyLinkId(KoosKneeSurveyLink.graphqlId) } returns KoosKneeSurveyLink.domain
 
         @Language("graphql")
         val query = """

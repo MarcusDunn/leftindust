@@ -1112,4 +1112,12 @@
     <changeSet author="boris (generated)" id="1666048249276-9">
         <dropNotNullConstraint columnDataType="varchar(255)" columnName="gender" tableName="patient_entity"/>
     </changeSet>
+    <changeSet author="boris (generated)" id="1666577451215-35">
+        <addColumn tableName="survey_link_entity">
+            <column name="complete_survey_id" type="uuid"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="boris (generated)" id="1666577451215-36">
+        <addForeignKeyConstraint baseColumnNames="complete_survey_id" baseTableName="survey_link_entity" constraintName="fk2guwx8qyy7hw31b5hf7yj2wbf" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="complete_survey_entity" validate="true"/>
+    </changeSet>
 </databaseChangeLog>
