@@ -1,7 +1,10 @@
 package com.leftindust.mockingbird.survey.link
 
 import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.patient.PatientNameInfoQueryController
 import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.person.ReadNameInfoService
+import com.leftindust.mockingbird.util.NameInfoMother
 import com.leftindust.mockingbird.util.PatientMother
 import com.leftindust.mockingbird.util.SurveyLinkMother
 import com.ninjasquad.springmockk.MockkBean
@@ -13,7 +16,7 @@ import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
 
-@GraphQlTest(controllers = [SurveyLinkQueryController::class, SurveyLinkPatientQueryController::class])
+@GraphQlTest(controllers = [SurveyLinkQueryController::class, SurveyLinkPatientQueryController::class, PatientNameInfoQueryController::class])
 internal class SurveyLinkPatientQueryControllerTest(
     @Autowired private val graphQlTester: GraphQlTester
 ) {
@@ -26,10 +29,14 @@ internal class SurveyLinkPatientQueryControllerTest(
     @MockkBean
     private lateinit var readPatientService: ReadPatientService
 
+    @MockkBean
+    private lateinit var readNameInfoService: ReadNameInfoService
+
     @Test
     internal fun `check can get a survey link by id`() {
         coEvery { readSurveyLinkService.getBySurveyLinkId(SurveyLinkMother.KoosKneeSurveyLink.graphqlId) } returns SurveyLinkMother.KoosKneeSurveyLink.domain
         coEvery { readPatientService.getBySurveyLink(SurveyLinkMother.KoosKneeSurveyLink.graphqlId) } returns PatientMother.Dan.domain
+        coEvery { readNameInfoService.getByPatientId(PatientMother.Dan.graphqlId) } returns NameInfoMother.DansNameInfo.domain
 
         @Language("graphql")
         val query = """
