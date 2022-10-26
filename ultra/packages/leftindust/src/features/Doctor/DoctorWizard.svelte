@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { database } from '@/api/server';
   import { _ } from '@/language';
+  import type { DoctorFragment } from '@/api/server';
 
   import { Row, Col, Block } from 'framework7-svelte';
   import Addresses from '../Input/components/Address/Addresses.svelte';
@@ -13,11 +12,12 @@
   import { closeWizard } from '../Wizard';
   import Wizard from '../Wizard/Wizard.svelte';
   
-  import { createDoctorForm, type DoctorFormSchema } from './';
-
-  export let doctorId: string | undefined = undefined;
+  import { createDoctorForm } from './';
+  import { selectedDoctor, isDoctorSelected } from '../Doctors/store';
 
   export let callback: () => void;
+
+  let doctor: DoctorFragment | undefined;
   
   const closeWizardHandler = () => {
     reset();
@@ -25,22 +25,25 @@
     closeWizard();
   };
 
-  let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctorId);
-  
-  let doctor: DoctorFormSchema;
+  let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler);
 
-  formData.subscribe(value => {
-    doctor = value;
-  });
+  // Bandaid fix for updating form data
+  $: {
+    doctor = $selectedDoctor;
+    $isDoctorSelected;
 
-  console.log('did', doctorId);
+    let doctorForm = createDoctorForm(closeWizardHandler, doctor?.id?.value);
+    ({ form, data: formData, handleSubmit, errors, reset, interacted } = doctorForm);
+
+    console.log($formData.firstName);
+  }
 
   let ref: HTMLFormElement;
 </script>
 
 <Wizard
-  title={doctorId ? $_('generics.editDoctor') : $_('generics.newDoctor')}
-  subtitle={doctorId ? $_('descriptions.editDoctorDescription') : $_('descriptions.addDoctorDescription')}
+  title={$isDoctorSelected ? $_('generics.editDoctor') : $_('generics.newDoctor')}
+  subtitle={$isDoctorSelected ? $_('descriptions.editDoctorDescription') : $_('descriptions.addDoctorDescription')}
   color="purple"
   interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}
@@ -55,25 +58,41 @@
             <Row>
               <Col width="100" medium="20">
                 <Input error={$errors.firstName}>
-                  <input type="text" name="firstName" placeholder={doctor.firstName ?? 'First Name'} />  
+                  <input type="text" name="firstName" placeholder="First Name">  
                 </Input>
               </Col>
               <Col width="100" medium="20">
                 <Input error={$errors.middleName}>
-                  <input type="text" name="middleName" placeholder={doctor.middleName ?? 'Middle Name (Optional)'} />
+                  <input type="text" name="middleName" placeholder="Middle Name (Optional)" />
                 </Input>
               </Col>
               <Col width="100" medium="20">
                 <Input error={$errors.lastName}>
-                  <input type="text" name="lastName" placeholder={doctor.lastName ?? 'Last Name'} />
+                  <input type="text" name="lastName" placeholder="Last Name" />
                 </Input>
               </Col>
               <Col width="100" medium="40">
                 <Input error={$errors.title}>
-                  <input type="text" name="title" placeholder={doctor.title ?? 'Title'} />
+                  <input type="text" name="title" placeholder="Title" />
                 </Input>
               </Col>
             </Row>
+          </Col>
+          <Col width="100" medium="50">
+            <div style="margin-top: 2px;">
+              <DatePicker
+                placeholder="Birthday"
+                error={$errors.dateOfBirth}
+                pastOnly
+                on:change={(e) => {
+                  $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                  });
+                }}
+              />
+            </div>
           </Col>
         </Row>
         <br />

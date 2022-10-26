@@ -8,6 +8,7 @@ import { closeWizard } from '../Wizard';
 import { openDialog } from '../UI/components/Dialog';
 import { da } from 'date-fns/locale';
 import { format } from 'date-fns';
+import { selectedDoctor, isDoctorSelected } from '../Doctors/store';
 
 const language = get(_);
 
@@ -54,6 +55,29 @@ const defaultDoctorForm: DoctorFormSchema = {
   phones: [],
 };
 
+/**
+ * Generates a DoctorFormSchema for the currently selected doctor
+ * @param did the doctor's id, returns defaultDoctorForm if not provided
+ * @return the generated schema for the doctor, or defaultDoctorForm if none found
+ */
+function getDoctorFormData(): DoctorFormSchema {
+  if (!get(isDoctorSelected)) return defaultDoctorForm;
+  const doctor = get(selectedDoctor);
+  if (!doctor) return defaultDoctorForm;
+
+  return {
+    ...doctor,
+    title: doctor.title ?? '',
+    addresses: [], // TODO: adjust after fixing schema inconsistencies
+    phones: doctor.phoneNumbers, 
+  };
+}
+
+/**
+ * Adds a new doctor to the database
+ * @param doctor The doctor object to add
+ * @returns the added doctor object
+ */
 export const addDoctor = async (doctor: NonNullable<MutationAddDoctorArgs['createDoctor']>): Promise<AddDoctorMutationMutation> => {
   const result = await client.mutation(AddDoctorMutationDocument, { doctor }).toPromise();
 
@@ -64,7 +88,7 @@ export const addDoctor = async (doctor: NonNullable<MutationAddDoctorArgs['creat
 };
 
 /**
- * Edits a doctor object's data
+ * Edits the data of a doctor in the database
  * @param doctor The doctor object to edit
  * @returns The edited doctor object
  */
@@ -82,18 +106,10 @@ export const editDoctor = async (doctor: NonNullable<MutationEditDoctorArgs['edi
 
 /**
  * Creates a doctor form on submit
+ * @returns the doctor form generated and its corresponding utilities
  */
 export const createDoctorForm = (closeWizardHandler: () => void, did?: string) => createForm<DoctorFormSchema>({
-  initialValues: did ? {
-    firstName: 'Test',
-    middleName: '1',
-    lastName: '2',
-    title: '3',
-    dateOfBirth: undefined,
-    addresses: [],
-    emails: [],
-    phones: [],
-  } : defaultDoctorForm,
+  initialValues: getDoctorFormData(),
   onSubmit: async (form, { reset }) => {
     try {
       if (did) {

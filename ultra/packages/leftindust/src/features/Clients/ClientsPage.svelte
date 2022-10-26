@@ -31,6 +31,7 @@
   import { defaultRangeInput, PartialDoctorsByDoctorIdQueryDocument, PartialDoctorsByRangeQueryDocument, PartialPatientsByPatientIdQueryDocument, PartialPatientsByRangeQueryDocument } from '@/api/server';
   import { getTimestampedValues } from '../Recents';
   import { account } from '../Account/store';
+  import { isDoctorSelected } from '../Doctors/store';
   
 
   export let f7router: Router.Router;
@@ -85,12 +86,15 @@
             f7: 'briefcase_fill',
             color: 'blue',
           },
-          onClick: () => openWizard('/wizard/doctor/', {
-            callback: () => {
-              doctorsRequest.reexecute();
-              doctorsRecentsRequest.reexecute();
-            },
-          }),
+          onClick: () => {
+            $isDoctorSelected = false;
+            return openWizard('/wizard/doctor/', {
+              callback: () => {
+                doctorsRequest.reexecute();
+                doctorsRecentsRequest.reexecute();
+              },
+            });
+          },
         },
       ]}
       bind:instance={createMenuRef}

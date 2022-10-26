@@ -28,7 +28,8 @@
   import { operationStore, query } from '@urql/svelte';
   import GenericGrid from '../Widgets/components/Grid/GenericGrid.svelte';
   import { openWizard } from '../Wizard';
-    
+  import { selectedDoctor, isDoctorSelected } from '../Doctors/store';
+ 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
   export let quicklook = false;
@@ -46,6 +47,7 @@
 
   $: doctor = $request.data?.doctorsByDoctorIds[0];
   $: doctorId = doctor?.id?.value;
+  $: $selectedDoctor = doctor;
 
   query(request);
 </script>
@@ -68,9 +70,12 @@
           title: $_('generics.edit'),
           icon: { f7: 'pencil_outline', color: 'gray' },
           condense: true,
-          onClick: () => openWizard('/wizard/doctor/', { doctorId, callback: () => {
-            $request.reexecute();
-          } }),
+          onClick: () => {
+            $isDoctorSelected = true;
+            return openWizard('/wizard/doctor/', { doctorId, callback: () => {
+              $request.reexecute();
+            }});
+          },
         },
         // {
         //   title: $_('generics.create'),
