@@ -51,7 +51,7 @@ class UpdatePatientServiceImpl(
     }
 
     override suspend fun update(patientInput: UpdatePatient): Patient? {
-        val patient = patientRepository.findById(patientInput.pid.value).orElse(null)
+        val patient = patientRepository.findByIdOrNull(patientInput.pid.value)
             ?: run {
                 logger.warn { NoUpdatesOccurredNoEntityWithId(PatientEntity::class, patientInput.pid.value) }
                 return null
