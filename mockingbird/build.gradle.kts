@@ -11,8 +11,8 @@ plugins {
     kotlin("plugin.spring") version "1.7.20"
     kotlin("plugin.jpa") version "1.7.20"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("org.springframework.boot") version "2.7.4"
-    id("io.spring.dependency-management") version "1.0.14.RELEASE"
+    id("org.springframework.boot") version "2.7.5"
+    id("io.spring.dependency-management") version "1.1.0"
 
     // liquibase
     id("org.liquibase.gradle") version "2.1.1"
@@ -42,7 +42,7 @@ dependencies {
 
     // logging
     implementation("io.github.microutils", "kotlin-logging-jvm", "2.1.20")
-    implementation(platform("dev.forkhandles:forkhandles-bom:2.2.0.0"))
+    implementation(platform("dev.forkhandles:forkhandles-bom:2.3.0.0"))
     implementation("dev.forkhandles:values4k")
     implementation("dev.forkhandles:result4k")
 

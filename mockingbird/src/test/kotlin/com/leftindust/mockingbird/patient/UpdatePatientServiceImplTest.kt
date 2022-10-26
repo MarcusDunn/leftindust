@@ -12,6 +12,7 @@ import com.leftindust.mockingbird.person.*
 import com.leftindust.mockingbird.phone.CreatePhoneServiceImpl
 import com.leftindust.mockingbird.phone.PhoneRepository
 import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
+import com.leftindust.mockingbird.user.MediqUserRepository
 import com.leftindust.mockingbird.util.PatientMother
 import com.leftindust.mockingbird.util.valueOrThrow
 import com.ninjasquad.springmockk.MockkBean
@@ -38,7 +39,7 @@ internal class UpdatePatientServiceImplTest(
     @Autowired private val addressRepository: AddressRepository,
     @Autowired private val phoneRepository: PhoneRepository,
     @Autowired private val contactRepository: ContactRepository,
-
+    @Autowired private val mediqUserRepository: MediqUserRepository
     ) {
 
     private val createNameInfoService = CreateNameInfoServiceImpl(nameInfoRepository)
@@ -53,6 +54,7 @@ internal class UpdatePatientServiceImplTest(
         createNameInfoService
     )
     private val updateNameInfoService = UpdateNameInfoServiceImpl(nameInfoRepository)
+    private val readNameInfoService = ReadNameInfoServiceImpl(mediqUserRepository, patientRepository)
     private val patientEntityToPatientConverter = PatientEntityToPatientConverter()
 
     private val updatePatientServiceImpl = UpdatePatientServiceImpl(
@@ -87,13 +89,13 @@ internal class UpdatePatientServiceImplTest(
 
         val updatedPatient = updatePatientServiceImpl.update(updatingPatient).onFailure { fail("update patient ") }
 
-        assertThat(updatedPatient.nameInfo.firstName, equalTo(PatientMother.Dan.newFirstName))
-        assertThat(updatedPatient.nameInfo.lastName, equalTo(PatientMother.Dan.newLastName))
-        assertThat(updatedPatient.nameInfo.middleName, equalTo(PatientMother.Dan.newMiddleName))
+        assertThat(readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.firstName, equalTo(PatientMother.Dan.newFirstName))
+        assertThat(readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.lastName, equalTo(PatientMother.Dan.newLastName))
+        assertThat(readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.middleName, equalTo(PatientMother.Dan.newMiddleName))
 
-        assertThat(updatedPatient.nameInfo.firstName, not(equalTo(PatientMother.Dan.firstName)))
-        assertThat(updatedPatient.nameInfo.lastName, not(equalTo(PatientMother.Dan.lastName)))
-        assertThat(updatedPatient.nameInfo.middleName, not(equalTo(PatientMother.Dan.middleName)))
+        assertThat(readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.firstName, not(equalTo(PatientMother.Dan.firstName)))
+        assertThat(readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.lastName, not(equalTo(PatientMother.Dan.lastName)))
+        assertThat(readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.middleName, not(equalTo(PatientMother.Dan.middleName)))
 
         assertThat(
             patientEntity.contacts.map { it.email.map { it.address } },

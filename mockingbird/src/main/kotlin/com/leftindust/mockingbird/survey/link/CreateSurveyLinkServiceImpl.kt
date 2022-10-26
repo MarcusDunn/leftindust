@@ -26,7 +26,8 @@ class CreateSurveyLinkServiceImpl(
 
         val newSurveyLinkEntity = SurveyLinkEntity(
             surveyTemplateEntity = surveyTemplateEntity,
-            patient = patient
+            patient = patient,
+            completeSurvey = null
         )
         val surveyLinkEntity = surveyLinkRepository.save(newSurveyLinkEntity)
         return surveyLinkEntityToSurveyLinkConverter.convert(surveyLinkEntity)

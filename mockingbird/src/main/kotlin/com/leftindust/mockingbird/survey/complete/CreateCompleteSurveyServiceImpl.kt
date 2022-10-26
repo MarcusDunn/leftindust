@@ -3,7 +3,6 @@ package com.leftindust.mockingbird.survey.complete
 import com.leftindust.mockingbird.PersistenceError
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
-import com.leftindust.mockingbird.survey.template.SurveyTemplateRepository
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
 import javax.transaction.Transactional
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service
 @Service
 class CreateCompleteSurveyServiceImpl(
     private val completeSurveyRepository: CompleteSurveyRepository,
-    private val surveyTemplateRepository: SurveyTemplateRepository,
     private val surveyLinkRepository: SurveyLinkRepository,
     private val completeSurveyEntityToCompleteSurvey: CompleteSurveyEntityToCompleteSurvey,
 ) : CreateCompleteSurveyService {
@@ -46,6 +44,7 @@ class CreateCompleteSurveyServiceImpl(
             }
         )
         val completeSurveyEntity = completeSurveyRepository.save(newCompleteSurvey)
+        completeSurveyEntity.surveyLink.addCompleteSurvey(completeSurveyEntity)
         return Success(completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity))
     }
 }

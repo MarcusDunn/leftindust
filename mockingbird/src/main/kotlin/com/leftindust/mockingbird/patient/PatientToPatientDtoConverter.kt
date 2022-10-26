@@ -8,9 +8,6 @@ class PatientToPatientDtoConverter : InfallibleConverter<Patient, PatientDto> {
     override fun convert(source: Patient): PatientDto {
         return PatientDto(
             id = PatientDto.PatientDtoId(source.id),
-            firstName = source.nameInfo.firstName,
-            middleName = source.nameInfo.middleName,
-            lastName = source.nameInfo.lastName,
             dateOfBirth = source.dateOfBirth,
             insuranceNumber = source.insuranceNumber,
             sex = source.sex,

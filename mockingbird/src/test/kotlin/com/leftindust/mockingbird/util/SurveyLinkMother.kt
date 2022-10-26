@@ -30,13 +30,15 @@ object SurveyLinkMother {
         val entityDetached: SurveyLinkEntity
             get() = SurveyLinkEntity(
                 surveyTemplateEntity = surveyTemplateEntityDetached,
-                patient = patientDetached
+                patient = patientDetached,
+                completeSurvey = null
             ).apply { id = this@KoosKneeSurveyLink.id }
 
         val entityTransient: SurveyLinkEntity
             get() = SurveyLinkEntity(
                 surveyTemplateEntity = surveyTemplateEntityTransient,
-                patient = patientTransient
+                patient = patientTransient,
+                completeSurvey = null
             )
 
         val domain = surveyLinkEntityToSurveyLinkConverter.convert(entityDetached)
