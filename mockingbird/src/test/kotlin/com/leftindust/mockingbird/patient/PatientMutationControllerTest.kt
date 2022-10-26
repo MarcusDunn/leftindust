@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.patient
 
+import com.leftindust.mockingbird.person.ReadNameInfoService
 import com.leftindust.mockingbird.util.*
 import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.ninjasquad.springmockk.MockkBean
@@ -15,7 +16,7 @@ import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@GraphQlTest(controllers = [PatientMutationController::class])
+@GraphQlTest(controllers = [PatientMutationController::class, PatientNameInfoQueryController::class])
 internal class PatientMutationControllerTest(
     @Autowired private val graphQlTester: GraphQlTester
 ) {
@@ -28,9 +29,13 @@ internal class PatientMutationControllerTest(
     @MockkBean
     private lateinit var updatePatientService: UpdatePatientService
 
+    @MockkBean
+    private lateinit var readNameInfoService: ReadNameInfoService
+
     @Test
     internal fun `check can create patient`() {
         coEvery { createPatientService.addNewPatient(any()) } returns Dan.domain
+        coEvery { readNameInfoService.getByPatientId(PatientMother.Dan.graphqlId) } returns NameInfoMother.DansNameInfo.domain
 
         @Language("graphql")
         val mutation = """
@@ -101,6 +106,7 @@ internal class PatientMutationControllerTest(
     @Test
     internal fun `check can create patient with a contact`() {
         coEvery { createPatientService.addNewPatient(any()) } returns Dan.domain
+        coEvery { readNameInfoService.getByPatientId(PatientMother.Dan.graphqlId) } returns NameInfoMother.DansNameInfo.domain
 
         @Language("graphql")
         val mutation = """
@@ -193,6 +199,7 @@ internal class PatientMutationControllerTest(
     internal fun `check update patient works properly`() {
 
         coEvery { updatePatientService.update(match { it.pid.value == Dan.id }) } returns Dan.updatedDomainEntityDetached
+        coEvery { readNameInfoService.getByPatientId(PatientMother.Dan.graphqlId) } returns NameInfoMother.DansNameInfo.domain
 
         //language=graphql
         val mutation = """

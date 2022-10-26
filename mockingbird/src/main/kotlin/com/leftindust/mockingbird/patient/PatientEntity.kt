@@ -18,14 +18,13 @@ import java.time.LocalDate
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.FetchType
 import javax.persistence.Lob
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 
 @Entity
 class PatientEntity(
-    @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
+    @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     var nameInfoEntity: NameInfoEntity,
     @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     val addresses: MutableSet<Address>,

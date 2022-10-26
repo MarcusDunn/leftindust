@@ -21,13 +21,17 @@ object CompleteSurveyMother {
         val createCompleteSurveyTemplateSections = listOf(CompleteHowMuchPainAreYouInSection.create)
         val surveyLinkId = KoosKneeSurveyLink.graphqlId
 
-        val entityPersisted = CompleteSurveyEntity(
+        val entityDetached = CompleteSurveyEntity(
+            sections = setOf(CompleteHowMuchPainAreYouInSection.entityPersisted),
+            surveyLink = KoosKneeSurveyLink.entityDetached
+        ).apply { id = this@FilledOutKoosKneeSurvey.id }
+
+        val entityTransient = CompleteSurveyEntity(
             sections = setOf(CompleteHowMuchPainAreYouInSection.entityPersisted),
             surveyLink = KoosKneeSurveyLink.entityDetached
         )
-            .apply { id = this@FilledOutKoosKneeSurvey.id }
 
-        val domain = completeSurveyEntityToCompleteSurvey.convert(entityPersisted)
+        val domain = completeSurveyEntityToCompleteSurvey.convert(entityDetached)
 
         val createDomain = object : CreateCompleteSurvey {
             override val surveyLinkId = this@FilledOutKoosKneeSurvey.surveyLinkId
