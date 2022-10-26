@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.survey.complete
 
 import com.leftindust.mockingbird.PersistenceError
+import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import com.leftindust.mockingbird.survey.template.SurveyTemplateRepository
 import dev.forkhandles.result4k.Result4k
@@ -38,7 +39,7 @@ class CreateCompleteSurveyServiceImpl(
             surveyLink = run {
                 surveyLinkRepository.findByIdOrNull(createCompleteSurvey.surveyLinkId.value)
                     ?: return PersistenceError.FindError.invoke(
-                        CompleteSurveyEntity::class,
+                        SurveyLinkEntity::class,
                         createCompleteSurvey.surveyLinkId.value
                     )
                         .also { logger.debug { "Did not find a surveyTemplateLink with id [${createCompleteSurvey.surveyLinkId.value}] while creating $createCompleteSurvey" } }
