@@ -1,0 +1,9 @@
+#import "../fragments/surveyLinkFragment.graphql"
+
+query surveyLinkByPatientIdQuery($patientIds: [PatientIdInput!]!) {
+  patientsByPatientId(patientIds: $patientIds) {
+    assignedSurveys {
+       ...surveyLinkFragment
+    }
+  }
+}

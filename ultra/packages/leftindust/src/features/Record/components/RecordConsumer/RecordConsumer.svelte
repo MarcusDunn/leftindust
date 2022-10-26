@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { client, CreateCompleteSurveyMutationDocument, SurveyTemplateInputType, type SurveyTemplate } from '@/api/server';
+  import { client, CreateCompleteSurveyMutationDocument, SurveyTemplateInputType, type SurveyLinkId, type SurveyTemplate } from '@/api/server';
   import Appbar from '@/features/UI/components/Appbar/Appbar.svelte';
   import Page from '@/features/UI/components/Page/Page.svelte';
   import RecordSections from '../RecordSections/RecordSections.svelte';
@@ -22,6 +22,7 @@
   const language = get(_);
 
   export let template: SurveyTemplate;
+  export let id: SurveyLinkId;
 
   let pageRef: HTMLDivElement;
 
@@ -74,7 +75,7 @@
             client.mutation(CreateCompleteSurveyMutationDocument, {
               createCompleteSurvey: {
                 completeSurveyTemplateSections: mapRecordToCompleteSurveyInput(values),
-                surveyLinkId: template.id,
+                surveyLinkId: id,
               },
             }).toPromise().then(({ data, error }) => {
               if (data) {

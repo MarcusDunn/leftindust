@@ -11,9 +11,9 @@
 
 <Chip
   class={`${small ? 'chip-small' : ''}`}
-  text={'45 responses'}
-  mediaBgColor="primary"
+  text={`${sections?.length} section(s)`}
+  mediaBgColor="purple"
   {outline}
 >
-  <span slot="media"><Icon f7="text_justifyleft" /></span>
+  <span slot="media"><Icon f7="square_on_square_fill" /></span>
 </Chip>

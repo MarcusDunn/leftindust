@@ -20,7 +20,7 @@ fragment patient on Patient {
     }
     postalCode
     province
-    type
+    addressType
   }
   emails {
     email

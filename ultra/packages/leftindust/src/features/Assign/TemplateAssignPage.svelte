@@ -164,7 +164,7 @@
       </BlockFooter>
       <div style="margin-top: 20px">
         <Input style="margin-right: 5px">
-          <div class="display-flex" style="align-items: center">
+          <div class="display-flex" style="align-items: center; width: 100%">
             <input
               type="text"
               placeholder="Generating Link..."
@@ -172,6 +172,7 @@
               value={link}
               bind:this={linkInputRef}
             />
+            <div style="flex-grow: 1" />
             <Button
               round
               outline
