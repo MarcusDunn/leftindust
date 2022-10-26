@@ -2,15 +2,12 @@ package com.leftindust.mockingbird.clinic
 
 
 import com.leftindust.mockingbird.*
+import com.leftindust.mockingbird.address.CreateAddress
 import com.leftindust.mockingbird.address.CreateAddressService
-import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.applyUpdatable
-import com.leftindust.mockingbird.patient.UpdateAddress
-import com.leftindust.mockingbird.patient.UpdateAddressDto
-import com.leftindust.mockingbird.person.UpdateAddressService
 import javax.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -22,7 +19,7 @@ import org.springframework.stereotype.Service
 class ClinicUpdaterServiceImpl(
     private val clinicRepository: ClinicRepository,
     private val doctorRepository: DoctorRepository,
-    private val updateAddressService: UpdateAddressService,
+    private val createAddressService: CreateAddressService,
     private val clinicEntityToClinicConverter: InfallibleConverter<ClinicEntity, Clinic>,
 ) : UpdateClinicService {
     private val logger = KotlinLogging.logger { }
@@ -72,7 +69,7 @@ class ClinicUpdaterServiceImpl(
     }
 
     private suspend fun updateAddress(
-        addressEdit: Updatable<UpdateAddress>,
+        addressEdit: Updatable<CreateAddress>,
         clinic: ClinicEntity,
     ) {
         when (addressEdit) {
@@ -80,10 +77,9 @@ class ClinicUpdaterServiceImpl(
                 logger.trace { NoOpUpdatedEntityFieldMessage(clinic, clinic::address) }
             }
             is Updatable.Update -> {
-                updateAddressService.updateAddress(addressEdit.value, clinic.address)
-                // val createAddress = updateAddressService.updateAddress(addressEdit.value, clinic.address)
-//                clinic.address = createAddress
-//                logger.trace { SetEntityFieldMessage(clinic, clinic::address, createAddress) }
+                 val createAddress = createAddressService.createAddress(addressEdit.value)
+                clinic.address = createAddress
+                logger.trace { SetEntityFieldMessage(clinic, clinic::address, createAddress) }
             }
         }
     }

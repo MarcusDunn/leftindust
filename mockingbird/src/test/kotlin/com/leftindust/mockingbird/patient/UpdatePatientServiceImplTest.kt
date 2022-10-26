@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.patient
 
+import com.leftindust.mockingbird.PersistenceError
 import com.leftindust.mockingbird.address.AddressRepository
 import com.leftindust.mockingbird.address.CreateAddressServiceImpl
 import com.leftindust.mockingbird.contact.ContactRepository
@@ -14,11 +15,14 @@ import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import com.leftindust.mockingbird.util.PatientMother
 import com.leftindust.mockingbird.util.valueOrThrow
 import com.ninjasquad.springmockk.MockkBean
+import dev.forkhandles.result4k.Failure
+import dev.forkhandles.result4k.onFailure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.security.web.server.SecurityWebFilterChain
@@ -61,18 +65,6 @@ internal class UpdatePatientServiceImplTest(
         createContactService,
         doctorRepository,
     )
-    private val readPatientServiceImpl =
-        ReadPatientServiceImpl(patientRepository, surveyLinkRepository, patientEntityToPatientConverter)
-    private val createPatientServiceImpl = CreatePatientServiceImpl(
-        patientRepository,
-        createNameInfoService,
-        createAddressService,
-        createEmailService,
-        createPhoneService,
-        createContactService,
-        doctorRepository,
-        patientEntityToPatientConverter
-    )
 
     @MockkBean
     private lateinit var httpSecurity: SecurityWebFilterChain
@@ -81,7 +73,7 @@ internal class UpdatePatientServiceImplTest(
     internal fun `Check Update Patient returns null when missing the patient from db`() = runTest {
         val updatedPatient = updatePatientServiceImpl.update(PatientMother.Dan.updatePatientDto().toUpdatePatient().valueOrThrow())
 
-        assertThat(updatedPatient, equalTo(null))
+        assertThat(updatedPatient, instanceOf(Failure::class.java))
     }
 
     @Test
@@ -93,7 +85,7 @@ internal class UpdatePatientServiceImplTest(
             .toUpdatePatient()
             .valueOrThrow()
 
-        val updatedPatient = updatePatientServiceImpl.update(updatingPatient)!!
+        val updatedPatient = updatePatientServiceImpl.update(updatingPatient).onFailure { fail("update patient ") }
 
         assertThat(updatedPatient.nameInfo.firstName, equalTo(PatientMother.Dan.newFirstName))
         assertThat(updatedPatient.nameInfo.lastName, equalTo(PatientMother.Dan.newLastName))
@@ -105,7 +97,7 @@ internal class UpdatePatientServiceImplTest(
 
         assertThat(
             patientEntity.contacts.map { it.email.map { it.address } },
-            equalTo(PatientMother.Dan.updatedContacts.map { it.emails.map { it.email } })
+            equalTo(PatientMother.Dan.updatedContacts .map { it.emails.map { it.email } })
         )
         assertThat(
             patientEntity.contacts.map { it.email.map { it.address } },

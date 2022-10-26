@@ -2,11 +2,21 @@ package com.leftindust.mockingbird.patient
 
 
 import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.address.CreateAddressGraphQlDto
+import com.leftindust.mockingbird.contact.CreateContactGraphQlDto
+import com.leftindust.mockingbird.doctor.DoctorDto
+import com.leftindust.mockingbird.email.CreateEmailDto
+import com.leftindust.mockingbird.graphql.types.input.toMap
+import com.leftindust.mockingbird.person.CreateNameInfoDto
+import com.leftindust.mockingbird.person.Ethnicity
+import com.leftindust.mockingbird.person.Sex
+import com.leftindust.mockingbird.phone.CreatePhoneGraphQlDto
 import dev.forkhandles.result4k.onFailure
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.stereotype.Controller
+import java.time.LocalDate
 
 @Controller
 class PatientMutationController(
@@ -15,11 +25,12 @@ class PatientMutationController(
     private val updatePatientService: UpdatePatientService,
 ) {
     @MutationMapping("editPatient")
-    suspend fun editPatient(@Argument("createPatient") editPatient: UpdatePatientDto): PatientDto {
+    suspend fun editPatient(@Argument("editPatient") editPatient: UpdatePatientGraphQlDto): PatientDto? {
         @Suppress("UNCHECKED_CAST")
-        val patient = MapDelegatingUpdatePatientDto(editPatient.asMap(), editPatient)
-        val updatedPatient = updatePatientService.update(patient)
-        return patientToPatientDtoConverter.convert(updatedPatient)
+        val patient = MapDelegatingUpdatePatientDto(toMap(editPatient))
+        val updatedPatient = updatePatientService.update(
+            patient.toUpdatePatient().onFailure { throw it.reason.toMockingbirdException() })
+        return patientToPatientDtoConverter.convert(updatedPatient.onFailure { throw it.reason.toMockingbirdException() })
     }
 
     @MutationMapping("addPatient")
@@ -31,4 +42,20 @@ class PatientMutationController(
         val newPatient = createPatientService.addNewPatient(createPatient)
         return patientToPatientDtoConverter.convert(newPatient)
     }
+
+    data class UpdatePatientGraphQlDto(
+        val pid: PatientDto.PatientDtoId,
+        val nameInfo: CreateNameInfoDto,
+        val phones: List<CreatePhoneGraphQlDto>?,
+        val dateOfBirth: LocalDate,
+        val addresses: List<CreateAddressGraphQlDto>?,
+        val emails: List<CreateEmailDto>?,
+        val insuranceNumber: String,
+        val sex: Sex,
+        val gender: String,
+        val ethnicity: Ethnicity,
+        val emergencyContacts: List<CreateContactGraphQlDto>?,
+        val doctors: List<DoctorDto.DoctorDtoId>?,
+        val thumbnail: String?,
+    )
 }
