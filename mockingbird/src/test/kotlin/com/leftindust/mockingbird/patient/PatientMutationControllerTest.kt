@@ -3,7 +3,9 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.util.*
 import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.ninjasquad.springmockk.MockkBean
+import dev.forkhandles.result4k.Success
 import io.mockk.coEvery
+import io.mockk.every
 import java.util.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.intellij.lang.annotations.Language
@@ -113,7 +115,7 @@ internal class PatientMutationControllerTest(
                     }
                     addresses: [
                         {
-                             addressType: Home
+                            addressType: Home
                             address: "${AddressMother.DansHouse.address}",
                             city: "${AddressMother.DansHouse.city}",
                             country: Canada,
@@ -192,7 +194,7 @@ internal class PatientMutationControllerTest(
     @Test
     internal fun `check update patient works properly`() {
 
-        coEvery { updatePatientService.update(match { it.pid.value == Dan.id }) } returns Dan.updatedDomainEntityDetached
+        coEvery { updatePatientService.update(match { it.pid.value.equals(Dan.id) }) } returns Success(Dan.updatedDomainEntityDetached)
 
         //language=graphql
         val mutation = """

@@ -32,13 +32,13 @@ object EmailMother {
         val domain = emailEntityToEmailConverter.convert(entityDetached)
         val dto = emailToEmailDtoConverter.convert(domain)
 
-        val createDto = CreateEmailDto(
+        val createDto = CreateEmailGraphQlDto(
             type = emailType,
             email = address
         )
 
 
-        val createUpdatedDto = CreateEmailDto(
+        val createUpdatedDto = CreateEmailGraphQlDto(
             type = EmailType.Personal,
             email = "NewDanEmail@example.com"
 
