@@ -45,7 +45,6 @@
   });
 
   $: patient = $request.data?.patientsByPatientId[0];
-  $: patientId = patient?.id.value;
 
   query(request);
 </script>
@@ -68,7 +67,7 @@
           title: $_('generics.edit'),
           icon: { f7: 'pencil_outline', color: 'gray' },
           condense: true,
-          onClick: () => openWizard('/wizard/patient/' ,{ patientId, callback: () => {
+          onClick: () => openWizard('/wizard/patient/' ,{ editable: true, patient, callback: () => {
             $request.reexecute();
           } }),
         },
