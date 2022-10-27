@@ -15,7 +15,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 import java.util.*
 
 @GraphQlTest(CompleteSurveyDtoMutationController::class)
-internal class CompleteSurveyDtoMutationControllerTest(
+internal class  CompleteSurveyDtoMutationControllerTest(
     @Autowired private val graphQlTester: GraphQlTester
 ) {
     @MockkBean
