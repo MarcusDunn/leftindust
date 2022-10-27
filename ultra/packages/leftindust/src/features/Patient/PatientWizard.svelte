@@ -32,7 +32,6 @@
   const { form, data: formData, handleSubmit, errors, reset, interacted } = createPatientForm(closeWizardHandler, patient);
 
   let ref: HTMLFormElement;
-// !!! Need to make patient state to be reactive
 </script>
 
 <Wizard
