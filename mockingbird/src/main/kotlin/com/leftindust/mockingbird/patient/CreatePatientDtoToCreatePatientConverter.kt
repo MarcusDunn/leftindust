@@ -3,6 +3,7 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.ConversionError
 import com.leftindust.mockingbird.ConversionError.Companion.ConversionFailure
 import com.leftindust.mockingbird.address.CreateAddress
+import com.leftindust.mockingbird.address.toCreateAddress
 import com.leftindust.mockingbird.contact.CreateContact
 import com.leftindust.mockingbird.contact.toCreateContact
 import com.leftindust.mockingbird.doctor.DoctorDto
@@ -12,6 +13,7 @@ import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.phone.CreatePhone
+import com.leftindust.mockingbird.phone.toCreatePhone
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.onFailure
@@ -22,8 +24,13 @@ fun CreatePatientDto.toCreatePatient(): Result4k<CreatePatient, ConversionError<
     return Success(
         CreatePatientImpl(
             nameInfo = nameInfo,
-            phones = phones,
-            addresses = addresses,
+            phones = phones.map {
+                it.toCreatePhone()
+                    .onFailure { e -> return ConversionFailure(e.reason) }
+            },
+            addresses = addresses.map {
+                it.toCreateAddress()
+            },
             emails = emails.map {
                 it.toCreateEmail()
                     .onFailure { e -> return ConversionFailure(e.reason) }
