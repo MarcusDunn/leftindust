@@ -122,7 +122,7 @@ class InconvertibleEntityException(entity: AbstractJpaPersistable, kClass: KClas
     }
 }
 
-sealed interface PersistenceError: IntoMockingbirdException{
+sealed interface PersistenceError: IntoMockingbirdException {
     override fun toMockingbirdException(): MockingbirdException
 
     class FindError(private val entity: KClass<*>, private val id: UUID) : PersistenceError {

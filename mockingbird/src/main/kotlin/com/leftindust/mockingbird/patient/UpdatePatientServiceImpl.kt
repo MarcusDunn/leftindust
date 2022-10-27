@@ -29,9 +29,11 @@ import java.util.Base64
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 
 @Service
+@Transactional
 class UpdatePatientServiceImpl(
     private val patientRepository: PatientRepository,
     private val updateNameInfoService: UpdateNameInfoService,
@@ -50,11 +52,14 @@ class UpdatePatientServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun update(patientInput: UpdatePatient): Patient? {
+    override suspend fun update(patientInput: UpdatePatient): Result4k<Patient, PersistenceError> {
         val patient = patientRepository.findByIdOrNull(patientInput.pid.value)
             ?: run {
                 logger.warn { NoUpdatesOccurredNoEntityWithId(PatientEntity::class, patientInput.pid.value) }
-                return null
+                return PersistenceError.FindError.invoke(
+                    PatientEntity::class,
+                    patientInput.pid.value
+                )
             }
 
         patientInput.dateOfBirth.applyUpdatable(patient, patient::dateOfBirth, logger)
@@ -72,7 +77,7 @@ class UpdatePatientServiceImpl(
         updateDoctors(patientInput.doctors, patient)
         updateThumbnail(patientInput.thumbnail, patient)
 
-        return patientEntityToPatientConverter.convert(patient)
+        return Success(patientEntityToPatientConverter.convert(patient))
     }
 
     private suspend fun updateNameInfo(nameInfo: Updatable<UpdateNameInfo>, patient: PatientEntity) {

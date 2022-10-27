@@ -2,8 +2,8 @@ package com.leftindust.mockingbird.clinic
 
 
 import com.leftindust.mockingbird.*
+import com.leftindust.mockingbird.address.CreateAddress
 import com.leftindust.mockingbird.address.CreateAddressService
-import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.graphql.types.Updatable
@@ -69,7 +69,7 @@ class ClinicUpdaterServiceImpl(
     }
 
     private suspend fun updateAddress(
-        addressEdit: Updatable<CreateAddressDto>,
+        addressEdit: Updatable<CreateAddress>,
         clinic: ClinicEntity,
     ) {
         when (addressEdit) {
@@ -77,7 +77,7 @@ class ClinicUpdaterServiceImpl(
                 logger.trace { NoOpUpdatedEntityFieldMessage(clinic, clinic::address) }
             }
             is Updatable.Update -> {
-                val createAddress = createAddressService.createAddress(addressEdit.value)
+                 val createAddress = createAddressService.createAddress(addressEdit.value)
                 clinic.address = createAddress
                 logger.trace { SetEntityFieldMessage(clinic, clinic::address, createAddress) }
             }

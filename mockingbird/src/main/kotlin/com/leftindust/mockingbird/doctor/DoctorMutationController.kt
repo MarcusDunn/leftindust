@@ -15,14 +15,14 @@ class DoctorMutationController(
 
     @MutationMapping
     suspend fun addDoctor(@Argument("createDoctor") createDoctorDto: CreateDoctorDto): DoctorDto {
-        val createDoctor = createDoctorDto.toCreateDoctor()
-        val newDoctor = createDoctorService.addDoctor(createDoctor.onFailure { throw it.reason.toMockingbirdException()})
+        val createDoctor = createDoctorDto.toCreateDoctor().onFailure { throw it.reason.toMockingbirdException()}
+        val newDoctor = createDoctorService.addDoctor(createDoctor)
         return doctorToDoctorDtoInfallibleConverter.convert(newDoctor)
     }
 
     @MutationMapping
     suspend fun editDoctor(@Argument("editDoctor") doctor: UpdateDoctorDto): DoctorDto? {
-        val updatedDoctor = updateDoctorService.editDoctor(doctor)
-        return updatedDoctor?.let { doctorToDoctorDtoInfallibleConverter.convert(it) }
+        val updatedDoctor = updateDoctorService.editDoctor(doctor).onFailure { throw it.reason.toMockingbirdException() }
+        return doctorToDoctorDtoInfallibleConverter.convert(updatedDoctor)
     }
 }
