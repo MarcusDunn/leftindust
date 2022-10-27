@@ -1,4 +1,5 @@
 rootProject.name = "leftindust"
 include("mockingbird")
-include("ultra")
+include("ultra:packages:leftindust")
+include("ultra:packages:legacy:bluebird")
 include("tests")

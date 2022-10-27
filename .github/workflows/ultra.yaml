@@ -28,5 +28,4 @@ jobs:
       uses: gradle/gradle-build-action@v2
     
     - name: SvelteCheck
-      run: ./gradlew ultra:svelteCheck
-    
+      run: ./gradlew ultra:packages:leftindust:svelteCheck
