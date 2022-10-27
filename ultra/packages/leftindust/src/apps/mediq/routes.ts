@@ -13,6 +13,8 @@ import PatientPage from '@/features/Patient/PatientPage.svelte';
 import DoctorPage from '@/features/Doctor/DoctorPage.svelte';
 import TemplateAssignPage from '@/features/Assign/TemplateAssignPage.svelte';
 
+import RecordPage from '@/features/Record/RecordPage.svelte';
+
 import TemplateWizard from '@/features/Template/TemplateWizard.svelte';
 import RecordWizard from '@/features/Record/RecordWizard.svelte';
 
@@ -36,6 +38,7 @@ export type Path =
   | '/setup/'
   | '/assign/template/'
   | '/template/:data/'
+  | '/record/:data/'
   | '/wizard/template/'
   | '/wizard/record/'
   | '/wizard/record/preview/'
@@ -80,6 +83,10 @@ const routes: Route<Path>[] = [
   {
     path: '/template/:data/',
     component: TemplatePage,
+  },
+  {
+    path: '/record/:data/',
+    component: RecordPage,
   },
   {
     path: '/setup/',

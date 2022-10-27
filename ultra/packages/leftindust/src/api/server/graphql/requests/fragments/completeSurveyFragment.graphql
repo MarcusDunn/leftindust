@@ -12,7 +12,20 @@ fragment completeSurveyFragment on CompleteSurvey {
       id {
         value
       }
-    }
+
+      ... on CompleteSurveySectionNumberArrayInput {
+        numberArray
+      }
+      ... on CompleteSurveySectionStringInput {
+        string
+      }
+      ... on CompleteSurveySectionStringArrayInput {
+        stringArray
+      }
+      ... on CompleteSurveySectionNumberInput {
+        number
+      }
+  }
   }
   surveyTemplate {
     ...templateFragment

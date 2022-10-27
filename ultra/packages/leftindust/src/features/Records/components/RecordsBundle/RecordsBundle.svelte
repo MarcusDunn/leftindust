@@ -3,7 +3,7 @@
   import Bundle from '@/features/Widgets/components/Bundle/Bundle.svelte';
   import { _ } from '@/language';
   import Cells from '@/features/UI/components/Cells/Cells.svelte';
-  import { Row, Col, Button } from 'framework7-svelte';
+  import { Row, Col, Button, f7 } from 'framework7-svelte';
   import RecordCell from '@/features/Record/components/RecordCell/RecordCell.svelte';
   import DescriptivePlaceholder from '@/features/App/components/DescriptivePlaceholder/DescriptivePlaceholder.svelte';
   import { operationStore, query } from '@urql/svelte';
@@ -66,6 +66,10 @@
                 id: record.id?.value,
                 type: record.__typename,
               }, data)}
+              on:click={() => f7.view.get('#view-clients').router.navigate(`/record/${JSON.stringify({
+                type: record.__typename,
+                id: record.id?.value,
+              })}/`)}
             />
           {/if}
         {/each}

@@ -1,4 +1,4 @@
-import { CompleteSurveyInputType, type CreateCompleteSurvey, type CreateCompleteSurveyInput, type Scalars, type SurveyTemplateSectionIdInput, type SurveyTemplateSectionInputIdInput } from '@/api/server';
+import { CompleteSurveyInputType, type CompleteSurveyFragmentFragment, type CreateCompleteSurvey, type CreateCompleteSurveyInput, type Scalars, type SurveyTemplateSectionIdInput, type SurveyTemplateSectionInputIdInput } from '@/api/server';
 import type { createForm } from 'felte';
 
 export type RecordForm = {
@@ -62,4 +62,8 @@ export const mapRecordToCompleteSurveyInput = (
   }));
 
   return mappedRecord;
+};
+
+export const mapCompletedSurveyValues = (sections: CompleteSurveyFragmentFragment['sections']) => {
+
 };
