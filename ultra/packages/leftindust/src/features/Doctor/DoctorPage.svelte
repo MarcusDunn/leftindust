@@ -28,12 +28,10 @@
   import { operationStore, query } from '@urql/svelte';
   import GenericGrid from '../Widgets/components/Grid/GenericGrid.svelte';
   import { openWizard } from '../Wizard';
-    
+ 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
   export let quicklook = false;
-
-  let doctor: DoctorFragment | undefined;
 
   let layout: Layout = $account.database.settings.options.layout || Layout.Bundled;
   let tab: ClientTab = ClientTab.Records;
@@ -44,6 +42,7 @@
     doctorIds: [{ value: data.id }],
   });
 
+  let doctor: DoctorFragment | undefined;
   $: doctor = $request.data?.doctorsByDoctorIds[0];
 
   query(request);
@@ -67,7 +66,9 @@
           title: $_('generics.edit'),
           icon: { f7: 'pencil_outline', color: 'gray' },
           condense: true,
-          onClick: () => openWizard('/wizard/doctor/', { }),
+          onClick: () => openWizard('/wizard/doctor/', { doctor, callback: () => {
+            $request.reexecute();
+          }}),
         },
         // {
         //   title: $_('generics.create'),

@@ -21,11 +21,12 @@ export const openWizard = (
     f7.popover.close();
     f7.popup.open(`#${AppPopups.Wizard}`);
 
-
+    // A legendary bug was vanquished here - James Zhong, 2022-10-26
     // Navigate to wizard view
     router.navigate(url, {
       props,
       force: true,
+      reloadCurrent: true,
       animate: false,
       ignoreCache: true,
     });

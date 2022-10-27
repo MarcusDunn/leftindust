@@ -1,10 +1,9 @@
+import { _ } from '@/language';
 import { validator } from '@felte/validator-yup';
 import { createForm } from 'felte';
 import * as yup from 'yup';
 import { get } from 'svelte/store';
-import { _ } from '@/language';
-import { AddDoctorMutationDocument, AddressType, client, Countries, CreateDoctorUserType, EmailType, PhoneType, type AddDoctorMutationMutation, type CreateDoctor, type MutationAddDoctorArgs } from '@/api/server';
-import { closeWizard } from '../Wizard';
+import { AddDoctorMutationDocument, AddressType, client, Countries, CreateDoctorUserType, EditDoctorDocument, EmailType, PhoneType, type AddDoctorMutationMutation, type DoctorFragment, type EditDoctorMutation, type MutationAddDoctorArgs, type MutationEditDoctorArgs } from '@/api/server';
 import { openDialog } from '../UI/components/Dialog';
 
 const language = get(_);
@@ -36,10 +35,10 @@ const createDoctorFormSchema = yup.object({
   })).required(),
 });
 
-type DoctorFormSchema = yup.InferType<typeof createDoctorFormSchema>;
+export type DoctorFormSchema = yup.InferType<typeof createDoctorFormSchema>;
 
 /**
- * Default fields for a doctor form
+ * Default doctor form for inputs of type CreateDoctor
  */
 const defaultDoctorForm: DoctorFormSchema = {
   firstName: '',
@@ -52,6 +51,24 @@ const defaultDoctorForm: DoctorFormSchema = {
   phones: [],
 };
 
+/**
+ * Generates a DoctorFormSchema for the currently selected doctor
+ * @param doctor the doctor to edit
+ * @return A form pre-filled with the doctor's data
+ */
+function filledDoctorForm(doctor: DoctorFragment): Partial<DoctorFormSchema> {
+  return {
+    ...doctor,
+    addresses: [], // TODO: schema inconsistency: `addresses` of incompatible types
+    phones: doctor.phoneNumbers,  // TODO: schema inconsistency: naming
+  };
+}
+
+/**
+ * Adds a new doctor to the database
+ * @param doctor The doctor object to add
+ * @returns the added doctor object
+ */
 export const addDoctor = async (doctor: NonNullable<MutationAddDoctorArgs['createDoctor']>): Promise<AddDoctorMutationMutation> => {
   const result = await client.mutation(AddDoctorMutationDocument, { doctor }).toPromise();
 
@@ -62,42 +79,68 @@ export const addDoctor = async (doctor: NonNullable<MutationAddDoctorArgs['creat
 };
 
 /**
- * Creates a doctor form on submit
+ * Edits the data of a doctor in the database
+ * @param doctor The doctor object to edit
+ * @returns The edited doctor object
  */
-export const createDoctorForm = (closeWizardHandler: () => void, did?: string) => createForm<DoctorFormSchema>({
-  initialValues: defaultDoctorForm,
-  onSubmit: async (form, { reset }) => {
-    const doctor: CreateDoctor = {
-      dateOfBirth: form.dateOfBirth,
-      addresses: form.addresses,
-      emails: form.emails,
-      phones: form.phones,
-      title: form.title,
-      clinic: [],
-      patients: [],
-      user: {
-        discriminant: CreateDoctorUserType.NoUser,
-        nameInfo: {
-          firstName: form.firstName,
-          middleName: form.middleName,
-          lastName: form.lastName,
-        },
-      },
-    };
+export const editDoctor = async (doctor: NonNullable<MutationEditDoctorArgs['editDoctor']>): Promise<EditDoctorMutation> => {
+  const result = await client.mutation(EditDoctorDocument, { editDoctor: doctor }).toPromise();
 
+  console.log('Result', result);
+
+  const data = result.data;
+  if (result.error) throw new Error(`Failed to edit doctor id ${doctor.did}: ${result.error.message}`);
+  else if (!data) throw new Error(`Failed to edit doctor id ${doctor.did}: No data returned`);
+
+  return data;
+};
+
+/**
+ * Creates a doctor form on submit
+ * @returns the doctor form generated and its corresponding utilities
+ */
+export const createDoctorForm = (closeWizardHandler: () => void, doctor?: DoctorFragment) => createForm<DoctorFormSchema>({
+  initialValues: doctor ? filledDoctorForm(doctor) : defaultDoctorForm,
+  onSubmit: async (form, { reset }) => {
     try {
-      if (did) {
-        /*
-          TODO: Edit patient
-          await editDoctor({
-            pid: {
-              value: pid,
-            },
-            ...patient,
-          });
-          */
+      if (doctor) {
+        // Form attempts to modify existing doctor as specified by user
+        await editDoctor({
+          addresses: form.addresses,
+          clinics: [],
+          dateOfBirth: form.dateOfBirth,
+          did: {
+            value: doctor.id?.value,
+          },
+          emails: form.emails,
+          nameInfo: {
+            firstName: form.firstName,
+            middleName: form.middleName,
+            lastName: form.lastName,
+          },
+          patients: [],
+          phones: form.phones,
+          title: form.title,
+        });
       } else {
-        await addDoctor(doctor);
+        // Otherwise, form adds a new doctor
+        await addDoctor({
+          dateOfBirth: form.dateOfBirth,
+          addresses: form.addresses,
+          emails: form.emails,
+          phones: form.phones,
+          title: form.title,
+          clinic: [],
+          patients: [],
+          user: {
+            discriminant: CreateDoctorUserType.NoUser,
+            nameInfo: {
+              firstName: form.firstName,
+              middleName: form.middleName,
+              lastName: form.lastName,
+            },
+          },
+        });
       }
       
       closeWizardHandler();
