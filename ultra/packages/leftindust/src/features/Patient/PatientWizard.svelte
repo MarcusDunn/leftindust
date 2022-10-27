@@ -20,7 +20,6 @@
   import Addresses from '../Input/components/Address/Addresses.svelte';
   import { closeWizard } from '../Wizard';
 
-  export let editable = false;
   export let patient: PatientFragment | undefined;
   export let callback: () => void;
 
@@ -30,15 +29,15 @@
     closeWizard();
   };
 
-  const { form, data: formData, handleSubmit, errors, reset, interacted } = createPatientForm(editable, closeWizardHandler, patient);
+  const { form, data: formData, handleSubmit, errors, reset, interacted } = createPatientForm(closeWizardHandler, patient);
 
   let ref: HTMLFormElement;
 // !!! Need to make patient state to be reactive
 </script>
 
 <Wizard
-  title={editable ? $_('generics.editPatient') : $_('generics.newPatient')}
-  subtitle={editable ? $_('descriptions.editPatientDescription') : $_('descriptions.addPatientDescription')}
+  title={patient ? $_('generics.editPatient') : $_('generics.newPatient')}
+  subtitle={patient ? $_('descriptions.editPatientDescription') : $_('descriptions.addPatientDescription')}
   color="purple"
   interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}

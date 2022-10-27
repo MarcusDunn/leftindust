@@ -1,3 +1,4 @@
+import { _ } from '@/language';
 import { validator } from '@felte/validator-yup';
 import { createForm } from 'felte';
 import * as yup from 'yup';
@@ -8,12 +9,9 @@ import type {
   MutationEditPatientArgs,
 } from '@/api/server';
 
-import { Ethnicity, Sex, type EditPatient, type CreatePatient } from '@/api/server';
+import { Ethnicity, Sex } from '@/api/server';
 
 import { get } from 'svelte/store';
-
-import { _ } from '@/language';
-import { closeWizard } from '../Wizard';
 
 import { openDialog } from '../UI/components/Dialog';
 
@@ -78,15 +76,13 @@ const defaultPatientForm: Partial<PatientFormSchema> = {
   phones: [],
 };
 
-// !!! Change "any" type
 /**
- * 
  * @param patient the patient to edit
  * @returns A form with the fields filled out with the patient's data
  */
-const filledPatientForm: any = (patient: Partial<PatientFragment>) => {
-  const filledForm = { 
-    nameInfo: {
+function filledPatientForm(patient: PatientFragment): Partial<PatientFormSchema> {
+  return {
+    nameInfo: { // TODO: schema inconsistency: (`patient` doesn't have object `nameinfo`)
       firstName: patient.firstName,
       middleName: patient.middleName,
       lastName: patient.lastName,
@@ -96,12 +92,11 @@ const filledPatientForm: any = (patient: Partial<PatientFragment>) => {
     sex: patient.sex,
     gender: patient.gender ?? patient.sex,
     insuranceNumber: patient.insuranceNumber,
-    addresses: patient.addresses,
+    addresses: [], // TODO: schema inconsistency: `addresses` of incompatible types
     emails: patient.emails,
     phones: patient.phoneNumbers,
   };
-  return filledForm;
-};
+}
 
 /**
  * Adds a patient
@@ -135,8 +130,8 @@ export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['
 /**
  * Creates or edits a patient form on submit
  */ 
-export const createPatientForm = (editable: boolean , closeWizardHandler: () => void, patient: PatientFragment | undefined) => createForm<PatientFormSchema>({
-  initialValues: editable ? filledPatientForm(patient) : defaultPatientForm,
+export const createPatientForm = (closeWizardHandler: () => void, patient: PatientFragment | undefined) => createForm<PatientFormSchema>({
+  initialValues: patient ? filledPatientForm(patient) : defaultPatientForm,
   onSubmit: async (form, { reset }) => {
     const createPatient: MutationAddPatientArgs['createPatient'] = {
       nameInfo: {

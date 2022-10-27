@@ -1,8 +1,8 @@
+import { _ } from '@/language';
 import { validator } from '@felte/validator-yup';
 import { createForm } from 'felte';
 import * as yup from 'yup';
 import { get } from 'svelte/store';
-import { _ } from '@/language';
 import { AddDoctorMutationDocument, AddressType, client, Countries, CreateDoctorUserType, EditDoctorDocument, EmailType, PhoneType, type AddDoctorMutationMutation, type DoctorFragment, type EditDoctorMutation, type MutationAddDoctorArgs, type MutationEditDoctorArgs } from '@/api/server';
 import { openDialog } from '../UI/components/Dialog';
 
@@ -38,7 +38,7 @@ const createDoctorFormSchema = yup.object({
 export type DoctorFormSchema = yup.InferType<typeof createDoctorFormSchema>;
 
 /**
- * Default fields for a doctor form
+ * Default doctor form for inputs of type CreateDoctor
  */
 const defaultDoctorForm: DoctorFormSchema = {
   firstName: '',
@@ -53,15 +53,14 @@ const defaultDoctorForm: DoctorFormSchema = {
 
 /**
  * Generates a DoctorFormSchema for the currently selected doctor
- * @param did the doctor's id, returns defaultDoctorForm if not provided
- * @return the generated schema for the doctor, or defaultDoctorForm if none found
+ * @param doctor the doctor to edit
+ * @return A form pre-filled with the doctor's data
  */
-function getDoctorFormSchema(doctor: DoctorFragment): DoctorFormSchema {
+function filledDoctorForm(doctor: DoctorFragment): Partial<DoctorFormSchema> {
   return {
     ...doctor,
-    title: doctor.title ?? '',
-    addresses: [], // TODO: adjust after fixing schema inconsistencies
-    phones: doctor.phoneNumbers, 
+    addresses: [], // TODO: schema inconsistency: `addresses` of incompatible types
+    phones: doctor.phoneNumbers,  // TODO: schema inconsistency: naming
   };
 }
 
@@ -100,8 +99,8 @@ export const editDoctor = async (doctor: NonNullable<MutationEditDoctorArgs['edi
  * Creates a doctor form on submit
  * @returns the doctor form generated and its corresponding utilities
  */
-export const createDoctorForm = (editable: boolean, closeWizardHandler: () => void, doctor?: DoctorFragment) => createForm<DoctorFormSchema>({
-  initialValues: doctor ? getDoctorFormSchema(doctor) : defaultDoctorForm,
+export const createDoctorForm = (closeWizardHandler: () => void, doctor?: DoctorFragment) => createForm<DoctorFormSchema>({
+  initialValues: doctor ? filledDoctorForm(doctor) : defaultDoctorForm,
   onSubmit: async (form, { reset }) => {
     try {
       if (doctor) {

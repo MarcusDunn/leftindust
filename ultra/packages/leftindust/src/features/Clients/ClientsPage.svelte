@@ -56,8 +56,6 @@
       .map((id) => ({ value: id }))
       .filter((value) => value != undefined),
   });
-
-
 </script>
 
 <Page style="overflow: hidden" pageContent={false}>
@@ -86,7 +84,6 @@
             color: 'blue',
           },
           onClick: () => openWizard('/wizard/doctor/', {
-            editable: false,
             callback: () => {
               doctorsRequest.reexecute();
               doctorsRecentsRequest.reexecute();

@@ -66,7 +66,7 @@
           title: $_('generics.edit'),
           icon: { f7: 'pencil_outline', color: 'gray' },
           condense: true,
-          onClick: () => openWizard('/wizard/doctor/', { editable: true, doctor, callback: () => {
+          onClick: () => openWizard('/wizard/doctor/', { doctor, callback: () => {
             $request.reexecute();
           }}),
         },

@@ -14,7 +14,6 @@
   
   import { createDoctorForm } from './';
 
-  export let editable: boolean;
   export let doctor: DoctorFragment | undefined;
   export let callback: () => void;
   
@@ -24,14 +23,14 @@
     closeWizard();
   };
 
-  let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(editable, closeWizardHandler, doctor);
+  let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctor);
 
   let ref: HTMLFormElement;
 </script>
 
 <Wizard
-  title={editable ? $_('generics.editDoctor') : $_('generics.newDoctor')}
-  subtitle={editable ? $_('descriptions.editDoctorDescription') : $_('descriptions.addDoctorDescription')}
+  title={doctor ? $_('generics.editDoctor') : $_('generics.newDoctor')}
+  subtitle={doctor ? $_('descriptions.editDoctorDescription') : $_('descriptions.addDoctorDescription')}
   color="purple"
   interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}
