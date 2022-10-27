@@ -3,12 +3,8 @@ import { createForm } from 'felte';
 import * as yup from 'yup';
 import { get } from 'svelte/store';
 import { _ } from '@/language';
-import { AddDoctorMutationDocument, AddressType, client, Countries, CreateDoctorUserType, EditDoctorDocument, EmailType, PhoneType, type AddDoctorMutationMutation, type CreateDoctor, type DoctorIdInput, type EditDoctor, type EditDoctorMutation, type MutationAddDoctorArgs, type MutationEditDoctorArgs } from '@/api/server';
-import { closeWizard } from '../Wizard';
+import { AddDoctorMutationDocument, AddressType, client, Countries, CreateDoctorUserType, EditDoctorDocument, EmailType, PhoneType, type AddDoctorMutationMutation, type DoctorFragment, type EditDoctorMutation, type MutationAddDoctorArgs, type MutationEditDoctorArgs } from '@/api/server';
 import { openDialog } from '../UI/components/Dialog';
-import { da } from 'date-fns/locale';
-import { format } from 'date-fns';
-import { selectedDoctor, isDoctorSelected } from '../Doctors/store';
 
 const language = get(_);
 
@@ -60,11 +56,7 @@ const defaultDoctorForm: DoctorFormSchema = {
  * @param did the doctor's id, returns defaultDoctorForm if not provided
  * @return the generated schema for the doctor, or defaultDoctorForm if none found
  */
-function getDoctorFormData(): DoctorFormSchema {
-  if (!get(isDoctorSelected)) return defaultDoctorForm;
-  const doctor = get(selectedDoctor);
-  if (!doctor) return defaultDoctorForm;
-
+function getDoctorFormSchema(doctor: DoctorFragment): DoctorFormSchema {
   return {
     ...doctor,
     title: doctor.title ?? '',
@@ -108,18 +100,18 @@ export const editDoctor = async (doctor: NonNullable<MutationEditDoctorArgs['edi
  * Creates a doctor form on submit
  * @returns the doctor form generated and its corresponding utilities
  */
-export const createDoctorForm = (closeWizardHandler: () => void, did?: string) => createForm<DoctorFormSchema>({
-  initialValues: getDoctorFormData(),
+export const createDoctorForm = (editable: boolean, closeWizardHandler: () => void, doctor?: DoctorFragment) => createForm<DoctorFormSchema>({
+  initialValues: doctor ? getDoctorFormSchema(doctor) : defaultDoctorForm,
   onSubmit: async (form, { reset }) => {
     try {
-      if (did) {
-        // Modify doctor with specified ID, if one exists
-        const doctor: EditDoctor = {
+      if (doctor) {
+        // Form attempts to modify existing doctor as specified by user
+        await editDoctor({
           addresses: form.addresses,
           clinics: [],
           dateOfBirth: form.dateOfBirth,
           did: {
-            value: did,
+            value: doctor.id?.value,
           },
           emails: form.emails,
           nameInfo: {
@@ -130,12 +122,10 @@ export const createDoctorForm = (closeWizardHandler: () => void, did?: string) =
           patients: [],
           phones: form.phones,
           title: form.title,
-        };
-
-        await editDoctor(doctor);
+        });
       } else {
-        // Otherwise, add new doctor with this ID
-        const doctor: CreateDoctor = {
+        // Otherwise, form adds a new doctor
+        await addDoctor({
           dateOfBirth: form.dateOfBirth,
           addresses: form.addresses,
           emails: form.emails,
@@ -151,9 +141,7 @@ export const createDoctorForm = (closeWizardHandler: () => void, did?: string) =
               lastName: form.lastName,
             },
           },
-        };
-
-        await addDoctor(doctor);
+        });
       }
       
       closeWizardHandler();

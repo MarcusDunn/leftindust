@@ -13,11 +13,10 @@
   import Wizard from '../Wizard/Wizard.svelte';
   
   import { createDoctorForm } from './';
-  import { selectedDoctor, isDoctorSelected } from '../Doctors/store';
 
+  export let editable: boolean;
+  export let doctor: DoctorFragment | undefined;
   export let callback: () => void;
-
-  let doctor: DoctorFragment | undefined;
   
   const closeWizardHandler = () => {
     reset();
@@ -25,25 +24,14 @@
     closeWizard();
   };
 
-  let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler);
-
-  // Bandaid fix for updating form data
-  $: {
-    doctor = $selectedDoctor;
-    $isDoctorSelected;
-
-    let doctorForm = createDoctorForm(closeWizardHandler, doctor?.id?.value);
-    ({ form, data: formData, handleSubmit, errors, reset, interacted } = doctorForm);
-
-    console.log($formData.firstName);
-  }
+  let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(editable, closeWizardHandler, doctor);
 
   let ref: HTMLFormElement;
 </script>
 
 <Wizard
-  title={$isDoctorSelected ? $_('generics.editDoctor') : $_('generics.newDoctor')}
-  subtitle={$isDoctorSelected ? $_('descriptions.editDoctorDescription') : $_('descriptions.addDoctorDescription')}
+  title={editable ? $_('generics.editDoctor') : $_('generics.newDoctor')}
+  subtitle={editable ? $_('descriptions.editDoctorDescription') : $_('descriptions.addDoctorDescription')}
   color="purple"
   interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}
