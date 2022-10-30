@@ -12,7 +12,7 @@ import javax.persistence.Enumerated
 class Address(
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
-    var type: AddressType?,
+    var type: AddressType,
     @Column(nullable = false)
     var address: String,
     @Column(nullable = false)
