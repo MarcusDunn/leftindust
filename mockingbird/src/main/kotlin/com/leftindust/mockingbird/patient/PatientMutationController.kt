@@ -5,7 +5,7 @@ import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.address.CreateAddressGraphQlDto
 import com.leftindust.mockingbird.contact.CreateContactGraphQlDto
 import com.leftindust.mockingbird.doctor.DoctorDto
-import com.leftindust.mockingbird.email.CreateEmailDto
+import com.leftindust.mockingbird.email.CreateEmailGraphQlDto
 import com.leftindust.mockingbird.graphql.types.input.toMap
 import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.Ethnicity
@@ -49,7 +49,7 @@ class PatientMutationController(
         val phones: List<CreatePhoneGraphQlDto>?,
         val dateOfBirth: LocalDate,
         val addresses: List<CreateAddressGraphQlDto>?,
-        val emails: List<CreateEmailDto>?,
+        val emails: List<CreateEmailGraphQlDto>?,
         val insuranceNumber: String,
         val sex: Sex,
         val gender: String,
