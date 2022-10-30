@@ -27,6 +27,9 @@ repositories {
 }
 
 dependencies {
+    // aws
+    implementation("io.awspring.cloud", "spring-cloud-aws-messaging")
+    implementation("io.awspring.cloud:spring-cloud-aws-messaging:2.4.2")
     // spring
     implementation("org.springframework.boot", "spring-boot-starter-webflux")
     implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
