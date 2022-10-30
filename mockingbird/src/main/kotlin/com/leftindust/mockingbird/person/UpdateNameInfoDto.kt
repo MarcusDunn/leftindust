@@ -1,5 +1,8 @@
 package com.leftindust.mockingbird.person
 
+import com.leftindust.mockingbird.address.AddressType
+import com.leftindust.mockingbird.address.CreateAddress
+import com.leftindust.mockingbird.country.Countries
 import com.leftindust.mockingbird.graphql.types.Deletable
 import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.input.DeletableMapDelegate
