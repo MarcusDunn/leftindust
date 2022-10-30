@@ -1120,4 +1120,7 @@
     <changeSet author="boris (generated)" id="1666577451215-36">
         <addForeignKeyConstraint baseColumnNames="complete_survey_id" baseTableName="survey_link_entity" constraintName="fk2guwx8qyy7hw31b5hf7yj2wbf" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="complete_survey_entity" validate="true"/>
     </changeSet>
+    <changeSet author="sepehr" id="1667094902674-1" >
+        <addNotNullConstraint columnName="type" tableName="address" />
+    </changeSet>
 </databaseChangeLog>
