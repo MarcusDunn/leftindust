@@ -35,7 +35,7 @@ const createDoctorFormSchema = yup.object({
   })).required(),
 });
 
-export type DoctorFormSchema = yup.InferType<typeof createDoctorFormSchema>;
+type DoctorFormSchema = yup.InferType<typeof createDoctorFormSchema>;
 
 /**
  * Default doctor form for inputs of type CreateDoctor
@@ -59,8 +59,8 @@ const defaultDoctorForm: DoctorFormSchema = {
 function filledDoctorForm(doctor: DoctorFragment): Partial<DoctorFormSchema> {
   return {
     ...doctor,
-    addresses: [], // TODO: schema inconsistency: `addresses` of incompatible types
-    phones: doctor.phoneNumbers,  // TODO: schema inconsistency: naming
+    addresses: [],
+    phones: doctor.phoneNumbers,
   };
 }
 
@@ -95,6 +95,54 @@ export const editDoctor = async (doctor: NonNullable<MutationEditDoctorArgs['edi
   return data;
 };
 
+type CreateDoctorArgs = NonNullable<MutationAddDoctorArgs['createDoctor']>;
+/**
+ * Gets the CreateDoctor arguments from the form
+ */
+const getCreateDoctorArgs = (form: DoctorFormSchema): CreateDoctorArgs => {
+  return {
+    dateOfBirth: form.dateOfBirth,
+    addresses: form.addresses,
+    emails: form.emails,
+    phones: form.phones,
+    title: form.title,
+    clinic: [],
+    patients: [],
+    user: {
+      discriminant: CreateDoctorUserType.NoUser,
+      nameInfo: {
+        firstName: form.firstName,
+        middleName: form.middleName,
+        lastName: form.lastName,
+      },
+    },
+  };
+};
+
+type EditDoctorArgs = NonNullable<MutationEditDoctorArgs['editDoctor']>;
+/**
+ * Gets the EditDoctor arguments from the form
+ */
+const getEditDoctorArgs = (form: DoctorFormSchema, doctorId?: string): EditDoctorArgs => {
+  return {
+    addresses: form.addresses,
+    clinics: [],
+    dateOfBirth: form.dateOfBirth,
+    did: {
+      value: doctorId,
+    },
+    emails: form.emails,
+    nameInfo: {
+      firstName: form.firstName,
+      middleName: form.middleName,
+      lastName: form.lastName,
+    },
+    patients: [],
+    phones: form.phones,
+    title: form.title,
+  };
+};
+
 /**
  * Creates a doctor form on submit
  * @returns the doctor form generated and its corresponding utilities
@@ -105,42 +153,10 @@ export const createDoctorForm = (closeWizardHandler: () => void, doctor?: Doctor
     try {
       if (doctor) {
         // Form attempts to modify existing doctor as specified by user
-        await editDoctor({
-          addresses: form.addresses,
-          clinics: [],
-          dateOfBirth: form.dateOfBirth,
-          did: {
-            value: doctor.id?.value,
-          },
-          emails: form.emails,
-          nameInfo: {
-            firstName: form.firstName,
-            middleName: form.middleName,
-            lastName: form.lastName,
-          },
-          patients: [],
-          phones: form.phones,
-          title: form.title,
-        });
+        await editDoctor(getEditDoctorArgs(form, doctor.id?.value));
       } else {
         // Otherwise, form adds a new doctor
-        await addDoctor({
-          dateOfBirth: form.dateOfBirth,
-          addresses: form.addresses,
-          emails: form.emails,
-          phones: form.phones,
-          title: form.title,
-          clinic: [],
-          patients: [],
-          user: {
-            discriminant: CreateDoctorUserType.NoUser,
-            nameInfo: {
-              firstName: form.firstName,
-              middleName: form.middleName,
-              lastName: form.lastName,
-            },
-          },
-        });
+        await addDoctor(getCreateDoctorArgs(form));
       }
       
       closeWizardHandler();

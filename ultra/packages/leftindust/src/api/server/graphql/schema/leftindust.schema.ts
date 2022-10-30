@@ -20,12 +20,12 @@ export type Scalars = {
 export type Address = {
   __typename?: 'Address';
   address: Scalars['String'];
+  addressType?: Maybe<AddressType>;
   city: Scalars['String'];
   country: Countries;
   id: AddressId;
   postalCode: Scalars['String'];
   province: Scalars['String'];
-  type?: Maybe<AddressType>;
 };
 
 export type AddressId = {
@@ -212,7 +212,7 @@ export type CreatePatient = {
   emails?: Array<CreateEmail>;
   emergencyContacts?: Array<CreateContact>;
   ethnicity?: InputMaybe<Ethnicity>;
-  gender: Scalars['String'];
+  gender?: InputMaybe<Scalars['String']>;
   insuranceNumber?: InputMaybe<Scalars['String']>;
   nameInfo: CreateNameInfo;
   phones?: Array<CreatePhone>;
@@ -313,18 +313,18 @@ export type EditDoctor = {
 };
 
 export type EditPatient = {
-  addresses?: Array<CreateAddress>;
-  dateOfBirth: InputMaybe<Scalars['LocalDate']>;
-  doctor?: Array<DoctorIdInput>;
-  emails?: Array<CreateEmail>;
-  emergencyContacts?: Array<CreateContact>;
-  ethnicity?: Ethnicity;
-  gender: Scalars['String'];
+  addresses?: InputMaybe<Array<CreateAddress>>;
+  dateOfBirth?: InputMaybe<Scalars['LocalDate']>;
+  doctors?: InputMaybe<Array<DoctorIdInput>>;
+  emails?: InputMaybe<Array<CreateEmail>>;
+  emergencyContacts?: InputMaybe<Array<CreateContact>>;
+  ethnicity?: InputMaybe<Ethnicity>;
+  gender?: InputMaybe<Scalars['String']>;
   insuranceNumber?: InputMaybe<Scalars['String']>;
-  nameInfo: InputMaybe<UpdateNameInfo>;
-  phones?: Array<CreatePhone>;
+  nameInfo?: InputMaybe<UpdateNameInfo>;
+  phones?: InputMaybe<Array<CreatePhone>>;
   pid: PatientIdInput;
-  sex: Sex;
+  sex?: InputMaybe<Sex>;
   thumbnail?: InputMaybe<Scalars['String']>;
 };
 
@@ -469,11 +469,12 @@ export type NameInfo = {
 export type Patient = {
   __typename?: 'Patient';
   addresses: Array<Address>;
+  assignedSurveys: Array<SurveyLink>;
   dateOfBirth: Scalars['LocalDate'];
   emails: Array<Email>;
   ethnicity?: Maybe<Ethnicity>;
   firstName: Scalars['String'];
-  gender: Scalars['String'];
+  gender?: Maybe<Scalars['String']>;
   id: PatientId;
   insuranceNumber?: Maybe<Scalars['String']>;
   lastName: Scalars['String'];
@@ -735,8 +736,8 @@ export enum TemplateInputUploadType {
 }
 
 export type UpdateNameInfo = {
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
   middleName?: InputMaybe<Scalars['String']>;
 };
 

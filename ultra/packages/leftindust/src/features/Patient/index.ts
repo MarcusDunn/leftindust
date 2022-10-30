@@ -3,7 +3,7 @@ import { validator } from '@felte/validator-yup';
 import { createForm } from 'felte';
 import * as yup from 'yup';
 
-import { client, AddPatientDocument, type AddPatientMutation, EditPatientDocument, type EditPatientMutation, AddressType, EmailType, PhoneType, Countries, type PatientFragment, Relationship } from '@/api/server';
+import { client, AddPatientDocument, type AddPatientMutation, EditPatientDocument, type EditPatientMutation, AddressType, EmailType, PhoneType, Countries, type PatientFragment, Relationship, type CreateAddress } from '@/api/server';
 import type {
   MutationAddPatientArgs,
   MutationEditPatientArgs,
@@ -66,7 +66,7 @@ const defaultPatientForm: Partial<PatientFormSchema> = {
     middleName: '',
     lastName: '',
   },
-  dateOfBirth: '',
+  dateOfBirth: undefined,
   ethnicity: undefined,
   sex: undefined,
   gender: '',
@@ -82,7 +82,7 @@ const defaultPatientForm: Partial<PatientFormSchema> = {
  */
 function filledPatientForm(patient: PatientFragment): Partial<PatientFormSchema> {
   return {
-    nameInfo: { // TODO: schema inconsistency: (`patient` doesn't have object `nameinfo`)
+    nameInfo: {
       firstName: patient.firstName,
       middleName: patient.middleName,
       lastName: patient.lastName,
@@ -92,7 +92,7 @@ function filledPatientForm(patient: PatientFragment): Partial<PatientFormSchema>
     sex: patient.sex,
     gender: patient.gender ?? patient.sex,
     insuranceNumber: patient.insuranceNumber,
-    addresses: [], // TODO: schema inconsistency: `addresses` of incompatible types
+    addresses: patient.addresses,
     emails: patient.emails,
     phones: patient.phoneNumbers,
   };
@@ -127,68 +127,65 @@ export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['
   return data;
 };
 
+type CreatePatientArgs = NonNullable<MutationAddPatientArgs['createPatient']>;
+/**
+ * Gets the CreatePatient arguments from the form
+ */
+const getCreatePatientArgs = (form: PatientFormSchema): CreatePatientArgs => {
+  return {
+    nameInfo: {
+      firstName: form.nameInfo.firstName,
+      middleName: form.nameInfo.middleName,
+      lastName: form.nameInfo.lastName,
+    },
+    dateOfBirth: form.dateOfBirth,
+    ethnicity: form.ethnicity,
+    sex: form.sex,
+    gender: form.gender ?? form.sex,
+    insuranceNumber: form.insuranceNumber,
+    addresses: form.addresses,
+    emails: form.emails,
+    phones: form.phones,
+  };
+};
+
+type EditPatientArgs = NonNullable<MutationEditPatientArgs['editPatient']>;
+/**
+ * Gets EditPatient arguments from the form
+ */
+const getEditPatientArgs = (form: PatientFormSchema, patientId?: string): EditPatientArgs => {
+  return {
+    pid: {
+      value: patientId,
+    },
+    nameInfo: {
+      firstName: form.nameInfo.firstName,
+      middleName: form.nameInfo.middleName,
+      lastName: form.nameInfo.lastName,
+    },
+    dateOfBirth: form.dateOfBirth,
+    ethnicity: form.ethnicity,
+    sex: form.sex,
+    gender: form.gender ?? form.sex,
+    insuranceNumber: form.insuranceNumber,
+    addresses: form.addresses,
+    emails: form.emails,
+    phones: form.phones,
+  };
+};
+
 /**
  * Creates or edits a patient form on submit
  */ 
 export const createPatientForm = (closeWizardHandler: () => void, patient: PatientFragment | undefined) => createForm<PatientFormSchema>({
   initialValues: patient ? filledPatientForm(patient) : defaultPatientForm,
   onSubmit: async (form, { reset }) => {
-    const createPatient: MutationAddPatientArgs['createPatient'] = {
-      nameInfo: {
-        firstName: form.nameInfo.firstName,
-        middleName: form.nameInfo.middleName,
-        lastName: form.nameInfo.lastName,
-      },
-      dateOfBirth: form.dateOfBirth.replace(/\//g, '-'),
-      ethnicity: form.ethnicity,
-      sex: form.sex,
-      gender: form.gender ?? form.sex,
-      insuranceNumber: form.insuranceNumber,
-      addresses: form.addresses,
-      emails: form.emails,
-      phones: form.phones,
-    };
-
-    const editPatientForm: MutationEditPatientArgs['editPatient'] = {
-      pid: {
-        value: patient?.id.value,
-      },
-      nameInfo: {
-        firstName: form.nameInfo.firstName,
-        middleName: form.nameInfo.middleName,
-        lastName: form.nameInfo.lastName,
-      },
-      dateOfBirth: form.dateOfBirth.replace(/\//g, '-'),
-      ethnicity: form.ethnicity,
-      sex: form.sex,
-      gender: form.gender ?? form.sex,
-      insuranceNumber: form.insuranceNumber,
-      addresses: form.addresses?.map((address) => ({
-        address: address.address,
-        addressType: address.addressType,
-        city: address.city,
-        country: address.country,
-        postalCode: address.postalCode,
-        province: address.province,
-      })),
-      emails: form.emails?.map((email) => ({
-        email: email.email,
-        type: email.type,
-      })),
-      phones: form.phones?.map((phone) => ({
-        number: phone.number,
-        type: phone.type,
-      })),
-    };
-
     try {
       if (patient) {
-        await editPatient({
-          ...editPatientForm,
-        });
+        await editPatient(getEditPatientArgs(form, patient.id?.value));
         reset;
       } else {
-        await addPatient(createPatient);
+        await addPatient(getCreatePatientArgs(form));
         reset;
       }
 

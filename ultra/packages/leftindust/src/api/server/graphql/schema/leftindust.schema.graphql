@@ -396,6 +396,7 @@ type NameInfo {
 
 type Patient {
   addresses: [Address!]!
+  assignedSurveys: [SurveyLink!]!
   dateOfBirth: LocalDate!
   emails: [Email!]!
   ethnicity: Ethnicity
