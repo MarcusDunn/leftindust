@@ -125,20 +125,33 @@ type EditDoctorArgs = NonNullable<MutationEditDoctorArgs['editDoctor']>;
  */
 const getEditDoctorArgs = (form: DoctorFormSchema, doctorId?: string): EditDoctorArgs => {
   return {
-    addresses: form.addresses,
+    addresses: form.addresses?.map((address) => ({
+      address: address.address,
+      addressType: address.addressType,
+      city: address.city,
+      country: address.country,
+      postalCode: address.postalCode,
+      province: address.province,
+    })),
     clinics: [],
     dateOfBirth: form.dateOfBirth,
     did: {
       value: doctorId,
     },
-    emails: form.emails,
+    emails: form.emails?.map((email) => ({
+      email: email.email,
+      type: email.type,
+    })),
     nameInfo: {
       firstName: form.firstName,
       middleName: form.middleName,
       lastName: form.lastName,
     },
     patients: [],
-    phones: form.phones,
+    phones: form.phones?.map((phone) => ({
+      number: phone.number,
+      type: phone.type,
+    })),
     title: form.title,
   };
 };

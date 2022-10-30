@@ -168,9 +168,22 @@ const getEditPatientArgs = (form: PatientFormSchema, patientId?: string): EditPa
     sex: form.sex,
     gender: form.gender ?? form.sex,
     insuranceNumber: form.insuranceNumber,
-    addresses: form.addresses,
-    emails: form.emails,
-    phones: form.phones,
+    addresses: form.addresses?.map((address) => ({
+      address: address.address,
+      addressType: address.addressType,
+      city: address.city,
+      country: address.country,
+      postalCode: address.postalCode,
+      province: address.province,
+    })),
+    emails: form.emails?.map((email) => ({
+      email: email.email,
+      type: email.type,
+    })),
+    phones: form.phones?.map((phone) => ({
+      number: phone.number,
+      type: phone.type,
+    })),
   };
 };
 
