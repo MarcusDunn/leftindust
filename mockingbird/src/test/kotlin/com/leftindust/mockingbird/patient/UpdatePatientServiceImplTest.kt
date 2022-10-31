@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.patient
 
-import com.leftindust.mockingbird.PersistenceError
 import com.leftindust.mockingbird.address.AddressRepository
 import com.leftindust.mockingbird.address.CreateAddressServiceImpl
 import com.leftindust.mockingbird.contact.ContactRepository
@@ -54,7 +53,7 @@ internal class UpdatePatientServiceImplTest(
         createNameInfoService
     )
     private val updateNameInfoService = UpdateNameInfoServiceImpl(nameInfoRepository)
-    private val readNameInfoService = ReadNameInfoServiceImpl(mediqUserRepository, patientRepository)
+    private val readNameInfoService = ReadNameInfoServiceImpl(mediqUserRepository, patientRepository, doctorRepository)
     private val patientEntityToPatientConverter = PatientEntityToPatientConverter()
 
     private val updatePatientServiceImpl = UpdatePatientServiceImpl(
