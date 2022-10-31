@@ -27,6 +27,7 @@ import org.springframework.graphql.execution.RuntimeWiringConfigurer
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ResourceServerSpec
 import org.springframework.security.web.server.SecurityWebFilterChain
@@ -38,6 +39,7 @@ import reactor.core.publisher.Mono
 
 
 @SpringBootApplication
+@EnableAsync
 @EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class)
 class MockingbirdApplication {
 
