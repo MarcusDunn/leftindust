@@ -59,7 +59,7 @@ const defaultDoctorForm: DoctorFormSchema = {
 function filledDoctorForm(doctor: DoctorFragment): Partial<DoctorFormSchema> {
   return {
     ...doctor,
-    addresses: [],
+    addresses: doctor.addresses,
     phones: doctor.phoneNumbers,
   };
 }
