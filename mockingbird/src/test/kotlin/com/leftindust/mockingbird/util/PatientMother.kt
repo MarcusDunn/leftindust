@@ -137,7 +137,7 @@ object PatientMother {
                     lastName = lastName,
                     middleName = middleName
                 ),
-                addresses = listOf(AddressMother.JennysHouse.createDto),
+                addresses = listOf(DansHouse.createDto),
                 emails = listOf(DansEmail.createDto),
                 phones = listOf(PhoneMother.DansCell.createDto),
                 thumbnail = "",
