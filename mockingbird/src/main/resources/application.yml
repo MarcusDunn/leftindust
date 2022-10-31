@@ -20,6 +20,20 @@ spring:
       schema-locations:
         - classpath:data-postgres.sql
       mode: always
+  mail:
+    host: ${MAIL_SENDER_HOST}
+    port: ${MAIL_SENDER_PORT}
+    username: ${MAIL_SENDER_USERNAME}
+    password: ${MAIL_SENDER_PASSWORD}
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 icd:
   client:
     url: localhost:80/icd
