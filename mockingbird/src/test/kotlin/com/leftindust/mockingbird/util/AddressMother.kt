@@ -75,11 +75,11 @@ object AddressMother {
         ).apply { id = this@JennysHouse.id }
 
         val createDto = CreateAddressGraphQlDto(
-            addressType = DansHouse.addressType,
-                address = DansHouse.address,
-                city = DansHouse.city,
+            addressType = addressType,
+                address = address,
+                city = city,
                 country = country,
-                postalCode = DansHouse.postalCode,
+                postalCode = postalCode,
                 province = province
             )
 
