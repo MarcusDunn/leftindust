@@ -86,8 +86,6 @@ export const addDoctor = async (doctor: NonNullable<MutationAddDoctorArgs['creat
 export const editDoctor = async (doctor: NonNullable<MutationEditDoctorArgs['editDoctor']>): Promise<EditDoctorMutation> => {
   const result = await client.mutation(EditDoctorDocument, { editDoctor: doctor }).toPromise();
 
-  console.log('Result', result);
-
   const data = result.data;
   if (result.error) throw new Error(`Failed to edit doctor id ${doctor.did}: ${result.error.message}`);
   else if (!data) throw new Error(`Failed to edit doctor id ${doctor.did}: No data returned`);
