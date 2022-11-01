@@ -1,11 +1,11 @@
 type Address {
   address: String!
+  addressType: AddressType!
   city: String!
   country: Countries!
   id: AddressId!
   postalCode: String!
   province: String!
-  type: AddressType
 }
 
 type AddressId {
@@ -185,7 +185,7 @@ input CreatePatient {
   emails: [CreateEmail!]! = []
   emergencyContacts: [CreateContact!]! = []
   ethnicity: Ethnicity
-  gender: String!
+  gender: String
   insuranceNumber: String
   nameInfo: CreateNameInfo!
   phones: [CreatePhone!]! = []
@@ -287,18 +287,18 @@ input EditDoctor {
 }
 
 input EditPatient {
-  addresses: [CreateAddress!]!
+  addresses: [CreateAddress!]
   dateOfBirth: LocalDate
-  doctor: [DoctorIdInput!]!
-  emails: [CreateEmail!]!
-  emergencyContacts: [CreateContact!]!
-  ethnicity: Ethnicity!
-  gender: String!
+  doctors: [DoctorIdInput!]
+  emails: [CreateEmail!]
+  emergencyContacts: [CreateContact!]
+  ethnicity: Ethnicity
+  gender: String
   insuranceNumber: String
   nameInfo: UpdateNameInfo
-  phones: [CreatePhone!]!
+  phones: [CreatePhone!]
   pid: PatientIdInput!
-  sex: Sex!
+  sex: Sex
   thumbnail: String
 }
 
@@ -396,11 +396,12 @@ type NameInfo {
 
 type Patient {
   addresses: [Address!]!
+  assignedSurveys: [SurveyLink!]!
   dateOfBirth: LocalDate!
   emails: [Email!]!
   ethnicity: Ethnicity
   firstName: String!
-  gender: String!
+  gender: String
   id: PatientId!
   insuranceNumber: String
   lastName: String!
@@ -603,8 +604,8 @@ enum TemplateInputUploadType {
 scalar UUID
 
 input UpdateNameInfo {
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   middleName: String
 }
 

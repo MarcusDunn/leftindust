@@ -22,7 +22,7 @@ class DoctorMutationController(
     }
 
     @MutationMapping
-    suspend fun editDoctor(@Argument("editDoctor") editDoctor: UpdateDoctorDto): DoctorDto? {
+    suspend fun editDoctor(@Argument("editDoctor") editDoctor: UpdateDoctorGraphQlDto): DoctorDto? {
         val updateDoctor = MapDelegatingUpdateDoctorDto(toMap(editDoctor)).toUpdateDoctor()
             .onFailure { throw it.reason.toMockingbirdException() }
         val updatedDoctor = updateDoctorService.editDoctor(updateDoctor)
