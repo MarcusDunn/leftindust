@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.address.AddressType
-import com.leftindust.mockingbird.address.CreateAddressDto
+import com.leftindust.mockingbird.address.CreateAddressGraphQlDto
 import com.leftindust.mockingbird.address.toAddressDto
 import com.leftindust.mockingbird.country.Countries
 import com.leftindust.mockingbird.country.CountryState
@@ -42,6 +42,15 @@ object AddressMother {
                 postalCode = postalCode
             )
 
+        val createDto = CreateAddressGraphQlDto(
+            addressType = addressType,
+            address = address,
+            city = city,
+            country = JennysHouse.country,
+            postalCode = postalCode,
+            province = JennysHouse.province
+        )
+
         val dto = entityDetached.toAddressDto()
     }
 
@@ -65,12 +74,12 @@ object AddressMother {
             postalCode = postalCode
         ).apply { id = this@JennysHouse.id }
 
-        val createDto: CreateAddressDto = CreateAddressDto(
-            addressType = DansHouse.addressType,
-                address = DansHouse.address,
-                city = DansHouse.city,
+        val createDto = CreateAddressGraphQlDto(
+            addressType = addressType,
+                address = address,
+                city = city,
                 country = country,
-                postalCode = DansHouse.postalCode,
+                postalCode = postalCode,
                 province = province
             )
 

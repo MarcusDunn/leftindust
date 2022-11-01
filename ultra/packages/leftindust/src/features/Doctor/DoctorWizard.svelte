@@ -1,8 +1,10 @@
 <script lang="ts">
   import { _ } from '@/language';
+  import type { DoctorFragment } from '@/api/server';
 
   import { Row, Col, Block } from 'framework7-svelte';
   import Addresses from '../Input/components/Address/Addresses.svelte';
+  import DatePicker from '../Input/components/Date/DatePicker.svelte';
   import Emails from '../Input/components/Email/Emails.svelte';
   import Phones from '../Input/components/Phone/Phones.svelte';
 
@@ -12,8 +14,7 @@
   
   import { createDoctorForm } from './';
 
-  export let doctorId: string | undefined = undefined;
-
+  export let doctor: DoctorFragment | undefined;
   export let callback: () => void;
   
   const closeWizardHandler = () => {
@@ -22,16 +23,15 @@
     closeWizard();
   };
 
-  const { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctorId);
+  let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctor);
 
   let ref: HTMLFormElement;
 </script>
 
 <Wizard
-  title={$_('generics.newDoctor')}
-  subtitle={$_('descriptions.addDoctorDescription')}
+  title={doctor ? $_('generics.editDoctor') : $_('generics.newDoctor')}
+  subtitle={doctor ? $_('descriptions.editDoctorDescription') : $_('descriptions.addDoctorDescription')}
   color="purple"
-  disabled={false}
   interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}
   on:close={closeWizardHandler}
@@ -45,7 +45,7 @@
             <Row>
               <Col width="100" medium="20">
                 <Input error={$errors.firstName}>
-                  <input type="text" name="firstName" placeholder="First Name" />  
+                  <input type="text" name="firstName" placeholder="First Name">  
                 </Input>
               </Col>
               <Col width="100" medium="20">
@@ -64,6 +64,22 @@
                 </Input>
               </Col>
             </Row>
+          </Col>
+          <Col width="100" medium="50">
+            <div style="margin-top: 2px;">
+              <DatePicker
+                placeholder="Birthday"
+                error={$errors.dateOfBirth}
+                pastOnly
+                on:change={(e) => {
+                  $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                  });
+                }}
+              />
+            </div>
           </Col>
         </Row>
         <br />

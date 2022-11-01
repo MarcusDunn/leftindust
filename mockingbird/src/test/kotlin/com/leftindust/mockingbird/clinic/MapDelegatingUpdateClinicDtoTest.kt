@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.graphql.types.Updatable
-import com.leftindust.mockingbird.util.ClinicMother.DansClinic
+import com.leftindust.mockingbird.util.AddressMother.DansHouse
 import java.util.UUID
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
@@ -12,10 +12,10 @@ internal class MapDelegatingUpdateClinicDtoTest {
     @Test
     internal fun `test creating all defined '`() {
         val clinicName = "Clyde's Clinic"
-        val clinicAddress = DansClinic.address
+        val clinicAddress = DansHouse.createDto
         val clinicDoctors = listOf(UUID.randomUUID())
 
-        val clinicDto: ClinicEdit = MapDelegatingUpdateClinicDto(mapOf(
+        val clinicDto: ClinicEditDto = MapDelegatingUpdateClinicDto(mapOf(
             MapDelegatingUpdateClinicDto::cid.name to mapOf(ClinicDto.ClinicDtoId::value.name to UUID.randomUUID()),
                     MapDelegatingUpdateClinicDto::name.name to clinicName,
                     MapDelegatingUpdateClinicDto::address.name to clinicAddress,
@@ -33,7 +33,7 @@ internal class MapDelegatingUpdateClinicDtoTest {
 
     @Test
     internal fun `test creating all undefined '`() {
-        val clinicDto: ClinicEdit = MapDelegatingUpdateClinicDto(mapOf(
+        val clinicDto: ClinicEditDto = MapDelegatingUpdateClinicDto(mapOf(
             MapDelegatingUpdateClinicDto::cid.name to mapOf(ClinicDto.ClinicDtoId::value.name to UUID.randomUUID()),
         ))
 
@@ -47,7 +47,7 @@ internal class MapDelegatingUpdateClinicDtoTest {
         val clinicName = "Clyde's Clinic"
         val clinicDoctors = listOf(UUID.randomUUID())
 
-        val clinicDto: ClinicEdit = MapDelegatingUpdateClinicDto(mapOf(
+        val clinicDto: ClinicEditDto = MapDelegatingUpdateClinicDto(mapOf(
             MapDelegatingUpdateClinicDto::cid.name to mapOf(ClinicDto.ClinicDtoId::value.name to UUID.randomUUID()),
             MapDelegatingUpdateClinicDto::name.name to clinicName,
             MapDelegatingUpdateClinicDto::doctors.name to clinicDoctors,

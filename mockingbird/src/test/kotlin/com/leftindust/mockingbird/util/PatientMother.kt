@@ -4,8 +4,10 @@ import com.leftindust.mockingbird.address.Address
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
+import com.leftindust.mockingbird.email.CreateEmailDto
 import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.graphql.types.Deletable
+import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.delete
 import com.leftindust.mockingbird.graphql.types.update
 import com.leftindust.mockingbird.patient.CreatePatient
@@ -22,6 +24,8 @@ import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.person.UpdateNameInfoDto
+import com.leftindust.mockingbird.phone.CreatePhoneDto
+import com.leftindust.mockingbird.phone.CreatePhoneGraphQlDto
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
@@ -133,7 +137,7 @@ object PatientMother {
                     lastName = lastName,
                     middleName = middleName
                 ),
-                addresses = listOf(AddressMother.JennysHouse.createDto),
+                addresses = listOf(DansHouse.createDto),
                 emails = listOf(DansEmail.createDto),
                 phones = listOf(PhoneMother.DansCell.createDto),
                 thumbnail = "",
@@ -163,8 +167,8 @@ object PatientMother {
                     }
                 )
                 override val addresses = update(listOf(AddressMother.JennysHouse.createDto))
-                override val emails = update(listOf(DansEmail.createUpdatedDto))
-                override val phones = update(listOf(PhoneMother.DansCell.createUpdatedDto))
+                override val emails : Updatable<List<CreateEmailDto>> = update(listOf(DansEmail.createUpdatedDto))
+                override val phones: Updatable<List<CreatePhoneDto>> = update(listOf(PhoneMother.DansCell.createUpdatedDto))
                 override val thumbnail = delete<String>()
                 override val sex = update(Sex.Male)
                 override val dateOfBirth = update(newDateOfBirth)

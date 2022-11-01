@@ -2,6 +2,7 @@ package com.leftindust.mockingbird.clinic
 
 
 import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.graphql.types.input.toMap
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
@@ -15,17 +16,16 @@ class ClinicMutationController(
 ) {
 
     @MutationMapping
-    suspend fun addClinic(@Argument clinic: CreateClinicDto, dataFetchingEnvironment: DataFetchingEnvironment): ClinicDto {
-        val newClinic = createClinicService.addClinic(clinic)
+    suspend fun addClinic(@Argument clinic: CreateClinicGraphQlDto, dataFetchingEnvironment: DataFetchingEnvironment): ClinicDto {
+        val newClinic = createClinicService.addClinic(clinic.toCreateClinic())
         return clinicToClinicDtoConverter.convert(newClinic)
     }
 
     @MutationMapping
-    suspend fun editClinic(@Argument args: Map<String, Any?>): ClinicDto? {
-        val clinic = args["clinic"]
+    suspend fun editClinic(@Argument clinic: UpdateClinicGraphQlDtoDto): ClinicDto? {
         @Suppress("UNCHECKED_CAST")
-        val clinicEdit = MapDelegatingUpdateClinicDto(clinic as Map<String, Any?>)
-        val editedClinic = clinicUpdaterService.editClinic(clinicEdit) ?: return null
+        val clinicEdit = MapDelegatingUpdateClinicDto(toMap(clinic))
+        val editedClinic = clinicUpdaterService.editClinic(clinicEdit.toClinicEdit()) ?: return null
         return clinicToClinicDtoConverter.convert(editedClinic)
     }
 }

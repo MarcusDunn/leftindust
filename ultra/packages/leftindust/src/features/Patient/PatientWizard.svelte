@@ -5,6 +5,7 @@
     Ethnicity,
     Sex,
   } from '@/api/server/graphql/schema/leftindust.schema';
+  import type { PatientFragment } from '@/api/server';
 
   import { Row, Col, Block } from 'framework7-svelte';
 
@@ -19,8 +20,7 @@
   import Addresses from '../Input/components/Address/Addresses.svelte';
   import { closeWizard } from '../Wizard';
 
-  export let patientId: string | undefined = undefined;
-
+  export let patient: PatientFragment | undefined;
   export let callback: () => void;
 
   const closeWizardHandler = () => {
@@ -29,14 +29,14 @@
     closeWizard();
   };
 
-  const { form, data: formData, handleSubmit, errors, reset, interacted } = createPatientForm(closeWizardHandler, patientId);
+  const { form, data: formData, handleSubmit, errors, reset, interacted } = createPatientForm(closeWizardHandler, patient);
 
   let ref: HTMLFormElement;
 </script>
 
 <Wizard
-  title={$_('generics.newPatient')}
-  subtitle={$_('descriptions.addPatientDescription')}
+  title={patient ? $_('generics.editPatient') : $_('generics.newPatient')}
+  subtitle={patient ? $_('descriptions.editPatientDescription') : $_('descriptions.addPatientDescription')}
   color="purple"
   interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}

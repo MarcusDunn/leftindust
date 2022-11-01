@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.phone.CreatePhoneDto
+import com.leftindust.mockingbird.phone.CreatePhoneGraphQlDto
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.phone.PhoneToPhoneDtoConverter
 import com.leftindust.mockingbird.phone.PhoneType
@@ -39,12 +40,12 @@ object PhoneMother {
 
         val dto = phoneToPhoneDtoConverter.convert(entityDetached)
 
-        val createDto = CreatePhoneDto(
+        val createDto = CreatePhoneGraphQlDto(
             number = number,
             type = type
         )
 
-        val createUpdatedDto = CreatePhoneDto(
+        val createUpdatedDto = CreatePhoneGraphQlDto(
             number = "778330112",
             type = PhoneType.Home
         )

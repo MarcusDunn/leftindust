@@ -7,6 +7,7 @@ import com.leftindust.mockingbird.graphql.types.update
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
+import kotlin.reflect.full.memberProperties
 
 class DeletableMapDelegate<in G, out T : Any>(private val map: Map<String, Any?>, private val clazz: KClass<T>) : ReadOnlyProperty<G, Deletable<T>> {
     companion object {
@@ -17,12 +18,13 @@ class DeletableMapDelegate<in G, out T : Any>(private val map: Map<String, Any?>
 
     override fun getValue(thisRef: G, property: KProperty<*>): Deletable<T> {
         return if (map.containsKey(property.name)) {
-            map[property.name]?.let {
-                if (it is Map<*, *>) {
-                    Deletable.Update(clazz.constructors.first().call(it))
-                } else {
+            map[property.name]?.let {value ->
+                if (value is Map<*, *>) {
+                    Deletable.Update(clazz.constructors.first().call(value))
+                }
+                else {
                     // if this throws there is likely a mismatch between the schema and the class
-                    Deletable.Update(it as T)
+                    Deletable.Update(value as T)
                 }
             } ?: Deletable.Delete()
         } else {
@@ -30,6 +32,7 @@ class DeletableMapDelegate<in G, out T : Any>(private val map: Map<String, Any?>
         }
     }
 }
+
 
 class UpdatableMapDelegate<in G, out T : Any>(map: Map<String, Any?>, clazz: KClass<T>) : ReadOnlyProperty<G, Updatable<T>> {
     private val deletableMapDeletable = DeletableMapDelegate<G, T>(map, clazz)
@@ -40,9 +43,21 @@ class UpdatableMapDelegate<in G, out T : Any>(map: Map<String, Any?>, clazz: KCl
         }
     }
 
-    override fun getValue(thisRef: G, property: KProperty<*>): Updatable<T> = when (val value = deletableMapDeletable.getValue(thisRef, property)) {
+    override operator fun getValue(thisRef: G, property: KProperty<*>): Updatable<T> = when (val value = deletableMapDeletable.getValue(thisRef, property)) {
         is Deletable.Delete -> ignore()
         is Deletable.Ignore -> ignore()
         is Deletable.Update -> update(value.value)
+    }
+}
+
+fun <T : Any> toMap(obj: T): Map<String, Any?> {
+    return (obj::class as KClass<T>).memberProperties.associate { prop ->
+        prop.name to prop.get(obj)?.let { value ->
+            if (value::class.isData) {
+                toMap(value)
+            } else {
+                value
+            }
+        }
     }
 }
