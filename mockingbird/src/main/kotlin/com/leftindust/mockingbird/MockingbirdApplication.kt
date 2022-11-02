@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird
 
-import com.amazonaws.services.sns.AmazonSNS
-import com.amazonaws.services.sns.AmazonSNSClientBuilder
+import aws.sdk.kotlin.services.sns.SnsClient
+import com.amazonaws.regions.Region
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.auth.oauth2.GoogleCredentials
@@ -12,7 +12,6 @@ import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
 import graphql.schema.GraphQLScalarType
-import io.awspring.cloud.messaging.core.NotificationMessagingTemplate
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
@@ -142,14 +141,14 @@ class MockingbirdApplication {
             .build()
 
     @Bean
-    fun notificationMessagingTemplate(amazonSNS: AmazonSNS): NotificationMessagingTemplate {
-        return NotificationMessagingTemplate(amazonSNS);
-    }
-
-    @Bean
     @Primary
-    fun amazonSNS(): AmazonSNS? {
-        return AmazonSNSClientBuilder.standard().withRegion("ca-central-1").build()
+    suspend fun amazonSNS(): SnsClient? {
+        return SnsClient.fromEnvironment {
+            this.apply {
+                region = "ca-central-1"
+//            credentialsProvider =
+            }
+        }
     }
 
 }

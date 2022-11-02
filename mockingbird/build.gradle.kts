@@ -27,9 +27,6 @@ repositories {
 }
 
 dependencies {
-    // aws
-    implementation("io.awspring.cloud", "spring-cloud-aws-messaging")
-    implementation("io.awspring.cloud:spring-cloud-aws-messaging:2.4.2")
     // spring
     implementation("org.springframework.boot", "spring-boot-starter-webflux")
     implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
@@ -84,7 +81,8 @@ dependencies {
     liquibaseRuntime(sourceSets.main.get().output)
 
     //amazon sns
-    implementation("aws.sdk.kotlin:secretsmanager:0.17.7-beta")
+    implementation("aws.sdk.kotlin:sns:0.17.7-beta")
+
 
     // spring testing
     testImplementation("org.springframework.boot", "spring-boot-test")
