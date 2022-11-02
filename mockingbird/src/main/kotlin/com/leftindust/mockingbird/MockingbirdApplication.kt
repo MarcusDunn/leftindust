@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird
 
 import aws.sdk.kotlin.services.sns.SnsClient
-import com.amazonaws.regions.Region
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.auth.oauth2.GoogleCredentials
