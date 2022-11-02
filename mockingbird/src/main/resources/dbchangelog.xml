@@ -1123,4 +1123,10 @@
     <changeSet author="sepehr" id="1667094902674-1" >
         <addNotNullConstraint columnName="type" tableName="address" />
     </changeSet>
+    <changeSet author="marcus" id="1666577451216-0">
+        <renameTable oldTableName="address" newTableName="address_entity"/>
+    </changeSet>
+    <changeSet id="marcus" author="1666577451216-1">
+        <addNotNullConstraint tableName="address_entity" columnName="type" defaultNullValue="Other" />
+    </changeSet>
 </databaseChangeLog>
