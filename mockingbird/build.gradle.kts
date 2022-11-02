@@ -84,9 +84,7 @@ dependencies {
     liquibaseRuntime(sourceSets.main.get().output)
 
     //amazon sns
-    implementation("aws.sdk.kotlin:sns:0.17.7-beta")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2") //double check
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
+    implementation("aws.sdk.kotlin:secretsmanager:0.17.7-beta")
 
     // spring testing
     testImplementation("org.springframework.boot", "spring-boot-test")

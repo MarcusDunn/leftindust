@@ -45,8 +45,10 @@ class MockingbirdApplication {
     @Bean("jsonMapper")
     @Primary
     fun mappingJackson2HttpMessageConverter(): ObjectMapper {
-        return Jackson2ObjectMapperBuilder().build<ObjectMapper>().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+        return Jackson2ObjectMapperBuilder().build<ObjectMapper>()
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
     }
+
     @Bean
     fun clock(): Clock = Clock.systemUTC()
 
@@ -147,8 +149,9 @@ class MockingbirdApplication {
     @Bean
     @Primary
     fun amazonSNS(): AmazonSNS? {
-        return AmazonSNSClientBuilder.standard().withRegion("us-east-1").build()
+        return AmazonSNSClientBuilder.standard().withRegion("ca-central-1").build()
     }
+
 }
 
 /**
