@@ -27,8 +27,11 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot", "spring-boot-starter-mail")
+    implementation("io.awspring.cloud:spring-cloud-starter-aws-ses:2.4.2")
+    implementation("io.awspring.cloud:spring-cloud-aws-autoconfigure:2.4.2")
+
     // spring
+    implementation("org.springframework.boot", "spring-boot-starter-mail")
     implementation("org.springframework.boot", "spring-boot-starter-webflux")
     implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
     implementation("org.springframework.boot", "spring-boot-starter-actuator")
