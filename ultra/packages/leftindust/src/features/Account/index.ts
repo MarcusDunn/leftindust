@@ -136,7 +136,7 @@ const accountDatabaseTemplate: AccountDatabaseTemplate = {
 export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): void => {
   const { user, database } = fb;
 
-  client.query(PartialUserByUserUniqueIdQueryDocument, {
+  client().query(PartialUserByUserUniqueIdQueryDocument, {
     uniqueId: user.uid,
   })
     .toPromise()

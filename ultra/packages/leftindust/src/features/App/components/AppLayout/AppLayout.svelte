@@ -60,7 +60,7 @@
 
   let width = window.innerWidth;
 
-  setClient(client);
+  setClient(client());
 </script>
 
 <svelte:window bind:innerWidth={width} />

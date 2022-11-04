@@ -67,8 +67,11 @@
                 type: record.__typename,
               }, data)}
               on:click={() => f7.view.get('#view-clients').router.navigate(`/record/${JSON.stringify({
-                type: record.__typename,
-                id: record.id?.value,
+                completedSurvey: {
+                  type: record.__typename,
+                  id: record.id?.value,
+                },
+                patient: data,
               })}/`)}
             />
           {/if}

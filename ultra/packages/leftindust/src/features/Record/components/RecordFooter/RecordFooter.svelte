@@ -77,7 +77,6 @@
                 fill
                 on:click={() => {
                   forms[currentSectionIndex].ref?.requestSubmit();
-                  console.log(forms[currentSectionIndex]);
                 }}
               >
                 {$_('generics.next')}

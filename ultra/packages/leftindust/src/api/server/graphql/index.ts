@@ -214,8 +214,12 @@ export const resolversArray: { [K in keyof ResolversTypes]: any[] } = {
   Relationship: [],
 };
 
+export type Client = {
+  authentication: boolean;
+}
 
-export const client = createClient({
+
+export const client = (options: Client = { authentication: true }) => createClient({
   url: `${config.mockingbird.address}/graphql`,
   maskTypename: true,
   exchanges: [
@@ -236,43 +240,43 @@ export const client = createClient({
         return null;
       },
     }),
-    /*
-    authExchange<{ token: string | undefined } | undefined>({
-      getAuth: async () => {
-        const user: User = await new Promise((resolve, reject) => {
-          const unsubscribe = auth.onAuthStateChanged((u) => {
-            unsubscribe();
-            if (u) resolve(u);
-          }, reject);
-        });
+    ...options.authentication ? [
+      authExchange<{ token: string | undefined } | undefined>({
+        getAuth: async () => {
+          const user: User = await new Promise((resolve, reject) => {
+            const unsubscribe = auth.onAuthStateChanged((u) => {
+              unsubscribe();
+              if (u) resolve(u);
+            }, reject);
+          });
+          
+          const token = await user?.getIdToken();
+  
+          const refreshToken = await user?.getIdToken();
+          
+          return { token, refreshToken };
+        },
+        addAuthToOperation: ({ authState, operation }) => {
+          if (!authState || !authState.token) return operation;
         
-        const token = await user?.getIdToken();
-
-        const refreshToken = await user?.getIdToken();
+          const fetchOptions =
+            typeof operation.context.fetchOptions === 'function'
+              ? operation.context.fetchOptions()
+              : operation.context.fetchOptions || {};
         
-        return { token, refreshToken };
-      },
-      addAuthToOperation: ({ authState, operation }) => {
-        if (!authState || !authState.token) return operation;
-      
-        const fetchOptions =
-          typeof operation.context.fetchOptions === 'function'
-            ? operation.context.fetchOptions()
-            : operation.context.fetchOptions || {};
-      
-        return makeOperation(operation.kind, operation, {
-          ...operation.context,
-          fetchOptions: {
-            ...fetchOptions,
-            headers: {
-              ...fetchOptions.headers,
-              // Authorization: authState.token,
+          return makeOperation(operation.kind, operation, {
+            ...operation.context,
+            fetchOptions: {
+              ...fetchOptions,
+              headers: {
+                ...fetchOptions.headers,
+                // Authorization: authState.token,
+              },
             },
-          },
-        });
-      },
-    }),
-    */
+          });
+        },
+      }),
+    ] : [],
     fetchExchange,
   ],
 });

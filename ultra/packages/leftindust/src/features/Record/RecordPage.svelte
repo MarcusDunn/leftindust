@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CompleteSurveyByIdQueryDocument, type CompleteSurveyFragmentFragment, type Data } from '@/api/server';
+  import { CompleteSurveyByIdQueryDocument, PartialPatientsByPatientIdQueryDocument, type CompleteSurveyFragmentFragment, type Data, type PartialPatientFragment } from '@/api/server';
   import { operationStore, query } from '@urql/svelte';
   import type { Router } from 'framework7/types';
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
@@ -11,6 +11,11 @@
   import CollapsableContent from '../UI/components/Collapsable/CollapsableContent.svelte';
   import RecordTags from './components/RecordTags/RecordTags.svelte';
   import Input from '../Input/Input.svelte';
+  import SpecificGrid from '../Widgets/components/Grid/SpecificGrid.svelte';
+  import { WidgetType } from '../Widgets';
+  import { clientsSelected, clientsSelectedTab } from '../Clients/store';
+  import { ClientsTab } from '../Clients';
+  import { wizardOpen } from '../Wizard/store';
 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
@@ -18,10 +23,10 @@
   export let quicklook = false;
   let record: CompleteSurveyFragmentFragment | undefined;
 
-  const data: Data = JSON.parse(f7route.params.data ?? '{}');
+  const data: { patient: Data; completedSurvey: Data } = JSON.parse(f7route.params.data ?? '{}');
 
   const request = operationStore(CompleteSurveyByIdQueryDocument, {
-    completeSurveyId: { value: data.id },
+    completeSurveyId: { value: data.completedSurvey.id },
   });
 
   query(request);
@@ -29,7 +34,14 @@
   $: record = $request.data?.completeSurveyById;
 </script>
 
-<Page>
+<Page
+  on:pageAfterIn={() => {
+    if (!$wizardOpen && !quicklook) {
+      $clientsSelected = [data.patient];
+      $clientsSelectedTab = ClientsTab.Patients;
+    }
+  }}
+>
   <svelte:fragment slot="fixed">
     <Appbar
       close={{ popover: quicklook }}
@@ -44,6 +56,16 @@
         <RecordTags slot="tags" {...record} />
       </Profile>
       <Block style="margin: 0 40px">
+        <SpecificGrid
+          props={[{
+            id: data.patient.type,
+            data: { id: data.patient.id, type: data.patient.type },
+            quicklook,
+          }]}
+          type={WidgetType.Card}
+        />
+        <br />
+        <br />
         {#each record.sections as section, sectionIndex}
           <CollapsableContent
             title={record.surveyTemplate.sections[sectionIndex].title}

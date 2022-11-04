@@ -36,7 +36,7 @@
         data,
       });
     /*
-      client.mutation(CreateSurveyLinkMutationDocument, {
+      client().mutation(CreateSurveyLinkMutationDocument, {
         surveyTemplateId: { value: data.id },
       }).toPromise()
         .then(({ data }) => {

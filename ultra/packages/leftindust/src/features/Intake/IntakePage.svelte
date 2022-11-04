@@ -1,5 +1,4 @@
 <script lang="ts">
-  import getNativeAPI from '@/api/bridge';
   import { client, SurveyLinkByIdQueryDocument } from '@/api/server';
 
   import { f7ready } from 'framework7-svelte';
@@ -12,15 +11,13 @@
   import { _ } from '@/language';
   import { openDialog } from '../UI/components/Dialog';
 
-  const { Dialog } = getNativeAPI();
-
   onMount(() => {
     f7ready(() => {
       const url = new URLSearchParams(window.location.search);
       if (url.has('id')) {
         const id = url.get('id');
 
-        client.query(SurveyLinkByIdQueryDocument, {
+        client({ authentication: false }).query(SurveyLinkByIdQueryDocument, {
           surveyLinkId: { value: id },
         }).toPromise()
           .then(({ data }) => {

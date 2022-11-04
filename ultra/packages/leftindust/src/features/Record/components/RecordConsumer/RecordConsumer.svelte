@@ -13,12 +13,10 @@
   import type { RecordForm, RecordValues } from '../..';
   import { validator } from '@felte/validator-yup';
   import { mapRecordToCompleteSurveyInput } from '../..';
-  import getNativeAPI from '@/api/bridge';
   import { _ } from '@/language';
   import { get } from 'svelte/store';
   import { openDialog } from '@/features/UI/components/Dialog';
   
-  const { Dialog } = getNativeAPI();
   const language = get(_);
 
   export let template: SurveyTemplate;
@@ -72,7 +70,7 @@
           const isComplete = currentSectionIndex === (template.sections.length);
 
           if (isComplete) {
-            client.mutation(CreateCompleteSurveyMutationDocument, {
+            client({ authentication: false }).mutation(CreateCompleteSurveyMutationDocument, {
               createCompleteSurvey: {
                 completeSurveyTemplateSections: mapRecordToCompleteSurveyInput(values),
                 surveyLinkId: id,

@@ -46,7 +46,7 @@
     
     if ($selected.length === 0) return;
 
-    client.mutation(CreateSurveyLinkMutationDocument, {
+    client().mutation(CreateSurveyLinkMutationDocument, {
       createSurveyLink: {
         surveyTemplateId: { value: data.id },
         patientId: { value: selectedItem.id },
@@ -54,7 +54,7 @@
     }).toPromise()
       .then(({ data: surveyLinkData }) => {
         if (!surveyLinkData) return;
-        client.query(PatientsByPatientIdQueryDocument, {
+        client().query(PatientsByPatientIdQueryDocument, {
           patientIds: [{ value: selectedItem.id }],
         })
           .toPromise().then(({ data: patientValue }) => {

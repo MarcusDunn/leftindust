@@ -86,7 +86,7 @@ const defaultPatientForm: Partial<PatientFormSchema> = {
  * @returns The added patient
  */
 export const addPatient = async (patient: NonNullable<MutationAddPatientArgs['createPatient']>): Promise<AddPatientMutation> => {
-  const result = await client.mutation(AddPatientDocument, { patient }).toPromise();
+  const result = await client().mutation(AddPatientDocument, { patient }).toPromise();
   
   const data = result.data;
   const userName = `${patient.nameInfo.firstName} ${patient.nameInfo.lastName}`;
@@ -101,7 +101,7 @@ export const addPatient = async (patient: NonNullable<MutationAddPatientArgs['cr
  * @returns The edited patient
  */
 export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['editPatient']>): Promise<EditPatientMutation> => {
-  const result = await client.mutation(EditPatientDocument, { editPatient: patient }).toPromise();
+  const result = await client().mutation(EditPatientDocument, { editPatient: patient }).toPromise();
 
   const data = result.data;
   if (result.error) throw new Error(`Failed to edit patient id ${patient.pid}: ${result.error.message}`);

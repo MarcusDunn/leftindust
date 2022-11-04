@@ -245,7 +245,7 @@ export const templateForm = (closeWizardHandler: () => void) => createForm<Templ
       });
     };
 
-    client.mutation(SurveyTemplateMutationDocument, {
+    client().mutation(SurveyTemplateMutationDocument, {
       surveyTemplate,
     })
       .toPromise()

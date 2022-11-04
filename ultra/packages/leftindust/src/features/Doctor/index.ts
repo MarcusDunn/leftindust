@@ -53,7 +53,7 @@ const defaultDoctorForm: DoctorFormSchema = {
 };
 
 export const addDoctor = async (doctor: NonNullable<MutationAddDoctorArgs['createDoctor']>): Promise<AddDoctorMutationMutation> => {
-  const result = await client.mutation(AddDoctorMutationDocument, { doctor }).toPromise();
+  const result = await client().mutation(AddDoctorMutationDocument, { doctor }).toPromise();
 
   if (result.error) throw result.error;
   if (!result.data) throw new Error('No data returned from server');
