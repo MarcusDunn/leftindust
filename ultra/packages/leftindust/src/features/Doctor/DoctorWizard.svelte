@@ -43,43 +43,47 @@
         <Row>
           <Col width="100">
             <Row>
-              <Col width="100" medium="20">
+              <Col width="100" medium="33">
                 <Input error={$errors.firstName}>
                   <input type="text" name="firstName" placeholder="First Name">  
                 </Input>
               </Col>
-              <Col width="100" medium="20">
+              <Col width="100" medium="33">
                 <Input error={$errors.middleName}>
                   <input type="text" name="middleName" placeholder="Middle Name (Optional)" />
                 </Input>
               </Col>
-              <Col width="100" medium="20">
+              <Col width="100" medium="33">
                 <Input error={$errors.lastName}>
                   <input type="text" name="lastName" placeholder="Last Name" />
                 </Input>
               </Col>
-              <Col width="100" medium="40">
+            </Row>
+          </Col>
+          <Col width="100">
+            <Row>
+              <Col width="100" medium="50">
                 <Input error={$errors.title}>
                   <input type="text" name="title" placeholder="Title" />
                 </Input>
               </Col>
+              <Col width="100" medium="50">
+                <div>
+                  <DatePicker
+                    placeholder="Birthday"
+                    error={$errors.dateOfBirth}
+                    pastOnly
+                    on:change={(e) => {
+                      $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                      });
+                    }}
+                  />
+                </div>
+              </Col>
             </Row>
-          </Col>
-          <Col width="100" medium="50">
-            <div style="margin-top: 2px;">
-              <DatePicker
-                placeholder="Birthday"
-                error={$errors.dateOfBirth}
-                pastOnly
-                on:change={(e) => {
-                  $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  });
-                }}
-              />
-            </div>
           </Col>
         </Row>
         <br />
