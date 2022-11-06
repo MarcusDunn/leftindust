@@ -16,7 +16,7 @@
     
   const { value: Value } = outputs.Value;
 
-  const { value } = (editor.inputs[store.id ?? 0] ??= { value: { value: undefined } }).value;
-    
+  const { value } = (editor.inputs[store.id ?? 0] ??= { value: undefined });
+  
   $: if (typeof store.id !== 'undefined' && value && Value) $Value = $value;
 </script>

@@ -11,6 +11,8 @@
   export let calculations: SurveyTemplateCalculation[];
   export let sections: SurveyTemplateSection[];
 
+  export let skipShowOnComplete = false;
+
   let inputs: Record<string, { type: string; value: Writable<unknown> }> = {};
 
   sections.forEach(({ inputs: templateInputs }, sectionIndex) => {
@@ -30,7 +32,7 @@
 </script>
 
 {#each mappedCalculations as calculation}
-  {#if !calculation.showOnComplete}
+  {#if !calculation.showOnComplete || skipShowOnComplete}
     <NodesModal
       nodes={rawCalculationNodes}
       state={JSON.parse(calculation.calculation ?? '{}')}

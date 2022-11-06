@@ -32,7 +32,7 @@ export const mapRecordToCompleteSurveyInput = (
           key = 'stringInput';
           break;
         case 'number':
-          type = CompleteSurveyInputType.String;
+          type = CompleteSurveyInputType.Number;
           key = 'numberInput';
           break;
         default:

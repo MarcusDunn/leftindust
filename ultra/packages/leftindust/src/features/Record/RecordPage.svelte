@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CompleteSurveyByIdQueryDocument, PartialPatientsByPatientIdQueryDocument, type CompleteSurveyFragmentFragment, type Data, type PartialPatientFragment } from '@/api/server';
+  import { CompleteSurveyByIdQueryDocument, type CompleteSurveyFragmentFragment, type Data, type PartialPatientFragment } from '@/api/server';
   import { operationStore, query } from '@urql/svelte';
   import type { Router } from 'framework7/types';
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
@@ -16,11 +16,14 @@
   import { clientsSelected, clientsSelectedTab } from '../Clients/store';
   import { ClientsTab } from '../Clients';
   import { wizardOpen } from '../Wizard/store';
+  import RecordComputedCalculations from './components/RecordComputedCalculations/RecordComputedCalculations.svelte';
+  import type { RecordValues } from '.';
 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
 
   export let quicklook = false;
+
   let record: CompleteSurveyFragmentFragment | undefined;
 
   const data: { patient: Data; completedSurvey: Data } = JSON.parse(f7route.params.data ?? '{}');
@@ -29,9 +32,35 @@
     completeSurveyId: { value: data.completedSurvey.id },
   });
 
+  let values: RecordValues;
+
   query(request);
 
   $: record = $request.data?.completeSurveyById;
+
+  $: if (record) {
+    values = record.surveyTemplate.sections.map(({ inputs: templateInputs, id }, sectionIndex) => ({
+      id,
+      inputs: templateInputs.map((input, inputIndex) => ({
+        id: input.id,
+        value: (() => {
+          // I'm not sure why the typechecker doesn't see the null evaluation above
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const input = record!.sections[sectionIndex].inputs[inputIndex];
+  
+          if ('string' in input) {
+            return input.string;
+          } else if ('number' in input) {
+            return input.number;
+          } else if ('stringArray' in input) {
+            return input.stringArray;
+          }
+  
+          return;
+        })(),
+      })),
+    }));
+  }
 </script>
 
 <Page
@@ -66,6 +95,15 @@
         />
         <br />
         <br />
+        {#if values}
+          <RecordComputedCalculations
+            sections={record.surveyTemplate.sections}
+            calculations={record.surveyTemplate.calculations}
+            {values}
+          />
+          <br />
+          <br />
+        {/if}
         {#each record.sections as section, sectionIndex}
           <CollapsableContent
             title={record.surveyTemplate.sections[sectionIndex].title}

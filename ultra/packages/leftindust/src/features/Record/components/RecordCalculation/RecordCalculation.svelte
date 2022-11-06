@@ -35,6 +35,7 @@
   />
 {/if}
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="record-record_calculation" on:click>
   <div class="record-record_calculation_text">
     <div class="record-record_calculation_type">{calculation.inputType}</div>
