@@ -25,6 +25,7 @@
               if (data) openWizard('/wizard/', {
                 template: data.surveyLinkById?.surveyTemplate,
                 id: data.surveyLinkById?.id,
+                expired: !!data.surveyLinkById?.completedSurvey,
               });
             }, 200);
           }).catch((error) => {
