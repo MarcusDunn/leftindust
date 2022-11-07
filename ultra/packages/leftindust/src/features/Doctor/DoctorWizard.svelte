@@ -24,6 +24,7 @@
   };
 
   let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctor);
+  $: doctorDOB = $formData.dateOfBirth ? new Date($formData.dateOfBirth).getTime() : undefined;
 
   let ref: HTMLFormElement;
 </script>
@@ -70,6 +71,7 @@
               <Col width="100" medium="50">
                 <div>
                   <DatePicker
+                    value={doctor ? doctorDOB : undefined}
                     placeholder="Birthday"
                     error={$errors.dateOfBirth}
                     pastOnly

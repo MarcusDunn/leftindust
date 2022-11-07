@@ -22,14 +22,15 @@
 
   export let patient: PatientFragment | undefined;
   export let callback: () => void;
-
+  
   const closeWizardHandler = () => {
     reset();
     callback();
     closeWizard();
   };
-
+  
   const { form, data: formData, handleSubmit, errors, reset, interacted } = createPatientForm(closeWizardHandler, patient);
+  $: patientDob = new Date($formData?.dateOfBirth).getTime(); 
 
   let ref: HTMLFormElement;
 </script>
@@ -101,11 +102,12 @@
               <Col width="100" medium="50">
                 <div style="margin-top: 2px;">
                   <DatePicker
+                    value={patient ? patientDob : undefined}
                     placeholder="Birthday"
                     error={$errors.dateOfBirth}
                     pastOnly
                     on:change={(e) => {
-                      $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
+                      $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-ca',  {
                         year: 'numeric',
                         month: '2-digit',
                         day: '2-digit',
