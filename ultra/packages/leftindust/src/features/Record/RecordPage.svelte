@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CompleteSurveyByIdQueryDocument, type CompleteSurveyFragmentFragment, type Data, type PartialPatientFragment } from '@/api/server';
+  import { CompleteSurveyByIdQueryDocument, type CompleteSurveyFragmentFragment, type Data } from '@/api/server';
   import { operationStore, query } from '@urql/svelte';
   import type { Router } from 'framework7/types';
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
@@ -100,6 +100,7 @@
             sections={record.surveyTemplate.sections}
             calculations={record.surveyTemplate.calculations}
             {values}
+            skipShowOnComplete
           />
           <br />
           <br />

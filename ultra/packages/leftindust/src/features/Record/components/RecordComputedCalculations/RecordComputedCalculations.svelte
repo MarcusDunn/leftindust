@@ -32,7 +32,7 @@
 </script>
 
 {#each mappedCalculations as calculation}
-  {#if !calculation.showOnComplete || skipShowOnComplete}
+  {#if calculation.showOnComplete || skipShowOnComplete}
     <NodesModal
       nodes={rawCalculationNodes}
       state={JSON.parse(calculation.calculation ?? '{}')}
