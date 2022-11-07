@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.clinic
 
 import com.leftindust.mockingbird.AddedElementMessage
 import com.leftindust.mockingbird.RemovedElementMessage
-import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.address.AddressEntity
 import com.leftindust.mockingbird.doctor.ClinicDoctorEntity
 import com.leftindust.mockingbird.doctor.DoctorEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
@@ -20,7 +20,7 @@ class ClinicEntity(
     @Column(nullable = false)
     var name: String,
     @OneToOne(optional = false, cascade = [CascadeType.PERSIST])
-    var address: Address,
+    var address: AddressEntity,
     @OneToMany(mappedBy = "clinic")
     var doctors: MutableSet<ClinicDoctorEntity>,
 ) : AbstractJpaPersistable() {

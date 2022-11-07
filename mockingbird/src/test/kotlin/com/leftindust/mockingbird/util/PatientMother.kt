@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.address.AddressEntity
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
@@ -25,7 +25,6 @@ import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Sex
 import com.leftindust.mockingbird.person.UpdateNameInfoDto
 import com.leftindust.mockingbird.phone.CreatePhoneDto
-import com.leftindust.mockingbird.phone.CreatePhoneGraphQlDto
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
@@ -78,9 +77,9 @@ object PatientMother {
 
         val assignedSurveysDetached: MutableSet<SurveyLinkEntity>
             get() = mutableSetOf()
-        val addressesTransient: MutableSet<Address>
+        val addressesTransient: MutableSet<AddressEntity>
             get() = mutableSetOf(DansHouse.entityTransient)
-        val addressesDetached: MutableSet<Address>
+        val addressesDetached: MutableSet<AddressEntity>
             get() = mutableSetOf(DansHouse.entityDetached)
         val events: MutableSet<PatientEventEntity>
             get() = mutableSetOf()

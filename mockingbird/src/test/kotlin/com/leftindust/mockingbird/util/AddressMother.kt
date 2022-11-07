@@ -1,8 +1,9 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.address.AddressEntity
 import com.leftindust.mockingbird.address.AddressType
 import com.leftindust.mockingbird.address.CreateAddressGraphQlDto
+import com.leftindust.mockingbird.address.toAddress
 import com.leftindust.mockingbird.address.toAddressDto
 import com.leftindust.mockingbird.country.Countries
 import com.leftindust.mockingbird.country.CountryState
@@ -18,8 +19,8 @@ object AddressMother {
         const val province = "BC"
         const val postalCode = "H8L210"
         val id = UUID.fromString("670ec435-682a-4563-b612-59a36e46f4a8")
-        val entityDetached: Address
-            get() = Address(
+        val entityDetached: AddressEntity
+            get() = AddressEntity(
                 type = addressType,
                 address = address,
                 city = city,
@@ -30,8 +31,8 @@ object AddressMother {
                 postalCode = postalCode
             ).apply { id = this@DansHouse.id }
 
-        val entityTransient: Address
-            get() = Address(
+        val entityTransient: AddressEntity
+            get() = AddressEntity(
                 type = addressType,
                 address = address,
                 city = city,
@@ -51,7 +52,9 @@ object AddressMother {
             province = JennysHouse.province
         )
 
-        val dto = entityDetached.toAddressDto()
+        val domain = entityDetached.toAddress()
+
+        val dto = domain.toAddressDto()
     }
 
 
@@ -63,7 +66,7 @@ object AddressMother {
         val country = Countries.Canada
         const val province = "BC"
         const val postalCode = "H8L2O9"
-        val entityPersisted = Address(
+        val entityPersisted = AddressEntity(
             type = addressType,
             address = address,
             city = city,
@@ -83,7 +86,9 @@ object AddressMother {
                 province = province
             )
 
-        val dto = entityPersisted.toAddressDto()
+        val domain = entityPersisted.toAddress()
+
+        val dto = domain.toAddressDto()
     }
 
 }

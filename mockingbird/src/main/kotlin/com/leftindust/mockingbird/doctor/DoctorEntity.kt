@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.doctor
 
-import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.address.AddressEntity
 import com.leftindust.mockingbird.email.EmailEntity
 import com.leftindust.mockingbird.event.Event
 import com.leftindust.mockingbird.patient.PatientEntity
@@ -20,7 +20,7 @@ class DoctorEntity(
     @OneToOne(optional = false)
     var nameInfoEntity: NameInfoEntity,
     @OneToMany
-    var addresses: MutableSet<Address>,
+    var addresses: MutableSet<AddressEntity>,
     @OneToMany
     var emails: MutableSet<EmailEntity>,
     @OneToMany
