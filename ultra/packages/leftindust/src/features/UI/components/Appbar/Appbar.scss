@@ -48,21 +48,6 @@
     transition: box-shadow 0.3s ease-in-out;
   }
 
-  .searchbar {
-    -webkit-app-region: no-drag !important;
-    width: 100%;
-    margin-left: 10px;
-
-    .searchbar-input-wrap {
-      height: 35px;
-      border-radius: 12px;
-      border: 5px solid transparent;
-      transition: border-color 80ms linear;
-    }
-
-    @include Color.searchbar(border-color);
-  }
-
   .segmented {
     display: flex;
     justify-content: center;

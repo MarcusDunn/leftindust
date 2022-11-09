@@ -8,6 +8,7 @@
 */
 
 @use "./helpers/Clamps";
+@use './helpers/Color' as Color;
 
 $master: 400px;
 
@@ -36,7 +37,6 @@ $master: 400px;
 
 /* Scrollbars */
 html {
-
   &:not(.device-macos) {
     --f7-font-family: Yantramanav, sans-serif !important;
   }
@@ -68,6 +68,21 @@ html {
       background-color: rgb(99, 99, 102);
     }
   }
+}
+
+.searchbar {
+  -webkit-app-region: no-drag !important;
+  width: 100%;
+  margin-left: 10px;
+
+  .searchbar-input-wrap {
+    height: 35px;
+    border-radius: 12px;
+    border: 5px solid transparent;
+    transition: border-color 80ms linear;
+  }
+
+  @include Color.searchbar(border-color);
 }
 
 .page {

@@ -8,12 +8,13 @@
   import { account } from '@/features/Account/store';
 
   import { AppViews, AppRootRoutes } from '@/features/App';
-  import { openPopupUrl } from '@/features/View';
+  import { openPopupUrl, openSettingsPopup } from '@/features/View';
 
   import { appActiveTab } from '@/features/App/store';
 
   import AppLayout from '@/features/App/components/AppLayout/AppLayout.svelte';
   import UserCell from '@/features/User/components/UserCell/UserCell.svelte';
+  import { openWizard } from '@/features/Wizard';
 
   export let f7params: Framework7Parameters;
 
@@ -69,7 +70,7 @@
     <List mediaList noChevron noHairlines>
       <UserCell
         user={$account}
-        on:click={() => openPopupUrl('/settings/')}
+        on:click={openSettingsPopup}
       />
     </List>
   </div>

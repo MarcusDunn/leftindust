@@ -18,6 +18,7 @@ export enum AppViews {
   Users = 'view-users',
   Templates = 'view-templates',
   Wizard = 'view-wizard',
+  Settings = 'view-settings',
   Popup = 'view-popup',
   Main = 'view-main',
   Hub = 'view-hub',
@@ -38,6 +39,7 @@ export enum AppPopups {
   Default = 'popup-default',
   Error = 'popup-error',
   Wizard = 'popup-wizard',
+  Settings = 'popup-settings',
 }
 
 export enum Layout {

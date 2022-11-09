@@ -114,7 +114,7 @@
           <MenuButton
             title={$_('generics.create')}
             icon={{ f7: 'plus_circle_fill', color: 'purple' }}
-            on:click={(event) => { openPopover(createMenuRef, event); }}
+            on:click={(event) => openPopover(createMenuRef, event)}
           />
         {/if}
       </svelte:fragment>

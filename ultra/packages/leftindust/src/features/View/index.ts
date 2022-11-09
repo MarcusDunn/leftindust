@@ -1,6 +1,7 @@
 import type { SvelteComponentDev } from 'svelte/internal';
 import type { Popover as PopoverType, Popup as PopupType } from 'framework7/types';
 import { f7 } from 'framework7-svelte';
+import { AppPopups, AppViews } from '../App';
 
 export interface Route<T extends string = string> {
   path: T;
@@ -27,6 +28,18 @@ export const openPopupUrl = (
   });
 
   f7.popup.open('#popup-default');
+};
+
+export const openSettingsPopup = (): void => {
+  const { router } = f7.views.get(`#${AppViews.Settings}`);
+
+  router.navigate('/settings/', {
+    force: true,
+    animate: false,
+    ignoreCache: true,
+  });
+
+  f7.popup.open(`#${AppPopups.Settings}`);
 };
 
 export const openPopup = (popup: PopupType.Popup): PopupType.Popup => popup.open();

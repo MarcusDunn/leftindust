@@ -80,6 +80,10 @@
       <View id={AppViews.Popup} iosSwipeBack={false} />
     </Popup>
 
+    <Popup id={AppPopups.Settings} closeByBackdropClick={false} tabletFullscreen>
+      <View id={AppViews.Settings} iosSwipeBack={false} />
+    </Popup>
+
     <Popup
       id={AppPopups.Wizard}
       closeByBackdropClick={false}

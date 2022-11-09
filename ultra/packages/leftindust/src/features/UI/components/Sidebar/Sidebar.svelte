@@ -73,7 +73,7 @@
                     link
                     tabLinkActive={item.active}
                     title={item.title}
-                    on:click={() => item.onClick && item.onClick()}
+                    on:click={() => 'onClick' in item && item.onClick && item.onClick()}
                   >
                     <Icon slot="media" {...item.icon} />
                   </ListItem>

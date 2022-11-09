@@ -13,13 +13,13 @@
   } from 'framework7-svelte';
   import Boxed from '@/features/UI/components/Boxed/Boxed.svelte';
 
-  import { openPopupUrl } from '../View';
   import { account } from '@/features/Account/store';
   import UserTags from '@/features/User/components/UserTags/UserTags.svelte';
   
   import AppBar from '@/features/UI/components/Appbar/Appbar.svelte';
   import Page from '@/features/UI/components/Page/Page.svelte';
   import AppLauncher from './components/AppLauncher/AppLauncher.svelte';
+  import { openWizard } from '../Wizard';
 
   let time = new Date();
   let message: string;
@@ -89,7 +89,7 @@
                 title={$_('generics.settings')}
                 link
                 popupClose
-                on:click={() => openPopupUrl('/settings/')}
+                on:click={() => openWizard('/settings/')}
               />
             </List>
           </Col>
