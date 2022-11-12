@@ -22,7 +22,7 @@ fun CreateAddressDto.toCreateAddress(): CreateAddress {
     )
 }
 
-data class CreateAddressImpl(
+private data class CreateAddressImpl(
     override val addressType: AddressType,
     override val address: String,
     override val city: String,
