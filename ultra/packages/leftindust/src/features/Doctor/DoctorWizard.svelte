@@ -24,8 +24,15 @@
   };
 
   let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctor);
-  $: doctorDOB = $formData.dateOfBirth ? new Date($formData.dateOfBirth).getTime() : undefined;
+  // Calculated using: new Date($formData?.dateOfBirth).getTimezoneOffset() * 60000;
+  const utcToPstInMilliseconds = 25200000;
 
+  // How it should be
+// $: doctorDob = $formData.dateOfBirth ? new Date($formData.dateOfBirth) : undefined; 
+
+// With time offset
+  $: doctorDob = $formData.dateOfBirth ? new Date($formData.dateOfBirth).getTime() + utcToPstInMilliseconds : undefined; 
+  
   let ref: HTMLFormElement;
 </script>
 
@@ -71,7 +78,7 @@
               <Col width="100" medium="50">
                 <div>
                   <DatePicker
-                    value={doctor ? doctorDOB : undefined}
+                    value={doctor ? doctorDob : undefined}
                     placeholder="Birthday"
                     error={$errors.dateOfBirth}
                     pastOnly

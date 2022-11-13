@@ -30,7 +30,15 @@
   };
   
   const { form, data: formData, handleSubmit, errors, reset, interacted } = createPatientForm(closeWizardHandler, patient);
-  $: patientDob = new Date($formData?.dateOfBirth).getTime(); 
+  
+  // Calculated using: new Date($formData?.dateOfBirth).getTimezoneOffset() * 60000;
+  const utcToPstInMilliseconds = 25200000;
+
+  // How it should be
+  // $: patientDob = new Date($formData.dateOfBirth); 
+  
+  // With time offset
+  $: patientDob = new Date($formData.dateOfBirth).getTime() + utcToPstInMilliseconds; 
 
   let ref: HTMLFormElement;
 </script>
