@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird
 
-import aws.sdk.kotlin.services.sns.SnsClient
+/*import aws.sdk.kotlin.services.sns.SnsClient*/
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.auth.oauth2.GoogleCredentials
@@ -138,17 +138,6 @@ class MockingbirdApplication {
             .authorizeExchange { it.anyExchange().permitAll() }
             .oauth2ResourceServer(OAuth2ResourceServerSpec::jwt)
             .build()
-
-    @Bean
-    @Primary
-    suspend fun amazonSNS(): SnsClient? {
-        return SnsClient.fromEnvironment {
-            this.apply {
-                region = "ca-central-1"
-//            credentialsProvider =
-            }
-        }
-    }
 
 }
 
