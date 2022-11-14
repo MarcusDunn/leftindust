@@ -81,9 +81,7 @@ dependencies {
     liquibaseRuntime(sourceSets.main.get().output)
 
     //amazon sns
-    /*implementation("aws.sdk.kotlin:sns:0.17.7-beta")*/
-    implementation("io.awspring.cloud:spring-cloud-aws-messaging:2.4.2")
-
+    implementation("io.awspring.cloud:spring-cloud-starter-aws-messaging:2.4.2")
 
     // spring testing
     testImplementation("org.springframework.boot", "spring-boot-test")

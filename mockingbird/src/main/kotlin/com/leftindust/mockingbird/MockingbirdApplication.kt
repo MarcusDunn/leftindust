@@ -1,6 +1,10 @@
 package com.leftindust.mockingbird
 
-/*import aws.sdk.kotlin.services.sns.SnsClient*/
+import com.amazonaws.Request
+import com.amazonaws.Response
+import com.amazonaws.metrics.RequestMetricCollector
+import com.amazonaws.services.sns.AmazonSNS
+import com.amazonaws.services.sns.AmazonSNSClient
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.auth.oauth2.GoogleCredentials
@@ -11,6 +15,7 @@ import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
 import graphql.schema.GraphQLScalarType
+import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
@@ -103,11 +108,7 @@ class MockingbirdApplication {
     @Bean
     fun firebaseAuth(firebaseConfiguration: FirebaseConfiguration): FirebaseAuth {
         firebaseApp(firebaseConfiguration)
-
-
         return FirebaseAuth.getInstance()
-
-
     }
 
     @Bean
@@ -139,6 +140,25 @@ class MockingbirdApplication {
             .oauth2ResourceServer(OAuth2ResourceServerSpec::jwt)
             .build()
 
+    private val logSnsRequestParameterNames = listOf("Action", "PhoneNumber", "Message", "Subject")
+
+    @Bean
+    fun snsClient(): AmazonSNS {
+        val logger = KotlinLogging.logger { }
+        val metricCollector = object : RequestMetricCollector() {
+            override fun collectMetrics(request: Request<*>?, response: Response<*>?) {
+                request?.parameters?.also {
+                    logger.debug { "SNS request: ${it.filterKeys { it in logSnsRequestParameterNames }}" }
+                }
+                response?.awsResponse?.also { logger.debug { "SNS response: $it" } }
+            }
+        }
+
+        return AmazonSNSClient
+            .builder()
+            .withMetricsCollector(metricCollector)
+            .build()
+    }
 }
 
 /**

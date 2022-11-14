@@ -20,6 +20,13 @@ spring:
       schema-locations:
         - classpath:data-postgres.sql
       mode: always
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: ca-central-1
 icd:
   client:
     url: localhost:80/icd
