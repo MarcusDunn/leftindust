@@ -80,14 +80,14 @@ const defaultPatientForm: Partial<PatientFormSchema> = {
  * @param patient the patient to edit
  * @returns A form with the fields filled out with the patient's data
  */
-function filledPatientForm(patient: PatientFragment): Partial<PatientFormSchema> {
+const filledPatientForm = (patient: PatientFragment): Partial<PatientFormSchema> => {
   return {
     nameInfo: {
       firstName: patient.firstName,
       middleName: patient.middleName,
       lastName: patient.lastName,
     },
-    dateOfBirth: patient.dateOfBirth.replace(/\//g, '-'),
+    dateOfBirth: patient.dateOfBirth,
     ethnicity: patient.ethnicity,
     sex: patient.sex,
     gender: patient.gender ?? patient.sex,
@@ -96,7 +96,7 @@ function filledPatientForm(patient: PatientFragment): Partial<PatientFormSchema>
     emails: patient.emails,
     phones: patient.phoneNumbers,
   };
-}
+};
 
 /**
  * Adds a patient

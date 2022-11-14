@@ -24,7 +24,15 @@
   };
 
   let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctor);
+  // Calculated using: new Date($formData?.dateOfBirth).getTimezoneOffset() * 60000;
+  const utcToPstInMilliseconds = 25200000;
 
+  // How it should be
+// $: doctorDob = $formData.dateOfBirth ? new Date($formData.dateOfBirth) : undefined; 
+
+// With time offset
+  $: doctorDob = $formData.dateOfBirth ? new Date($formData.dateOfBirth).getTime() + utcToPstInMilliseconds : undefined; 
+  
   let ref: HTMLFormElement;
 </script>
 
@@ -43,43 +51,48 @@
         <Row>
           <Col width="100">
             <Row>
-              <Col width="100" medium="20">
+              <Col width="100" medium="33">
                 <Input error={$errors.firstName}>
                   <input type="text" name="firstName" placeholder="First Name">  
                 </Input>
               </Col>
-              <Col width="100" medium="20">
+              <Col width="100" medium="33">
                 <Input error={$errors.middleName}>
                   <input type="text" name="middleName" placeholder="Middle Name (Optional)" />
                 </Input>
               </Col>
-              <Col width="100" medium="20">
+              <Col width="100" medium="33">
                 <Input error={$errors.lastName}>
                   <input type="text" name="lastName" placeholder="Last Name" />
                 </Input>
               </Col>
-              <Col width="100" medium="40">
+            </Row>
+          </Col>
+          <Col width="100">
+            <Row>
+              <Col width="100" medium="50">
                 <Input error={$errors.title}>
                   <input type="text" name="title" placeholder="Title" />
                 </Input>
               </Col>
+              <Col width="100" medium="50">
+                <div>
+                  <DatePicker
+                    value={doctor ? doctorDob : undefined}
+                    placeholder="Birthday"
+                    error={$errors.dateOfBirth}
+                    pastOnly
+                    on:change={(e) => {
+                      $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                      });
+                    }}
+                  />
+                </div>
+              </Col>
             </Row>
-          </Col>
-          <Col width="100" medium="50">
-            <div style="margin-top: 2px;">
-              <DatePicker
-                placeholder="Birthday"
-                error={$errors.dateOfBirth}
-                pastOnly
-                on:change={(e) => {
-                  $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  });
-                }}
-              />
-            </div>
           </Col>
         </Row>
         <br />

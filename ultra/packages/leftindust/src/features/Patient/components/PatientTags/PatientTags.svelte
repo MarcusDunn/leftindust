@@ -17,8 +17,12 @@
 
   let birthday: Date | undefined;
 
-  if (dateOfBirth)
-    birthday = new Date(dateOfBirth);
+  
+  if (dateOfBirth) {
+    // Temporary fix, may need to look into timezone things
+    const utcToPst = new Date(dateOfBirth).getTimezoneOffset() * 60000;
+    birthday = new Date(new Date(dateOfBirth).getTime() + utcToPst);
+  }
 
 </script>
 
