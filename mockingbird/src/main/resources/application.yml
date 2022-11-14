@@ -23,8 +23,8 @@ spring:
 cloud:
   aws:
     credentials:
-      access-key:
-      secret-key:
+      access-key: aws_access_key_id
+      secret-key: aws_secret_access_key
     region:
       static: ca-central-1
 icd:
