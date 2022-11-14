@@ -1,10 +1,8 @@
 package com.leftindust.mockingbird.address
 
-import com.leftindust.mockingbird.NullEntityIdInConverterException
-
 fun Address.toAddressDto(): AddressDto {
     return AddressDto(
-        id = AddressDto.AddressDtoId(id ?: throw NullEntityIdInConverterException(this)),
+        id = AddressDto.AddressDtoId(id),
         addressType = type,
         address = address,
         city = city,

@@ -16,11 +16,15 @@ class ReadAddressServiceImpl(
 ) : ReadAddressService {
     override suspend fun getByDoctorId(doctorId: DoctorDto.DoctorDtoId): List<Address>? {
         val doctor = doctorRepository.findByIdOrNull(doctorId.value) ?: return null
-        return doctor.addresses.sortedBy { it.id }
+        return doctor.addresses
+            .sortedBy { it.id }
+            .map { it.toAddress() }
     }
 
     override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<Address>? {
         val byPatientId = patientRepository.findByIdOrNull(patientId.value) ?: return null
-        return byPatientId.addresses.sortedBy { it.id }
+        return byPatientId.addresses
+            .sortedBy { it.id }
+            .map { it.toAddress() }
     }
 }
