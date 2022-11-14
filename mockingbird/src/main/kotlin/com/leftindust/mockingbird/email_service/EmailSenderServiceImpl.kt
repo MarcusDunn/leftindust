@@ -9,20 +9,20 @@ import javax.mail.internet.MimeMessage
 
 @Service
 class EmailSenderServiceImpl(
-    private val mailSender: JavaMailSender
+    private val emailSender: JavaMailSender
 ): EmailSenderService {
     @Async
-    override suspend fun sendEmail(template: EmailTemplate, targetEmails: MutableList<EmailAddress>) {
-        val message: MimeMessage = mailSender.createMimeMessage()
-        val helper = MimeMessageHelper(message, "utf-8")
+    override suspend fun sendHtmlEmail(subject: String, html: String, targetEmails: List<EmailAddress>) {
+        emailSender.send(*targetEmails.map {
+            val message: MimeMessage = emailSender.createMimeMessage()
+            val helper = MimeMessageHelper(message, "utf-8")
 
-        helper.setFrom("kelvin@leftindust.com")
-        helper.setBcc(targetEmails.map { email -> email.value }.toTypedArray())
-        helper.setText(template.html, true)
-//        helper.setText(template.text)
-        helper.setSubject(template.subject)
-        // Add multipart with plaintext
+            helper.setFrom("hello@leftindust.com")
+            helper.setSubject(subject)
+            helper.setText(html, true)
 
-        mailSender.send(message)
+            helper.setTo(it.value)
+            return@map message
+        }.toTypedArray())
     }
 }
