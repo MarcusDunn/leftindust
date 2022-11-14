@@ -1,26 +1,28 @@
 package com.leftindust.mockingbird.email_service
 
-import org.springframework.mail.MailSender
-import org.springframework.mail.SimpleMailMessage
+import com.leftindust.mockingbird.validate.EmailAddress
+import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
+import javax.mail.internet.MimeMessage
 
 @Service
 class EmailSenderServiceImpl(
-    private val emailSender: MailSender
+    private val mailSender: JavaMailSender
 ): EmailSenderService {
-    override suspend fun sendEmail(
-        subject: String,
-        text: String,
-        targetEmail: String
-    ) {
+    @Async
+    override suspend fun sendEmail(template: EmailTemplate, targetEmails: MutableList<EmailAddress>) {
+        val message: MimeMessage = mailSender.createMimeMessage()
+        val helper = MimeMessageHelper(message, "utf-8")
 
-        val simpleMailMessage = SimpleMailMessage()
-        simpleMailMessage.from = "kelvin@leftindust.com"
-        simpleMailMessage.subject = subject
-        simpleMailMessage.text = text
-        simpleMailMessage.setTo("kelvincao6@gmail.com")
+        helper.setFrom("kelvin@leftindust.com")
+        helper.setBcc(targetEmails.map { email -> email.value }.toTypedArray())
+        helper.setText(template.html, true)
+//        helper.setText(template.text)
+        helper.setSubject(template.subject)
+        // Add multipart with plaintext
 
-        emailSender.send(simpleMailMessage)
+        mailSender.send(message)
     }
 }
