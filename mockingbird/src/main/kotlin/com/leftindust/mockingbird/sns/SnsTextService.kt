@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.sns
 
-
 interface SnsTextService {
-    suspend fun pubTextSMS(messageVal: String?, phoneNumberVal: String?)
+    suspend fun publishSMS(phoneNumber: String, message: String)
 }
