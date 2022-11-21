@@ -93,7 +93,7 @@
           {patients}
           selected={clientsSelected}
           on:navigate={() => {
-            if ($clientsSelected.length === 1) updateRecents('Patient', $clientsSelected.filter((client) => client().type === 'Patient')[0].id);
+            if ($clientsSelected.length === 1) updateRecents('Patient', $clientsSelected.filter((client) => client.type === 'Patient')[0].id);
             navigate($clientsSelected.length > 1);
           }}
         />

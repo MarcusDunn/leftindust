@@ -17,5 +17,5 @@
   {f7params}
   sidebar={false}
   showLoginScreen={false}
+  authentication={false}
 />
-

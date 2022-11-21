@@ -38,11 +38,13 @@
 
   export let showLoginScreen = true;
 
+  export let authentication = true;
+
   const { id, theme, routes, autoDarkMode } = f7params;
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      getFirebaseUserDatabaseAndSignIn(user);
+      getFirebaseUserDatabaseAndSignIn(user, authentication);
     } else {
       $signInStatus.signedIn = false;
     }

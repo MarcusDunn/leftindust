@@ -133,10 +133,10 @@ const accountDatabaseTemplate: AccountDatabaseTemplate = {
   layout: accountLayoutTemplate,
 };
 
-export const signIn = (fb: { user: User; database: AccountDatabaseTemplate }): void => {
-  const { user, database } = fb;
+export const signIn = (fb: { user: User; database: AccountDatabaseTemplate; authentication: boolean }): void => {
+  const { user, database, authentication } = fb;
 
-  client().query(PartialUserByUserUniqueIdQueryDocument, {
+  client({ authentication }).query(PartialUserByUserUniqueIdQueryDocument, {
     uniqueId: user.uid,
   })
     .toPromise()
@@ -196,7 +196,7 @@ export const signOut = (): void => {
     });
 };
 
-export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
+export const getFirebaseUserDatabaseAndSignIn = (user: User, authentication = true): void => {
   const realtime = ref(database, `users/${user.uid}`);
 
   onValue(realtime, (snapshot) => {
@@ -253,7 +253,7 @@ export const getFirebaseUserDatabaseAndSignIn = (user: User): void => {
           }));
         } else {
           // Sign-in user and authenticate with leftindust servers
-          signIn({ user, database: data });
+          signIn({ user, database: data, authentication });
         }
         off(realtime);
       }

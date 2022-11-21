@@ -16,6 +16,6 @@
     "secretAccessKey": "JieFHpiZIJcgv+/1XSvwT2DxnN95e4FGlYXlxOk3"
   },
   "development": {
-    "skipLoginValidation": true
+    "skipLoginValidation": false
   }
 }
