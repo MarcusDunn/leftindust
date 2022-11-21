@@ -5,7 +5,8 @@ import dev.forkhandles.values.Value
 import dev.forkhandles.values.regex
 
 /**
- * Match on E.164 standard
+ * Match using E.164 standard
+ * Numbers should start with a "+"
  */
 private const val phoneRegex = "^\\+[1-9]\\d{1,14}\$"
 

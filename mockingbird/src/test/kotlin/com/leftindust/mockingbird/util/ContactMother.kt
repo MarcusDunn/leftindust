@@ -74,7 +74,7 @@ object ContactMother {
             relationship = relationship,
             phones = listOf(
                 CreatePhoneGraphQlDto(
-                    number = "33425",
+                    number = "+133425",
                     type = PhoneType.Home,
                 )
             ),
@@ -95,7 +95,7 @@ object ContactMother {
             relationship = Relationship.Other,
             phones = listOf(
                 CreatePhoneGraphQlDto(
-                    number = "222334",
+                    number = "+1222334",
                     type = PhoneType.Home,
                 )
             ),

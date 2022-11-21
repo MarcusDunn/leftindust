@@ -11,8 +11,10 @@ internal class PhoneNumberTest {
     private val random = Random(100)
     @TestFactory
     internal fun valid() = listOf(
-        "12125551212",
-        "12368083995",
+        "+12125551212",
+        "+12368083995",
+        "+23051234567",
+        "+17782111992"
     ).flatMap { allLower ->
         val randomCase = String(allLower.map { if (random.nextBoolean()) { it.uppercaseChar() } else { it }  }.toCharArray())
         listOf(
@@ -27,8 +29,10 @@ internal class PhoneNumberTest {
 
     @TestFactory
     internal fun invalid() = listOf(
-        "plainaddress",
-        "#@%^%#$@#$@#.com",
+        "12125551212",
+        "12368083995",
+        "23051234567",
+        "+2"
     ).flatMap { allLower ->
         val randomCase = String(allLower.map { if (random.nextBoolean()) { it.uppercaseChar() } else { it }  }.toCharArray())
         listOf(
