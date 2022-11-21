@@ -22,9 +22,10 @@ spring:
       mode: always
 cloud:
   aws:
+    stack.auto: false
     credentials:
-      access-key: aws_access_key_id
-      secret-key: aws_secret_access_key
+      access-key: AKIASHAXDDDUGMYIHBQI
+      secret-key: 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
     region:
       static: ca-central-1
 icd:

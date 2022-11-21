@@ -1,10 +1,5 @@
 package com.leftindust.mockingbird
 
-import com.amazonaws.Request
-import com.amazonaws.Response
-import com.amazonaws.metrics.RequestMetricCollector
-import com.amazonaws.services.sns.AmazonSNS
-import com.amazonaws.services.sns.AmazonSNSClient
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.auth.oauth2.GoogleCredentials
@@ -142,23 +137,25 @@ class MockingbirdApplication {
 
     private val logSnsRequestParameterNames = listOf("Action", "PhoneNumber", "Message", "Subject")
 
-    @Bean
-    fun snsClient(): AmazonSNS {
-        val logger = KotlinLogging.logger { }
-        val metricCollector = object : RequestMetricCollector() {
-            override fun collectMetrics(request: Request<*>?, response: Response<*>?) {
-                request?.parameters?.also {
-                    logger.debug { "SNS request: ${it.filterKeys { it in logSnsRequestParameterNames }}" }
-                }
-                response?.awsResponse?.also { logger.debug { "SNS response: $it" } }
-            }
-        }
-
-        return AmazonSNSClient
-            .builder()
-            .withMetricsCollector(metricCollector)
-            .build()
-    }
+//    @Bean
+//    fun snsClient(): AmazonSNS {
+//        val logger = KotlinLogging.logger { }
+//        val metricCollector = object : RequestMetricCollector() {
+//            override fun collectMetrics(request: Request<*>?, response: Response<*>?) {
+//                request?.parameters?.also {
+//                    logger.debug { "SNS request: ${it.filterKeys { it in logSnsRequestParameterNames }}" }
+//                }
+//                response?.awsResponse?.also { logger.debug { "SNS response: $it" } }
+//            }
+//        }
+//
+//        return AmazonSNSClient
+//            .builder()
+//            .withRegion("ca-central-1")
+////            .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials("AKIASHAXDDDUGMYIHBQI", "7rsdZvwB1aozaoTwKzLYTOgicWpBDoNNFhSbT0Pq")))
+//            .withMetricsCollector(metricCollector)
+//            .build()
+//    }
 }
 
 /**
