@@ -16,7 +16,8 @@ interface SesEmailService {
         subject: String,
         html: String,
         targetEmails: List<EmailAddress>,
-        from: String = "hello@leftindust.com")
+        from: EmailAddress = EmailAddress.of("hello@leftindust.com")
+    )
     /**
      * Send an HTML email using AWS Simple Email Service.
      *
@@ -30,5 +31,6 @@ interface SesEmailService {
         subject: String,
         html: String,
         targetEmail: EmailAddress,
-        from: String = "hello@leftindust.com")
+        from: EmailAddress = EmailAddress.of("hello@leftindust.com")
+    )
 }

@@ -15,7 +15,7 @@ class SesEmailServiceImpl(
         subject: String,
         html: String,
         targetEmails: List<EmailAddress>,
-        from: String
+        from: EmailAddress
     ) {
         withContext(Dispatchers.IO) {
             targetEmails.map {
@@ -23,7 +23,7 @@ class SesEmailServiceImpl(
                     val message: MimeMessage = emailSender.createMimeMessage()
                     val helper = MimeMessageHelper(message, "utf-8")
 
-                    helper.setFrom(from)
+                    helper.setFrom(from.value)
                     helper.setSubject(subject)
                     helper.setText(html, true)
 
@@ -38,7 +38,7 @@ class SesEmailServiceImpl(
         subject: String,
         html: String,
         targetEmail: EmailAddress,
-        from: String
+        from: EmailAddress
     ) {
         sendHtmlEmail(subject, html, listOf(targetEmail), from)
     }
