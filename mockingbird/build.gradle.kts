@@ -59,6 +59,9 @@ dependencies {
     // jackson
     implementation("com.fasterxml.jackson.module", "jackson-module-kotlin")
 
+    // thymeleaf
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:2.7.5")
+
     // hibernate model code generation
     implementation("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
     kapt("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
