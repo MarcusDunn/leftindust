@@ -56,8 +56,6 @@
       .map((id) => ({ value: id }))
       .filter((value) => value != undefined),
   });
-
-
 </script>
 
 <Page style="overflow: hidden" pageContent={false}>

@@ -6,13 +6,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
-    kotlin("jvm") version "1.7.20"
-    kotlin("kapt") version "1.7.20"
-    kotlin("plugin.spring") version "1.7.20"
-    kotlin("plugin.jpa") version "1.7.20"
+    kotlin("jvm") version "1.7.21"
+    kotlin("kapt") version "1.7.21"
+    kotlin("plugin.spring") version "1.7.21"
+    kotlin("plugin.jpa") version "1.7.21"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("org.springframework.boot") version "2.7.4"
-    id("io.spring.dependency-management") version "1.0.14.RELEASE"
+    id("org.springframework.boot") version "2.7.5"
+    id("io.spring.dependency-management") version "1.1.0"
 
     // liquibase
     id("org.liquibase.gradle") version "2.1.1"
@@ -27,7 +27,10 @@ repositories {
 }
 
 dependencies {
+    // spring cloud
+    implementation("io.awspring.cloud:spring-cloud-starter-aws-ses:2.4.2")
     // spring
+    implementation("org.springframework.boot", "spring-boot-starter-mail")
     implementation("org.springframework.boot", "spring-boot-starter-webflux")
     implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
     implementation("org.springframework.boot", "spring-boot-starter-actuator")
@@ -42,12 +45,12 @@ dependencies {
 
     // logging
     implementation("io.github.microutils", "kotlin-logging-jvm", "2.1.20")
-    implementation(platform("dev.forkhandles:forkhandles-bom:2.2.0.0"))
+    implementation(platform("dev.forkhandles:forkhandles-bom:2.3.0.0"))
     implementation("dev.forkhandles:values4k")
     implementation("dev.forkhandles:result4k")
 
     // ktor
-    implementation(platform("io.ktor:ktor-bom:2.1.2"))
+    implementation(platform("io.ktor:ktor-bom:2.1.3"))
     implementation("io.ktor", "ktor-client")
     implementation("io.ktor", "ktor-client-cio")
     implementation("io.ktor", "ktor-client-content-negotiation")

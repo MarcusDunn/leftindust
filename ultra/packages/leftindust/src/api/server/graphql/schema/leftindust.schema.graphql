@@ -1,6 +1,6 @@
 type Address {
   address: String!
-  addressType: AddressType
+  addressType: AddressType!
   city: String!
   country: Countries!
   id: AddressId!

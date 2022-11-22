@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.survey.complete
 
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
+import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyDto.CompleteSurveyDtoId
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.graphql.data.method.annotation.Argument

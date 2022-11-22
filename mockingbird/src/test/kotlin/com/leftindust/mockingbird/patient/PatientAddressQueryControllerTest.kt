@@ -32,7 +32,7 @@ internal class PatientAddressQueryControllerTest(
     @Test
     internal fun `check can query for patient address fields`() {
         coEvery { readPatientService.getByPatientId(PatientMother.Dan.graphqlId) } returns PatientMother.Dan.domain
-        coEvery { readAddressService.getByPatientId(PatientMother.Dan.graphqlId) } returns listOf(AddressMother.JennysHouse.entityPersisted)
+        coEvery { readAddressService.getByPatientId(PatientMother.Dan.graphqlId) } returns listOf(AddressMother.JennysHouse.domain)
 
         @Language("graphql")
         val query = """
@@ -40,7 +40,7 @@ internal class PatientAddressQueryControllerTest(
                 patientsByPatientId(patientIds: [{ value: "${PatientMother.Dan.id}" }]) {
                     addresses {
                         id { value }
-                        type
+                        addressType
                         address
                         city
                         country

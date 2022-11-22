@@ -13,7 +13,7 @@ class SurveyLinkQueryController(
 ) {
     @QueryMapping("surveyLinkById")
     suspend fun surveyLinkById(@Argument surveyLinkId: SurveyLinkDtoId): SurveyLinkDto? {
-        val surveyLinkBySurveyLinkId = readSurveyLinkService.surveyLinkBySurveyLinkId(surveyLinkId)
+        val surveyLinkBySurveyLinkId = readSurveyLinkService.getBySurveyLinkId(surveyLinkId)
             ?: return null
         return surveyLinkToSurveyLinkDtoConverter.convert(surveyLinkBySurveyLinkId)
     }

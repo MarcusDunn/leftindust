@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.survey.link
 
-import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyDto
 import com.leftindust.mockingbird.survey.complete.ReadCompleteSurveyService
 import com.leftindust.mockingbird.util.CompleteSurveyMother.FilledOutKoosKneeSurvey
@@ -30,7 +29,7 @@ internal class SurveyLinkCompleteSurveyQueryControllerTest(
 
     @Test
     internal fun `check can get a survey link by id`() {
-        coEvery { readSurveyLinkService.surveyLinkBySurveyLinkId(KoosKneeSurveyLink.graphqlId) } returns KoosKneeSurveyLink.domain
+        coEvery { readSurveyLinkService.getBySurveyLinkId(KoosKneeSurveyLink.graphqlId) } returns KoosKneeSurveyLink.domain
         coEvery { readCompleteSurveyService.getBySurveyLink(KoosKneeSurveyLink.graphqlId) } returns FilledOutKoosKneeSurvey.domain
 
         @Language("graphql")

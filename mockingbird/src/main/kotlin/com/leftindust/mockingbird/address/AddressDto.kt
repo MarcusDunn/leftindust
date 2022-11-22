@@ -6,7 +6,7 @@ import java.util.UUID
 
 data class AddressDto(
     override val id: AddressDtoId,
-    val type: AddressType?,
+    val addressType: AddressType,
     val address: String,
     val city: String,
     val country: Countries,

@@ -5,6 +5,7 @@
     Ethnicity,
     Sex,
   } from '@/api/server/graphql/schema/leftindust.schema';
+  import type { PatientFragment } from '@/api/server';
 
   import { Row, Col, Block } from 'framework7-svelte';
 
@@ -19,24 +20,32 @@
   import Addresses from '../Input/components/Address/Addresses.svelte';
   import { closeWizard } from '../Wizard';
 
-  export let patientId: string | undefined = undefined;
-
+  export let patient: PatientFragment | undefined;
   export let callback: () => void;
-
+  
   const closeWizardHandler = () => {
     reset();
     callback();
     closeWizard();
   };
+  
+  const { form, data: formData, handleSubmit, errors, reset, interacted } = createPatientForm(closeWizardHandler, patient);
+  
+  // Calculated using: new Date($formData?.dateOfBirth).getTimezoneOffset() * 60000;
+  const utcToPstInMilliseconds = 25200000;
 
-  const { form, data: formData, handleSubmit, errors, reset, interacted } = createPatientForm(closeWizardHandler, patientId);
+  // How it should be
+  // $: patientDob = new Date($formData.dateOfBirth); 
+  
+  // With time offset
+  $: patientDob = new Date($formData.dateOfBirth).getTime() + utcToPstInMilliseconds; 
 
   let ref: HTMLFormElement;
 </script>
 
 <Wizard
-  title={$_('generics.newPatient')}
-  subtitle={$_('descriptions.addPatientDescription')}
+  title={patient ? $_('generics.editPatient') : $_('generics.newPatient')}
+  subtitle={patient ? $_('descriptions.editPatientDescription') : $_('descriptions.addPatientDescription')}
   color="purple"
   interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}
@@ -101,11 +110,12 @@
               <Col width="100" medium="50">
                 <div style="margin-top: 2px;">
                   <DatePicker
+                    value={patient ? patientDob : undefined}
                     placeholder="Birthday"
                     error={$errors.dateOfBirth}
                     pastOnly
                     on:change={(e) => {
-                      $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
+                      $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-ca',  {
                         year: 'numeric',
                         month: '2-digit',
                         day: '2-digit',

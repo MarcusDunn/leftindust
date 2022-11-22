@@ -23,6 +23,7 @@ type Query {
     # complete survey
     completeSurveyById(completeSurveyId: CompleteSurveyIdInput): CompleteSurvey
     completeSurveyByRange(range: Range!): [CompleteSurvey!]!
+
     # patient
     patientsByPatientId(patientIds: [PatientIdInput!]!): [Patient]!
     patientsByRange(range: Range!): [Patient!]!
@@ -253,25 +254,25 @@ type SurveyTemplateInput {
 }
 
 input UpdateNameInfo {
-    firstName: String!
+    firstName: String
     middleName: String
-    lastName: String!
+    lastName: String
 }
 
 input EditPatient {
     pid: PatientIdInput!
-    nameInfo: UpdateNameInfo!
-    phones: [CreatePhone!]!
+    nameInfo: UpdateNameInfo
+    phones: [CreatePhone!]
     dateOfBirth: LocalDate
-    addresses: [CreateAddress!]!
-    emails: [CreateEmail!]!
+    addresses: [CreateAddress!]
+    emails: [CreateEmail!]
     insuranceNumber: String
-    sex: Sex!
+    sex: Sex
     gender: String
-    ethnicity: Ethnicity!
-    emergencyContacts: [CreateContact!]!
+    ethnicity: Ethnicity
+    emergencyContacts: [CreateContact!]
     thumbnail: String
-    doctors: [DoctorIdInput!]!
+    doctors: [DoctorIdInput!]
 }
 
 input CreatePatient {
@@ -362,6 +363,7 @@ type Patient {
     sex: Sex!
     gender: String
     ethnicity: Ethnicity
+    assignedSurveys: [SurveyLink!]!
 }
 
 input CreatePhone {
@@ -389,7 +391,7 @@ type PhoneId {
 
 type Address {
     id: AddressId!
-    type: AddressType
+    addressType: AddressType!
     address: String!
     city: String!
     country: Countries!

@@ -27,12 +27,11 @@
   import SpecificGrid from '../Widgets/components/Grid/SpecificGrid.svelte';
   import { operationStore, query } from '@urql/svelte';
   import GenericGrid from '../Widgets/components/Grid/GenericGrid.svelte';
-    
+  import { openWizard } from '../Wizard';
+ 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
   export let quicklook = false;
-
-  let doctor: DoctorFragment | undefined;
 
   let layout: Layout = $account.database.settings.options.layout || Layout.Bundled;
   let tab: ClientTab = ClientTab.Records;
@@ -43,6 +42,7 @@
     doctorIds: [{ value: data.id }],
   });
 
+  let doctor: DoctorFragment | undefined;
   $: doctor = $request.data?.doctorsByDoctorIds[0];
 
   query(request);
@@ -62,18 +62,19 @@
       history={!quicklook}
       {f7router}
       right={!quicklook ? [
-        /*
         {
           title: $_('generics.edit'),
           icon: { f7: 'pencil_outline', color: 'gray' },
           condense: true,
+          onClick: () => openWizard('/wizard/doctor/', { doctor, callback: () => {
+            $request.reexecute();
+          }}),
         },
-        {
-          title: $_('generics.create'),
-          icon: { f7: 'plus_circle_fill', color: 'purple' },
-          condense: true,
-        },
-        */
+        // {
+        //   title: $_('generics.create'),
+        //   icon: { f7: 'plus_circle_fill', color: 'purple' },
+        //   condense: true,
+        // },
       ] : []}
     >
       <svelte:fragment slot="left">
