@@ -11,15 +11,11 @@ import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
 import graphql.schema.GraphQLScalarType
-import java.time.Clock
-import java.time.Duration
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.Base64
-import java.util.UUID
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Primary
 import org.springframework.core.io.ClassPathResource
@@ -34,12 +30,23 @@ import org.springframework.web.cors.reactive.CorsUtils
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
+import org.thymeleaf.spring5.SpringTemplateEngine
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver
+import org.thymeleaf.templatemode.TemplateMode
 import reactor.core.publisher.Mono
+import java.time.Clock
+import java.time.Duration
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
 
 
 @SpringBootApplication
 @EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class)
 class MockingbirdApplication {
+
+    @Autowired
+    private lateinit var applicationContext: ApplicationContext
 
     @Bean("jsonMapper")
     @Primary
@@ -137,6 +144,37 @@ class MockingbirdApplication {
             .authorizeExchange { it.anyExchange().permitAll() }
             .oauth2ResourceServer(OAuth2ResourceServerSpec::jwt)
             .build()
+
+    @Bean
+    fun templateResolver(): SpringResourceTemplateResolver {
+        // SpringResourceTemplateResolver automatically integrates with Spring's own
+        // resource resolution infrastructure, which is highly recommended.
+        val templateResolver = SpringResourceTemplateResolver()
+        templateResolver.setApplicationContext(applicationContext)
+        templateResolver.prefix = "classpath:/templates/"
+        templateResolver.suffix = ".html"
+        // HTML is the default value, added here for the sake of clarity.
+        templateResolver.templateMode = TemplateMode.HTML
+        // Template cache is true by default. Set to false if you want
+        // templates to be automatically updated when modified.
+//        templateResolver.isCacheable = true
+        return templateResolver
+    }
+
+    @Bean
+    fun springTemplateEngine(): SpringTemplateEngine {
+        // SpringTemplateEngine automatically applies SpringStandardDialect and
+        // enables Spring's own MessageSource message resolution mechanisms.
+        val templateEngine = SpringTemplateEngine()
+        templateEngine.setTemplateResolver(templateResolver())
+        // Enabling the SpringEL compiler with Spring 4.2.4 or newer can
+        // speed up execution in most scenarios, but might be incompatible
+        // with specific cases when expressions in one template are reused
+        // across different data types, so this flag is "false" by default
+        // for safer backwards compatibility.
+        templateEngine.enableSpringELCompiler = true
+        return templateEngine
+    }
 }
 
 /**
