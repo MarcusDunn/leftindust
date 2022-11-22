@@ -30,5 +30,5 @@ interface SesEmailService {
         subject: String,
         html: String,
         targetEmail: EmailAddress,
-        from: String = "hello@leftindust.com",)
+        from: String = "hello@leftindust.com")
 }

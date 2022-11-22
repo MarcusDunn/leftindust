@@ -15,7 +15,7 @@ class SesEmailServiceImpl(
         subject: String,
         html: String,
         targetEmails: List<EmailAddress>,
-        from: String,
+        from: String
     ) {
         withContext(Dispatchers.IO) {
             targetEmails.map {
