@@ -11,14 +11,19 @@ import javax.mail.internet.MimeMessage
 class EmailSenderServiceImpl(
     private val emailSender: JavaMailSender
 ): EmailSenderService {
-    override suspend fun sendHtmlEmail(subject: String, html: String, targetEmails: List<EmailAddress>) {
+    override suspend fun sendHtmlEmail(
+        subject: String,
+        html: String,
+        targetEmails: List<EmailAddress>,
+        from: String,
+    ) {
         withContext(Dispatchers.IO) {
             targetEmails.map {
                 async {
                     val message: MimeMessage = emailSender.createMimeMessage()
                     val helper = MimeMessageHelper(message, "utf-8")
 
-                    helper.setFrom("hello@leftindust.com")
+                    helper.setFrom(from)
                     helper.setSubject(subject)
                     helper.setText(html, true)
 
@@ -29,4 +34,12 @@ class EmailSenderServiceImpl(
         }
     }
 
+    override suspend fun sendHtmlEmail(
+        subject: String,
+        html: String,
+        targetEmails: EmailAddress,
+        from: String
+    ) {
+        sendHtmlEmail(subject, html, listOf(targetEmails), from)
+    }
 }
