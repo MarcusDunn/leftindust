@@ -1,4 +1,4 @@
-package com.leftindust.mockingbird.email_service
+package com.leftindust.mockingbird.ses
 
 import com.leftindust.mockingbird.validate.EmailAddress
 import kotlinx.coroutines.*
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service
 import javax.mail.internet.MimeMessage
 
 @Service
-class EmailSenderServiceImpl(
+class SesEmailServiceImpl(
     private val emailSender: JavaMailSender
-): EmailSenderService {
+): SesEmailService {
     override suspend fun sendHtmlEmail(
         subject: String,
         html: String,
@@ -37,9 +37,9 @@ class EmailSenderServiceImpl(
     override suspend fun sendHtmlEmail(
         subject: String,
         html: String,
-        targetEmails: EmailAddress,
+        targetEmail: EmailAddress,
         from: String
     ) {
-        sendHtmlEmail(subject, html, listOf(targetEmails), from)
+        sendHtmlEmail(subject, html, listOf(targetEmail), from)
     }
 }

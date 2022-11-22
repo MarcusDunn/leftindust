@@ -1,12 +1,12 @@
-package com.leftindust.mockingbird.email_service
+package com.leftindust.mockingbird.ses
 
 import com.leftindust.mockingbird.validate.EmailAddress
 
-interface EmailSenderService {
+interface SesEmailService {
     /**
      * Send an HTML email using AWS Simple Email Service.
      *
-     * @param html Email body in HTML.
+     * @param html HTML email body.
      * @param targetEmails Addresses to send to. Addresses must be verified when
      * running in the SES sandbox.
      * @param from Address to send from. Address must be verified when running
@@ -20,8 +20,8 @@ interface EmailSenderService {
     /**
      * Send an HTML email using AWS Simple Email Service.
      *
-     * @param html Email body in HTML.
-     * @param targetEmails Address to send to. Address must be verified when
+     * @param html HTML email body.
+     * @param targetEmail Address to send to. Address must be verified when
      * running in the SES sandbox.
      * @param from Address to send from. Address must be verified when running
      * in the SES sandbox.
@@ -29,6 +29,6 @@ interface EmailSenderService {
     suspend fun sendHtmlEmail(
         subject: String,
         html: String,
-        targetEmails: EmailAddress,
+        targetEmail: EmailAddress,
         from: String = "hello@leftindust.com",)
 }
