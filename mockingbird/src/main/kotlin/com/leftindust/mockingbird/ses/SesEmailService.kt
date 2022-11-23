@@ -16,21 +16,6 @@ interface SesEmailService {
         subject: String,
         html: String,
         targetEmails: List<EmailAddress>,
-        from: EmailAddress = EmailAddress.of("hello@leftindust.com")
-    )
-    /**
-     * Send an HTML email using AWS Simple Email Service.
-     *
-     * @param html HTML email body.
-     * @param targetEmail Address to send to. Address must be verified when
-     * running in the SES sandbox.
-     * @param from Address to send from. Address must be verified when running
-     * in the SES sandbox.
-     */
-    suspend fun sendHtmlEmail(
-        subject: String,
-        html: String,
-        targetEmail: EmailAddress,
-        from: EmailAddress = EmailAddress.of("hello@leftindust.com")
+        from: EmailAddress
     )
 }

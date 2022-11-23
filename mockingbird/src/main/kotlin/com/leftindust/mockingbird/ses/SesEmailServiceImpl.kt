@@ -33,13 +33,4 @@ class SesEmailServiceImpl(
             }.awaitAll()
         }
     }
-
-    override suspend fun sendHtmlEmail(
-        subject: String,
-        html: String,
-        targetEmail: EmailAddress,
-        from: EmailAddress
-    ) {
-        sendHtmlEmail(subject, html, listOf(targetEmail), from)
-    }
 }
