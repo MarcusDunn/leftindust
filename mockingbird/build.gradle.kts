@@ -62,6 +62,10 @@ dependencies {
     // thymeleaf
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf:2.7.5")
 
+
+    testImplementation("com.approvaltests:approvaltests:18.5.0")
+
+
     // hibernate model code generation
     implementation("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
     kapt("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
