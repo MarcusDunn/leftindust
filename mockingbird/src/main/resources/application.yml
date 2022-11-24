@@ -24,14 +24,14 @@ spring:
   cloud:
     aws:
       ses:
-        region: us-east-1
+        region: ca-central-1
 cloud:
   aws:
       credentials:
         access-key:
         secret-key:
       region:
-        static: us-east-1
+        static: ca-central-1
 icd:
   client:
     url: localhost:80/icd
