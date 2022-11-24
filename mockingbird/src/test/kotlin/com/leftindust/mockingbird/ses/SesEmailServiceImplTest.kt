@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.ses
 
 import com.leftindust.mockingbird.util.EmailMother
+import com.leftindust.mockingbird.validate.EmailAddress
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -22,7 +23,9 @@ internal class SesEmailServiceImplTest {
         }
         val sesEmailService: SesEmailService = SesEmailServiceImpl(mailSender)
 
-        sesEmailService.sendHtmlEmail("Test","", listOf(EmailMother.DansEmail.domain.address))
+        sesEmailService.sendHtmlEmail("Test","",
+            listOf(EmailMother.DansEmail.domain.address),
+        EmailAddress.of("hello@leftindust.com"))
         verify{
             mailSender.send(match<MimeMessage> {
                 it.subject == "Test" && it.allRecipients.first()
