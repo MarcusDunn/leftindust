@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     // spring cloud
-    implementation("io.awspring.cloud:spring-cloud-starter-aws-ses:2.4.2")
+    implementation("io.awspring.cloud", "spring-cloud-starter-aws-ses", "2.4.2")
     // spring
     implementation("org.springframework.boot", "spring-boot-starter-mail")
     implementation("org.springframework.boot", "spring-boot-starter-webflux")
@@ -76,7 +76,7 @@ dependencies {
     // liquibase runtime dependencies
     liquibaseRuntime("org.postgresql", "postgresql")
     liquibaseRuntime("org.liquibase", "liquibase-core")
-    liquibaseRuntime("org.liquibase.ext", "liquibase-hibernate5", "4.12.0")
+    liquibaseRuntime("org.liquibase.ext", "liquibase-hibernate5")
     liquibaseRuntime("org.springframework.boot", "spring-boot-starter-data-jpa")
     liquibaseRuntime("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
     liquibaseRuntime(sourceSets.main.get().output)
