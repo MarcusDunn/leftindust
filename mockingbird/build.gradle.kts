@@ -60,7 +60,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module", "jackson-module-kotlin")
 
     // hibernate model code generation
-    kapt("org.hibernate.orm", "hibernate-jpamodelgen", "6.1.5.Final")
+    kapt("org.hibernate.orm", "hibernate-jpamodelgen")
     // firebase
     implementation("com.google.firebase", "firebase-admin", "8.+")
 
