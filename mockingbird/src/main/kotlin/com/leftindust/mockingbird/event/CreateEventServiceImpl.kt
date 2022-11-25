@@ -2,8 +2,8 @@ package com.leftindust.mockingbird.event
 
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.patient.PatientRepository
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
-import javax.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service

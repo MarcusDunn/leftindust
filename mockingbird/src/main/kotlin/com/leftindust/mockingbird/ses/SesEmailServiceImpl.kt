@@ -1,11 +1,14 @@
 package com.leftindust.mockingbird.ses
 
 import com.leftindust.mockingbird.validate.EmailAddress
-import kotlinx.coroutines.*
+import jakarta.mail.internet.MimeMessage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
-import javax.mail.internet.MimeMessage
 
 @Service
 class SesEmailServiceImpl(

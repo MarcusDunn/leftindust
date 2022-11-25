@@ -2,11 +2,11 @@ package com.leftindust.mockingbird.address
 
 import com.leftindust.mockingbird.country.CountryState
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
-import javax.persistence.Column
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
+import jakarta.persistence.Column
+import jakarta.persistence.Embedded
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 
 @Entity
 class AddressEntity(

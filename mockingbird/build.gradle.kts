@@ -11,7 +11,7 @@ plugins {
     kotlin("plugin.spring") version "1.7.21"
     kotlin("plugin.jpa") version "1.7.21"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("org.springframework.boot") version "2.7.5"
+    id("org.springframework.boot") version "3.0.0"
     id("io.spring.dependency-management") version "1.1.0"
 
     // liquibase
@@ -60,9 +60,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module", "jackson-module-kotlin")
 
     // hibernate model code generation
-    implementation("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
-    kapt("org.hibernate", "hibernate-jpamodelgen", "5.6.9.Final")
-
+    kapt("org.hibernate.orm", "hibernate-jpamodelgen", "6.1.5.Final")
     // firebase
     implementation("com.google.firebase", "firebase-admin", "8.+")
 

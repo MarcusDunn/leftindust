@@ -1,4 +1,7 @@
 spring:
   sql:
     init:
-      schema-locations: [] 
+      schema-locations: []
+logging:
+  level:
+    root: info

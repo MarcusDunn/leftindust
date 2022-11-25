@@ -9,11 +9,11 @@ import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
-import javax.persistence.CascadeType
-import javax.persistence.Entity
-import javax.persistence.Lob
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Entity
+import jakarta.persistence.Lob
+import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 
 @Entity
 class DoctorEntity(

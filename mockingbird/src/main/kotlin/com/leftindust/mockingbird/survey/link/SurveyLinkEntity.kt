@@ -4,9 +4,9 @@ import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyEntity
 import com.leftindust.mockingbird.survey.template.SurveyTemplateEntity
-import javax.persistence.Entity
-import javax.persistence.ManyToOne
-import javax.persistence.OneToOne
+import jakarta.persistence.Entity
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToOne
 
 @Entity
 class SurveyLinkEntity(
