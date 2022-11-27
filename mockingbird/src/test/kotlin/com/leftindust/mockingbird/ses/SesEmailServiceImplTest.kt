@@ -1,6 +1,7 @@
-package com.leftindust.mockingbird.email_service
+package com.leftindust.mockingbird.ses
 
 import com.leftindust.mockingbird.util.EmailMother
+import com.leftindust.mockingbird.validate.EmailAddress
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -13,16 +14,18 @@ import javax.mail.Session
 import javax.mail.internet.MimeMessage
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class EmailSenderServiceImplTest {
+internal class SesEmailServiceImplTest {
 
     @Test
     fun sendEmailTest() = runTest {
         val mailSender = mockk<JavaMailSender>(relaxed = true){
             every { createMimeMessage() } returns MimeMessage(mockk<Session>(relaxed = true))
         }
-        val emailSenderService: EmailSenderService = EmailSenderServiceImpl(mailSender)
+        val sesEmailService: SesEmailService = SesEmailServiceImpl(mailSender)
 
-        emailSenderService.sendHtmlEmail("Test","", listOf(EmailMother.DansEmail.domain.address))
+        sesEmailService.sendHtmlEmail("Test","",
+            listOf(EmailMother.DansEmail.domain.address),
+        EmailAddress.of("hello@leftindust.com"))
         verify{
             mailSender.send(match<MimeMessage> {
                 it.subject == "Test" && it.allRecipients.first()
