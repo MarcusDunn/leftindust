@@ -1,9 +1,9 @@
 package com.leftindust.mockingbird.survey.template
 
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
-import javax.persistence.CascadeType
-import javax.persistence.Entity
-import javax.persistence.OneToMany
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Entity
+import jakarta.persistence.OneToMany
 
 @Entity
 class SurveyTemplateEntity(

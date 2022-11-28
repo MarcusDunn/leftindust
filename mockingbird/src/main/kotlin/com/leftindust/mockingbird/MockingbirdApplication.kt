@@ -1,16 +1,23 @@
 package com.leftindust.mockingbird
 
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.leftindust.mockingbird.config.AwsEmailConfiguration
 import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
 import graphql.schema.GraphQLScalarType
-import mu.KotlinLogging
+import java.time.Clock
+import java.time.Duration
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.Base64
+import java.util.UUID
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
@@ -21,6 +28,8 @@ import org.springframework.graphql.execution.RuntimeWiringConfigurer
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ResourceServerSpec
 import org.springframework.security.web.server.SecurityWebFilterChain
@@ -29,24 +38,17 @@ import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
-import java.time.Clock
-import java.time.Duration
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.*
 
 
 @SpringBootApplication
-@EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class)
+@EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class, AwsEmailConfiguration::class)
 class MockingbirdApplication {
 
     @Bean("jsonMapper")
     @Primary
     fun mappingJackson2HttpMessageConverter(): ObjectMapper {
-        return Jackson2ObjectMapperBuilder().build<ObjectMapper>()
-            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+        return Jackson2ObjectMapperBuilder().build<ObjectMapper>().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
     }
-
     @Bean
     fun clock(): Clock = Clock.systemUTC()
 
@@ -103,7 +105,11 @@ class MockingbirdApplication {
     @Bean
     fun firebaseAuth(firebaseConfiguration: FirebaseConfiguration): FirebaseAuth {
         firebaseApp(firebaseConfiguration)
+
+
         return FirebaseAuth.getInstance()
+
+
     }
 
     @Bean
@@ -135,27 +141,8 @@ class MockingbirdApplication {
             .oauth2ResourceServer(OAuth2ResourceServerSpec::jwt)
             .build()
 
-    private val logSnsRequestParameterNames = listOf("Action", "PhoneNumber", "Message", "Subject")
-
-//    @Bean
-//    fun snsClient(): AmazonSNS {
-//        val logger = KotlinLogging.logger { }
-//        val metricCollector = object : RequestMetricCollector() {
-//            override fun collectMetrics(request: Request<*>?, response: Response<*>?) {
-//                request?.parameters?.also {
-//                    logger.debug { "SNS request: ${it.filterKeys { it in logSnsRequestParameterNames }}" }
-//                }
-//                response?.awsResponse?.also { logger.debug { "SNS response: $it" } }
-//            }
-//        }
-//
-//        return AmazonSNSClient
-//            .builder()
-//            .withRegion("ca-central-1")
-////            .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials("AKIASHAXDDDUGMYIHBQI", "7rsdZvwB1aozaoTwKzLYTOgicWpBDoNNFhSbT0Pq")))
-//            .withMetricsCollector(metricCollector)
-//            .build()
-//    }
+    @Bean
+    fun javaMailSender(): JavaMailSender = JavaMailSenderImpl()
 }
 
 /**

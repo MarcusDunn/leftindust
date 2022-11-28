@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.email
 
 import com.leftindust.mockingbird.CreatedEntityMessage
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 

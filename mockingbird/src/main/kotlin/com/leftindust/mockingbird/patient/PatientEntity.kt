@@ -1,8 +1,7 @@
 package com.leftindust.mockingbird.patient
 
-import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.address.AddressEntity
 import com.leftindust.mockingbird.contact.Contact
-import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.doctor.DoctorEntity
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
 import com.leftindust.mockingbird.email.EmailEntity
@@ -15,19 +14,19 @@ import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Lob
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Lob
+import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 
 @Entity
 class PatientEntity(
     @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     var nameInfoEntity: NameInfoEntity,
     @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
-    val addresses: MutableSet<Address>,
+    val addresses: MutableSet<AddressEntity>,
     @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     val emails: MutableSet<EmailEntity>,
     @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])

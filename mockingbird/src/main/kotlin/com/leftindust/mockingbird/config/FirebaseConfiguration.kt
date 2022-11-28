@@ -1,10 +1,11 @@
 package com.leftindust.mockingbird.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
+import org.springframework.boot.context.properties.bind.ConstructorBinding
+import org.springframework.boot.context.properties.bind.DefaultValue
 
-@ConstructorBinding
 @ConfigurationProperties(prefix = "server.firebase.service")
-data class FirebaseConfiguration(
-    val accountKeyPath: String = "serviceAccountKey.json"
+data class FirebaseConfiguration @ConstructorBinding constructor(
+    @DefaultValue("serviceAccountKey.json")
+    val accountKeyPath: String
 )

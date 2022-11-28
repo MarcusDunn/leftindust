@@ -3,7 +3,7 @@ package com.leftindust.mockingbird.survey.link
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.PatientRepository
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 

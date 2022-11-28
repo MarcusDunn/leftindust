@@ -1,11 +1,10 @@
 package com.leftindust.mockingbird.persistance
 
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.MappedSuperclass
 import java.util.UUID
-import org.hibernate.annotations.GenericGenerator
-import org.hibernate.annotations.Type
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.MappedSuperclass
+import org.hibernate.annotations.UuidGenerator
 
 interface JpaEntity // marker interface for all entities
 
@@ -14,12 +13,8 @@ abstract class AbstractJpaPersistable : JpaEntity {
     companion object
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Type(type = "org.hibernate.type.PostgresUUIDType")
+    @GeneratedValue
+    @UuidGenerator
     var id: UUID? = null
 
     override fun equals(other: Any?): Boolean {

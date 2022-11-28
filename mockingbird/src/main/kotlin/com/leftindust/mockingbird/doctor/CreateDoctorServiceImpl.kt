@@ -14,7 +14,7 @@ import com.leftindust.mockingbird.user.MediqUserDto
 import com.leftindust.mockingbird.user.ProofOfValidUser
 import com.leftindust.mockingbird.user.ReadMediqUserService
 import org.springframework.data.repository.findByIdOrNull
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Transactional

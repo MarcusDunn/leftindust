@@ -1,9 +1,9 @@
 package com.leftindust.mockingbird.graphql.types.search.filter
 
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Expression
-import javax.persistence.criteria.From
-import javax.persistence.metamodel.SingularAttribute
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.Expression
+import jakarta.persistence.criteria.From
+import jakarta.persistence.metamodel.SingularAttribute
 
 class CaseAgnosticStringFilterDto(
     eq: String? = null,

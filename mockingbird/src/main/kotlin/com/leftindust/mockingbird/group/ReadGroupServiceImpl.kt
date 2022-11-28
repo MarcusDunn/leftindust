@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.group
 
 import com.leftindust.mockingbird.user.MediqGroupDto
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service

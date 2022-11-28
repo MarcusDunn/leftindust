@@ -8,7 +8,7 @@ import com.leftindust.mockingbird.graphql.types.search.Example
 import com.leftindust.mockingbird.survey.link.SurveyLinkDto
 import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import com.leftindust.mockingbird.visit.VisitDto
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull

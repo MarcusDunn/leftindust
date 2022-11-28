@@ -4,9 +4,9 @@ import com.leftindust.mockingbird.graphql.types.search.Example
 import com.leftindust.mockingbird.graphql.types.search.combineWithStrict
 import com.leftindust.mockingbird.graphql.types.search.filter.CaseAgnosticStringFilterDto
 import com.leftindust.mockingbird.person.NameInfoEntity_
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Predicate
-import javax.persistence.criteria.Root
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.Predicate
+import jakarta.persistence.criteria.Root
 
 data class GraphQLDoctorExample(
     val firstName: CaseAgnosticStringFilterDto? = null,
