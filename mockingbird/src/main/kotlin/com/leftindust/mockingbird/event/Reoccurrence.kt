@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.event
 
 import java.time.DayOfWeek
 import java.time.LocalDate
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Embeddable
 class Reoccurrence(

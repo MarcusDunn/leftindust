@@ -7,6 +7,7 @@ import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.leftindust.mockingbird.config.AwsEmailConfiguration
 import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
@@ -23,6 +24,8 @@ import org.springframework.graphql.execution.RuntimeWiringConfigurer
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ResourceServerSpec
 import org.springframework.security.web.server.SecurityWebFilterChain
@@ -42,7 +45,7 @@ import java.util.*
 
 
 @SpringBootApplication
-@EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class)
+@EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class, AwsEmailConfiguration::class)
 class MockingbirdApplication {
 
     @Autowired
@@ -165,6 +168,9 @@ class MockingbirdApplication {
         templateEngine.enableSpringELCompiler = true
         return templateEngine
     }
+
+    @Bean
+    fun javaMailSender(): JavaMailSender = JavaMailSenderImpl()
 }
 
 /**

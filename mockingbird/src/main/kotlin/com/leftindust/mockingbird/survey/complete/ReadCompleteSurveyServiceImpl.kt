@@ -3,11 +3,9 @@ package com.leftindust.mockingbird.survey.complete
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.graphql.types.input.Range
 import com.leftindust.mockingbird.graphql.types.input.toPageable
-import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.survey.link.SurveyLinkDto
-import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
+import jakarta.transaction.Transactional
 import org.springframework.data.domain.Sort
-import javax.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 

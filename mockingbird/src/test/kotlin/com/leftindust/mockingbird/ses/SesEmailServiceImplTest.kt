@@ -10,8 +10,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.mail.javamail.JavaMailSender
-import javax.mail.Session
-import javax.mail.internet.MimeMessage
+import jakarta.mail.Session
+import jakarta.mail.internet.MimeMessage
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class SesEmailServiceImplTest {

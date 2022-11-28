@@ -1,8 +1,8 @@
 package com.leftindust.mockingbird.person
 
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
-import javax.persistence.Column
-import javax.persistence.Entity
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
 
 @Entity
 class NameInfoEntity(
