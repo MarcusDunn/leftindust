@@ -2,9 +2,9 @@ package com.leftindust.mockingbird.doctor
 
 import com.google.common.base.Objects
 import com.leftindust.mockingbird.clinic.ClinicEntity
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 
 @Entity
 class ClinicDoctorEntity(

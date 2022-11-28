@@ -6,3 +6,10 @@ import java.util.UUID
 data class ClinicDto(val name: String, override val id: ClinicDtoId) : AbstractGraphQLDto<ClinicDto.ClinicDtoId>() {
     data class ClinicDtoId(override val value: UUID) : GraphQLID<UUID>
 }
+
+fun Clinic.toClinicDto(): ClinicDto {
+    return ClinicDto(
+        name,
+        ClinicDto.ClinicDtoId(id),
+    )
+}

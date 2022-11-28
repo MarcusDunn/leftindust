@@ -5,7 +5,7 @@ import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

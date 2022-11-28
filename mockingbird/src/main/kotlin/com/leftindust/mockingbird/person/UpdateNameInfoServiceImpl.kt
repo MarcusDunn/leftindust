@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.person
 
 import com.leftindust.mockingbird.graphql.types.applyDeletable
 import com.leftindust.mockingbird.graphql.types.applyUpdatable
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 

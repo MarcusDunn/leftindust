@@ -10,7 +10,7 @@ import com.leftindust.mockingbird.phone.CreatePhoneService
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
 import org.springframework.data.repository.findByIdOrNull
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.*
 

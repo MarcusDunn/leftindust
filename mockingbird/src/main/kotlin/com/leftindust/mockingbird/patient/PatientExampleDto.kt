@@ -6,9 +6,9 @@ import com.leftindust.mockingbird.graphql.types.search.filter.CaseAgnosticString
 import com.leftindust.mockingbird.graphql.types.search.filter.DateFilterDto
 import com.leftindust.mockingbird.graphql.types.search.filter.WhiteSpaceAgnosticStringFilterDto
 import com.leftindust.mockingbird.person.NameInfoEntity_
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Predicate
-import javax.persistence.criteria.Root
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.Predicate
+import jakarta.persistence.criteria.Root
 
 data class PatientExampleDto(
     val firstName: CaseAgnosticStringFilterDto? = null,

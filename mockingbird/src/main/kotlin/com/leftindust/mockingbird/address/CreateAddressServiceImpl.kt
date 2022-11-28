@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.address
 
 import com.leftindust.mockingbird.country.CountryState
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service

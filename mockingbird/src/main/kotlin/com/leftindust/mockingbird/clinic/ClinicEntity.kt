@@ -7,11 +7,11 @@ import com.leftindust.mockingbird.doctor.ClinicDoctorEntity
 import com.leftindust.mockingbird.doctor.DoctorEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import mu.KotlinLogging
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 
 private val logger = KotlinLogging.logger { }
 

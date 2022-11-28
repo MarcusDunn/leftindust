@@ -3,10 +3,10 @@ package com.leftindust.mockingbird.user
 import com.leftindust.mockingbird.group.MediqGroup
 import com.leftindust.mockingbird.persistance.JpaEntity
 import com.leftindust.mockingbird.person.NameInfoEntity
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
-import javax.persistence.OneToOne
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToOne
 
 @Entity
 class MediqUser(

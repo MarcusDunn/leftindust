@@ -3,9 +3,9 @@ package com.leftindust.mockingbird.patient
 import com.leftindust.mockingbird.event.Event
 import com.leftindust.mockingbird.persistance.JpaEntity
 import java.util.Objects
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 
 @Entity
 class PatientEventEntity(
