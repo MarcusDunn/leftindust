@@ -24,8 +24,8 @@ cloud:
   aws:
     stack.auto: false
     credentials:
-      access-key: AKIASHAXDDDUGMYIHBQI
-      secret-key: 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
+      access-key:
+      secret-key:
     region:
       static: ca-central-1
 icd:
