@@ -14,6 +14,7 @@ import com.leftindust.mockingbird.config.IcdApiClientConfiguration
 import graphql.schema.GraphQLScalarType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.ApplicationContext
@@ -45,7 +46,7 @@ import java.util.*
 
 
 @SpringBootApplication
-@EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class, AwsEmailConfiguration::class)
+@EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class, AwsEmailConfiguration::class, ThymeleafProperties::class)
 class MockingbirdApplication {
 
     @Autowired
@@ -151,21 +152,21 @@ class MockingbirdApplication {
             .build()
 
     @Bean
-    fun templateResolver(): SpringResourceTemplateResolver {
+    fun templateResolver(thymeleafProperties: ThymeleafProperties): SpringResourceTemplateResolver {
         val templateResolver = SpringResourceTemplateResolver()
         templateResolver.setApplicationContext(applicationContext)
-        templateResolver.prefix = "classpath:/templates/"
-        templateResolver.suffix = ".html"
+        templateResolver.prefix = thymeleafProperties.prefix
+        templateResolver.suffix = thymeleafProperties.suffix
         // HTML is the default value, added here for the sake of clarity.
-        templateResolver.templateMode = TemplateMode.HTML
+        templateResolver.templateMode = TemplateMode.parse(thymeleafProperties.mode)
         return templateResolver
     }
 
     @Bean
-    fun springTemplateEngine(): SpringTemplateEngine {
+    fun springTemplateEngine(thymeleafProperties: ThymeleafProperties): SpringTemplateEngine {
         val templateEngine = SpringTemplateEngine()
-        templateEngine.setTemplateResolver(templateResolver())
-        templateEngine.enableSpringELCompiler = true
+        templateEngine.setTemplateResolver(templateResolver(thymeleafProperties))
+        templateEngine.enableSpringELCompiler = thymeleafProperties.isEnableSpringElCompiler
         return templateEngine
     }
 

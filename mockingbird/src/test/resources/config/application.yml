@@ -2,6 +2,11 @@ spring:
   sql:
     init:
       schema-locations: []
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    enable-spring-el-compiler: true
 logging:
   level:
     root: info
