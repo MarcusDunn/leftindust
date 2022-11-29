@@ -6,7 +6,7 @@ import kotlinx.coroutines.test.runTest
 import org.approvaltests.Approvals
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.thymeleaf.context.Context
@@ -15,7 +15,7 @@ import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(SpringExtension::class)
-@SpringBootTest(classes = [ThymeleafTestConfiguration::class])
+@Import(ThymeleafTestConfiguration::class)
 @ActiveProfiles("test")
 internal class ThymeleafServiceTest {
 
