@@ -25,9 +25,11 @@ spring:
     aws:
       ses:
         region: ca-central-1
+
 cloud:
   aws:
-      stack.auto: false
+      stack:
+        auto: false
       credentials:
         access-key:
         secret-key:
