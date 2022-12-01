@@ -32,14 +32,18 @@ spring:
     enable-spring-el-compiler: true
 cloud:
   aws:
-      credentials:
-        access-key:
-        secret-key:
-      region:
-        static: ca-central-1
+    stack:
+      auto: false
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: ca-central-1
+
 icd:
   client:
     url: localhost:80/icd
+
 logging:
   level:
     root: info

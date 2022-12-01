@@ -12,5 +12,4 @@ class PhoneToPhoneDtoConverter : InfallibleConverter<Phone, PhoneDto> {
             source.type
         )
     }
-
 }
