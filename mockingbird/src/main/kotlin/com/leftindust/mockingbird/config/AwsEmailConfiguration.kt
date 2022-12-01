@@ -4,9 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.bind.ConstructorBinding
 import org.springframework.boot.context.properties.bind.DefaultValue
 
-
-@ConfigurationProperties(prefix = "icd.client")
-data class IcdApiClientConfiguration @ConstructorBinding constructor(
-    @DefaultValue("localhost:80/icd")
-    val url: String,
+@ConfigurationProperties(prefix = "server.aws.email")
+data class AwsEmailConfiguration @ConstructorBinding constructor(
+    @DefaultValue("hello@leftindust.com")
+    val from: String,
 )

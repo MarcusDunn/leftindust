@@ -5,7 +5,7 @@ import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.graphql.types.input.toPageable
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.PatientRepository
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull

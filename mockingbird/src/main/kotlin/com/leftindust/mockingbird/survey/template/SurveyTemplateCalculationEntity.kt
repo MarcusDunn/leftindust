@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.survey.template
 
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
-import javax.persistence.Entity
+import jakarta.persistence.Entity
 
 @Entity
 class SurveyTemplateCalculationEntity(

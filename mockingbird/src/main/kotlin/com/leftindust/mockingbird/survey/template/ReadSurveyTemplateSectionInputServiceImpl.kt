@@ -2,7 +2,7 @@ package com.leftindust.mockingbird.survey.template
 
 import com.leftindust.mockingbird.FallibleConverter
 import com.leftindust.mockingbird.InconvertibleEntityException
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 

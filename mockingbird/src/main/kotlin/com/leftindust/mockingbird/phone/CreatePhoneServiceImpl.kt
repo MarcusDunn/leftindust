@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.phone
 
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 

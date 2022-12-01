@@ -1,7 +1,7 @@
 package com.leftindust.mockingbird.survey.template
 
 import com.leftindust.mockingbird.InfallibleConverter
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service

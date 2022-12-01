@@ -7,7 +7,7 @@ import com.leftindust.mockingbird.graphql.types.input.toPageable
 import com.leftindust.mockingbird.patient.ReadPatientService
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyDto
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyRepository
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 

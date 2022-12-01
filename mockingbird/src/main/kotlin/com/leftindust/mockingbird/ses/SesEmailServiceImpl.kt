@@ -1,24 +1,32 @@
-package com.leftindust.mockingbird.email_service
+package com.leftindust.mockingbird.ses
 
 import com.leftindust.mockingbird.validate.EmailAddress
-import kotlinx.coroutines.*
+import jakarta.mail.internet.MimeMessage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
-import javax.mail.internet.MimeMessage
 
 @Service
-class EmailSenderServiceImpl(
+class SesEmailServiceImpl(
     private val emailSender: JavaMailSender
-): EmailSenderService {
-    override suspend fun sendHtmlEmail(subject: String, html: String, targetEmails: List<EmailAddress>) {
+): SesEmailService {
+    override suspend fun sendHtmlEmail(
+        subject: String,
+        html: String,
+        targetEmails: List<EmailAddress>,
+        from: EmailAddress
+    ) {
         withContext(Dispatchers.IO) {
             targetEmails.map {
                 async {
                     val message: MimeMessage = emailSender.createMimeMessage()
                     val helper = MimeMessageHelper(message, "utf-8")
 
-                    helper.setFrom("hello@leftindust.com")
+                    helper.setFrom(from.value)
                     helper.setSubject(subject)
                     helper.setText(html, true)
 
@@ -28,5 +36,4 @@ class EmailSenderServiceImpl(
             }.awaitAll()
         }
     }
-
 }
