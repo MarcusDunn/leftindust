@@ -22,7 +22,7 @@ internal class SnsTextMessageTest {
         }
         val snsTextService = SnsTextServiceImpl(snsClient)
 
-        snsTextService.publishSMS(PhoneNumber.of("16042225555"), "test message")
+        snsTextService.publishSMS(PhoneNumber.of("+16042225555"), "test message")
         verify(exactly = 1) { snsClient.publish(any()) }
     }
 }
