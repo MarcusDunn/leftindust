@@ -37,7 +37,7 @@ internal class PhoneNumberTest {
         "-12368083995",
         "kelvin@leftindust.com",
         "+2",
-        "778-990;1234"
+        "778-990-1234"
     ).flatMap { allLower ->
         val randomCase = String(allLower.map { if (random.nextBoolean()) { it.uppercaseChar() } else { it }  }.toCharArray())
         listOf(
