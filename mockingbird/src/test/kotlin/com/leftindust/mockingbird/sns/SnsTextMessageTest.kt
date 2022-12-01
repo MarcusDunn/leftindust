@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.sns
 
 import com.amazonaws.services.sns.AmazonSNS
+import com.leftindust.mockingbird.validate.PhoneNumber
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
@@ -21,8 +22,7 @@ internal class SnsTextMessageTest {
         }
         val snsTextService = SnsTextServiceImpl(snsClient)
 
-        snsTextService.publishSMS("16042225555", "test message")
-
+        snsTextService.publishSMS(PhoneNumber.of("16042225555"), "test message")
         verify(exactly = 1) { snsClient.publish(any()) }
     }
 }
