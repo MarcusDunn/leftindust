@@ -27,8 +27,11 @@ repositories {
 }
 
 dependencies {
-    // spring cloud
+    // aws
+    implementation("org.springframework.cloud:spring-cloud-aws-autoconfigure:2.2.6.RELEASE")
     implementation("io.awspring.cloud", "spring-cloud-starter-aws-ses", "2.4.2")
+    implementation("org.springframework.cloud:spring-cloud-starter-aws-messaging:2.2.6.RELEASE")
+
     // spring
     implementation("org.springframework.boot", "spring-boot-starter-mail")
     implementation("org.springframework.boot", "spring-boot-starter-webflux")
@@ -80,10 +83,6 @@ dependencies {
     liquibaseRuntime("org.springframework.boot", "spring-boot-starter-data-jpa")
     liquibaseRuntime("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
     liquibaseRuntime(sourceSets.main.get().output)
-
-    //amazon sns
-    implementation("org.springframework.cloud:spring-cloud-aws-autoconfigure:2.2.6.RELEASE")
-    implementation("org.springframework.cloud:spring-cloud-starter-aws-messaging:2.2.6.RELEASE")
 
     // spring testing
     testImplementation("org.springframework.boot", "spring-boot-test")

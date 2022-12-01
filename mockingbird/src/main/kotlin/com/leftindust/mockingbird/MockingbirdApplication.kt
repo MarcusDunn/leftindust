@@ -1,6 +1,8 @@
 package com.leftindust.mockingbird
 
-
+import com.amazonaws.metrics.RequestMetricCollector
+import com.amazonaws.services.sns.AmazonSNS
+import com.amazonaws.services.sns.AmazonSNSClient
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.auth.oauth2.GoogleCredentials
@@ -38,7 +40,6 @@ import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
-
 
 @SpringBootApplication
 @EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class, AwsEmailConfiguration::class)
@@ -105,11 +106,7 @@ class MockingbirdApplication {
     @Bean
     fun firebaseAuth(firebaseConfiguration: FirebaseConfiguration): FirebaseAuth {
         firebaseApp(firebaseConfiguration)
-
-
         return FirebaseAuth.getInstance()
-
-
     }
 
     @Bean
@@ -143,6 +140,14 @@ class MockingbirdApplication {
 
     @Bean
     fun javaMailSender(): JavaMailSender = JavaMailSenderImpl()
+
+    @Bean
+    fun snsClient(): AmazonSNS {
+        return AmazonSNSClient
+            .builder()
+            .withMetricsCollector(RequestMetricCollector.NONE)
+            .build()
+    }
 }
 
 /**
