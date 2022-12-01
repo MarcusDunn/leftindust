@@ -28,13 +28,15 @@ spring:
 
 cloud:
   aws:
-      stack:
-        auto: false
-      credentials:
-        access-key:
-        secret-key:
-      region:
-        static: ca-central-1
+    stack:
+      auto: false
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: ca-central-1
+    sns:
+      region: ca-central-1
 icd:
   client:
     url: localhost:80/icd
