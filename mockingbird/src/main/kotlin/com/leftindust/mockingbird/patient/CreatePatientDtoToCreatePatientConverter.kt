@@ -51,17 +51,17 @@ fun CreatePatientDto.toCreatePatient(): Result4k<CreatePatient, ConversionError<
     )
 }
 
-    private data class CreatePatientImpl(
-        override val nameInfo: CreateNameInfoDto,
-        override val phones: List<CreatePhone>,
-        override val dateOfBirth: LocalDate,
-        override val addresses: List<CreateAddress>,
-        override val emails: List<CreateEmail>,
-        override val insuranceNumber: String?,
-        override val sex: Sex,
-        override val gender: String?,
-        override val ethnicity: Ethnicity?,
-        override val contacts: List<CreateContact>,
-        override val doctors: List<DoctorDto.DoctorDtoId>,
-        override val thumbnail: String?
-    ) : CreatePatient
+private data class CreatePatientImpl(
+    override val nameInfo: CreateNameInfoDto,
+    override val phones: List<CreatePhone>,
+    override val dateOfBirth: LocalDate,
+    override val addresses: List<CreateAddress>,
+    override val emails: List<CreateEmail>,
+    override val insuranceNumber: String?,
+    override val sex: Sex,
+    override val gender: String?,
+    override val ethnicity: Ethnicity?,
+    override val contacts: List<CreateContact>,
+    override val doctors: List<DoctorDto.DoctorDtoId>,
+    override val thumbnail: String?
+) : CreatePatient
