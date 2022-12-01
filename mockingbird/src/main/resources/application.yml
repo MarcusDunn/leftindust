@@ -25,7 +25,11 @@ spring:
     aws:
       ses:
         region: ca-central-1
-
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    enable-spring-el-compiler: true
 cloud:
   aws:
     stack:

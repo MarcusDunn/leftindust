@@ -62,6 +62,13 @@ dependencies {
     // jackson
     implementation("com.fasterxml.jackson.module", "jackson-module-kotlin")
 
+    // thymeleaf
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:2.7.5")
+
+
+    testImplementation("com.approvaltests:approvaltests:18.5.0")
+
+
     // hibernate model code generation
     kapt("org.hibernate.orm", "hibernate-jpamodelgen")
     // firebase
