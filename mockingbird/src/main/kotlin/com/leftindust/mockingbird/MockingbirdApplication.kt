@@ -1,6 +1,11 @@
 package com.leftindust.mockingbird
 
-
+import com.amazonaws.auth.AWSStaticCredentialsProvider
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.metrics.RequestMetricCollector
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.sns.AmazonSNS
+import com.amazonaws.services.sns.AmazonSNSClient
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.auth.oauth2.GoogleCredentials
@@ -12,6 +17,7 @@ import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
 import graphql.schema.GraphQLScalarType
+import org.springframework.beans.factory.annotation.Value
 import java.time.Clock
 import java.time.Duration
 import java.time.LocalDate
@@ -38,7 +44,6 @@ import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
-
 
 @SpringBootApplication
 @EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class, AwsEmailConfiguration::class)
@@ -105,11 +110,7 @@ class MockingbirdApplication {
     @Bean
     fun firebaseAuth(firebaseConfiguration: FirebaseConfiguration): FirebaseAuth {
         firebaseApp(firebaseConfiguration)
-
-
         return FirebaseAuth.getInstance()
-
-
     }
 
     @Bean
@@ -143,6 +144,22 @@ class MockingbirdApplication {
 
     @Bean
     fun javaMailSender(): JavaMailSender = JavaMailSenderImpl()
+
+    @Value("\${cloud.aws.credentials.access-key}")
+    private lateinit var cloudAccessKeyId: String
+    @Value("\${cloud.aws.credentials.secret-key}")
+    private lateinit var cloudSecretAccessKey: String
+    @Value("\${cloud.aws.region.static}")
+    private lateinit var cloudRegion: Regions
+    @Bean
+    fun snsClient(): AmazonSNS {
+        return AmazonSNSClient
+            .builder()
+            .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(cloudAccessKeyId, cloudSecretAccessKey)))
+            .withRegion(cloudRegion)
+            .withMetricsCollector(RequestMetricCollector.NONE)
+            .build()
+    }
 }
 
 /**
