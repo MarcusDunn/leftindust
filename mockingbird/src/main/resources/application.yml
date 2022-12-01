@@ -25,6 +25,8 @@ spring:
     aws:
       ses:
         region: ca-central-1
+      sns:
+        region: ca-central-1
 
 cloud:
   aws:
@@ -35,11 +37,11 @@ cloud:
       secret-key:
     region:
       static: ca-central-1
-    sns:
-      region: ca-central-1
+
 icd:
   client:
     url: localhost:80/icd
+
 logging:
   level:
     root: info
