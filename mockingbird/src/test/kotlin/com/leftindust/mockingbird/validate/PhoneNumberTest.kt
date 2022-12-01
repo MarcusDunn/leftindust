@@ -1,5 +1,6 @@
 package com.leftindust.mockingbird.validate
 
+import com.leftindust.mockingbird.util.PhoneMother
 import dev.forkhandles.result4k.onFailure
 import dev.forkhandles.values.parseResult4k
 import org.junit.jupiter.api.DynamicTest.dynamicTest
@@ -14,7 +15,10 @@ internal class PhoneNumberTest {
         "+12125551212",
         "+12368083995",
         "+23051234567",
-        "+17782111992"
+        "+17782111992",
+        PhoneMother.JennysHomePhone.number,
+        PhoneMother.JennysWorkPhone.number,
+        PhoneMother.DansCell.number
     ).flatMap { allLower ->
         val randomCase = String(allLower.map { if (random.nextBoolean()) { it.uppercaseChar() } else { it }  }.toCharArray())
         listOf(
@@ -29,10 +33,11 @@ internal class PhoneNumberTest {
 
     @TestFactory
     internal fun invalid() = listOf(
-        "12125551212",
-        "12368083995",
-        "23051234567",
-        "+2"
+        "1+2125551212",
+        "-12368083995",
+        "kelvin@leftindust.com",
+        "+2",
+        "778-990;1234"
     ).flatMap { allLower ->
         val randomCase = String(allLower.map { if (random.nextBoolean()) { it.uppercaseChar() } else { it }  }.toCharArray())
         listOf(
