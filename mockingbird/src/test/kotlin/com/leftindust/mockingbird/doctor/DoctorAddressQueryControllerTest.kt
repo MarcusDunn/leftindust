@@ -25,7 +25,7 @@ internal class DoctorAddressQueryControllerTest(
     @MockkBean
     private lateinit var readAddressService: ReadAddressService
 
-    @MockkBean()
+    @MockkBean
     private lateinit var readDoctorService: ReadDoctorService
 
     @Test

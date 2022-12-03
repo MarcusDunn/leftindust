@@ -1,14 +1,13 @@
 package com.leftindust.mockingbird.email
 
-import com.leftindust.mockingbird.FallibleConverter
 import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.contact.ContactDto
 import com.leftindust.mockingbird.contact.ReadContactService
+import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.PatientRepository
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository

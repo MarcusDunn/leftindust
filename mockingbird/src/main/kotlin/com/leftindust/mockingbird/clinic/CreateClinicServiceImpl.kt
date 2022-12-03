@@ -4,7 +4,7 @@ import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.doctor.DoctorRepository
 import org.springframework.data.repository.findByIdOrNull
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 

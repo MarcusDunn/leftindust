@@ -2,10 +2,10 @@ package com.leftindust.mockingbird.icd
 
 import com.leftindust.mockingbird.graphql.types.search.ListFilter
 import com.leftindust.mockingbird.graphql.types.search.combineWithStrict
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.From
-import javax.persistence.criteria.Predicate
-import javax.persistence.metamodel.SetAttribute
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.From
+import jakarta.persistence.criteria.Predicate
+import jakarta.persistence.metamodel.SetAttribute
 
 class IcdListFilter(
     val includes: List<GraphQLFoundationIcdCodeInput>? = null,

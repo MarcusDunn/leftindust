@@ -13,6 +13,7 @@ import java.util.UUID
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty0
 import mu.KLogger
+import org.springframework.graphql.data.ArgumentValue
 
 sealed class Deletable<out T : Any> {
     class Delete<T : Any> : Deletable<T>()
@@ -104,3 +105,26 @@ sealed class Updatable<out T : Any> {
 fun <T : Any> update(value: T) = Updatable.Update(value)
 fun <T : Any> delete(@Suppress("UNUSED_PARAMETER") valueType: Class<T>? = null) = Deletable.Delete<T>()
 fun <T : Any> ignore(@Suppress("UNUSED_PARAMETER") valueType: Class<T>? = null) = Updatable.Ignore<T>()
+
+fun <T : Any> ArgumentValue<T>.toUpdatable(): Updatable<T> {
+    return if (isOmitted) {
+        Updatable.Ignore()
+    } else if (isPresent) {
+        Updatable.Update(value()!!)
+    } else {
+        Updatable.Ignore()
+    }
+}
+
+fun <T : Any> ArgumentValue<T>.toDeletable(): Deletable<T> {
+    return if (isOmitted) {
+        // omitted - do nothing
+        Deletable.Ignore()
+    } else if (isPresent) {
+        // present - update
+        Deletable.Update(value()!!) // !! is safe as spring guarantees that if it is present is it no null
+    } else {
+        // explicitly set to null - delete
+        Deletable.Delete()
+    }
+}

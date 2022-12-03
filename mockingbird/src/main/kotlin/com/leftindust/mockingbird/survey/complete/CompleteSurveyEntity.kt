@@ -1,12 +1,11 @@
 package com.leftindust.mockingbird.survey.complete
 
-import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
-import javax.persistence.CascadeType
-import javax.persistence.Entity
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Entity
+import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 
 @Entity
 class CompleteSurveyEntity(
