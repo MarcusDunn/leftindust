@@ -7,6 +7,7 @@ import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.phone.Phone
+import com.leftindust.mockingbird.preference.PreferenceEntity
 import com.leftindust.mockingbird.user.MediqUser
 import java.time.LocalDate
 import jakarta.persistence.CascadeType
@@ -19,6 +20,8 @@ import jakarta.persistence.OneToOne
 class DoctorEntity(
     @OneToOne(optional = false)
     var nameInfoEntity: NameInfoEntity,
+    @OneToMany
+    var preferenceEntity: PreferenceEntity,
     @OneToMany
     var addresses: MutableSet<AddressEntity>,
     @OneToMany
