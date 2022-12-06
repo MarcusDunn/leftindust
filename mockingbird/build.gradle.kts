@@ -63,7 +63,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module", "jackson-module-kotlin")
 
     // thymeleaf
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.0.0")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
 
     testImplementation("com.approvaltests:approvaltests:18.5.0")
