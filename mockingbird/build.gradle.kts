@@ -27,8 +27,11 @@ repositories {
 }
 
 dependencies {
-    // spring cloud
+    // aws
+    implementation("org.springframework.cloud:spring-cloud-aws-autoconfigure:2.2.6.RELEASE")
     implementation("io.awspring.cloud", "spring-cloud-starter-aws-ses", "2.4.2")
+    implementation("org.springframework.cloud:spring-cloud-starter-aws-messaging:2.2.6.RELEASE")
+
     // spring
     implementation("org.springframework.boot", "spring-boot-starter-mail")
     implementation("org.springframework.boot", "spring-boot-starter-webflux")
@@ -58,6 +61,13 @@ dependencies {
 
     // jackson
     implementation("com.fasterxml.jackson.module", "jackson-module-kotlin")
+
+    // thymeleaf
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+
+    testImplementation("com.approvaltests:approvaltests:18.5.0")
+
 
     // hibernate model code generation
     kapt("org.hibernate.orm", "hibernate-jpamodelgen")

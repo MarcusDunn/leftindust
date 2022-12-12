@@ -157,7 +157,7 @@ internal class PatientMutationControllerTest(
                             phones: [
                                 {
                                     type: Cell
-                                    number: "778-123-4567"
+                                    number: "+17781234567"
                                 }
                             ]
                             emails: [

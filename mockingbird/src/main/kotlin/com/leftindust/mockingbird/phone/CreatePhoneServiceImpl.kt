@@ -10,7 +10,7 @@ class CreatePhoneServiceImpl(private val phoneRepository: PhoneRepository) : Cre
     private val logger = KotlinLogging.logger { }
 
     override suspend fun createPhone(createPhone: CreatePhone): Phone {
-        val phone = Phone(createPhone.number, createPhone.type)
+        val phone = Phone(createPhone.number.value, createPhone.type)
         return phoneRepository.save(phone)
             .also { logger.trace { "Created $phone" } }
     }

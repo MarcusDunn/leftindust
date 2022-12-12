@@ -25,16 +25,25 @@ spring:
     aws:
       ses:
         region: ca-central-1
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    enable-spring-el-compiler: true
 cloud:
   aws:
-      credentials:
-        access-key:
-        secret-key:
-      region:
-        static: ca-central-1
+    stack:
+      auto: false
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: ca-central-1
+
 icd:
   client:
     url: localhost:80/icd
+
 logging:
   level:
     root: info

@@ -1,6 +1,11 @@
 package com.leftindust.mockingbird
 
-
+import com.amazonaws.auth.AWSStaticCredentialsProvider
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.metrics.RequestMetricCollector
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.sns.AmazonSNS
+import com.amazonaws.services.sns.AmazonSNSClient
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.auth.oauth2.GoogleCredentials
@@ -12,15 +17,13 @@ import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
 import graphql.schema.GraphQLScalarType
-import java.time.Clock
-import java.time.Duration
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.Base64
-import java.util.UUID
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Primary
 import org.springframework.core.io.ClassPathResource
@@ -37,18 +40,30 @@ import org.springframework.web.cors.reactive.CorsUtils
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
+import org.thymeleaf.spring6.SpringTemplateEngine
+import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver
+import org.thymeleaf.templatemode.TemplateMode
 import reactor.core.publisher.Mono
-
+import java.time.Clock
+import java.time.Duration
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
 
 @SpringBootApplication
-@EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class, AwsEmailConfiguration::class)
+@EnableConfigurationProperties(IcdApiClientConfiguration::class, CorsConfiguration::class, FirebaseConfiguration::class, AwsEmailConfiguration::class, ThymeleafProperties::class)
 class MockingbirdApplication {
+
+    @Autowired
+    private lateinit var applicationContext: ApplicationContext
 
     @Bean("jsonMapper")
     @Primary
     fun mappingJackson2HttpMessageConverter(): ObjectMapper {
-        return Jackson2ObjectMapperBuilder().build<ObjectMapper>().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+        return Jackson2ObjectMapperBuilder().build<ObjectMapper>()
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
     }
+
     @Bean
     fun clock(): Clock = Clock.systemUTC()
 
@@ -105,11 +120,7 @@ class MockingbirdApplication {
     @Bean
     fun firebaseAuth(firebaseConfiguration: FirebaseConfiguration): FirebaseAuth {
         firebaseApp(firebaseConfiguration)
-
-
         return FirebaseAuth.getInstance()
-
-
     }
 
     @Bean
@@ -142,7 +153,42 @@ class MockingbirdApplication {
             .build()
 
     @Bean
+    fun templateResolver(thymeleafProperties: ThymeleafProperties): SpringResourceTemplateResolver {
+        val templateResolver = SpringResourceTemplateResolver()
+        templateResolver.setApplicationContext(applicationContext)
+        templateResolver.prefix = thymeleafProperties.prefix
+        templateResolver.suffix = thymeleafProperties.suffix
+        // HTML is the default value, added here for the sake of clarity.
+        templateResolver.templateMode = TemplateMode.parse(thymeleafProperties.mode)
+        return templateResolver
+    }
+
+    @Bean
+    fun springTemplateEngine(thymeleafProperties: ThymeleafProperties): SpringTemplateEngine {
+        val templateEngine = SpringTemplateEngine()
+        templateEngine.setTemplateResolver(templateResolver(thymeleafProperties))
+        templateEngine.enableSpringELCompiler = thymeleafProperties.isEnableSpringElCompiler
+        return templateEngine
+    }
+
+    @Bean
     fun javaMailSender(): JavaMailSender = JavaMailSenderImpl()
+
+    @Value("\${cloud.aws.credentials.access-key}")
+    private lateinit var cloudAccessKeyId: String
+    @Value("\${cloud.aws.credentials.secret-key}")
+    private lateinit var cloudSecretAccessKey: String
+    @Value("\${cloud.aws.region.static}")
+    private lateinit var cloudRegion: Regions
+    @Bean
+    fun snsClient(): AmazonSNS {
+        return AmazonSNSClient
+            .builder()
+            .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(cloudAccessKeyId, cloudSecretAccessKey)))
+            .withRegion(cloudRegion)
+            .withMetricsCollector(RequestMetricCollector.NONE)
+            .build()
+    }
 }
 
 /**
