@@ -27,9 +27,8 @@ class PatientMutationController(
     @MutationMapping("editPatient")
     suspend fun editPatient(@Argument("editPatient") editPatient: ArgumentValueUpdatePatientDto): PatientDto? {
         val toUpdatePatientDto = editPatient.toUpdatePatientDto()
-        val updatedPatient = updatePatientService.update((toUpdatePatientDto.toUpdatePatient()).onFailure { throw it.reason.toMockingbirdException() })
-        return patientToPatientDtoConverter.convert(updatedPatient.onFailure { throw it.reason.toMockingbirdException() })
-    }
+        val updatedPatient = updatePatientService.update(toUpdatePatientDto.toUpdatePatient().onFailure { throw it.reason.toMockingbirdException() })
+        return patientToPatientDtoConverter.convert(updatedPatient.onFailure { throw it.reason.toMockingbirdException() })}
 
     @MutationMapping("addPatient")
     suspend fun addPatient(
