@@ -53,7 +53,7 @@ dependencies {
     implementation("dev.forkhandles:result4k")
 
     // ktor
-    implementation(platform("io.ktor:ktor-bom:2.1.3"))
+    implementation(platform("io.ktor:ktor-bom:2.2.1"))
     implementation("io.ktor", "ktor-client")
     implementation("io.ktor", "ktor-client-cio")
     implementation("io.ktor", "ktor-client-content-negotiation")
