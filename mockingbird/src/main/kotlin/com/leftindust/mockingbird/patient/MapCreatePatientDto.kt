@@ -4,20 +4,15 @@ import com.leftindust.mockingbird.address.CreateAddressDto
 import com.leftindust.mockingbird.contact.CreateContactDto
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.email.CreateEmailDto
-import com.leftindust.mockingbird.graphql.types.Deletable
-import com.leftindust.mockingbird.graphql.types.Updatable
-import com.leftindust.mockingbird.graphql.types.toDeletable
-import com.leftindust.mockingbird.graphql.types.toUpdatable
-import com.leftindust.mockingbird.person.Ethnicity
-import com.leftindust.mockingbird.person.Sex
-import com.leftindust.mockingbird.person.UpdateNameInfoDto
+import com.leftindust.mockingbird.graphql.types.*
+import com.leftindust.mockingbird.person.*
 import com.leftindust.mockingbird.phone.CreatePhoneDto
 import org.springframework.graphql.data.ArgumentValue
 import java.time.LocalDate
 
 data class ArgumentValueUpdatePatientDto(
+    val nameInfo: ArgumentValue<UpdateNameInfoGraphQlDto> = ArgumentValue.omitted(),
     val pid: PatientDto.PatientDtoId,
-    val nameInfo: ArgumentValue<UpdateNameInfoDto> = ArgumentValue.omitted(),
     val phones: ArgumentValue<List<CreatePhoneDto>> = ArgumentValue.omitted(),
     val dateOfBirth: ArgumentValue<LocalDate> = ArgumentValue.omitted(),
     val addresses: ArgumentValue<List<CreateAddressDto>> = ArgumentValue.omitted(),
@@ -35,7 +30,7 @@ data class ArgumentValueUpdatePatientDto(
 fun ArgumentValueUpdatePatientDto.toUpdatePatientDto(): UpdatePatientDto {
     return UpdatePatientDtoImpl(
         pid = pid,
-        nameInfo = nameInfo.toUpdatable(),
+        nameInfo = nameInfo.map { it.toUpdateNameInfoDto() }.toUpdatable(),
         phones = phones.toUpdatable(),
         dateOfBirth = dateOfBirth.toUpdatable(),
         addresses = addresses.toUpdatable(),

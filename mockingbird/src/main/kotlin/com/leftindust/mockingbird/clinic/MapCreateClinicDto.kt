@@ -32,6 +32,7 @@ data class ClinicEditDtoImpl(
     override val doctors: Updatable<List<DoctorDto.DoctorDtoId>>,
 ) : ClinicEditDto
 
+@Deprecated("use CreateAddressGraphQlDto instead")
 class MapDelegatingCreateAddressDto(val map: Map<String, Any?>) : CreateAddressDto {
     override val addressType: AddressType by map
     override val address: String by map

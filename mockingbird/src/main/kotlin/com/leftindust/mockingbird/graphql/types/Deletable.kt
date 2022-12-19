@@ -116,6 +116,17 @@ fun <T : Any> ArgumentValue<T>.toUpdatable(): Updatable<T> {
     }
 }
 
+fun <T : Any, R : Any > ArgumentValue<T>.map(f : (T) -> R): ArgumentValue<R> {
+    return if (isOmitted) {
+        ArgumentValue.omitted()
+    } else if (isPresent) {
+        ArgumentValue.ofNullable(f(value()!!))
+    } else {
+        ArgumentValue.ofNullable(null)
+    }
+}
+
+
 fun <T : Any> ArgumentValue<T>.toDeletable(): Deletable<T> {
     return if (isOmitted) {
         // omitted - do nothing
