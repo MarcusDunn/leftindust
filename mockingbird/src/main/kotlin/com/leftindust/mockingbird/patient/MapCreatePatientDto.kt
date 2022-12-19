@@ -1,21 +1,23 @@
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.address.CreateAddressDto
+import com.leftindust.mockingbird.address.CreateAddressGraphQlDto
 import com.leftindust.mockingbird.contact.CreateContactDto
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.email.CreateEmailDto
 import com.leftindust.mockingbird.graphql.types.*
 import com.leftindust.mockingbird.person.*
 import com.leftindust.mockingbird.phone.CreatePhoneDto
+import com.leftindust.mockingbird.phone.CreatePhoneGraphQlDto
 import org.springframework.graphql.data.ArgumentValue
 import java.time.LocalDate
 
 data class ArgumentValueUpdatePatientDto(
     val nameInfo: ArgumentValue<UpdateNameInfoGraphQlDto> = ArgumentValue.omitted(),
     val pid: PatientDto.PatientDtoId,
-    val phones: ArgumentValue<List<CreatePhoneDto>> = ArgumentValue.omitted(),
+    val phones: ArgumentValue<List<CreatePhoneGraphQlDto>> = ArgumentValue.omitted(),
     val dateOfBirth: ArgumentValue<LocalDate> = ArgumentValue.omitted(),
-    val addresses: ArgumentValue<List<CreateAddressDto>> = ArgumentValue.omitted(),
+    val addresses: ArgumentValue<List<CreateAddressGraphQlDto>> = ArgumentValue.omitted(),
     val emails: ArgumentValue<List<CreateEmailDto>> = ArgumentValue.omitted(),
     val insuranceNumber: ArgumentValue<String> = ArgumentValue.omitted(),
     val sex: ArgumentValue<Sex> = ArgumentValue.omitted(),

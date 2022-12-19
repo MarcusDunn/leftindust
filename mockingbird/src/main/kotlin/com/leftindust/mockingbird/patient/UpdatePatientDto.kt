@@ -64,7 +64,11 @@ fun UpdatePatientDto.toUpdatePatient(): Result4k<UpdatePatient, ConversionError<
             },
             doctors = doctors,
             thumbnail = thumbnail,
-            phones = phones.map { it.map { phone -> phone.toCreatePhone().onFailure { e -> return ConversionFailure(e.reason) } } }
+            phones = phones.map {
+                it.map { phone ->
+                    phone.toCreatePhone().onFailure { e -> return ConversionFailure(e.reason) }
+                }
+            }
         )
     )
 }
@@ -96,9 +100,3 @@ class MapDelegatingCreateEmailDto(val map: Map<String, Any?>) : CreateEmailDto {
     override val email: String by map
 }
 
-class MapDelegatingCreateContactDto(val map: Map<String, Any?>) : CreateContactDto {
-    override val nameInfo: CreateNameInfoDto by map
-    override val relationship: Relationship by map
-    override val phones: List<CreatePhoneDto> by map
-    override val emails: List<CreateEmailDto> by map
-}
