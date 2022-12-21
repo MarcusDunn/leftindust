@@ -4,7 +4,7 @@
   import type { RecordValues } from '../..';
   import RecordCalculation from '../RecordCalculation/RecordCalculation.svelte';
   import NodesModal from '@/features/Nodes/components/NodesModal/NodesModal.svelte';
-  import { rawCalculationNodes } from '@/features/Nodes';
+  import { templateCalculationNodes } from '@/features/Template';
 
   export let values: RecordValues;
 
@@ -32,7 +32,7 @@
 {#each mappedCalculations as calculation}
   {#if !calculation.showOnComplete}
     <NodesModal
-      nodes={rawCalculationNodes}
+      nodes={templateCalculationNodes}
       state={JSON.parse(calculation.calculation ?? '{}')}
       bind:open={calculation.calculationModalOpen}
       bind:editor={calculation.editor}

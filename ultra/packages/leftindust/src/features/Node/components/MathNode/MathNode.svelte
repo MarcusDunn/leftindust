@@ -26,9 +26,9 @@
   const { value: LHS } = inputs.LHS;
   const { value: RHS } = inputs.RHS;
   
-  const { value: output } = outputs.Number;
+  const { value: Output } = outputs.Number;
 
-  const getValue = () => {
+  $: $Output = (() => {
     const { type } = store;
 
     const left = $LHS;
@@ -36,24 +36,28 @@
 
     switch (type) {
       case 'addition':
-        $output = left + right;
-        break;
+        return left + right;
       case 'subtraction':
-        $output = left - right;
-        break;
+        return left - right;
       case 'multiplication':
-        $output = left * right;
-        break;
+        return left * right;
       case 'division':
-        $output = left / right;
-        break;
+        return left / right;
     }
-  };
+  })();
 
-  $: inputs, store, getValue();
+  $: displayOutput = (() => {
+    if ($Output.toString().length > 5) {
+      return ($Output < 0.1) ? $Output.toExponential(3) : $Output.toPrecision(4);
+    }
+    
+    return $Output;
+  })();
+
+  $: inputs, store;
 </script>
 
-<h1 class="no-margin" style="text-align: center">{$output}</h1>
+<h1 class="no-margin" style="text-align: center">{displayOutput}</h1>
 <List class="no-margin" noHairlines>
   <ListInput
     label="Type"

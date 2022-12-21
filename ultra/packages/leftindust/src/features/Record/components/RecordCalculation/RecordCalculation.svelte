@@ -4,7 +4,7 @@
 
 <script lang="ts">
   import type { SurveyTemplateCalculation } from '@/api/server';
-  import { rawCalculationNodes } from '@/features/Nodes';
+  import { templateCalculationNodes } from '@/features/Template';
   import { Preloader } from 'framework7-svelte';
   import { Compute } from 'function-junctions';
   import type { EditorState } from 'function-junctions/types';
@@ -28,7 +28,7 @@
 
 {#if inputs}
   <Compute
-    nodes={rawCalculationNodes}
+    nodes={templateCalculationNodes}
     {state}
     {inputs}
     {outputs}

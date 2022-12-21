@@ -3,7 +3,7 @@
 </style>
 
 <script lang="ts">
-  import { rawCalculationNodes } from '@/features/Nodes';
+  import { templateCalculationNodes } from '@/features/Template';
 
   import { Chip } from 'framework7-svelte';
   import type { NodeState } from 'function-junctions/types';
@@ -32,7 +32,7 @@
         <div class="record-record-calculation_tags-text">
           <div
             class="record-record-calculation_tags-stamp"
-            style={`background: ${rawCalculationNodes[node.type].color};`}
+            style={`background: ${templateCalculationNodes[node.type].color};`}
           />
           {node.type}
         </div>

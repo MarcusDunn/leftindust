@@ -22,6 +22,7 @@ import NumberNode from '../Node/components/NumberNode';
 import TextNode from '../Node/components/TextNode';
 import DateNode from '../Node/components/DateNode';
 import AverageNode from '../Node/components/AverageNode';
+import TrigNode from '../Node/components/TrigNode';
 import { openDialog } from '../UI/components/Dialog';
 
 const language = get(_);
@@ -132,8 +133,8 @@ export const templateCalculationNodes: Record<string, NodeBlueprint> = {
   Text: TextNode,
   Date: DateNode,
   Average: AverageNode,
+  Trig: TrigNode,
 };
-
 
 export const getTemplateSocketType = (inputType: SurveyTemplateInputType) => {
   let type: 'text' | 'number' | 'date' | 'text_array';

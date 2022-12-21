@@ -16,9 +16,9 @@
 
   const { value: Numbers } = inputs.Numbers;
   
-  const { value: output } = outputs.Number;
+  const { value: Output } = outputs.Number;
 
-  $: $output = (() => {
+  $: $Output = (() => {
     let value = 0;
 
     $Numbers.forEach((number) => {
@@ -27,7 +27,14 @@
 
     return value / $Numbers.length;
   })();
-  
+
+  $: displayOutput = (() => {
+    if ($Output.toString().length > 5) {
+      return ($Output < 0.1) ? $Output.toExponential(3) : $Output.toPrecision(4);
+    }
+    
+    return $Output;
+  })();
 </script>
 
-<h1 class="no-margin" style="text-align: center">{$output}</h1>
+<h1 class="no-margin" style="text-align: center">{displayOutput}</h1>

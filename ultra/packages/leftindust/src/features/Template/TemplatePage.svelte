@@ -16,9 +16,9 @@
   import Cells from '../UI/components/Cells/Cells.svelte';
   import IFrame from '../View/components/IFrame/IFrame.svelte';
   import CollapsableContentPlaceholder from '../UI/components/Collapsable/CollapsableContentPlaceholder.svelte';
-  import { rawCalculationNodes } from '../Nodes';
   import NodesModal from '../Nodes/components/NodesModal/NodesModal.svelte';
   import { getTrigger } from '../Triggers';
+  import { templateCalculationNodes } from './';
 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
@@ -140,7 +140,7 @@
           {#if $template.calculations.length > 0}
             {#each calculations as calculation}
               <NodesModal
-                nodes={rawCalculationNodes}
+                nodes={templateCalculationNodes}
                 state={JSON.parse(calculation.calculation ?? '{}')}
                 bind:open={calculation.calculationModalOpen}
                 bind:editor={calculation.editor}

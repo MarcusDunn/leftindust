@@ -20,6 +20,7 @@
   import type { MenuNodes } from '@/features/Nodes';
   import { TemplateCalculations } from '../../store';
   import deepmerge from 'deepmerge';
+  import TrigNode from '@/features/Node/components/TrigNode';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -85,6 +86,11 @@
           title: 'Average',
           description: 'Calculate the average of a set of numbers',
           blueprint: AverageNode,
+        },
+        {
+          title: 'Trig',
+          description: 'Sine, cosine, and tangent functions (input in radians)',
+          blueprint: TrigNode,
         },
       ],
     },
