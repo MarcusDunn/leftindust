@@ -16,11 +16,7 @@ import com.leftindust.mockingbird.graphql.types.Deletable
 import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.input.DeletableMapDelegate
 import com.leftindust.mockingbird.graphql.types.input.UpdatableMapDelegate
-import com.leftindust.mockingbird.patient.MapDelegatingCreateEmailDto
-import com.leftindust.mockingbird.patient.MapDelegatingCreatePhoneDto
-import com.leftindust.mockingbird.patient.PatientDto
-import com.leftindust.mockingbird.patient.UpdatePatient
-import com.leftindust.mockingbird.patient.UpdatePatientDto
+import com.leftindust.mockingbird.patient.*
 import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.MapDelegatingUpdateNameInfoDto
 import com.leftindust.mockingbird.person.UpdateNameInfo

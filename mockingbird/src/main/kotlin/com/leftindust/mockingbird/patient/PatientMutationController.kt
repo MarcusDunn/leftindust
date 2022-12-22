@@ -6,7 +6,6 @@ import com.leftindust.mockingbird.address.CreateAddressGraphQlDto
 import com.leftindust.mockingbird.contact.CreateContactGraphQlDto
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.email.CreateEmailGraphQlDto
-import com.leftindust.mockingbird.graphql.types.input.toMap
 import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.Sex
@@ -25,11 +24,10 @@ class PatientMutationController(
     private val updatePatientService: UpdatePatientService,
 ) {
     @MutationMapping("editPatient")
-    suspend fun editPatient(@Argument("editPatient") editPatient: UpdatePatientGraphQlDto): PatientDto? {
-        @Suppress("UNCHECKED_CAST")
-        val patient = MapDelegatingUpdatePatientDto(toMap(editPatient))
+    suspend fun editPatient(@Argument("editPatient") editPatient: ArgumentValueUpdatePatientDto): PatientDto? {
+        val toUpdatePatientDto = editPatient.toUpdatePatientDto()
         val updatedPatient = updatePatientService.update(
-            patient.toUpdatePatient().onFailure { throw it.reason.toMockingbirdException() })
+            toUpdatePatientDto.toUpdatePatient().onFailure { throw it.reason.toMockingbirdException() })
         return patientToPatientDtoConverter.convert(updatedPatient.onFailure { throw it.reason.toMockingbirdException() })
     }
 

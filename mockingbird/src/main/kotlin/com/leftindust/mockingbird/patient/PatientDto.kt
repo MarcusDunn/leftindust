@@ -22,6 +22,11 @@ data class PatientDto(
 
 
     data class PatientDtoId(override val value: UUID) : GraphQLID<UUID>
+}
 
-
+fun Patient.toPatientDto(): PatientDto {
+    return PatientDto(
+        PatientDto.PatientDtoId(id),
+        dateOfBirth, insuranceNumber, sex, gender, ethnicity
+    )
 }

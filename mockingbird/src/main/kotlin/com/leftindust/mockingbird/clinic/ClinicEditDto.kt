@@ -14,6 +14,7 @@ interface ClinicEditDto {
     val doctors: Updatable<List<DoctorDto.DoctorDtoId>>
 }
 
+
 fun ClinicEditDto.toClinicEdit(): ClinicEdit {
     return ClinicEditImpl(cid, name, address.map { it.toCreateAddress() }, doctors)
 }
