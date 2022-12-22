@@ -10,15 +10,7 @@ import com.leftindust.mockingbird.graphql.types.Deletable
 import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.delete
 import com.leftindust.mockingbird.graphql.types.update
-import com.leftindust.mockingbird.patient.CreatePatient
-import com.leftindust.mockingbird.patient.CreatePatientDto
-import com.leftindust.mockingbird.patient.PatientDto
-import com.leftindust.mockingbird.patient.PatientEntity
-import com.leftindust.mockingbird.patient.PatientEntityToPatientConverter
-import com.leftindust.mockingbird.patient.PatientEventEntity
-import com.leftindust.mockingbird.patient.PatientToPatientDtoConverter
-import com.leftindust.mockingbird.patient.UpdatePatientDto
-import com.leftindust.mockingbird.patient.toCreatePatient
+import com.leftindust.mockingbird.patient.*
 import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.Ethnicity
 import com.leftindust.mockingbird.person.NameInfoEntity
@@ -38,7 +30,6 @@ import java.util.UUID
 object PatientMother {
 
     val patientToPatientDtoConverter = PatientToPatientDtoConverter()
-    val patientEntityToPatientConverter = PatientEntityToPatientConverter()
 
     object Dan {
         const val firstName = "Dan"
@@ -207,12 +198,12 @@ object PatientMother {
             assignedSurveys = assignedSurveysTransient
         ).apply { id = this@Dan.id }
 
-        val domain = patientEntityToPatientConverter.convert(entityDetached)
-        val updatedDomainEntityDetached = patientEntityToPatientConverter.convert(entityUpdatedTransient)
+        val domain = entityDetached.toPatient().onFailure { throw it.reason.toMockingbirdException() }
+        val updatedDomainEntityDetached = entityUpdatedTransient.toPatient().onFailure { throw it.reason.toMockingbirdException() }
         val dto: PatientDto = patientToPatientDtoConverter.convert(domain)
         val updatedDto: PatientDto = patientToPatientDtoConverter.convert(updatedDomainEntityDetached)
 
-        val domainEntityTransient = patientEntityToPatientConverter.convert(entityTransient)
+        val domainEntityTransient = entityTransient.toPatient().onFailure { throw it.reason.toMockingbirdException() }
         val createPatient: CreatePatient
             get() = createPatientDto.toCreatePatient().onFailure { throw it.reason.toMockingbirdException() }
     }
