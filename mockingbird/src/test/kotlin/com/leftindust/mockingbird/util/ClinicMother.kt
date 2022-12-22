@@ -1,12 +1,12 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.clinic.ClinicEntity
-import com.leftindust.mockingbird.clinic.ClinicEntityToClinicConverter
+import com.leftindust.mockingbird.clinic.toClinic
 import com.leftindust.mockingbird.util.AddressMother.DansHouse
+import dev.forkhandles.result4k.onFailure
 import java.util.UUID
 
 object ClinicMother {
-    val clincEntityToClinicConverter = ClinicEntityToClinicConverter()
 
     object DansClinic {
 
@@ -21,11 +21,12 @@ object ClinicMother {
             ).apply { id = this@DansClinic.id }
         val entityUnpersisted: ClinicEntity
             get() = ClinicEntity(
-            name = dansClinicName,
-            address = address.apply { id = null },
-            doctors = mutableSetOf()
-        )
+                name = dansClinicName,
+                address = address.apply { id = null },
+                doctors = mutableSetOf()
+            )
 
-        val domain = clincEntityToClinicConverter.convert(entityPersisted.apply { name = dansClinicName })
+        val domain = entityPersisted.apply { name = dansClinicName }.toClinic()
+            .onFailure { throw it.reason.toMockingbirdException() }
     }
 }
