@@ -9,6 +9,7 @@ import com.leftindust.mockingbird.util.DoctorMother
 import com.leftindust.mockingbird.util.EmailMother
 import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.ninjasquad.springmockk.MockkBean
+import dev.forkhandles.result4k.onFailure
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -50,17 +51,17 @@ internal class ReadEmailServiceImplUnitTest {
     @Test
     internal fun `check getByDoctorId returns a list of email addresses when matching Doctor Id exists`() = runTest {
         coEvery { doctorRepository.findByIdOrNull(DoctorMother.Jenny.id) } returns DoctorMother.Jenny.entityDetached
-        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository, EmailEntityToEmailConverter())
+        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository)
         val emails = readEmailServiceImpl.getByDoctorId(DoctorMother.Jenny.graphqlId)
 
-        assertThat(emails, containsInAnyOrder(DoctorMother.Jenny.emailsDetached.map { EmailMother.emailEntityToEmailConverter.convert(it) }.map { equalTo(it) }))
+        assertThat(emails, containsInAnyOrder(DoctorMother.Jenny.emailsDetached.map { it.toEmail().onFailure { throw it.reason.toMockingbirdException() } }.map { equalTo(it) }))
     }
 
     @Test
     internal fun `check getByDoctorId returns null when no matching Doctor Id exist corresponding to any email address`() = runTest {
         val someNonExistentUUid = UUID.fromString("235b4875-92d4-4553-8852-eb8f4b3a887d")
         coEvery { doctorRepository.findByIdOrNull(match { it == someNonExistentUUid }) } returns null
-        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository, EmailEntityToEmailConverter())
+        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository)
         val emails = readEmailServiceImpl.getByDoctorId(DoctorDto.DoctorDtoId(someNonExistentUUid))
 
         assertThat(emails, nullValue())
@@ -69,19 +70,19 @@ internal class ReadEmailServiceImplUnitTest {
     @Test
     internal fun `check getPatientEmails returns a list of email addresses corresponding to a patient's Id`() = runTest {
         coEvery { patientRepository.findByIdOrNull(Dan.id) } returns Dan.entityDetached
-        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository, EmailEntityToEmailConverter())
+        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository)
         val emails = readEmailServiceImpl.getPatientEmails(Dan.graphqlId)
 
-        assertThat(emails, containsInAnyOrder(Dan.emailsDetached.map { EmailMother.emailEntityToEmailConverter.convert(it) }.map { equalTo(it) }))
+        assertThat(emails, containsInAnyOrder(Dan.emailsDetached.map { it.toEmail().onFailure { throw it.reason.toMockingbirdException() }  }.map { equalTo(it) }))
     }
 
     @Test
     internal fun `check getContactEmails returns a list of emails addresses corresponding to a user's contact Id`() = runTest {
         coEvery { readContactService.getByContactId(Aydan.graphqlId) } returns Aydan.entityDetached
-        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository, EmailEntityToEmailConverter())
+        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository)
         val emails = readEmailServiceImpl.getContactEmails(Aydan.graphqlId)
 
-        assertThat(emails, containsInAnyOrder(Aydan.emailsDetached.map { EmailMother.emailEntityToEmailConverter.convert(it) }.map { equalTo(it) }))
+        assertThat(emails, containsInAnyOrder(Aydan.emailsDetached.map { it.toEmail().onFailure { throw it.reason.toMockingbirdException() } }.map { equalTo(it) }))
     }
 }
 
@@ -108,7 +109,7 @@ internal class ReadEmailServiceImplDataTest(
     @Test
     internal fun `check returns an email address when queried with an Id from the database with matching Id`() = runTest {
         val jennyEmailAddressId = testEntityManager.persistAndGetId(EmailMother.DansEmail.entityTransient, UUID::class.java)
-        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository, EmailEntityToEmailConverter())
+        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository)
         val returnedEmail = readEmailServiceImpl.getByEmailId(EmailDto.EmailDtoId(jennyEmailAddressId!!))
 
         assertThat(returnedEmail, Matchers.notNullValue())
@@ -118,7 +119,7 @@ internal class ReadEmailServiceImplDataTest(
     @Test
     internal fun `check returns null when the database has no matching Id corresponding to an email address`() = runTest {
         val someNonExistentUuid = UUID.fromString("235b4875-92d4-4553-8852-eb8f4b3a887d")
-        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository, EmailEntityToEmailConverter())
+        val readEmailServiceImpl = ReadEmailServiceImpl(emailRepository, patientRepository, readContactService, doctorRepository)
         val returnedEmail = readEmailServiceImpl.getByEmailId(EmailDto.EmailDtoId(someNonExistentUuid))
 
         assertThat(returnedEmail, nullValue())

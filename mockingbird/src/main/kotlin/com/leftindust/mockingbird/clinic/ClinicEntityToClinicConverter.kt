@@ -1,21 +1,23 @@
 package com.leftindust.mockingbird.clinic
 
-import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.ConversionError
 import com.leftindust.mockingbird.NullEntityIdInConverterException
-import org.springframework.stereotype.Component
-import java.util.UUID
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import java.util.*
 
-@Component
-class ClinicEntityToClinicConverter : InfallibleConverter<ClinicEntity, Clinic> {
-    override fun convert(source: ClinicEntity): Clinic {
-        return ClinicImpl(
-            id = source.id ?: throw NullEntityIdInConverterException(source),
-            name = source.name,
+
+fun ClinicEntity.toClinic(): Result4k<Clinic, ConversionError<ClinicEntity, Clinic>> {
+    return Success(
+        ClinicImpl(
+            id = id ?: throw NullEntityIdInConverterException(this),
+            name = name
         )
-    }
+    )
 
-    private data class ClinicImpl(
-        override val id: UUID,
-        override val name: String,
-    ) : Clinic
 }
+
+private data class ClinicImpl(
+    override val id: UUID,
+    override val name: String
+) : Clinic

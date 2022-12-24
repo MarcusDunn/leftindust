@@ -1,26 +1,30 @@
 package com.leftindust.mockingbird.email
 
-import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.ConversionError
+import com.leftindust.mockingbird.ConversionError.Companion.ConversionFailure
 import com.leftindust.mockingbird.NullEntityIdInConverterException
 import com.leftindust.mockingbird.validate.EmailAddress
-import dev.forkhandles.result4k.orThrow
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 import dev.forkhandles.values.ofResult4k
-import java.util.UUID
-import org.springframework.stereotype.Component
+import java.util.*
 
-@Component
-class EmailEntityToEmailConverter : InfallibleConverter<EmailEntity, Email> {
-    override fun convert(source: EmailEntity): Email {
-        return EmailImpl(
-            id = source.id ?: throw NullEntityIdInConverterException(source),
-            type = source.type,
-            address = EmailAddress.ofResult4k(source.address).orThrow(),
+
+fun EmailEntity.toEmail(): Result4k<Email, ConversionError<EmailEntity, Email>> {
+    return Success(
+        EmailImpl(
+            id = id ?: throw NullEntityIdInConverterException(this),
+            type = type,
+            address = EmailAddress
+                .ofResult4k(address)
+                .onFailure { return ConversionFailure(it.reason) }
         )
-    }
-
-    data class EmailImpl(
-        override val id: UUID,
-        override val type: EmailType,
-        override val address: EmailAddress,
-    ) : Email
+    )
 }
+
+private data class EmailImpl(
+    override val id: UUID,
+    override val type: EmailType,
+    override val address: EmailAddress,
+) : Email
