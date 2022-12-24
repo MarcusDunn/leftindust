@@ -1,16 +1,11 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.email.*
-import com.leftindust.mockingbird.email.CreateEmailDto
-import com.leftindust.mockingbird.email.EmailEntity
-import com.leftindust.mockingbird.email.EmailEntityToEmailConverter
-import com.leftindust.mockingbird.email.EmailToEmailDtoConverter
-import com.leftindust.mockingbird.email.EmailType
+import dev.forkhandles.result4k.onFailure
 import dev.forkhandles.result4k.valueOrNull
-import java.util.UUID
+import java.util.*
 
 object EmailMother {
-    val emailEntityToEmailConverter = EmailEntityToEmailConverter()
     val emailToEmailDtoConverter = EmailToEmailDtoConverter()
 
     object DansEmail {
@@ -29,7 +24,7 @@ object EmailMother {
                 address = address
             )
 
-        val domain = emailEntityToEmailConverter.convert(entityDetached)
+        val domain = entityDetached.toEmail().onFailure { throw it.reason.toMockingbirdException() }
         val dto = emailToEmailDtoConverter.convert(domain)
 
         val createDto = CreateEmailGraphQlDto(
