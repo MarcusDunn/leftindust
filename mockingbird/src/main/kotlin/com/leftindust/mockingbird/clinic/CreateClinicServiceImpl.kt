@@ -1,10 +1,10 @@
 package com.leftindust.mockingbird.clinic
 
-import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.address.CreateAddressService
 import com.leftindust.mockingbird.doctor.DoctorRepository
-import org.springframework.data.repository.findByIdOrNull
+import dev.forkhandles.result4k.onFailure
 import jakarta.transaction.Transactional
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 
@@ -14,7 +14,6 @@ class CreateClinicServiceImpl(
     private val clinicRepository: ClinicRepository,
     private val doctorRepository: DoctorRepository,
     private val createAddressService: CreateAddressService,
-    private val clinicEntityToClinicConverter: InfallibleConverter<ClinicEntity,Clinic>,
 ) : CreateClinicService {
     override suspend fun addClinic(createClinic: CreateClinic): Clinic {
         val address = createAddressService.createAddress(createClinic.address)
@@ -32,6 +31,6 @@ class CreateClinicServiceImpl(
             }
             .forEach { clinic.addDoctor(it) }
         val newClinic = clinicRepository.save(clinic)
-        return clinicEntityToClinicConverter.convert(newClinic)
+        return newClinic.toClinic().onFailure { throw it.reason.toMockingbirdException() }
     }
 }
