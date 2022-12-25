@@ -8,8 +8,8 @@ import dev.forkhandles.result4k.Success
 fun Event.toEventDto(): Result4k<EventDto, ConversionError<Event, EventDto>> {
     return Success(
         EventDto(
-            id = EventDto.EventDtoId(this.id ?: throw NullEntityIdInConverterException(this)),
-            iCal = this.ical
+            id = EventDto.EventDtoId(id ?: throw NullEntityIdInConverterException(this)),
+            iCal = ical
         )
     )
 }

@@ -10,10 +10,10 @@ import java.util.*
 fun DoctorEntity.toDoctor(): Result4k<Doctor, ConversionError<DoctorEntity, Doctor>> {
     return Success(
         DoctorImpl(
-            id = this.id ?: throw NullEntityIdInConverterException(this),
-            thumbnail = this.thumbnail,
-            title = this.title,
-            dateOfBirth = this.dateOfBirth,
+            id = id ?: throw NullEntityIdInConverterException(this),
+            thumbnail = thumbnail,
+            title = title,
+            dateOfBirth = dateOfBirth,
         )
     )
 }

@@ -8,10 +8,10 @@ import dev.forkhandles.result4k.Success
 fun Doctor.toDoctorDto(): Result4k<DoctorDto, ConversionError<Doctor, DoctorDto>> {
     return Success(
         DoctorDto(
-            id = DoctorDto.DoctorDtoId(this.id),
-            thumbnail = this.thumbnail,
-            title = this.title,
-            dateOfBirth = this.dateOfBirth,
+            id = DoctorDto.DoctorDtoId(id),
+            thumbnail = thumbnail,
+            title = title,
+            dateOfBirth = dateOfBirth,
         )
     )
 }

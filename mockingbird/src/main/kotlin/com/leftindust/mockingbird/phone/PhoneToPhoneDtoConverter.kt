@@ -8,11 +8,11 @@ fun Phone.toPhoneDto(): Result4k<PhoneDto, ConversionError<Phone, PhoneDto>> {
     return Success(
         PhoneDto(
             PhoneDto.PhoneDtoId(
-                this.id
+                id
                     ?: throw IllegalArgumentException("Source ${Phone::class.simpleName} must have an id but was $this")
             ),
-            this.number,
-            this.type
+            number,
+            type
         )
     )
 }

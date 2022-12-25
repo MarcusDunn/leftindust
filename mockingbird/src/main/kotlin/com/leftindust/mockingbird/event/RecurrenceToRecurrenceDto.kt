@@ -8,9 +8,9 @@ import dev.forkhandles.result4k.Success
 fun Reoccurrence.toRecurrenceDto(): Result4k<RecurrenceDto, ConversionError<Reoccurrence, RecurrenceDto>> {
     return Success(
         RecurrenceDto(
-            startDate = this.startDate,
-            endDate = this.endDate,
-            daysOfWeek = this.days,
+            startDate = startDate,
+            endDate = endDate,
+            daysOfWeek = days,
         )
     )
 }

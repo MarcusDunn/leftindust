@@ -8,9 +8,9 @@ import dev.forkhandles.result4k.Success
 fun Email.toEmailDto(): Result4k<EmailDto, ConversionError<Email, EmailDto>> {
     return Success(
         EmailDto(
-            EmailDto.EmailDtoId(this.id),
-            this.type,
-            this.address.value
+            EmailDto.EmailDtoId(id),
+            type,
+            address.value
         )
     )
 }
