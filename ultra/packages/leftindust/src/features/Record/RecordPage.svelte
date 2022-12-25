@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CompleteSurveyByIdQueryDocument, type CompleteSurveyFragmentFragment, type Data } from '@/api/server';
+  import { CompleteSurveyByIdQueryDocument, PatientsByPatientIdQueryDocument, type CompleteSurveyFragmentFragment, type Data } from '@/api/server';
   import { operationStore, query } from '@urql/svelte';
   import type { Router } from 'framework7/types';
   import Appbar from '../UI/components/Appbar/Appbar.svelte';
@@ -26,10 +26,10 @@
 
   let record: CompleteSurveyFragmentFragment | undefined;
 
-  const data: { patient: Data; completedSurvey: Data } = JSON.parse(f7route.params.data ?? '{}');
+  const data: Data = JSON.parse(f7route.params.data ?? '{}');
 
   const request = operationStore(CompleteSurveyByIdQueryDocument, {
-    completeSurveyId: { value: data.completedSurvey.id },
+    completeSurveyId: { value: data.id },
   });
 
   let values: RecordValues;
@@ -87,8 +87,8 @@
       <Block style="margin: 0 40px">
         <SpecificGrid
           props={[{
-            id: data.patient.type,
-            data: { id: data.patient.id, type: data.patient.type },
+            id: data.type,
+            data: { id: data.id, type: data.type },
             quicklook,
           }]}
           type={WidgetType.Card}

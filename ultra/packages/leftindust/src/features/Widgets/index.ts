@@ -12,6 +12,7 @@ import TemplateCard from '@/features/Template/components/TemplateCard/TemplateCa
 // import IcdCard from '@/features/Icd/components/IcdCard/IcdCard.svelte';
 import PatientsBundle from '../Patients/components/PatientsBundle/PatientsBundle.svelte';
 import RecordsBundle from '../Records/components/RecordsBundle/RecordsBundle.svelte';
+import RecordCard from '../Record/components/RecordCard/RecordCard.svelte';
 
 export enum WidgetType {
   Attachment = 'attachment',
@@ -102,6 +103,11 @@ const Widgets: Widgets = {
       type: ['SurveyTemplate'],
       component: TemplateCard,
       category: [WidgetCategory.Document],
+    },
+    record: {
+      type: ['CompleteSurvey'],
+      component: RecordCard,
+      category: [WidgetCategory.Record],
     },
     /*
     icd: {
