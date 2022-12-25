@@ -12,7 +12,6 @@ import java.time.Month
 import java.util.*
 
 object DoctorMother {
-    val doctorToDoctorDto = DoctorToDoctorDtoConverter()
 
     object Jenny {
         const val firstName = "Jenny"
@@ -74,7 +73,7 @@ object DoctorMother {
 
 
         val domain = entityDetached.toDoctor().onFailure { throw it.reason.toMockingbirdException() }
-        val dto = doctorToDoctorDto.convert(domain)
+        val dto = domain.toDoctorDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 
     object Dan {
@@ -135,7 +134,7 @@ object DoctorMother {
 //        )
 
         val domain = entityDetached.toDoctor().onFailure { throw it.reason.toMockingbirdException() }
-        val dto = doctorToDoctorDto.convert(domain)
+        val dto = domain.toDoctorDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 
 }

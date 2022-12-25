@@ -2,7 +2,6 @@ package com.leftindust.mockingbird.event
 
 import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullSubQueryException
-import com.leftindust.mockingbird.doctor.Doctor
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
 import com.leftindust.mockingbird.patient.Patient
@@ -60,7 +59,6 @@ class EventQueryController(
     @Controller
     class EventDoctorController(
         private val readDoctorService: ReadDoctorService,
-        private val doctorToDoctorDtoConverter: InfallibleConverter<Doctor, DoctorDto>,
     ) {
         @QueryMapping
         suspend fun doctors(eventDto: EventDto): List<DoctorDto> {

@@ -1,17 +1,18 @@
 package com.leftindust.mockingbird.doctor
 
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class DoctorToDoctorDtoConverter : InfallibleConverter<Doctor, DoctorDto> {
-    override fun convert(source: Doctor): DoctorDto {
-        return DoctorDto(
-            id = DoctorDto.DoctorDtoId(source.id),
-            thumbnail = source.thumbnail,
-            title = source.title,
-            dateOfBirth = source.dateOfBirth,
+
+fun Doctor.toDoctorDto(): Result4k<DoctorDto, ConversionError<Doctor, DoctorDto>> {
+    return Success(
+        DoctorDto(
+            id = DoctorDto.DoctorDtoId(this.id),
+            thumbnail = this.thumbnail,
+            title = this.title,
+            dateOfBirth = this.dateOfBirth,
         )
-    }
+    )
 }
 
