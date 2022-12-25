@@ -1,15 +1,16 @@
 package com.leftindust.mockingbird.event
 
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class RecurrenceToRecurrenceDto : InfallibleConverter<Reoccurrence, RecurrenceDto> {
-    override fun convert(source: Reoccurrence): RecurrenceDto {
-        return RecurrenceDto(
-            startDate = source.startDate,
-            endDate = source.endDate,
-            daysOfWeek = source.days,
+
+fun Reoccurrence.toRecurrenceDto(): Result4k<RecurrenceDto, ConversionError<Reoccurrence, RecurrenceDto>> {
+    return Success(
+        RecurrenceDto(
+            startDate = this.startDate,
+            endDate = this.endDate,
+            daysOfWeek = this.days,
         )
-    }
+    )
 }
