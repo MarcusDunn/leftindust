@@ -6,8 +6,6 @@ import dev.forkhandles.result4k.valueOrNull
 import java.util.*
 
 object EmailMother {
-    val emailToEmailDtoConverter = EmailToEmailDtoConverter()
-
     object DansEmail {
         val id = UUID.fromString("10845c82-1d17-11ed-861d-0242ac120002")
         val emailType = EmailType.Work
@@ -25,7 +23,7 @@ object EmailMother {
             )
 
         val domain = entityDetached.toEmail().onFailure { throw it.reason.toMockingbirdException() }
-        val dto = emailToEmailDtoConverter.convert(domain)
+        val dto = domain.toEmailDto().onFailure { throw it.reason.toMockingbirdException() }
 
         val createDto = CreateEmailGraphQlDto(
             type = emailType,
