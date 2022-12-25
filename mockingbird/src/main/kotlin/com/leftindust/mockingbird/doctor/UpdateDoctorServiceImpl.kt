@@ -1,21 +1,9 @@
 package com.leftindust.mockingbird.doctor
 
-import com.leftindust.mockingbird.AddedAllEntityCollectionMessage
-import com.leftindust.mockingbird.ClearedEntityCollectionMessage
-import com.leftindust.mockingbird.IntoMockingbirdException
-import com.leftindust.mockingbird.MissedCollectionAddNoEntityWithId
-import com.leftindust.mockingbird.NoOpUpdatedEntityFieldMessage
-import com.leftindust.mockingbird.NoUpdatesOccurredNoEntityWithId
-import com.leftindust.mockingbird.PersistenceError
-import com.leftindust.mockingbird.SetEntityFieldMessage
-import com.leftindust.mockingbird.SetToNullEntityFieldMessage
+import com.leftindust.mockingbird.*
 import com.leftindust.mockingbird.address.CreateAddress
 import com.leftindust.mockingbird.address.CreateAddressService
-import com.leftindust.mockingbird.clinic.ClinicDto
-import com.leftindust.mockingbird.clinic.ClinicEditImpl
-import com.leftindust.mockingbird.clinic.ClinicEntity
-import com.leftindust.mockingbird.clinic.ReadClinicService
-import com.leftindust.mockingbird.clinic.UpdateClinicService
+import com.leftindust.mockingbird.clinic.*
 import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.graphql.types.Deletable
@@ -51,7 +39,6 @@ class UpdateDoctorServiceImpl(
     private val createEmailService: CreateEmailService,
     private val updateClinicService: UpdateClinicService,
     private val readDoctorService: ReadDoctorService,
-    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter,
 ) : UpdateDoctorService {
     private val logger = KotlinLogging.logger { }
 
@@ -74,7 +61,7 @@ class UpdateDoctorServiceImpl(
         updateAddresses(updateDoctor.addresses, doctor)
         updateEmails(updateDoctor.emails, doctor)
         updatePatients(updateDoctor.patients, doctor)
-        return Success(doctorEntityToDoctorConverter.convert(doctorRepository.save(doctor)))
+        return Success(doctorRepository.save(doctor).toDoctor().onFailure { throw it.reason.toMockingbirdException() })
     }
 
     private suspend fun updatePatients(patients: Updatable<List<PatientDto.PatientDtoId>>, doctor: DoctorEntity) {
@@ -82,6 +69,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::patients) }
             }
+
             is Updatable.Update -> {
                 doctor.clearPatients()
                 patients.value
@@ -100,6 +88,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::emails) }
             }
+
             is Updatable.Update -> {
                 val newEmails = emails.value.map { createEmailService.createEmail(it) }
                 doctor.emails.clear()
@@ -115,6 +104,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::addresses) }
             }
+
             is Updatable.Update -> {
                 val newAddresses = addresses.value.map { createAddressService.createAddress(it) }
                 doctor.addresses.clear()
@@ -133,6 +123,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::clinics) }
             }
+
             is Updatable.Update -> {
                 val newDoctorId = DoctorDto.DoctorDtoId(doctor.id!!)
                 doctor.clinics.forEach { it.clinic.removeDoctor(doctor) }
@@ -174,6 +165,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::phones) }
             }
+
             is Updatable.Update -> {
                 val newPhones = phones.value.map { createPhoneService.createPhone(it) }
                 doctor.phones.clear()
@@ -189,6 +181,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::nameInfoEntity) }
             }
+
             is Updatable.Update -> {
                 updateNameInfoService.updateNameInfo(nameInfo.value, doctor.nameInfoEntity)
             }
@@ -201,6 +194,7 @@ class UpdateDoctorServiceImpl(
             is Deletable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::user) }
             }
+
             is Deletable.Update -> {
                 val user = readMediqUserService.getByUserUid(userUid.value)
                 if (user == null) {
@@ -210,6 +204,7 @@ class UpdateDoctorServiceImpl(
                     doctor.user = user
                 }
             }
+
             is Deletable.Delete -> {
                 logger.trace { SetToNullEntityFieldMessage(doctor, doctor::user) }
                 doctor.user = null

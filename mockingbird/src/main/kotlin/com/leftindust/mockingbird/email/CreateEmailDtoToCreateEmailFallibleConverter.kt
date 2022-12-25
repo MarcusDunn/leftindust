@@ -12,7 +12,7 @@ fun CreateEmailDto.toCreateEmail(): Result4k<CreateEmail, ConversionError<Create
         email = EmailAddress
             .ofResult4k(email)
             .onFailure { return ConversionFailure(it.reason) }
-        )
+    )
     )
 }
 

@@ -6,13 +6,12 @@ import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.util.AddressMother.JennysHouse
 import com.leftindust.mockingbird.util.PhoneMother.JennysHomePhone
 import com.leftindust.mockingbird.util.PhoneMother.JennysWorkPhone
+import dev.forkhandles.result4k.onFailure
 import java.time.LocalDate
 import java.time.Month
-import java.util.UUID
+import java.util.*
 
 object DoctorMother {
-    val doctorToDoctorDto = DoctorToDoctorDtoConverter()
-    val doctorEntityToDoctorConverter = DoctorEntityToDoctorConverter()
 
     object Jenny {
         const val firstName = "Jenny"
@@ -73,9 +72,8 @@ object DoctorMother {
             }
 
 
-
-        val domain = doctorEntityToDoctorConverter.convert(entityDetached)
-        val dto = doctorToDoctorDto.convert(domain)
+        val domain = entityDetached.toDoctor().onFailure { throw it.reason.toMockingbirdException() }
+        val dto = domain.toDoctorDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 
     object Dan {
@@ -135,8 +133,8 @@ object DoctorMother {
 //            patients = ,
 //        )
 
-        val domain = (doctorEntityToDoctorConverter.convert(entityDetached))
-        val dto = doctorToDoctorDto.convert(domain)
+        val domain = entityDetached.toDoctor().onFailure { throw it.reason.toMockingbirdException() }
+        val dto = domain.toDoctorDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 
 }
