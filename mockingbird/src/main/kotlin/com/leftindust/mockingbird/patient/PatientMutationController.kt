@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.patient
 
 
-import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.address.CreateAddressGraphQlDto
 import com.leftindust.mockingbird.contact.CreateContactGraphQlDto
 import com.leftindust.mockingbird.doctor.DoctorDto
@@ -19,7 +18,6 @@ import java.time.LocalDate
 
 @Controller
 class PatientMutationController(
-    private val patientToPatientDtoConverter: InfallibleConverter<Patient?, PatientDto>,
     private val createPatientService: CreatePatientService,
     private val updatePatientService: UpdatePatientService,
 ) {
@@ -28,7 +26,8 @@ class PatientMutationController(
         val toUpdatePatientDto = editPatient.toUpdatePatientDto()
         val updatedPatient = updatePatientService.update(
             toUpdatePatientDto.toUpdatePatient().onFailure { throw it.reason.toMockingbirdException() })
-        return patientToPatientDtoConverter.convert(updatedPatient.onFailure { throw it.reason.toMockingbirdException() })
+        return updatedPatient.onFailure { throw it.reason.toMockingbirdException() }.toPatientDto()
+            .onFailure { throw it.reason.toMockingbirdException() }
     }
 
     @MutationMapping("addPatient")
@@ -38,7 +37,7 @@ class PatientMutationController(
     ): PatientDto {
         val createPatient = createPatientDto.toCreatePatient().onFailure { throw it.reason.toMockingbirdException() }
         val newPatient = createPatientService.addNewPatient(createPatient)
-        return patientToPatientDtoConverter.convert(newPatient)
+        return newPatient.toPatientDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 
     data class UpdatePatientGraphQlDto(
