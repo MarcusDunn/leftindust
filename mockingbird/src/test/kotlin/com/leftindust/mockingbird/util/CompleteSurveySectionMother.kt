@@ -1,18 +1,13 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionDto
-import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionEntity
-import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionEntityToCompleteSurveySectionConverter
-import com.leftindust.mockingbird.survey.complete.CompleteSurveySectionToCompleteSurveySectionDtoConverter
-import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveySection
-import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveySectionDto
+import com.leftindust.mockingbird.survey.complete.*
 import com.leftindust.mockingbird.util.CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt
 import com.leftindust.mockingbird.util.SurveyTemplateSectionMother.HowMuchPainAreYouInSection
+import dev.forkhandles.result4k.onFailure
 import java.util.UUID
 
 object CompleteSurveySectionMother {
     val completeSurveySectionToCompleteSurveySectionDtoConverter = CompleteSurveySectionToCompleteSurveySectionDtoConverter()
-    val completeSurveySectionEntityToCompleteSurveySectionConverter = CompleteSurveySectionEntityToCompleteSurveySectionConverter()
 
 
     object CompleteHowMuchPainAreYouInSection {
@@ -22,7 +17,7 @@ object CompleteSurveySectionMother {
             inputs = setOf(FilledOutHowBadIsThePainWhenIPokeIt.entityTransient)
         )
             .apply { id = this@CompleteHowMuchPainAreYouInSection.id }
-        val domain = completeSurveySectionEntityToCompleteSurveySectionConverter.convert(entityPersisted)
+        val domain = entityPersisted.toCompleteSurveySection().onFailure { throw it.reason.toMockingbirdException() }
         val dto =  completeSurveySectionToCompleteSurveySectionDtoConverter.convert(domain)
         val completedSurveyInputs = listOf(FilledOutHowBadIsThePainWhenIPokeIt.createDto)
         val createCompletedSurveyInputs = listOf(FilledOutHowBadIsThePainWhenIPokeIt.create)
