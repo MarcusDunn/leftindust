@@ -5,6 +5,7 @@ import com.leftindust.mockingbird.graphql.types.input.RangeDto
 import com.leftindust.mockingbird.graphql.types.input.toPageable
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.PatientRepository
+import dev.forkhandles.result4k.onFailure
 import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.domain.Sort
@@ -16,18 +17,17 @@ import org.springframework.stereotype.Service
 class ReadDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
     private val patientRepository: PatientRepository,
-    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter
 ) : ReadDoctorService {
     private val logger = KotlinLogging.logger { }
 
     override suspend fun getByPatientId(patientDtoId: PatientDto.PatientDtoId): List<Doctor>? {
         val patient = patientRepository.findByIdOrNull(patientDtoId.value) ?: return null
-        return patient.doctors.map { doctorEntityToDoctorConverter.convert(it.doctor) }
+        return patient.doctors.map { it.doctor.toDoctor().onFailure { throw it.reason.toMockingbirdException() } }
     }
 
     override suspend fun getByDoctorId(doctorDtoId: DoctorDto.DoctorDtoId): Doctor? {
         val doctorEntity = doctorRepository.findByIdOrNull(doctorDtoId.value) ?: return null
-        return doctorEntityToDoctorConverter.convert(doctorEntity)
+        return doctorEntity.toDoctor().onFailure { throw it.reason.toMockingbirdException() }
     }
 
     override suspend fun getByClinicId(clinicDtoId: ClinicDto.ClinicDtoId): List<Doctor>? {
@@ -41,7 +41,7 @@ class ReadDoctorServiceImpl(
     override suspend fun getMany(range: RangeDto): List<Doctor> {
         return doctorRepository
             .findAll(range.toPageable(Sort.sort(Doctor::class.java).by(Doctor::id)))
-            .map { doctorEntityToDoctorConverter.convert(it) }
+            .map { it.toDoctor().onFailure { throw it.reason.toMockingbirdException() } }
             .toList()
     }
 
