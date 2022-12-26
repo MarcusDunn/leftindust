@@ -1,13 +1,15 @@
 package com.leftindust.mockingbird.survey.link
 
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Controller
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Controller
-class SurveyLinkToSurveyLinkDtoConverter : InfallibleConverter<SurveyLink, SurveyLinkDto> {
-    override fun convert(source: SurveyLink): SurveyLinkDto {
-        return SurveyLinkDto(
-            id = SurveyLinkDto.SurveyLinkDtoId(source.id),
+
+fun SurveyLink.toSurveyLinkDto(): Result4k<SurveyLinkDto, ConversionError<SurveyLink, SurveyLinkDto>> {
+    return Success(
+        SurveyLinkDto(
+            id = SurveyLinkDto.SurveyLinkDtoId(id),
         )
-    }
+    )
 }
+

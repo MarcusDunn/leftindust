@@ -7,7 +7,6 @@ import dev.forkhandles.result4k.onFailure
 import java.util.*
 
 object SurveyLinkMother {
-    val surveyLinkToSurveyLinkDtoConverter = SurveyLinkToSurveyLinkDtoConverter()
 
     object KoosKneeSurveyLink {
         val id = UUID.fromString("f765849b-cbb4-4226-ad39-6b7518237606")
@@ -39,6 +38,6 @@ object SurveyLinkMother {
 
         val domain = entityDetached.toSurveyLink().onFailure { throw it.reason.toMockingbirdException() }
 
-        val dto = surveyLinkToSurveyLinkDtoConverter.convert(domain)
+        val dto = domain.toSurveyLinkDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 }
