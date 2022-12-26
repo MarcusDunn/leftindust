@@ -1,20 +1,19 @@
 package com.leftindust.mockingbird.survey.link
 
-import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.ConversionError
 import com.leftindust.mockingbird.NullEntityIdInConverterException
-import java.util.UUID
-import org.springframework.stereotype.Component
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import java.util.*
 
-@Component
-class SurveyLinkEntityToSurveyLinkConverter : InfallibleConverter<SurveyLinkEntity, SurveyLink> {
-    override fun convert(source: SurveyLinkEntity): SurveyLink {
-        return SurveyLinkImpl(
-            id = source.id ?: throw NullEntityIdInConverterException(source),
+fun SurveyLinkEntity.toSurveyLink(): Result4k<SurveyLink, ConversionError<SurveyLinkEntity, SurveyLink>> {
+    return Success(
+        SurveyLinkImpl(
+            id = id ?: throw NullEntityIdInConverterException(this),
         )
-    }
-
-    private data class SurveyLinkImpl(
-        override val id: UUID,
-    ) : SurveyLink
-
+    )
 }
+
+private data class SurveyLinkImpl(
+    override val id: UUID,
+) : SurveyLink

@@ -1,16 +1,12 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.survey.link.CreateSurveyLinkDto
-import com.leftindust.mockingbird.survey.link.SurveyLinkDto
-import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
-import com.leftindust.mockingbird.survey.link.SurveyLinkEntityToSurveyLinkConverter
-import com.leftindust.mockingbird.survey.link.SurveyLinkToSurveyLinkDtoConverter
+import com.leftindust.mockingbird.survey.link.*
 import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.leftindust.mockingbird.util.SurveyTemplateMother.KoosKneeSurvey
-import java.util.UUID
+import dev.forkhandles.result4k.onFailure
+import java.util.*
 
 object SurveyLinkMother {
-    val surveyLinkEntityToSurveyLinkConverter = SurveyLinkEntityToSurveyLinkConverter()
     val surveyLinkToSurveyLinkDtoConverter = SurveyLinkToSurveyLinkDtoConverter()
 
     object KoosKneeSurveyLink {
@@ -41,7 +37,7 @@ object SurveyLinkMother {
                 completeSurvey = null
             )
 
-        val domain = surveyLinkEntityToSurveyLinkConverter.convert(entityDetached)
+        val domain = entityDetached.toSurveyLink().onFailure { throw it.reason.toMockingbirdException() }
 
         val dto = surveyLinkToSurveyLinkDtoConverter.convert(domain)
     }
