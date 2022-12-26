@@ -5,7 +5,6 @@ import dev.forkhandles.result4k.onFailure
 import java.util.UUID
 
 object CompleteSurveySectionInputMother {
-    private val completeSurveySectionInputToCompleteSurveySectionInputDtoConverter = CompleteSurveySectionInputToCompleteSurveySectionInputDtoConverter()
     object FilledOutHowBadIsThePainWhenIPokeIt {
         val id = UUID.fromString("6f88c023-4479-43b1-bc42-6018e48da7e5")
         val value = "like prob like a 10 maybe"
@@ -13,7 +12,7 @@ object CompleteSurveySectionInputMother {
         val entityTransient = CompleteSurveySectionInputEntity(value = CompleteSurveySectionInputData.StringValue(value))
             .apply { id = this@FilledOutHowBadIsThePainWhenIPokeIt.id }
         val domain = entityTransient.toCompleteSurveySectionInput().onFailure { throw it.reason.toMockingbirdException() }
-        val dto = completeSurveySectionInputToCompleteSurveySectionInputDtoConverter.convert(domain)
+        val dto = domain.toCompleteSurveySectionInputDto()
 
 
         val createDto = CreateCompleteSurveyInputDto(
