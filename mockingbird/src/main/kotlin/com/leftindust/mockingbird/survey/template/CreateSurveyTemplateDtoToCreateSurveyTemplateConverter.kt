@@ -2,14 +2,13 @@ package com.leftindust.mockingbird.survey.template
 
 import com.leftindust.mockingbird.FailedConversionMessage.Companion.FailedConversionMessage
 import com.leftindust.mockingbird.FallibleConverter
-import com.leftindust.mockingbird.InfallibleConverter
+import dev.forkhandles.result4k.onFailure
 import mu.KotlinLogging
 import org.springframework.stereotype.Component
 
 @Component
 class CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(
     private val createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter: FallibleConverter<CreateSurveyTemplateSectionDto, CreateSurveyTemplateSection>,
-    private val createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter: InfallibleConverter<CreateSurveyTemplateCalculationDto, CreateSurveyTemplateCalculation>
 ) :
     FallibleConverter<CreateSurveyTemplateDto, CreateSurveyTemplate> {
     private val logger = KotlinLogging.logger { }
@@ -18,8 +17,14 @@ class CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(
         return CreateSurveyTemplateImpl(
             title = source.title,
             subtitle = source.subtitle,
-            sections = source.sections.map { createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter.convert(it)  ?: return null.also { logger.trace { FailedConversionMessage(source) } } },
-            calculations = source.calculations.map { createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter.convert(it) },
+            sections = source.sections.map {
+                createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter.convert(
+                    it
+                ) ?: return null.also { logger.trace { FailedConversionMessage(source) } }
+            },
+            calculations = source.calculations.map {
+                it.toCreateSurveyTemplateCalculationConverter().onFailure { throw it.reason.toMockingbirdException() }
+            },
         )
     }
 

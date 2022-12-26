@@ -11,7 +11,7 @@ import java.util.UUID
 object SurveyTemplateMother {
     val surveyTemplateEntityToSurveyTemplateConverter = SurveyTemplateEntityToSurveyTemplateConverter()
     val surveyTemplateToSurveyTemplateDtoConverter = SurveyTemplateToSurveyTemplateDtoConverter()
-    val createSurveyTemplateDtoToCreateSurveyTemplateConverter = CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(SurveyTemplateSectionMother.createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter, SurveyTemplateSectionCalculationMother.createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter)
+    val createSurveyTemplateDtoToCreateSurveyTemplateConverter = CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(SurveyTemplateSectionMother.createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter)
 
     object KoosKneeSurvey {
         val id = UUID.fromString("8fcf8e13-ba61-4216-a3a5-2be88ae27d74")

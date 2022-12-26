@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.survey
 
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateDtoToCreateSurveyTemplateConverter
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConverter
@@ -42,7 +41,6 @@ internal class SurveyTemplateMutationControllerUnitTest {
             SurveyTemplateToSurveyTemplateDtoConverter(),
             CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(
                 CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter(CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConverter()),
-                CreateSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter()
             )
         )
     }

@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateCalculationDto
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter
 import com.leftindust.mockingbird.survey.template.SurveyTemplateCalculationEntity
 import com.leftindust.mockingbird.survey.template.SurveyTemplateCalculationEntityToSurveyTemplateCalculationConverter
 import com.leftindust.mockingbird.survey.template.SurveyTemplateCalculationToSurveyTemplateCalculationDtoConverter
@@ -9,7 +8,6 @@ import com.leftindust.mockingbird.survey.template.SurveyTemplateInputType
 import java.util.UUID
 
 object SurveyTemplateSectionCalculationMother {
-    val createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter = CreateSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter()
     val surveyTemplateCalculationEntityToSurveyTemplateCalculationConverter = SurveyTemplateCalculationEntityToSurveyTemplateCalculationConverter()
     val surveyTemplateCalculationToSurveyTemplateCalculationDtoConverter = SurveyTemplateCalculationToSurveyTemplateCalculationDtoConverter()
 
