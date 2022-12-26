@@ -1,13 +1,14 @@
 package com.leftindust.mockingbird.survey.complete
 
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class CompleteSurveySectionToCompleteSurveySectionDtoConverter : InfallibleConverter<CompleteSurveySection, CompleteSurveySectionDto> {
-    override fun convert(source: CompleteSurveySection): CompleteSurveySectionDto {
-        return CompleteSurveySectionDto(
-            id = CompleteSurveySectionDto.CompleteSurveySectionDtoId(source.id)
+
+fun CompleteSurveySection.toCompleteSurveySectionDto(): Result4k<CompleteSurveySectionDto, ConversionError<CompleteSurveySection, CompleteSurveySectionDto>> {
+    return Success(
+        CompleteSurveySectionDto(
+            id = CompleteSurveySectionDto.CompleteSurveySectionDtoId(id)
         )
-    }
+    )
 }

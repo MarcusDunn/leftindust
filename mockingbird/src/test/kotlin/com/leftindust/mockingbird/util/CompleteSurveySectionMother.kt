@@ -4,10 +4,9 @@ import com.leftindust.mockingbird.survey.complete.*
 import com.leftindust.mockingbird.util.CompleteSurveySectionInputMother.FilledOutHowBadIsThePainWhenIPokeIt
 import com.leftindust.mockingbird.util.SurveyTemplateSectionMother.HowMuchPainAreYouInSection
 import dev.forkhandles.result4k.onFailure
-import java.util.UUID
+import java.util.*
 
 object CompleteSurveySectionMother {
-    val completeSurveySectionToCompleteSurveySectionDtoConverter = CompleteSurveySectionToCompleteSurveySectionDtoConverter()
 
 
     object CompleteHowMuchPainAreYouInSection {
@@ -18,7 +17,7 @@ object CompleteSurveySectionMother {
         )
             .apply { id = this@CompleteHowMuchPainAreYouInSection.id }
         val domain = entityPersisted.toCompleteSurveySection().onFailure { throw it.reason.toMockingbirdException() }
-        val dto =  completeSurveySectionToCompleteSurveySectionDtoConverter.convert(domain)
+        val dto = domain.toCompleteSurveySectionDto().onFailure { throw it.reason.toMockingbirdException() }
         val completedSurveyInputs = listOf(FilledOutHowBadIsThePainWhenIPokeIt.createDto)
         val createCompletedSurveyInputs = listOf(FilledOutHowBadIsThePainWhenIPokeIt.create)
         val surveyTemplateSectionId = HowMuchPainAreYouInSection.graphqlId
