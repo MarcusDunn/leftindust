@@ -29,7 +29,6 @@ internal class SurveyTemplateMutationControllerUnitTest {
     private val surveyTemplateMutationController by lazy {
         SurveyTemplateMutationController(
             createSurveyTemplateService,
-            SurveyTemplateToSurveyTemplateDtoConverter(),
         )
     }
 

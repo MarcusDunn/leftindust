@@ -5,7 +5,6 @@ import dev.forkhandles.result4k.onFailure
 import java.util.*
 
 object SurveyTemplateMother {
-    val surveyTemplateToSurveyTemplateDtoConverter = SurveyTemplateToSurveyTemplateDtoConverter()
 
     object KoosKneeSurvey {
         val id = UUID.fromString("8fcf8e13-ba61-4216-a3a5-2be88ae27d74")
@@ -37,7 +36,7 @@ object SurveyTemplateMother {
 
         val domain = entityDetached.toSurveyTemplate().onFailure { throw it.reason.toMockingbirdException() }
 
-        val dto = surveyTemplateToSurveyTemplateDtoConverter.convert(domain)
+        val dto = domain.toSurveyTemplateDto().onFailure { throw it.reason.toMockingbirdException() }
 
         val dtoSections = listOf(SurveyTemplateSectionMother.HowMuchPainAreYouInSection.createDto)
         val dtoCalculations = listOf(SurveyTemplateSectionCalculationMother.FirstCalculation.createDto)

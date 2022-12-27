@@ -1,14 +1,12 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.survey.template.*
 import com.leftindust.mockingbird.util.SurveyTemplateSectionInputMother.HowMuchPainAreYouInSectionInput
 import dev.forkhandles.result4k.onFailure
 import java.util.*
 
 object SurveyTemplateSectionMother {
-    val surveyTemplateToSurveyTemplateDtoConverter: InfallibleConverter<SurveyTemplateSection, SurveyTemplateSectionDto> =
-        SurveyTemplateSectionToSurveyTemplateSectionDtoConverter()
+
 
     object HowMuchPainAreYouInSection {
         val id = UUID.fromString("32b0b8ba-7f8f-4c7d-bad9-23bea9a024ba")
@@ -42,7 +40,8 @@ object SurveyTemplateSectionMother {
         val domain: SurveyTemplateSection =
             entityDetached.toSurveyTemplateSection().onFailure { throw it.reason.toMockingbirdException() }
 
-        val dto: SurveyTemplateSectionDto = surveyTemplateToSurveyTemplateDtoConverter.convert(domain)
+        val dto: SurveyTemplateSectionDto =
+            domain.toSurveyTemplateSectionDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 
 }
