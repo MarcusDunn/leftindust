@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.survey.complete
 
 import com.leftindust.mockingbird.NullSubQueryException
+import dev.forkhandles.result4k.onFailure
 import org.springframework.graphql.data.method.annotation.SchemaMapping
 import org.springframework.stereotype.Controller
 
@@ -17,6 +18,8 @@ class CompleteSurveySectionInputQueryController(
                     surveySectionDto,
                     ReadCompleteSurveySectionInputService::completeSurveySectionInputByCompleteSurveySectionId
                 )
-        return completeSurveySectionInputs.map { it.toCompleteSurveySectionInputDto() }
+        return completeSurveySectionInputs.map {
+            it.toCompleteSurveySectionInputDto().onFailure { throw it.reason.toMockingbirdException() }
+        }
     }
 }
