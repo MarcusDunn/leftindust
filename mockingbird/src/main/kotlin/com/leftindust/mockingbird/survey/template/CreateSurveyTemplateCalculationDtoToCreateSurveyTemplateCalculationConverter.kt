@@ -5,7 +5,7 @@ import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
 
 
-fun CreateSurveyTemplateCalculationDto.toCreateSurveyTemplateCalculationConverter(): Result4k<CreateSurveyTemplateCalculation, ConversionError<CreateSurveyTemplateCalculationDto, CreateSurveyTemplateCalculation>> {
+fun CreateSurveyTemplateCalculationDto.toCreateSurveyTemplateCalculation(): Result4k<CreateSurveyTemplateCalculation, ConversionError<CreateSurveyTemplateCalculationDto, CreateSurveyTemplateCalculation>> {
     return Success(
         CreateSurveyTemplateCalculationImpl(
             label = label,
