@@ -11,9 +11,11 @@ class CompleteSurveyDtoMutationController(
 ) {
     @MutationMapping("createCompleteSurvey")
     suspend fun createCompleteSurvey(@Argument("createCompleteSurvey") createCompleteSurveyDto: CreateCompleteSurveyDto): CompleteSurveyDto? {
-        val createCompleteSurvey = createCompleteSurveyDto.toCreateCompleteSurvey().onFailure { throw it.reason.toMockingbirdException() }
-        val completeSurvey = createCompleteSurveyService.createCompleteSurvey(createCompleteSurvey).onFailure { throw it.reason.toMockingbirdException() }
-        return completeSurvey.toCompleteSurveyDto()
+        val createCompleteSurvey =
+            createCompleteSurveyDto.toCreateCompleteSurvey().onFailure { throw it.reason.toMockingbirdException() }
+        val completeSurvey = createCompleteSurveyService.createCompleteSurvey(createCompleteSurvey)
+            .onFailure { throw it.reason.toMockingbirdException() }
+        return completeSurvey.toCompleteSurveyDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 }
 
