@@ -1,23 +1,24 @@
 package com.leftindust.mockingbird.survey.template
 
-import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.ConversionError
 import com.leftindust.mockingbird.NullEntityIdInConverterException
-import org.springframework.stereotype.Component
-import java.util.UUID
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import java.util.*
 
-@Component
-class SurveyTemplateEntityToSurveyTemplateConverter : InfallibleConverter<SurveyTemplateEntity, SurveyTemplate> {
-    override fun convert(source: SurveyTemplateEntity): SurveyTemplate {
-        return SurveyTemplateImpl(
-            id = source.id ?: throw NullEntityIdInConverterException(source),
-            title = source.title,
-            subtitle = source.subtitle,
+
+fun SurveyTemplateEntity.toSurveyTemplate(): Result4k<SurveyTemplate, ConversionError<SurveyTemplateEntity, SurveyTemplate>> {
+    return Success(
+        SurveyTemplateImpl(
+            id = id ?: throw NullEntityIdInConverterException(this),
+            title = title,
+            subtitle = subtitle,
         )
-    }
-
-    private data class SurveyTemplateImpl(
-        override val id: UUID,
-        override val title: String,
-        override val subtitle: String?,
-    ) : SurveyTemplate
+    )
 }
+
+private data class SurveyTemplateImpl(
+    override val id: UUID,
+    override val title: String,
+    override val subtitle: String?,
+) : SurveyTemplate

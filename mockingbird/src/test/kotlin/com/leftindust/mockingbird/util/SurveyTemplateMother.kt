@@ -5,7 +5,6 @@ import dev.forkhandles.result4k.onFailure
 import java.util.*
 
 object SurveyTemplateMother {
-    val surveyTemplateEntityToSurveyTemplateConverter = SurveyTemplateEntityToSurveyTemplateConverter()
     val surveyTemplateToSurveyTemplateDtoConverter = SurveyTemplateToSurveyTemplateDtoConverter()
 
     object KoosKneeSurvey {
@@ -36,7 +35,7 @@ object SurveyTemplateMother {
             calculations = calculationEntitiesTransient,
         ).apply { id = this@KoosKneeSurvey.id }
 
-        val domain = surveyTemplateEntityToSurveyTemplateConverter.convert(entityDetached)
+        val domain = entityDetached.toSurveyTemplate().onFailure { throw it.reason.toMockingbirdException() }
 
         val dto = surveyTemplateToSurveyTemplateDtoConverter.convert(domain)
 

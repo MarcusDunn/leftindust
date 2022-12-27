@@ -7,7 +7,7 @@ import dev.forkhandles.result4k.Success
 import java.util.*
 
 
-fun SurveyTemplateCalculationEntity.toSurveyTemplateCalculation(): Result4k<SurveyTemplateCalculation, ConversionError<SurveyTemplateCalculationDto, SurveyTemplateCalculation>> {
+fun SurveyTemplateCalculationEntity.toSurveyTemplateCalculation(): Result4k<SurveyTemplateCalculation, ConversionError<SurveyTemplateCalculationEntity, SurveyTemplateCalculation>> {
     return Success(
         SurveyTemplateCalculationImpl(
             id = id ?: throw NullEntityIdInConverterException(this),
