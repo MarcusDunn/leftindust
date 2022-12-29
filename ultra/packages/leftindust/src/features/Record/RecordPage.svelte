@@ -87,8 +87,8 @@
       <Block style="margin: 0 40px">
         <SpecificGrid
           props={[{
-            id: data.type,
-            data: { id: data.id, type: data.type },
+            id: record.surveyTemplate.__typename,
+            data: { id: record.surveyTemplate.id.value, type: record.surveyTemplate.__typename },
             quicklook,
           }]}
           type={WidgetType.Card}
