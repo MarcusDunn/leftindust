@@ -4,7 +4,7 @@ import com.leftindust.mockingbird.ConversionError
 import com.leftindust.mockingbird.NullEntityIdInConverterException
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
-import java.util.*
+import java.util.UUID
 
 
 fun SurveyTemplateCalculationEntity.toSurveyTemplateCalculation(): Result4k<SurveyTemplateCalculation, ConversionError<SurveyTemplateCalculationEntity, SurveyTemplateCalculation>> {
