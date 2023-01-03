@@ -2,16 +2,16 @@ package com.leftindust.mockingbird.util
 
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyDto
 import com.leftindust.mockingbird.survey.complete.CompleteSurveyEntity
-import com.leftindust.mockingbird.survey.complete.CompleteSurveyEntityToCompleteSurvey
 import com.leftindust.mockingbird.survey.complete.CreateCompleteSurvey
 import com.leftindust.mockingbird.survey.complete.CreateCompleteSurveyDto
+import com.leftindust.mockingbird.survey.complete.toCompleteSurvey
 import com.leftindust.mockingbird.util.CompleteSurveySectionMother.CompleteHowMuchPainAreYouInSection
 import com.leftindust.mockingbird.util.SurveyLinkMother.KoosKneeSurveyLink
+import dev.forkhandles.result4k.onFailure
 import java.util.UUID
 
 object CompleteSurveyMother {
 
-    val completeSurveyEntityToCompleteSurvey = CompleteSurveyEntityToCompleteSurvey()
 
     object FilledOutKoosKneeSurvey {
         val id = UUID.fromString("d30e7ae9-01bc-4027-9825-94709e55b2cd")
@@ -31,7 +31,7 @@ object CompleteSurveyMother {
             surveyLink = KoosKneeSurveyLink.entityDetached
         )
 
-        val domain = completeSurveyEntityToCompleteSurvey.convert(entityDetached)
+        val domain = entityDetached.toCompleteSurvey().onFailure { throw it.reason.toMockingbirdException() }
 
         val createDomain = object : CreateCompleteSurvey {
             override val surveyLinkId = this@FilledOutKoosKneeSurvey.surveyLinkId

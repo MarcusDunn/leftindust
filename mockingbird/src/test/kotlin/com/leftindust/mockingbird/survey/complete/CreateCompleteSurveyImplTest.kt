@@ -36,7 +36,7 @@ internal class CreateCompleteSurveyImplUnitTest {
     @MockK
     private lateinit var surveyLinkRepository: SurveyLinkRepository
 
-    private val completeSurveyEntityToCompleteSurveyConverter = CompleteSurveyEntityToCompleteSurvey()
+
 
     @Test
     internal fun `check saves a new entity`() = runTest {
@@ -45,7 +45,7 @@ internal class CreateCompleteSurveyImplUnitTest {
         val createCompleteSurveyService = CreateCompleteSurveyServiceImpl(
             completeSurveyRepository,
             surveyLinkRepository,
-            completeSurveyEntityToCompleteSurveyConverter
+
         )
         createCompleteSurveyService.createCompleteSurvey(CompleteSurveyMother.FilledOutKoosKneeSurvey.createDomain)
         verify(exactly = 1) { completeSurveyRepository.save(any()) }
@@ -69,14 +69,12 @@ internal class CreateCompleteSurveyImplDatabaseTest(
     @MockK
     private lateinit var patientRepository: PatientRepository
 
-    private val completeSurveyEntityToCompleteSurveyConverter = CompleteSurveyEntityToCompleteSurvey()
 
     @Test
     internal fun `check persists a new surveyTemplate`() = runTest {
         val createCompleteSurveyService = CreateCompleteSurveyServiceImpl(
             completeSurveyRepository,
             surveyLinkRepository,
-            completeSurveyEntityToCompleteSurveyConverter
         )
         val createSurveyLinkService = CreateSurveyLinkServiceImpl(
             surveyLinkRepository,
