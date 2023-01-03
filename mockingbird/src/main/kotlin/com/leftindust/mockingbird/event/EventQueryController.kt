@@ -7,6 +7,7 @@ import com.leftindust.mockingbird.doctor.ReadDoctorService
 import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.patient.toPatientDto
 import com.leftindust.mockingbird.visit.ReadVisitService
 import com.leftindust.mockingbird.visit.Visit
 import com.leftindust.mockingbird.visit.VisitDto
@@ -46,13 +47,12 @@ class EventQueryController(
     @Controller
     class EventPatientController(
         private val readPatientService: ReadPatientService,
-        private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>,
     ) {
         @QueryMapping
         suspend fun patients(eventDto: EventDto): List<PatientDto> {
             val patients = readPatientService.getByEvent(eventDto.id)
                 ?: throw NullSubQueryException(eventDto, ReadPatientService::getByEvent)
-            return patients.map { patientToPatientDtoConverter.convert(it) }
+            return patients.map { it.toPatientDto().onFailure { throw it.reason.toMockingbirdException() } }
         }
     }
 

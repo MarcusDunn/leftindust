@@ -1,37 +1,41 @@
 package com.leftindust.mockingbird.survey.complete
 
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class CompleteSurveySectionInputToCompleteSurveySectionInputDtoConverter(
-) : InfallibleConverter<CompleteSurveySectionInput, CompleteSurveySectionInputDto> {
-    override fun convert(source: CompleteSurveySectionInput): CompleteSurveySectionInputDto {
-        return when (val input = source.value) {
+
+fun CompleteSurveySectionInput.toCompleteSurveySectionInputDto(): Result4k<CompleteSurveySectionInputDto, ConversionError<CompleteSurveySectionInput, CompleteSurveySectionInputDto>> {
+    return Success(
+        when (val input = value) {
             is StringInput -> {
                 CompleteSurveySectionStringInput(
-                    id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(source.id),
+                    id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(id),
                     string = input.string
                 )
             }
+
             is NumberInput -> {
                 CompleteSurveySectionNumberInput(
-                    id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(source.id),
+                    id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(id),
                     number = input.number
                 )
             }
+
             is StringArrayInput -> {
                 CompleteSurveySectionStringArrayInput(
-                    id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(source.id),
+                    id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(id),
                     stringArray = input.stringArray
                 )
             }
+
             is NumberArrayInput -> {
                 CompleteSurveySectionNumberArrayInput(
-                    id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(source.id),
+                    id = CompleteSurveySectionInputDto.CompleteSurveySectionInputDtoId(id),
                     numberArray = input.numberArray
                 )
             }
         }
-    }
+    )
+
 }

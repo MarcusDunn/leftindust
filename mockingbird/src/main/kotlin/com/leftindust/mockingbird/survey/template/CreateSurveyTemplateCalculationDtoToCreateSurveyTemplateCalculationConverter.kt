@@ -1,24 +1,24 @@
 package com.leftindust.mockingbird.survey.template
 
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class CreateSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter :
-    InfallibleConverter<CreateSurveyTemplateCalculationDto, CreateSurveyTemplateCalculation> {
-    override fun convert(source: CreateSurveyTemplateCalculationDto): CreateSurveyTemplateCalculation {
-        return CreateSurveyTemplateCalculationImpl(
-            label = source.label,
-            type = source.inputType,
-            showOnComplete = source.showOnComplete,
-            calculation = source.calculation,
+
+fun CreateSurveyTemplateCalculationDto.toCreateSurveyTemplateCalculation(): Result4k<CreateSurveyTemplateCalculation, ConversionError<CreateSurveyTemplateCalculationDto, CreateSurveyTemplateCalculation>> {
+    return Success(
+        CreateSurveyTemplateCalculationImpl(
+            label = label,
+            type = inputType,
+            showOnComplete = showOnComplete,
+            calculation = calculation,
         )
-    }
-
-    private data class CreateSurveyTemplateCalculationImpl(
-        override val label: String,
-        override val type: SurveyTemplateInputType,
-        override val showOnComplete: Boolean,
-        override val calculation: String
-    ) : CreateSurveyTemplateCalculation
+    )
 }
+
+private data class CreateSurveyTemplateCalculationImpl(
+    override val label: String,
+    override val type: SurveyTemplateInputType,
+    override val showOnComplete: Boolean,
+    override val calculation: String
+) : CreateSurveyTemplateCalculation

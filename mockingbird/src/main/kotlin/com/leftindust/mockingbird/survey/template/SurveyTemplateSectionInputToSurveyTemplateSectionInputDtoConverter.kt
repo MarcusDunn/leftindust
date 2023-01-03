@@ -1,112 +1,120 @@
 package com.leftindust.mockingbird.survey.template
 
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter : InfallibleConverter<SurveyTemplateSectionInput, SurveyTemplateSectionInputDto> {
-    override fun convert(source: SurveyTemplateSectionInput): SurveyTemplateSectionInputDto {
-        return when (val restriction = source.restriction) {
+
+fun SurveyTemplateSectionInput.toSurveyTemplateSectionInputDto(): Result4k<SurveyTemplateSectionInputDto, ConversionError<SurveyTemplateSectionInput, SurveyTemplateSectionInputDto>> {
+    return Success(
+        when (val restriction = restriction) {
             is DateSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
-                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
+                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(id),
                 type = SurveyTemplateInputType.Date,
-                label = source.label,
+                label = label,
                 options = null,
-                placeholder = source.placeholder,
-                required = source.required,
-                category = source.category,
+                placeholder = placeholder,
+                required = required,
+                category = category,
                 uploadMultiple = null,
                 uploadAccept = null,
-                calculationId = source.calculationId
+                calculationId = calculationId
             )
+
             is MultiSelectSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
-                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
+                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(id),
                 type = SurveyTemplateInputType.MultiSelect,
-                label = source.label,
+                label = label,
                 options = restriction.options,
-                placeholder = source.placeholder,
-                required = source.required,
-                category = source.category,
+                placeholder = placeholder,
+                required = required,
+                category = category,
                 uploadMultiple = null,
                 uploadAccept = null,
-                calculationId = source.calculationId
+                calculationId = calculationId
             )
+
             is NumberSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
-                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
+                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(id),
                 type = SurveyTemplateInputType.Number,
-                label = source.label,
+                label = label,
                 options = null,
-                placeholder = source.placeholder,
-                required = source.required,
-                category = source.category,
+                placeholder = placeholder,
+                required = required,
+                category = category,
                 uploadMultiple = null,
                 uploadAccept = null,
-                calculationId = source.calculationId,
+                calculationId = calculationId,
             )
+
             is ParagraphSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
-                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
+                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(id),
                 type = SurveyTemplateInputType.Paragraph,
-                label = source.label,
+                label = label,
                 options = null,
-                placeholder = source.placeholder,
-                required = source.required,
-                category = source.category,
+                placeholder = placeholder,
+                required = required,
+                category = category,
                 uploadMultiple = null,
                 uploadAccept = null,
-                calculationId = source.calculationId,
+                calculationId = calculationId,
 
                 )
+
             is SingleSelectSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
-                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
+                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(id),
                 type = SurveyTemplateInputType.SingleSelect,
-                label = source.label,
+                label = label,
                 options = restriction.options,
-                placeholder = source.placeholder,
-                required = source.required,
-                category = source.category,
+                placeholder = placeholder,
+                required = required,
+                category = category,
                 uploadMultiple = null,
                 uploadAccept = null,
-                calculationId = source.calculationId,
+                calculationId = calculationId,
 
                 )
+
             is TextSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
-                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
+                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(id),
                 type = SurveyTemplateInputType.Text,
-                label = source.label,
+                label = label,
                 options = null,
-                placeholder = source.placeholder,
-                required = source.required,
-                category = source.category,
+                placeholder = placeholder,
+                required = required,
+                category = category,
                 uploadMultiple = null,
                 uploadAccept = null,
-                calculationId = source.calculationId,
+                calculationId = calculationId,
 
                 )
+
             is TitleSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
-                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
+                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(id),
                 type = SurveyTemplateInputType.Title,
-                label = source.label,
+                label = label,
                 options = null,
-                placeholder = source.placeholder,
-                required = source.required,
-                category = source.category,
+                placeholder = placeholder,
+                required = required,
+                category = category,
                 uploadMultiple = null,
                 uploadAccept = null,
-                calculationId = source.calculationId,
+                calculationId = calculationId,
 
                 )
+
             is UploadSurveyTemplateSectionInputRestriction -> SurveyTemplateSectionInputDto(
-                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(source.id),
+                id = SurveyTemplateSectionInputDto.SurveyTemplateSectionInputDtoId(id),
                 type = SurveyTemplateInputType.Upload,
-                label = source.label,
+                label = label,
                 options = null,
-                placeholder = source.placeholder,
-                required = source.required,
-                category = source.category,
+                placeholder = placeholder,
+                required = required,
+                category = category,
                 uploadMultiple = restriction.uploadMultiple,
                 uploadAccept = restriction.uploadAccept,
-                calculationId = source.calculationId,
-                )
+                calculationId = calculationId,
+            )
         }
-    }
+    )
 }
