@@ -25,7 +25,7 @@
 
   query(request);
 
-  let survey: PartialCompleteSurveyFragmentFragment | undefined;
+  let survey: PartialCompleteSurveyFragmentFragment;
 
   $: if ($request.data?.completeSurveyById) survey = $request.data.completeSurveyById;
 
@@ -47,10 +47,22 @@
   loading={!survey}
 >
   <div style="margin-top: 6px" slot="subtitle">
-    <RecordTags sections={survey?.sections} surveyTemplate={survey?.surveyTemplate}/>
+    <RecordTags sections={survey.sections} surveyTemplate={survey.surveyTemplate}/>
   </div>
 
   <svelte:fragment slot="controls">
+    {#if reference}
+      <PinButton
+        pinned={pinned({
+          id: survey.id.value,
+          type: survey.__typename,
+        }, reference)}
+        on:pin={({ detail }) => reference && pin(detail, {
+          id: survey.id.value,
+          type: survey.__typename,
+        }, reference)}
+      />
+    {/if}
     <Row>
       <Col width="50">
         <Button round fill href={url}>

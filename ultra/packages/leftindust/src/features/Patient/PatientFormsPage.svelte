@@ -63,6 +63,10 @@
             type: typeName,
             patient,
           },
+          reference: {
+            id: patient?.id.value,
+            type: patient?.__typename,
+          },
         }];
       }
       else return surveyGridProps;
