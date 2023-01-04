@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.survey.template
 
 import com.leftindust.mockingbird.InfallibleConverter
+import dev.forkhandles.result4k.onFailure
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service
 @Transactional
 class CreateSurveyTemplateServiceImpl(
     private val surveyTemplateRepository: SurveyTemplateRepository,
-    private val surveyTemplateEntityToSurveyTemplateConverter: InfallibleConverter<SurveyTemplateEntity, SurveyTemplate>,
 ) : CreateSurveyTemplateService {
     override suspend fun createSurveyTemplate(surveyTemplate: CreateSurveyTemplate): SurveyTemplate {
         val newSurveyTemplate = SurveyTemplateEntity(
@@ -21,7 +21,7 @@ class CreateSurveyTemplateServiceImpl(
             }.toMutableSet(),
         )
         val surveyTemplateEntity = surveyTemplateRepository.save(newSurveyTemplate)
-        return surveyTemplateEntityToSurveyTemplateConverter.convert(surveyTemplateEntity)
+        return surveyTemplateEntity.toSurveyTemplate().onFailure { throw it.reason.toMockingbirdException() }
     }
 
     private fun createSectionToSectionEntity(

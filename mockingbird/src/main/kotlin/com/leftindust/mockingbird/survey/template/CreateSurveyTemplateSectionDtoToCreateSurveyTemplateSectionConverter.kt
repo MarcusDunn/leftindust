@@ -1,33 +1,27 @@
 package com.leftindust.mockingbird.survey.template
 
-import com.leftindust.mockingbird.FailedConversionMessage.Companion.FailedConversionMessage
-import com.leftindust.mockingbird.FallibleConverter
-import mu.KotlinLogging
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 
-@Component
-class CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter(
-    private val createSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConverter: FallibleConverter<CreateSurveyTemplateSectionInputDto, CreateSurveyTemplateSectionInput>
-) : FallibleConverter<CreateSurveyTemplateSectionDto, CreateSurveyTemplateSection> {
-    private val logger = KotlinLogging.logger { }
-
-    override fun convert(source: CreateSurveyTemplateSectionDto): CreateSurveyTemplateSection? {
-        return CreateSurveyTemplateSectionImpl(
-            title = source.title,
-            subtitle = source.subtitle,
-            inputs = source.inputs.map {
-                createSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConverter.convert(
-                    it
-                ) ?: return null.also { logger.trace { FailedConversionMessage(source) } }
+fun CreateSurveyTemplateSectionDto.toCreateSurveyTemplateSection(): Result4k<CreateSurveyTemplateSection, ConversionError<CreateSurveyTemplateSectionDto, CreateSurveyTemplateSection>> {
+    return Success(
+        CreateSurveyTemplateSectionImpl(
+            title = title,
+            subtitle = subtitle,
+            inputs = inputs.map {
+                it.toCreateSurveyTemplateSectionInput().onFailure { throw it.reason.toMockingbirdException() }
             },
-            calculationId = source.calculationId,
+            calculationId = calculationId,
         )
-    }
-
-    private data class CreateSurveyTemplateSectionImpl(
-        override val title: String,
-        override val subtitle: String?,
-        override val inputs: List<CreateSurveyTemplateSectionInput>,
-        override val calculationId: Int
-    ) : CreateSurveyTemplateSection
+    )
 }
+
+private data class CreateSurveyTemplateSectionImpl(
+    override val title: String,
+    override val subtitle: String?,
+    override val inputs: List<CreateSurveyTemplateSectionInput>,
+    override val calculationId: Int
+) : CreateSurveyTemplateSection
+

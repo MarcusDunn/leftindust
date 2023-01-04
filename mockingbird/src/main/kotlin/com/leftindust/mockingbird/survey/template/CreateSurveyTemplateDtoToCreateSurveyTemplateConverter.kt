@@ -1,33 +1,30 @@
 package com.leftindust.mockingbird.survey.template
 
-import com.leftindust.mockingbird.FailedConversionMessage.Companion.FailedConversionMessage
-import com.leftindust.mockingbird.FallibleConverter
-import com.leftindust.mockingbird.InfallibleConverter
-import mu.KotlinLogging
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 
-@Component
-class CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(
-    private val createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter: FallibleConverter<CreateSurveyTemplateSectionDto, CreateSurveyTemplateSection>,
-    private val createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter: InfallibleConverter<CreateSurveyTemplateCalculationDto, CreateSurveyTemplateCalculation>
-) :
-    FallibleConverter<CreateSurveyTemplateDto, CreateSurveyTemplate> {
-    private val logger = KotlinLogging.logger { }
-
-    override fun convert(source: CreateSurveyTemplateDto): CreateSurveyTemplate? {
-        return CreateSurveyTemplateImpl(
-            title = source.title,
-            subtitle = source.subtitle,
-            sections = source.sections.map { createSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter.convert(it)  ?: return null.also { logger.trace { FailedConversionMessage(source) } } },
-            calculations = source.calculations.map { createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter.convert(it) },
+fun CreateSurveyTemplateDto.toCreateSurveyTemplate(): Result4k<CreateSurveyTemplate, ConversionError<CreateSurveyTemplateDto, CreateSurveyTemplate>> {
+    return Success(
+        CreateSurveyTemplateImpl(
+            title = title,
+            subtitle = subtitle,
+            sections = sections.map {
+                it.toCreateSurveyTemplateSection().onFailure { throw it.reason.toMockingbirdException() }
+            },
+            calculations = calculations.map {
+                it.toCreateSurveyTemplateCalculation().onFailure { throw it.reason.toMockingbirdException() }
+            },
         )
-    }
-
-    private data class CreateSurveyTemplateImpl(
-        override val title: String,
-        override val subtitle: String?,
-        override val sections: List<CreateSurveyTemplateSection>,
-        override val calculations: List<CreateSurveyTemplateCalculation>
-    ) : CreateSurveyTemplate
+    )
 }
+
+
+private data class CreateSurveyTemplateImpl(
+    override val title: String,
+    override val subtitle: String?,
+    override val sections: List<CreateSurveyTemplateSection>,
+    override val calculations: List<CreateSurveyTemplateCalculation>
+) : CreateSurveyTemplate
 
