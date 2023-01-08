@@ -7,10 +7,10 @@
 
   import { _ } from '@/language';
   import type { CardProps } from '@/features/Widgets';
-  import type { Popup, Popover } from 'framework7/types';
+  import type { Popup } from 'framework7/types';
   import Quicklook from '@/features/View/components/Quicklook/Quicklook.svelte';
   import { AppViews } from '@/features/App';
-  import { openPopup, openPopupUrl } from '@/features/View';
+  import { openPopup } from '@/features/View';
   import RecordTags from '../RecordTags/RecordTags.svelte';
   import PinButton from '@/features/Pin/components/PinButton/PinButton.svelte';
   import { pin, pinned } from '@/features/Pin';

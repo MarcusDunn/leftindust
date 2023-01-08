@@ -8,11 +8,9 @@ export const pin = (pinned: boolean, pinnable: Data, reference: Data): void => {
     const acc = get(account);
     const store = acc.database.layout.pinned[reference.type][reference.id] ??= [];
 
-    if (pinned) {
-      acc.database.layout.pinned[reference.type][reference.id] = [...store, pinnable];
-    } else {
-      acc.database.layout.pinned[reference.type][reference.id] = store.filter((item) => item.id !== pinnable.id);
-    }
+    acc.database.layout.pinned[reference.type][reference.id] = pinned
+      ? [...store, pinnable]
+      : store.filter((item) => item.id !== pinnable.id);
 
     account.set(acc);
   }

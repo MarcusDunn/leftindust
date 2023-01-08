@@ -24,7 +24,6 @@
   import SpecificGrid from '../Widgets/components/Grid/SpecificGrid.svelte';
   import { operationStore, query } from '@urql/svelte';
   import type { WidgetGridProps } from '../Widgets/components/Grid';
-  import RecordPinnableCell from '../Record/components/RecordCell/RecordPinnableCell.svelte';
 
   export let f7router: Router.Router;
   export let f7route: Router.Route;
