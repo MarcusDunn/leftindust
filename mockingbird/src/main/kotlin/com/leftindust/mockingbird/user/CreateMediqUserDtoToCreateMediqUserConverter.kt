@@ -1,32 +1,34 @@
 package com.leftindust.mockingbird.user
 
-import com.leftindust.mockingbird.FallibleConverter
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.leftindust.mockingbird.ConversionError
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.person.CreateNameInfo
-import mu.KotlinLogging
-import org.springframework.stereotype.Component
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 
-@Component
-class CreateMediqUserDtoToCreateMediqUserConverter(private val userValidator: FallibleConverter<MediqUserDto.MediqUserUniqueId, ProofOfValidUser>) :
-    FallibleConverter<CreateMediqUserDto, CreateMediqUser> {
-    private val logger = KotlinLogging.logger { }
 
-    override fun convert(source: CreateMediqUserDto): CreateMediqUser? {
-        return CreateMediqUserImpl(
-            uid = source.uid,
-            nameInfo = source.nameInfo,
-            group = source.group,
-            doctor = source.doctor,
-            proofOfValidUser = userValidator.convert(source.uid) ?: return null.also { logger.debug { "Failed to validate $source" } },
+//class CreateMediqUserDtoToCreateMediqUserConverter() :
+
+fun CreateMediqUserDto.toCreateMediqUser(): Result4k<CreateMediqUser, ConversionError<CreateMediqUserDto, CreateMediqUser>> {
+    return Success(
+        CreateMediqUserImpl(
+            uid = uid,
+            nameInfo = nameInfo,
+            group = group,
+            doctor = doctor,
+            proofOfValidUser = uid.toProofOfValidUser(FirebaseAuth.getInstance()).onFailure { throw it.reason.toMockingbirdException() }
         )
-    }
-
-    private data class CreateMediqUserImpl(
-        override val uid: MediqUserDto.MediqUserUniqueId,
-        override val nameInfo: CreateNameInfo,
-        override val group: MediqGroupDto.MediqGroupId?,
-        override val doctor: DoctorDto.DoctorDtoId?,
-        override val proofOfValidUser: ProofOfValidUser,
-    ) : CreateMediqUser
-
+    )
 }
+
+
+private data class CreateMediqUserImpl(
+    override val uid: MediqUserDto.MediqUserUniqueId,
+    override val nameInfo: CreateNameInfo,
+    override val group: MediqGroupDto.MediqGroupId?,
+    override val doctor: DoctorDto.DoctorDtoId?,
+    override val proofOfValidUser: ProofOfValidUser,
+) : CreateMediqUser
