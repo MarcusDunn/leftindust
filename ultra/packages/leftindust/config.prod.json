@@ -1,6 +1,6 @@
 {
   "mockingbird": {
-    "address": "/api"
+    "address": "http://localhost:8080"
   },
   "firebase": {
     "apiKey": "AIzaSyDwHAnFFB6ouYkL068TmFubVpa8Mlp8UBE",

@@ -4,6 +4,7 @@
   "scripts": {
     "start": "npm run serve",
     "build": "vite build",
+    "preview": "vite preview",
     "serve": "vite",
     "check": "svelte-check --tsconfig ./tsconfig.json --threshold error",
     "check:warnings": "svelte-check --tsconfig ./tsconfig.json",
