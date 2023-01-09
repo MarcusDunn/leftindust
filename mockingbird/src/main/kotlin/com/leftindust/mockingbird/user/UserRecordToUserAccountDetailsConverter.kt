@@ -1,15 +1,16 @@
 package com.leftindust.mockingbird.user
 
 import com.google.firebase.auth.UserRecord
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class UserRecordToUserAccountDetailsConverter : InfallibleConverter<UserRecord, UserAccountDetails> {
-    override fun convert(source: UserRecord): UserAccountDetails {
-        return UserAccountDetailsDto(
+
+fun UserRecord.toUserAccountDetails(): Result4k<UserAccountDetails, ConversionError<UserRecord, UserAccountDetails>> {
+    return Success(
+        UserAccountDetailsDto(
             isRegistered = true,
-            email = source.email
+            email = email
         )
-    }
+    )
 }

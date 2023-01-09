@@ -1,8 +1,12 @@
 package com.leftindust.mockingbird.doctor
 
-import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullSubQueryException
-import com.leftindust.mockingbird.event.*
+import com.leftindust.mockingbird.event.EventDto
+import com.leftindust.mockingbird.event.EventFilter
+import com.leftindust.mockingbird.event.EventFilterDto
+import com.leftindust.mockingbird.event.FilterEventsService
+import com.leftindust.mockingbird.event.ReadEventService
+import com.leftindust.mockingbird.event.toEventDto
 import dev.forkhandles.result4k.onFailure
 import org.springframework.core.convert.converter.Converter
 import org.springframework.graphql.data.method.annotation.Argument

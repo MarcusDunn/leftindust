@@ -1,14 +1,14 @@
 package com.leftindust.mockingbird.user
 
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class UserAccountDetailsToUserAccountDetailsDtoConverter : InfallibleConverter<UserAccountDetails, UserAccountDetailsDto> {
-    override fun convert(source: UserAccountDetails): UserAccountDetailsDto {
-        return UserAccountDetailsDto(
-            isRegistered = source.isRegistered,
-            email = source.email
+fun UserAccountDetails.toUserAccountDetailsDto(): Result4k<UserAccountDetailsDto, ConversionError<UserAccountDetails, UserAccountDetailsDto>> {
+    return Success(
+        UserAccountDetailsDto(
+            isRegistered = isRegistered,
+            email = email
         )
-    }
+    )
 }

@@ -1,17 +1,16 @@
 package com.leftindust.mockingbird.user
 
-import com.leftindust.mockingbird.InfallibleConverter
-import com.leftindust.mockingbird.group.MediqGroup
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 
-@Component
-class MediqUserToMediqUserDtoConverter(
-    private val mediqGroupToMediqGroupDtoConverter: InfallibleConverter<MediqGroup, MediqGroupDto>,
-) : InfallibleConverter<MediqUser, MediqUserDto> {
-    override fun convert(source: MediqUser): MediqUserDto {
-        return MediqUserDto(
-            id = MediqUserDto.MediqUserUniqueId(source.uniqueId),
-            group = source.group?.let { mediqGroupToMediqGroupDtoConverter.convert(it) }
+
+fun MediqUser.toMediqUserDto(): Result4k<MediqUserDto, ConversionError<MediqUser, MediqUserDto>> {
+    return Success(
+        MediqUserDto(
+            id = MediqUserDto.MediqUserUniqueId(uniqueId),
+            group = group?.let { it.toMediqGroupDto().onFailure { throw it.reason.toMockingbirdException() } }
         )
-    }
+    )
 }
