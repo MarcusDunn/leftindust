@@ -36,7 +36,6 @@ class CreateDoctorServiceImpl(
                     nameInfo = user.nameInfo,
                     group = user.group,
                     doctor = null,
-                    proofOfValidUser = user.proofOfValidUser
                 )
             ) to null
 
@@ -89,6 +88,5 @@ class CreateDoctorServiceImpl(
         override val nameInfo: CreateNameInfo,
         override val group: MediqGroupDto.MediqGroupId,
         override val doctor: DoctorDto.DoctorDtoId?,
-        override val proofOfValidUser: ProofOfValidUser,
     ) : CreateMediqUser
 }

@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.doctor
 
-import com.google.firebase.auth.FirebaseAuth
 import com.leftindust.mockingbird.ConversionError
 import com.leftindust.mockingbird.ConversionError.Companion.ConversionFailure
 import com.leftindust.mockingbird.address.CreateAddress
@@ -11,7 +10,6 @@ import com.leftindust.mockingbird.email.toCreateEmail
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.toCreatePhone
-import com.leftindust.mockingbird.user.toProofOfValidUser
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.onFailure
@@ -36,9 +34,8 @@ fun CreateDoctorDto.toCreateDoctor(): Result4k<CreateDoctor, ConversionError<Cre
                     nameInfo = user.nameInfo
                         ?: return ConversionFailure(Exception("Invalid Input")),
                     group = user.group ?: return ConversionFailure(Exception("Invalid Input $user")),
-                    proofOfValidUser = user.userUid.toProofOfValidUser(FirebaseAuth.getInstance()).onFailure { throw it.reason.toMockingbirdException() }
 
-                )
+                    )
             },
             phones = phones.map { it.toCreatePhone().onFailure { e -> return ConversionFailure(e.reason) } },
             title = title,
