@@ -4,26 +4,19 @@ import com.leftindust.mockingbird.group.MediqGroup
 import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.user.CreateMediqUserDto
-import com.leftindust.mockingbird.user.CreateMediqUserDtoToCreateMediqUserConverter
-import com.leftindust.mockingbird.user.MediqGroupToMediqGroupDtoConverter
 import com.leftindust.mockingbird.user.MediqUser
 import com.leftindust.mockingbird.user.MediqUserDto
-import com.leftindust.mockingbird.user.MediqUserToMediqUserDtoConverter
-import com.leftindust.mockingbird.user.MediqUserUniqueIdToProofOfValidUserConverter
+import com.leftindust.mockingbird.user.toCreateMediqUser
+import com.leftindust.mockingbird.user.toMediqUserDto
+import dev.forkhandles.result4k.onFailure
 import io.mockk.every
 import io.mockk.mockk
 
 object MediqUserMother {
-    val mediqUserToMediqUserDtoConverter = MediqUserToMediqUserDtoConverter(MediqGroupToMediqGroupDtoConverter())
 
     object Marcus {
         const val uniqueId = "pfAfnZU8eEVHmeA9l2J68cmZrl89"
         val graphqlUniqueId = MediqUserDto.MediqUserUniqueId(uniqueId)
-
-        val mediqUserUniqueIdToProofOfValidUserConverter = MediqUserUniqueIdToProofOfValidUserConverter(mockk() {
-            every { getUser(uniqueId) } returns mockk()
-        })
-        val createMediqUserDtoToCreateMediqUserConverter = CreateMediqUserDtoToCreateMediqUserConverter(mediqUserUniqueIdToProofOfValidUserConverter)
 
         const val firstName = "Marcus"
         const val lastName = "Dunn"
@@ -38,7 +31,7 @@ object MediqUserMother {
 
         val domain = entity
 
-        val dto = mediqUserToMediqUserDtoConverter.convert(domain)
+        val dto = domain.toMediqUserDto().onFailure { throw it.reason.toMockingbirdException() }
 
         val createNameInfoDto = CreateNameInfoDto(
             firstName = firstName,
@@ -53,6 +46,6 @@ object MediqUserMother {
             doctor = null,
         )
 
-        val create = createMediqUserDtoToCreateMediqUserConverter.convert(createDto)!!
+        val create = createDto.toCreateMediqUser().onFailure { throw it.reason.toMockingbirdException() }
     }
 }
