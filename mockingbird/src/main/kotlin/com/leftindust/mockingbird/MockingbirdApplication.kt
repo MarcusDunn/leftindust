@@ -173,6 +173,9 @@ class MockingbirdApplication {
         return templateEngine
     }
 
+    @Bean
+    fun javaMailSender(): JavaMailSender = JavaMailSenderImpl()
+
     @Value("\${cloud.aws.credentials.access-key}")
     private lateinit var cloudAccessKeyId: String
     @Value("\${cloud.aws.credentials.secret-key}")
