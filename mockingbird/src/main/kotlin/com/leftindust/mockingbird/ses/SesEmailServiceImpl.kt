@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class SesEmailServiceImpl(
-//    private val emailSender: JavaMailSender,
+    private val emailSender: JavaMailSender,
     private val sesClient: AmazonSimpleEmailService
 ) : SesEmailService {
     override suspend fun sendHtmlEmail(
