@@ -1,15 +1,15 @@
 package com.leftindust.mockingbird.survey.template
 
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class SurveyTemplateToSurveyTemplateDtoConverter: InfallibleConverter<SurveyTemplate, SurveyTemplateDto> {
-    override fun convert(source: SurveyTemplate): SurveyTemplateDto {
-        return SurveyTemplateDto(
-            id = SurveyTemplateDto.SurveyTemplateDtoId(source.id),
-            title = source.title,
-            subtitle = source.subtitle
+fun SurveyTemplate.toSurveyTemplateDto(): Result4k<SurveyTemplateDto, ConversionError<SurveyTemplate, SurveyTemplateDto>> {
+    return Success(
+        SurveyTemplateDto(
+            id = SurveyTemplateDto.SurveyTemplateDtoId(id),
+            title = title,
+            subtitle = subtitle
         )
-    }
+    )
 }

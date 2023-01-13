@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.survey.template
 
-import com.leftindust.mockingbird.InfallibleConverter
+import dev.forkhandles.result4k.onFailure
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service
 @Transactional
 class CreateSurveyTemplateServiceImpl(
     private val surveyTemplateRepository: SurveyTemplateRepository,
-    private val surveyTemplateEntityToSurveyTemplateConverter: InfallibleConverter<SurveyTemplateEntity, SurveyTemplate>,
 ) : CreateSurveyTemplateService {
     override suspend fun createSurveyTemplate(surveyTemplate: CreateSurveyTemplate): SurveyTemplate {
         val newSurveyTemplate = SurveyTemplateEntity(
@@ -21,7 +20,7 @@ class CreateSurveyTemplateServiceImpl(
             }.toMutableSet(),
         )
         val surveyTemplateEntity = surveyTemplateRepository.save(newSurveyTemplate)
-        return surveyTemplateEntityToSurveyTemplateConverter.convert(surveyTemplateEntity)
+        return surveyTemplateEntity.toSurveyTemplate().onFailure { throw it.reason.toMockingbirdException() }
     }
 
     private fun createSectionToSectionEntity(
@@ -54,6 +53,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadAccept = null,
                 calculationId = createSurveyTemplateSectionInput.calculationId
             )
+
             is CreateSurveyTemplateSectionInputRestriction.MultiSelect -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.MultiSelect,
                 label = createSurveyTemplateSectionInput.label,
@@ -65,6 +65,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadAccept = null,
                 calculationId = createSurveyTemplateSectionInput.calculationId
             )
+
             is CreateSurveyTemplateSectionInputRestriction.Number -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Number,
                 label = createSurveyTemplateSectionInput.label,
@@ -76,6 +77,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadAccept = null,
                 calculationId = createSurveyTemplateSectionInput.calculationId
             )
+
             is CreateSurveyTemplateSectionInputRestriction.Paragraph -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Paragraph,
                 label = createSurveyTemplateSectionInput.label,
@@ -87,6 +89,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadAccept = null,
                 calculationId = createSurveyTemplateSectionInput.calculationId
             )
+
             is CreateSurveyTemplateSectionInputRestriction.SingleSelect -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.SingleSelect,
                 label = createSurveyTemplateSectionInput.label,
@@ -98,6 +101,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadAccept = null,
                 calculationId = createSurveyTemplateSectionInput.calculationId
             )
+
             is CreateSurveyTemplateSectionInputRestriction.Text -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Text,
                 label = createSurveyTemplateSectionInput.label,
@@ -109,6 +113,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadAccept = null,
                 calculationId = createSurveyTemplateSectionInput.calculationId
             )
+
             is CreateSurveyTemplateSectionInputRestriction.Title -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Title,
                 label = createSurveyTemplateSectionInput.label,
@@ -120,6 +125,7 @@ class CreateSurveyTemplateServiceImpl(
                 uploadAccept = null,
                 calculationId = createSurveyTemplateSectionInput.calculationId
             )
+
             is CreateSurveyTemplateSectionInputRestriction.Upload -> SurveyTemplateSectionInputEntity(
                 type = SurveyTemplateInputType.Upload,
                 label = createSurveyTemplateSectionInput.label,

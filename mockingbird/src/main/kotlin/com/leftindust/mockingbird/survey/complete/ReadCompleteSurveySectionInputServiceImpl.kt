@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.survey.complete
 
-import com.leftindust.mockingbird.InfallibleConverter
+import dev.forkhandles.result4k.onFailure
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service
 @Service
 class ReadCompleteSurveySectionInputServiceImpl(
     private val completeSurveySectionRepository: CompleteSurveySectionRepository,
-    private val completeSurveySectionInputEntityToCompleteSurveySectionInputConverter: InfallibleConverter<CompleteSurveySectionInputEntity, CompleteSurveySectionInput>,
 ) : ReadCompleteSurveySectionInputService {
     override suspend fun completeSurveySectionInputByCompleteSurveySectionId(completeSurveySectionDtoId: CompleteSurveySectionDto.CompleteSurveySectionDtoId): List<CompleteSurveySectionInput>? {
         val completeSurveySectionEntity = completeSurveySectionRepository.findByIdOrNull(completeSurveySectionDtoId.value)
             ?: return null
-        return completeSurveySectionEntity.inputs.map { completeSurveySectionInputEntityToCompleteSurveySectionInputConverter.convert(it) }
+        return completeSurveySectionEntity.inputs.map { it.toCompleteSurveySectionInput().onFailure { throw it.reason.toMockingbirdException() }}
     }
 }
 

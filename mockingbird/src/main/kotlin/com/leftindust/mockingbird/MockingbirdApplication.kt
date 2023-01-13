@@ -4,6 +4,8 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.metrics.RequestMetricCollector
 import com.amazonaws.regions.Regions
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder
 import com.amazonaws.services.sns.AmazonSNS
 import com.amazonaws.services.sns.AmazonSNSClient
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -184,6 +186,16 @@ class MockingbirdApplication {
     fun snsClient(): AmazonSNS {
         return AmazonSNSClient
             .builder()
+            .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(cloudAccessKeyId, cloudSecretAccessKey)))
+            .withRegion(cloudRegion)
+            .withMetricsCollector(RequestMetricCollector.NONE)
+            .build()
+    }
+
+    @Bean
+    fun sesClient(): AmazonSimpleEmailService {
+        return AmazonSimpleEmailServiceClientBuilder
+            .standard()
             .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(cloudAccessKeyId, cloudSecretAccessKey)))
             .withRegion(cloudRegion)
             .withMetricsCollector(RequestMetricCollector.NONE)

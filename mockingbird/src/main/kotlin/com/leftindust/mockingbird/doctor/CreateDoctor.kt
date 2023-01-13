@@ -8,7 +8,6 @@ import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.user.MediqGroupDto
 import com.leftindust.mockingbird.user.MediqUserDto
-import com.leftindust.mockingbird.user.ProofOfValidUser
 import java.time.LocalDate
 
 interface CreateDoctor {
@@ -28,7 +27,7 @@ interface CreateDoctor {
             val uid: MediqUserDto.MediqUserUniqueId,
             val nameInfo: CreateNameInfo,
             val group: MediqGroupDto.MediqGroupId,
-            val proofOfValidUser: ProofOfValidUser,
         ) : User()
     }
 }
+

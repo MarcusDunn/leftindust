@@ -1,15 +1,14 @@
 package com.leftindust.mockingbird.event
 
-import com.leftindust.mockingbird.InfallibleConverter
 import com.leftindust.mockingbird.NullSubQueryException
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.ReadDoctorService
-import com.leftindust.mockingbird.patient.Patient
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.ReadPatientService
+import com.leftindust.mockingbird.patient.toPatientDto
 import com.leftindust.mockingbird.visit.ReadVisitService
-import com.leftindust.mockingbird.visit.Visit
 import com.leftindust.mockingbird.visit.VisitDto
+import com.leftindust.mockingbird.visit.toVisitDto
 import dev.forkhandles.result4k.onFailure
 import mu.KotlinLogging
 import org.springframework.graphql.data.method.annotation.Argument
@@ -46,13 +45,12 @@ class EventQueryController(
     @Controller
     class EventPatientController(
         private val readPatientService: ReadPatientService,
-        private val patientToPatientDtoConverter: InfallibleConverter<Patient, PatientDto>,
     ) {
         @QueryMapping
         suspend fun patients(eventDto: EventDto): List<PatientDto> {
             val patients = readPatientService.getByEvent(eventDto.id)
                 ?: throw NullSubQueryException(eventDto, ReadPatientService::getByEvent)
-            return patients.map { patientToPatientDtoConverter.convert(it) }
+            return patients.map { it.toPatientDto().onFailure { throw it.reason.toMockingbirdException() } }
         }
     }
 
@@ -69,13 +67,12 @@ class EventQueryController(
     @Controller
     class EventVisitController(
         private val readVisitService: ReadVisitService,
-        private val visitToVisitDtoConverter: InfallibleConverter<Visit, VisitDto>,
     ) {
         @QueryMapping
         suspend fun visit(eventDto: EventDto): VisitDto? {
             return readVisitService
                 .findByEvent(eventDto.id)
-                ?.let { visitToVisitDtoConverter.convert(it) }
+                ?.let { it.toVisitDto().onFailure { throw it.reason.toMockingbirdException() } }
         }
     }
 }
