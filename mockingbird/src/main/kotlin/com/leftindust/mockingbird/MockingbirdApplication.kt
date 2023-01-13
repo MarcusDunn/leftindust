@@ -19,6 +19,9 @@ import com.leftindust.mockingbird.config.CorsConfiguration
 import com.leftindust.mockingbird.config.FirebaseConfiguration
 import com.leftindust.mockingbird.config.IcdApiClientConfiguration
 import graphql.schema.GraphQLScalarType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -201,6 +204,9 @@ class MockingbirdApplication {
             .withMetricsCollector(RequestMetricCollector.NONE)
             .build()
     }
+
+    @Bean
+    fun scope(): CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 }
 
 /**

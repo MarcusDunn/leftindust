@@ -1,6 +1,7 @@
 package com.leftindust.mockingbird.ses
 
 import com.leftindust.mockingbird.validate.EmailAddress
+import kotlinx.coroutines.Job
 
 interface SesEmailService {
     /**
@@ -17,7 +18,7 @@ interface SesEmailService {
         html: String,
         targetEmails: List<EmailAddress>,
         from: EmailAddress
-    )
+    ): Job
 
     companion object {
         /**
@@ -34,8 +35,8 @@ interface SesEmailService {
             html: String,
             targetEmail: EmailAddress,
             from: EmailAddress
-        ) {
-            sendHtmlEmail(subject, html, listOf(targetEmail), from)
+        ): Job {
+            return sendHtmlEmail(subject, html, listOf(targetEmail), from)
         }
     }
 }
