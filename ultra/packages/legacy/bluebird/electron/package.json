@@ -15,7 +15,7 @@
     "macos-release": "^2.5.0"
   },
   "devDependencies": {
-    "electron": "^13.1.7",
+    "electron": "^22.0.2",
     "electron-builder": "^22.11.7",
     "eslint": "^7.31.0",
     "eslint-plugin-autofix": "^1.0.5",
