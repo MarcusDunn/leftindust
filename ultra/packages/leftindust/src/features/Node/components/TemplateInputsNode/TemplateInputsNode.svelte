@@ -118,6 +118,7 @@
     {#key rerenderSmartSelect}
       <ListItem
         class="input-select"
+        style="width: 100%"
         smartSelect
         smartSelectParams={{
           openIn: 'popover',
@@ -127,7 +128,8 @@
             close: () => (smartSelectOpen = false),
           },
         }}
-        title=""
+        title={// TODO: Localization
+          store.ids.length == 0 ? (inputs.length < 1 ? 'No inputs available.' : 'No inputs selected.') : ''}
         slot="content"
       >
         <select placeholder="Eg. Input A, Input B" name="inputs" multiple bind:value={store.ids}>

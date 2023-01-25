@@ -17,14 +17,14 @@
   }>;
   
   export let store: {
-    type: 'default' | 'inverse', 
-    func: 'sin' | 'cos' | 'tan'
+    type: 'radians' | 'degrees', 
+    func: 'sin' | 'cos' | 'tan' | 'asin' | 'acos' | 'atan'
   } = {
-    type: 'default',
+    type: 'radians',
     func: 'sin',
   };
 
-  $: useInverse = store.type === 'inverse';
+  $: useDegrees = store.type === 'degrees';
   
   const { value: Input } = inputs.Input;
   const { value: Output } = outputs.Output;
@@ -34,17 +34,23 @@
   
     switch (store.func) {
       case 'sin':
-        return useInverse ? Math.asin(input) : Math.sin(input);
+        return Math.sin(input * (useDegrees ? (Math.PI / 180) : 1));
       case 'cos':
-        return useInverse ? Math.acos(input) : Math.cos(input);
+        return Math.cos(input * (useDegrees ? (Math.PI / 180) : 1));
       case 'tan':
-        return useInverse ? Math.atan(input) : Math.tan(input);
+        return Math.tan(input * (useDegrees ? (Math.PI / 180) : 1));
+      case 'asin':
+        return Math.asin(input) * (useDegrees ? (180 / Math.PI) : 1);
+      case 'acos':
+        return Math.acos(input) * (useDegrees ? (180 / Math.PI) : 1);
+      case 'atan':
+        return Math.atan(input) * (useDegrees ? (180 / Math.PI) : 1);
     }
   })();
 
   $: displayOutput = (() => {
     if ($Output.toString().length > 5) {
-      return ($Output < 0.1) ? $Output.toExponential(3) : $Output.toPrecision(4);
+      return (Math.abs($Output) < 0.1) ? $Output.toExponential(3) : $Output.toPrecision(4);
     }
     
     return $Output;
@@ -56,25 +62,28 @@
 <h1 class="no-margin" style="text-align: center">{displayOutput}</h1>
 <List class="no-margin" noHairlines>
   <ListInput
-    label="Type"
-    type="select"
-    bind:value={store.type}
-    style="margin-right: 20px"
-  >
-    <i class="icon demo-list-icon" slot="media" />
-    <option value="default">Default</option>
-    <option value="inverse">Inverse</option>
-  </ListInput>
-
-  <ListInput
     label="Function"
     type="select"
     bind:value={store.func}
     style="margin-right: 20px"
   >
     <i class="icon demo-list-icon" slot="media" />
-    <option value="sin">{useInverse ? 'asin' : 'sin'}</option>
-    <option value="cos">{useInverse ? 'acos' : 'cos'}</option>
-    <option value="tan">{useInverse ? 'atan' : 'tan'}</option>
+    <option value="sin">sin</option>
+    <option value="cos">cos</option>
+    <option value="tan">tan</option>
+    <option value="asin">asin</option>
+    <option value="acos">acos</option>
+    <option value="atan">atan</option>
+  </ListInput>
+
+  <ListInput
+    label="Type"
+    type="select"
+    bind:value={store.type}
+    style="margin-right: 20px"
+  >
+    <i class="icon demo-list-icon" slot="media" />
+    <option value="radians">Radians</option>
+    <option value="degrees">Degrees</option>
   </ListInput>
 </List>

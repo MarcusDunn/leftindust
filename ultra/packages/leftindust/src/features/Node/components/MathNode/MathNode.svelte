@@ -48,7 +48,7 @@
 
   $: displayOutput = (() => {
     if ($Output.toString().length > 5) {
-      return ($Output < 0.1) ? $Output.toExponential(3) : $Output.toPrecision(4);
+      return (Math.abs($Output) < 0.1) ? $Output.toExponential(3) : $Output.toPrecision(4);
     }
     
     return $Output;
@@ -66,9 +66,9 @@
     style="margin-right: 20px"
   >
     <i class="icon demo-list-icon" slot="media" />
-    <option value="addition">Addition</option>
-    <option value="subtraction">Subtraction</option>
-    <option value="multiplication">Multiplication</option>
-    <option value="division">Division</option>
+    <option value="addition">Add</option>
+    <option value="subtraction">Subtract</option>
+    <option value="multiplication">Multiply</option>
+    <option value="division">Divide</option>
   </ListInput>
 </List>

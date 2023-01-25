@@ -83,7 +83,20 @@
           <input
             type="text"
             bind:value={label}
-            placeholder={$_('examples.totalPlateletCount')}
+            placeholder={(() => {
+              // TODO: Localization
+              switch(type) {
+                case 'Date': return 'Date of collection';
+                case 'MultiSelect': return 'Tests performed';
+                case 'Number': return $_('examples.totalPlateletCount');
+                case 'Paragraph': return 'Additional notes';
+                case 'SingleSelect': return 'Blood type';
+                case 'Text': return 'Location';
+                case 'Title': return 'Sample Details';
+                case 'Upload': return 'Lab results';
+                default: return $_('examples.totalPlateletCount');
+              }
+            })()}
             name={`sections.${sectionIndex}.inputs.${index}.label`}
           />
         </Input>
@@ -100,7 +113,16 @@
               <input
                 type="text"
                 bind:value={placeholder}
-                placeholder={$_('examples.mcl')}
+                placeholder={(() => {
+                  // TODO: Localization
+                  switch(type) {
+                    case 'Date': return $_('examples.date');
+                    case 'Number': return $_('examples.number');
+                    case 'Text':
+                    case 'Paragraph': return $_('examples.text');
+                    default: return $_('examples.mcl');
+                  }
+                })()}
                 name={`sections.${sectionIndex}.inputs.${index}.placeholder`}
               />
             </Input>

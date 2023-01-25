@@ -30,7 +30,7 @@
 
   $: displayOutput = (() => {
     if ($Output.toString().length > 5) {
-      return ($Output < 0.1) ? $Output.toExponential(3) : $Output.toPrecision(4);
+      return (Math.abs($Output) < 0.1) ? $Output.toExponential(3) : $Output.toPrecision(4);
     }
     
     return $Output;
