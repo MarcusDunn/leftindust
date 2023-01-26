@@ -1,20 +1,17 @@
 package com.leftindust.mockingbird.doctor
 
 import com.leftindust.mockingbird.address.CreateAddressService
-import com.leftindust.mockingbird.clinic.*
+import com.leftindust.mockingbird.clinic.ClinicDto
+import com.leftindust.mockingbird.clinic.ClinicRepository
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.patient.PatientRepository
 import com.leftindust.mockingbird.person.CreateNameInfo
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhoneService
-import com.leftindust.mockingbird.user.CreateMediqUser
-import com.leftindust.mockingbird.user.CreateMediqUserService
-import com.leftindust.mockingbird.user.MediqGroupDto
-import com.leftindust.mockingbird.user.MediqUserDto
-import com.leftindust.mockingbird.user.ProofOfValidUser
-import com.leftindust.mockingbird.user.ReadMediqUserService
-import org.springframework.data.repository.findByIdOrNull
+import com.leftindust.mockingbird.user.*
+import dev.forkhandles.result4k.onFailure
 import jakarta.transaction.Transactional
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Transactional
@@ -29,7 +26,6 @@ class CreateDoctorServiceImpl(
     private val createEmailService: CreateEmailService,
     private val createNameInfoService: CreateNameInfoService,
     private val createPhoneService: CreatePhoneService,
-    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter,
 ) : CreateDoctorService {
 
     override suspend fun addDoctor(createDoctor: CreateDoctor): Doctor {
@@ -40,9 +36,9 @@ class CreateDoctorServiceImpl(
                     nameInfo = user.nameInfo,
                     group = user.group,
                     doctor = null,
-                    proofOfValidUser = user.proofOfValidUser
                 )
             ) to null
+
             is CreateDoctor.User.Find -> readMediqUserService.getByUserUid(user.userUid) to null
             is CreateDoctor.User.NoUser -> null to createNameInfoService.createNameInfo(user.nameInfo)
         }
@@ -68,7 +64,7 @@ class CreateDoctorServiceImpl(
 
 //            updateClinics(createDoctor.clinic, this)
         }
-        return doctorEntityToDoctorConverter.convert(doctorRepository.save(doctor))
+        return (doctorRepository.save(doctor)).toDoctor().onFailure { throw it.reason.toMockingbirdException() }
     }
 
     private suspend fun updateClinics(
@@ -92,6 +88,5 @@ class CreateDoctorServiceImpl(
         override val nameInfo: CreateNameInfo,
         override val group: MediqGroupDto.MediqGroupId,
         override val doctor: DoctorDto.DoctorDtoId?,
-        override val proofOfValidUser: ProofOfValidUser,
     ) : CreateMediqUser
 }

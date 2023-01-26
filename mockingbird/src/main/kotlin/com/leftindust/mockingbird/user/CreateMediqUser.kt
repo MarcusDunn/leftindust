@@ -8,6 +8,5 @@ interface CreateMediqUser {
     val nameInfo: CreateNameInfo
     val group: MediqGroupDto.MediqGroupId?
     val doctor: DoctorDto.DoctorDtoId?
-    val proofOfValidUser: ProofOfValidUser
 }
 

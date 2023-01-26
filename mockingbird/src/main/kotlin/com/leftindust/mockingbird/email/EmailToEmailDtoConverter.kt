@@ -1,15 +1,16 @@
 package com.leftindust.mockingbird.email
 
-import com.leftindust.mockingbird.InfallibleConverter
-import org.springframework.stereotype.Component
+import com.leftindust.mockingbird.ConversionError
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class EmailToEmailDtoConverter : InfallibleConverter<Email, EmailDto> {
-    override fun convert(source: Email): EmailDto {
-        return EmailDto(
-            EmailDto.EmailDtoId(source.id),
-            source.type,
-            source.address.value
+
+fun Email.toEmailDto(): Result4k<EmailDto, ConversionError<Email, EmailDto>> {
+    return Success(
+        EmailDto(
+            EmailDto.EmailDtoId(id),
+            type,
+            address.value
         )
-    }
+    )
 }

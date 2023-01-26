@@ -21,11 +21,10 @@ internal class EventQueryControllerUnitTest {
     @MockK
     private lateinit var readEventService: ReadEventServiceImpl
 
-    private val eventToEventDtoConverter = EventToEventDtoConverter()
 
     @Test
     internal fun `check if eventIds on eventQueryController returns a list of queried users`() = runTest {
-        val eventQueryController = EventQueryController(readEventService, eventToEventDtoConverter)
+        val eventQueryController = EventQueryController(readEventService)
 
         val eventIds = listOf(
             EventDto.EventDtoId(UUID.randomUUID()),
@@ -49,7 +48,7 @@ internal class EventQueryControllerUnitTest {
 
     @Test
     internal fun `check if eventIds returns a null`() = runTest {
-        val eventQueryController = EventQueryController(readEventService, eventToEventDtoConverter)
+        val eventQueryController = EventQueryController(readEventService)
 
         val eventIds = listOf(
             EventDto.EventDtoId(UUID.randomUUID()),
@@ -72,7 +71,7 @@ internal class EventQueryControllerUnitTest {
 
     @Test
     internal fun `check if queried eventsIds return null`() = runTest {
-        val eventQueryController = EventQueryController(readEventService, eventToEventDtoConverter)
+        val eventQueryController = EventQueryController(readEventService)
 
         val eventIds = listOf(
             EventDto.EventDtoId(UUID.randomUUID()),
@@ -93,7 +92,7 @@ internal class EventQueryControllerUnitTest {
     @Test
     internal fun `check if eventsByDoctorId returns a value when eventService finds a list of events with the queried doctorId`() =
         runTest {
-            val eventQueryController = EventQueryController(readEventService, eventToEventDtoConverter)
+            val eventQueryController = EventQueryController(readEventService)
             val doctorDtoToDoctorId = DoctorDto.DoctorDtoId(UUID.randomUUID())
 
             val eventsListByDoctorId = mockk<List<Event>>(relaxed = true)
@@ -106,7 +105,7 @@ internal class EventQueryControllerUnitTest {
     @Test
     internal fun `check if eventsByDoctorId returns a null value when eventService finds a list of empty events by doctorId`() =
         runTest {
-            val eventQueryController = EventQueryController(readEventService, eventToEventDtoConverter)
+            val eventQueryController = EventQueryController(readEventService)
             val doctorDtoToDoctorId = DoctorDto.DoctorDtoId(UUID.randomUUID())
 
             coEvery { readEventService.getByDoctorId(doctorDtoToDoctorId) } returns null
@@ -118,7 +117,7 @@ internal class EventQueryControllerUnitTest {
     @Test
     internal fun `check if eventsByPatientId returns a value when eventService finds a list of events with the queried patientId`() =
         runTest {
-            val eventQueryController = EventQueryController(readEventService, eventToEventDtoConverter)
+            val eventQueryController = EventQueryController(readEventService)
             val patientDtoToPatientId = PatientDto.PatientDtoId(UUID.randomUUID())
 
             val eventsListByPatientId = mockk<List<Event>>(relaxed = true)
@@ -131,7 +130,7 @@ internal class EventQueryControllerUnitTest {
     @Test
     internal fun `check if eventsByPatientId returns a null value when eventService finds a list of empty events with the queried patientId`() =
         runTest {
-            val eventQueryController = EventQueryController(readEventService, eventToEventDtoConverter)
+            val eventQueryController = EventQueryController(readEventService)
             val patientDtoToPatientId = PatientDto.PatientDtoId(UUID.randomUUID())
 
             coEvery { readEventService.getByPatientId(patientDtoToPatientId) } returns null

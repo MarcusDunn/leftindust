@@ -10,20 +10,8 @@ import com.leftindust.mockingbird.graphql.types.Deletable
 import com.leftindust.mockingbird.graphql.types.Updatable
 import com.leftindust.mockingbird.graphql.types.delete
 import com.leftindust.mockingbird.graphql.types.update
-import com.leftindust.mockingbird.patient.CreatePatient
-import com.leftindust.mockingbird.patient.CreatePatientDto
-import com.leftindust.mockingbird.patient.PatientDto
-import com.leftindust.mockingbird.patient.PatientEntity
-import com.leftindust.mockingbird.patient.PatientEntityToPatientConverter
-import com.leftindust.mockingbird.patient.PatientEventEntity
-import com.leftindust.mockingbird.patient.PatientToPatientDtoConverter
-import com.leftindust.mockingbird.patient.UpdatePatientDto
-import com.leftindust.mockingbird.patient.toCreatePatient
-import com.leftindust.mockingbird.person.CreateNameInfoDto
-import com.leftindust.mockingbird.person.Ethnicity
-import com.leftindust.mockingbird.person.NameInfoEntity
-import com.leftindust.mockingbird.person.Sex
-import com.leftindust.mockingbird.person.UpdateNameInfoDto
+import com.leftindust.mockingbird.patient.*
+import com.leftindust.mockingbird.person.*
 import com.leftindust.mockingbird.phone.CreatePhoneDto
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
@@ -33,12 +21,10 @@ import com.leftindust.mockingbird.util.EmailMother.DansEmail
 import dev.forkhandles.result4k.onFailure
 import java.time.LocalDate
 import java.time.Month
-import java.util.UUID
+import java.util.*
 
 object PatientMother {
 
-    val patientToPatientDtoConverter = PatientToPatientDtoConverter()
-    val patientEntityToPatientConverter = PatientEntityToPatientConverter()
 
     object Dan {
         const val firstName = "Dan"
@@ -166,8 +152,9 @@ object PatientMother {
                     }
                 )
                 override val addresses = update(listOf(AddressMother.JennysHouse.createDto))
-                override val emails : Updatable<List<CreateEmailDto>> = update(listOf(DansEmail.createUpdatedDto))
-                override val phones: Updatable<List<CreatePhoneDto>> = update(listOf(PhoneMother.DansCell.createUpdatedDto))
+                override val emails: Updatable<List<CreateEmailDto>> = update(listOf(DansEmail.createUpdatedDto))
+                override val phones: Updatable<List<CreatePhoneDto>> =
+                    update(listOf(PhoneMother.DansCell.createUpdatedDto))
                 override val thumbnail = delete<String>()
                 override val sex = update(Sex.Male)
                 override val dateOfBirth = update(newDateOfBirth)
@@ -207,12 +194,14 @@ object PatientMother {
             assignedSurveys = assignedSurveysTransient
         ).apply { id = this@Dan.id }
 
-        val domain = patientEntityToPatientConverter.convert(entityDetached)
-        val updatedDomainEntityDetached = patientEntityToPatientConverter.convert(entityUpdatedTransient)
-        val dto: PatientDto = patientToPatientDtoConverter.convert(domain)
-        val updatedDto: PatientDto = patientToPatientDtoConverter.convert(updatedDomainEntityDetached)
+        val domain = entityDetached.toPatient().onFailure { throw it.reason.toMockingbirdException() }
+        val updatedDomainEntityDetached =
+            entityUpdatedTransient.toPatient().onFailure { throw it.reason.toMockingbirdException() }
+        val dto: PatientDto = domain.toPatientDto().onFailure { throw it.reason.toMockingbirdException() }
+        val updatedDto: PatientDto =
+            updatedDomainEntityDetached.toPatientDto().onFailure { throw it.reason.toMockingbirdException() }
 
-        val domainEntityTransient = patientEntityToPatientConverter.convert(entityTransient)
+        val domainEntityTransient = entityTransient.toPatient().onFailure { throw it.reason.toMockingbirdException() }
         val createPatient: CreatePatient
             get() = createPatientDto.toCreatePatient().onFailure { throw it.reason.toMockingbirdException() }
     }

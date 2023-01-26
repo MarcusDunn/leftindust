@@ -5,6 +5,7 @@ import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service
 class CreateCompleteSurveyServiceImpl(
     private val completeSurveyRepository: CompleteSurveyRepository,
     private val surveyLinkRepository: SurveyLinkRepository,
-    private val completeSurveyEntityToCompleteSurvey: CompleteSurveyEntityToCompleteSurvey,
 ) : CreateCompleteSurveyService {
     private val logger = KotlinLogging.logger { }
 
@@ -45,6 +45,6 @@ class CreateCompleteSurveyServiceImpl(
         )
         val completeSurveyEntity = completeSurveyRepository.save(newCompleteSurvey)
         completeSurveyEntity.surveyLink.addCompleteSurvey(completeSurveyEntity)
-        return Success(completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity))
+        return Success(completeSurveyEntity.toCompleteSurvey().onFailure { throw it.reason.toMockingbirdException() })
     }
 }

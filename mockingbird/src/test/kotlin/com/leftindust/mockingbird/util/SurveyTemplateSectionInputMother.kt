@@ -1,17 +1,11 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateSectionInputDto
-import com.leftindust.mockingbird.survey.template.SurveyTemplateCategory
-import com.leftindust.mockingbird.survey.template.SurveyTemplateInputType
-import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputDto
-import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputEntity
-import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter
-import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter
-import java.util.UUID
+import com.leftindust.mockingbird.survey.template.*
+import dev.forkhandles.result4k.onFailure
+import java.util.*
 
 object SurveyTemplateSectionInputMother {
-    val surveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter = SurveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter()
-    val surveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter = SurveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter()
+
 
     object HowMuchPainAreYouInSectionInput {
         val id = UUID.fromString("9d642214-6c6d-4639-8209-5401acc244c1")
@@ -62,8 +56,9 @@ object SurveyTemplateSectionInputMother {
             calculationId = calculationId
         )
 
-        val domain = surveyTemplateSectionInputEntityToSurveyTemplateSectionInputConverter.convert(entityPersisted)!!
+        val domain =
+            entityPersisted.toSurveyTemplateSectionInput().onFailure { throw it.reason.toMockingbirdException() }!!
 
-        val dto = surveyTemplateSectionInputToSurveyTemplateSectionInputDtoConverter.convert(domain)
+        val dto = domain.toSurveyTemplateSectionInputDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 }

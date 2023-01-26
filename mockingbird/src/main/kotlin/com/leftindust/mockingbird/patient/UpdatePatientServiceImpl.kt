@@ -25,6 +25,7 @@ import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.CreatePhoneService
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
 import java.util.Base64
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -37,7 +38,6 @@ import org.springframework.transaction.annotation.Transactional
 class UpdatePatientServiceImpl(
     private val patientRepository: PatientRepository,
     private val updateNameInfoService: UpdateNameInfoService,
-    private val patientEntityToPatientConverter: PatientEntityToPatientConverter,
     private val createEmailService: CreateEmailService,
     private val createAddressService: CreateAddressService,
     private val createPhoneService: CreatePhoneService,
@@ -77,7 +77,7 @@ class UpdatePatientServiceImpl(
         updateDoctors(patientInput.doctors, patient)
         updateThumbnail(patientInput.thumbnail, patient)
 
-        return Success(patientEntityToPatientConverter.convert(patient))
+        return Success(patient.toPatient().onFailure { throw it.reason.toMockingbirdException() })
     }
 
     private suspend fun updateNameInfo(nameInfo: Updatable<UpdateNameInfo>, patient: PatientEntity) {
@@ -136,7 +136,7 @@ class UpdatePatientServiceImpl(
             is Updatable.Update -> {
                 val newEmergencyContacts = emergencyContacts.value.map {
                     createContactService.createContact(
-                        it, (patientEntityToPatientConverter.convert(patient))
+                        it, (patient.toPatient().onFailure { throw it.reason.toMockingbirdException() })
                     )
                 }
                 logger.trace { ClearedEntityCollectionMessage(patient, patient::contacts) }

@@ -1,6 +1,5 @@
 package com.leftindust.mockingbird.doctor
 
-import com.google.firebase.auth.FirebaseAuth
 import com.leftindust.mockingbird.ConversionError
 import com.leftindust.mockingbird.ConversionError.Companion.ConversionFailure
 import com.leftindust.mockingbird.address.CreateAddress
@@ -11,15 +10,12 @@ import com.leftindust.mockingbird.email.toCreateEmail
 import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.toCreatePhone
-import com.leftindust.mockingbird.user.MediqUserUniqueIdToProofOfValidUserConverter
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.onFailure
 import java.time.LocalDate
 
 fun CreateDoctorDto.toCreateDoctor(): Result4k<CreateDoctor, ConversionError<CreateDoctorDto, CreateDoctor>> {
-
-    val userValidator = MediqUserUniqueIdToProofOfValidUserConverter(FirebaseAuth.getInstance())
 
     return Success(
         CreateDoctorImpl(
@@ -38,9 +34,8 @@ fun CreateDoctorDto.toCreateDoctor(): Result4k<CreateDoctor, ConversionError<Cre
                     nameInfo = user.nameInfo
                         ?: return ConversionFailure(Exception("Invalid Input")),
                     group = user.group ?: return ConversionFailure(Exception("Invalid Input $user")),
-                    proofOfValidUser = userValidator.convert(user.userUid)
-                        ?: return ConversionFailure(Exception("Invalid Input $user"))
-                )
+
+                    )
             },
             phones = phones.map { it.toCreatePhone().onFailure { e -> return ConversionFailure(e.reason) } },
             title = title,

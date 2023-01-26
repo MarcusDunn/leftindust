@@ -1,14 +1,13 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.phone.CreatePhoneDto
 import com.leftindust.mockingbird.phone.CreatePhoneGraphQlDto
 import com.leftindust.mockingbird.phone.Phone
-import com.leftindust.mockingbird.phone.PhoneToPhoneDtoConverter
 import com.leftindust.mockingbird.phone.PhoneType
-import java.util.UUID
+import com.leftindust.mockingbird.phone.toPhoneDto
+import dev.forkhandles.result4k.onFailure
+import java.util.*
 
 object PhoneMother {
-    val phoneToPhoneDtoConverter = PhoneToPhoneDtoConverter()
 
     object JennysHomePhone {
         val id = UUID.fromString("548143f2-a3ba-4c95-ac3a-27e76c37149e")
@@ -19,7 +18,7 @@ object PhoneMother {
             type = type
         ).apply { id = this@JennysHomePhone.id }
 
-        val dto = phoneToPhoneDtoConverter.convert(entityPersisted)
+        val dto = entityPersisted.toPhoneDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 
     object DansCell {
@@ -38,7 +37,7 @@ object PhoneMother {
                 type = type
             )
 
-        val dto = phoneToPhoneDtoConverter.convert(entityDetached)
+        val dto = entityDetached.toPhoneDto().onFailure { throw it.reason.toMockingbirdException() }
 
         val createDto = CreatePhoneGraphQlDto(
             number = number,
@@ -62,7 +61,7 @@ object PhoneMother {
             number = number,
             type = type
         ).apply { id = this@JennysWorkPhone.id }
-        val dto = phoneToPhoneDtoConverter.convert(entityPersisted)
+        val dto = entityPersisted.toPhoneDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 
 

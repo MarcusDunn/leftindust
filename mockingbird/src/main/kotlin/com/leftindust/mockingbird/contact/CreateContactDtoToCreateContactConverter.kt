@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.contact
 
 import com.leftindust.mockingbird.ConversionError
-import com.leftindust.mockingbird.ConversionError.Companion.ConversionFailure
 import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.toCreateEmail
 import com.leftindust.mockingbird.person.CreateNameInfo
@@ -17,9 +16,8 @@ fun CreateContactDto.toCreateContact(): Result4k<CreateContact, ConversionError<
         CreateContactImpl(
             nameInfo = nameInfo,
             relationship = relationship,
-            phones = phones.map { it.toCreatePhone().onFailure { e -> return ConversionFailure(e.reason) } },
-            emails = emails.map {it.toCreateEmail().onFailure {e -> return ConversionFailure(e.reason)}}
-            ,
+            phones = phones.map { it.toCreatePhone().onFailure { throw it.reason.toMockingbirdException() } },
+            emails = emails.map { it.toCreateEmail().onFailure { throw it.reason.toMockingbirdException() } },
         )
     )
 }

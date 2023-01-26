@@ -6,6 +6,7 @@ import com.leftindust.mockingbird.doctor.DoctorRepository
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.person.CreateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhoneService
+import dev.forkhandles.result4k.onFailure
 import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64
@@ -22,7 +23,6 @@ class CreatePatientServiceImpl(
     private val createPhoneService: CreatePhoneService,
     private val createContactService: CreateContactService,
     private val doctorRepository: DoctorRepository,
-    private val patientEntityToPatientConverter: PatientEntityToPatientConverter
 ) : CreatePatientService {
     private val logger = KotlinLogging.logger { }
 
@@ -52,12 +52,13 @@ class CreatePatientServiceImpl(
             }
 
         val savedPatient = patientRepository.save(newPatient)
+        val convertedPatient = savedPatient.toPatient().onFailure { throw it.reason.toMockingbirdException() }
 
         patient.contacts
-            .map { createContactService.createContact(it, patientEntityToPatientConverter.convert(savedPatient)) }
+            .map { createContactService.createContact(it, convertedPatient) }
             .forEach { newPatient.addContact(it) }
 
-        return patientEntityToPatientConverter.convert(savedPatient)
+        return convertedPatient
     }
 
 }
