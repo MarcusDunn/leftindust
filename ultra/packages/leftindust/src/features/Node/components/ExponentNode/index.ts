@@ -1,24 +1,24 @@
 import type { NodeBlueprint, SocketBlueprint } from 'function-junctions/types';
-import MathNode from './MathNode.svelte';
+import ExponentNode from './ExponentNode.svelte';
 
 import numberSocket from '@/features/Socket/components/NumberSocket';
 
 const node: NodeBlueprint<{
-  LHS: SocketBlueprint<number>
-  RHS: SocketBlueprint<number>
+  Base: SocketBlueprint<number>
+  Power: SocketBlueprint<number>
 },
   {
     Output: SocketBlueprint<number>
   }
   > = {
     inputs: {
-      LHS: numberSocket,
-      RHS: numberSocket,
+      Base: numberSocket,
+      Power: numberSocket,
     },
     outputs: {
       Output: numberSocket,
     },
-    component: MathNode,
+    component: ExponentNode,
     color: 'linear-gradient(#ff5776, #ff2d55)',
   };
 

@@ -7,6 +7,7 @@
   } from 'function-junctions/types';
   
   import { List, ListInput } from 'framework7-svelte';
+  import { getDisplayOutput } from '../nodeUtils';
   
   export let inputs: InputSockets<{
     Input: InputSocket<number>;
@@ -48,14 +49,7 @@
     }
   })();
 
-  $: displayOutput = (() => {
-    if ($Output.toString().length > 5) {
-      return (Math.abs($Output) < 0.1) ? $Output.toExponential(3) : $Output.toPrecision(4);
-    }
-    
-    return $Output;
-  })();
-
+  $: displayOutput = getDisplayOutput($Output);
   $: inputs, store;
 </script>
   

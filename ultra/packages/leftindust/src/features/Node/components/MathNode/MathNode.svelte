@@ -7,6 +7,7 @@
   } from 'function-junctions/types';
 
   import { List, ListInput } from 'framework7-svelte';
+  import { getDisplayOutput } from '../nodeUtils';
 
   export let inputs: InputSockets<{
     LHS: InputSocket<number>;
@@ -14,7 +15,7 @@
   }>;
 
   export let outputs: OutputSockets<{
-    Number: OutputSocket<number>;
+    Output: OutputSocket<number>;
   }>;
 
   export let store: {
@@ -26,7 +27,7 @@
   const { value: LHS } = inputs.LHS;
   const { value: RHS } = inputs.RHS;
   
-  const { value: Output } = outputs.Number;
+  const { value: Output } = outputs.Output;
 
   $: $Output = (() => {
     const { type } = store;
@@ -46,14 +47,7 @@
     }
   })();
 
-  $: displayOutput = (() => {
-    if ($Output.toString().length > 5) {
-      return (Math.abs($Output) < 0.1) ? $Output.toExponential(3) : $Output.toPrecision(4);
-    }
-    
-    return $Output;
-  })();
-
+  $: displayOutput = getDisplayOutput($Output);
   $: inputs, store;
 </script>
 

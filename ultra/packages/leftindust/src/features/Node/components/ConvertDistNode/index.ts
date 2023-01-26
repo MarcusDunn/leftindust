@@ -1,24 +1,22 @@
 import type { NodeBlueprint, SocketBlueprint } from 'function-junctions/types';
-import MathNode from './MathNode.svelte';
+import ConvertDistNode from './ConvertDistNode.svelte';
 
 import numberSocket from '@/features/Socket/components/NumberSocket';
 
 const node: NodeBlueprint<{
-  LHS: SocketBlueprint<number>
-  RHS: SocketBlueprint<number>
+  Input: SocketBlueprint<number>
 },
   {
     Output: SocketBlueprint<number>
   }
   > = {
     inputs: {
-      LHS: numberSocket,
-      RHS: numberSocket,
+      Input: numberSocket,
     },
     outputs: {
       Output: numberSocket,
     },
-    component: MathNode,
+    component: ConvertDistNode,
     color: 'linear-gradient(#ff5776, #ff2d55)',
   };
 

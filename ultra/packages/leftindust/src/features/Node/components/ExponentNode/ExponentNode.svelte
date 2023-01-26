@@ -8,27 +8,29 @@
   import { getDisplayOutput } from '../nodeUtils';
 
   export let inputs: InputSockets<{
-    Numbers: InputSocket<number[]>;
+    Base: InputSocket<number>;
+    Power: InputSocket<number>;
   }>;
 
   export let outputs: OutputSockets<{
-    Number: OutputSocket<number>;
+    Output: OutputSocket<number>;
   }>;
 
-  const { value: Numbers } = inputs.Numbers;
-  const { value: Output } = outputs.Number;
+  const { value: Base } = inputs.Base;
+  const { value: Power } = inputs.Power;
+  
+  const { value: Output } = outputs.Output;
 
   $: $Output = (() => {
-    let value = 0;
+    const base = $Base;
+    const power = $Power;
+    console.log(base);
 
-    $Numbers.forEach((number) => {
-      value = value + number;
-    });
-
-    return value / $Numbers.length;
+    return Math.pow(base, power);
   })();
 
   $: displayOutput = getDisplayOutput($Output);
+  $: inputs;
 </script>
 
 <h1 class="no-margin" style="text-align: center">{displayOutput}</h1>

@@ -21,6 +21,10 @@
   import { TemplateCalculations } from '../../store';
   import deepmerge from 'deepmerge';
   import TrigNode from '@/features/Node/components/TrigNode';
+  import ConstantNode from '@/features/Node/components/ConstantNode';
+  import LogNode from '@/features/Node/components/LogNode';
+  import ExponentNode from '@/features/Node/components/ExponentNode';
+  import ConvertDistNode from '@/features/Node/components/ConvertDistNode';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -46,7 +50,7 @@
   const menuNodes: MenuNodes = [
     {
       title: 'I/O',
-      description: 'Tools to handle inputs and outputs',
+      description: 'Tools for handling inputs and outputs',
       color: 'deeppurple',
       icon: {
         f7: 'skew',
@@ -54,7 +58,7 @@
       nodes: [
         {
           title: 'Input',
-          description: 'Connect the inputs from your form',
+          description: 'Connect an input from your form',
           blueprint: TemplateInputNode,
         },
         {
@@ -66,7 +70,7 @@
     },
     {
       title: 'Numbers',
-      description: 'Tools to preform basic arithmetic calculations',
+      description: 'Tools for math and numbers',
       color: 'blue',
       icon: {
         f7: 'sum',
@@ -78,25 +82,65 @@
           blueprint: NumberNode,
         },
         {
-          title: 'Math',
-          description: 'Addition, subtraction, multiplication, and division',
+          title: 'Constant',
+          description: 'Common mathematical constants',
+          blueprint: ConstantNode,
+        },
+        {
+          title: 'Trigonometry',
+          description: 'Sine, cosine, and tangent functions',
+          blueprint: TrigNode,
+        },
+        {
+          title: 'Arithmetic',
+          description: 'Add, subtract, multiply, and divide',
           blueprint: MathNode,
         },
         {
-          title: 'Average',
-          description: 'Calculate the average of a set of numbers',
-          blueprint: AverageNode,
+          title: 'Logarithm',
+          description: 'Log function (default base: 10)',
+          blueprint: LogNode,
         },
         {
-          title: 'Trig',
-          description: 'Sine, cosine, and tangent functions (input in radians)',
-          blueprint: TrigNode,
+          title: 'Exponent',
+          description: 'Exponent/power function',
+          blueprint: ExponentNode,
+        },
+      ],
+    },
+    {
+      title: 'Statistics',
+      description: 'Tools for statistical analysis',
+      color: 'green',
+      icon: {
+        f7: 'chart_bar_alt_fill',
+      },
+      nodes: [
+        {
+          title: 'Average',
+          description: 'Calculate the mean of a sample',
+          blueprint: AverageNode,
+        },
+      ],
+    },
+    {
+      title: 'Units',
+      description: 'Tools for converting between units',
+      color: 'yellow',
+      icon: {
+        f7: 'resize_h',
+      },
+      nodes: [
+        {
+          title: 'Distances',
+          description: 'Convert between distance units',
+          blueprint: ConvertDistNode,
         },
       ],
     },
     {
       title: 'Text',
-      description: 'Tools to preform text operations',
+      description: 'Tools for handling text',
       color: 'orange',
       icon: {
         f7: 'textformat',
@@ -111,7 +155,7 @@
     },
     {
       title: 'Date',
-      description: 'Tools to preform operations with dates and times',
+      description: 'Tools for handling dates and times',
       color: 'teal',
       icon: {
         f7: 'clock_fill',

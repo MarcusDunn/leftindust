@@ -24,6 +24,10 @@ import DateNode from '../Node/components/DateNode';
 import AverageNode from '../Node/components/AverageNode';
 import TrigNode from '../Node/components/TrigNode';
 import { openDialog } from '../UI/components/Dialog';
+import ConstantNode from '../Node/components/ConstantNode';
+import LogNode from '../Node/components/LogNode';
+import ExponentNode from '../Node/components/ExponentNode';
+import ConvertDistNode from '../Node/components/ConvertDistNode';
 
 const language = get(_);
  
@@ -128,12 +132,16 @@ export const templateCalculationNodes: Record<string, NodeBlueprint> = {
   output: TemplateOutputNode,
   Group: TemplateInputsNode,
   Input: TemplateInputNode,
-  Math: MathNode,
+  Arithmetic: MathNode,
   Number: NumberNode,
+  Constant: ConstantNode,
   Text: TextNode,
   Date: DateNode,
   Average: AverageNode,
-  Trig: TrigNode,
+  Trigonometry: TrigNode,
+  Logarithm: LogNode,
+  Exponent: ExponentNode,
+  Distances: ConvertDistNode,
 };
 
 export const getTemplateSocketType = (inputType: SurveyTemplateInputType) => {
