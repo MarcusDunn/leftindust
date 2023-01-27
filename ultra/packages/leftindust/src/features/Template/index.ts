@@ -28,6 +28,11 @@ import ConstantNode from '../Node/components/ConstantNode';
 import LogNode from '../Node/components/LogNode';
 import ExponentNode from '../Node/components/ExponentNode';
 import ConvertDistNode from '../Node/components/ConvertDistNode';
+import ConvertMassNode from '../Node/components/ConvertMassNode';
+import ConvertVolumeNode from '../Node/components/ConvertVolumeNode';
+import ConvertTempNode from '../Node/components/ConvertTempNode';
+import ConvertTimeNode from '../Node/components/ConvertTimeNode';
+import PercentageNode from '../Node/components/PercentageNode';
 
 const language = get(_);
  
@@ -141,7 +146,12 @@ export const templateCalculationNodes: Record<string, NodeBlueprint> = {
   Trigonometry: TrigNode,
   Logarithm: LogNode,
   Exponent: ExponentNode,
-  Distances: ConvertDistNode,
+  Distance: ConvertDistNode,
+  Mass: ConvertMassNode,
+  Volume: ConvertVolumeNode,
+  Temperature: ConvertTempNode,
+  ConvertTime: ConvertTimeNode,
+  Percentage: PercentageNode,
 };
 
 export const getTemplateSocketType = (inputType: SurveyTemplateInputType) => {

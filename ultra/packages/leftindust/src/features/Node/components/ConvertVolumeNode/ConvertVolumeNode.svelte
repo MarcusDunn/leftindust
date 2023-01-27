@@ -17,25 +17,27 @@
     Output: OutputSocket<number>;
   }>;
 
-  type units = 'mm' | 'cm' | 'm' | 'km' | 'in' | 'ft' | 'mi';
+  type units = 'ml' | 'l' | 'floz' | 'tsp' | 'tbsp' | 'cp' | 'pt' | 'qt' | 'gal';
   
   export let store: {
     from: units,
     to: units,
   } = {
-    from: 'm',
-    to: 'm',
+    from: 'l',
+    to: 'l',
   };
 
-  // Value is length relative to a meter
+  // Value is volume relative to a liter
   const conversions: { [key in units]: number } = {
-    'mm': 0.001,
-    'cm': 0.01,
-    'm' : 1.0,
-    'km': 1000.0,
-    'in': 0.0254,
-    'ft': 0.3048,
-    'mi': 1609.34,
+    'ml': 0.001,
+    'l': 1.0,
+    'floz': 0.0295735,
+    'tsp': 0.00492892,
+    'tbsp': 0.0147868,
+    'cp': 0.24,
+    'pt': 0.473176,
+    'qt': 0.946353,
+    'gal': 3.78541,
   };
   
   const { value: Input } = inputs.Input;
@@ -55,13 +57,15 @@
     style="margin-right: 20px"
   >
     <i class="icon demo-list-icon" slot="media" />
-    <option value="mm">Millimeters</option>
-    <option value="cm">Centimeters</option>
-    <option value="m">Meters</option>
-    <option value="km">Kilometers</option>
-    <option value="in">Inches</option>
-    <option value="ft">Feet</option>
-    <option value="mi">Miles</option>
+    <option value="ml">Milliliters</option>
+    <option value="l">Liters</option>
+    <option value="floz">Fluid Ounces</option>
+    <option value="tsp">Teaspoons</option>
+    <option value="tbsp">Tablespoons</option>
+    <option value="cp">Cups</option>
+    <option value="pt">Pints (US)</option>
+    <option value="qt">Quarts (US)</option>
+    <option value="gal">Gallons (US)</option>
   </ListInput>
 
   <ListInput
@@ -71,12 +75,14 @@
     style="margin-right: 20px"
   >
     <i class="icon demo-list-icon" slot="media" />
-    <option value="mm">Millimeters</option>
-    <option value="cm">Centimeters</option>
-    <option value="m">Meters</option>
-    <option value="km">Kilometers</option>
-    <option value="in">Inches</option>
-    <option value="ft">Feet</option>
-    <option value="mi">Miles</option>
+    <option value="ml">Milliliters</option>
+    <option value="l">Liters</option>
+    <option value="floz">Fluid Ounces</option>
+    <option value="tsp">Teaspoons</option>
+    <option value="tbsp">Tablespoons</option>
+    <option value="cp">Cups</option>
+    <option value="pt">Pints (US)</option>
+    <option value="qt">Quarts (US)</option>
+    <option value="gal">Gallons (US)</option>
   </ListInput>
 </List>

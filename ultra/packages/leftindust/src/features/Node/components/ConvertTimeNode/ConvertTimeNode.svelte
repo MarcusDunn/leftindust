@@ -17,25 +17,26 @@
     Output: OutputSocket<number>;
   }>;
 
-  type units = 'mm' | 'cm' | 'm' | 'km' | 'in' | 'ft' | 'mi';
+  type units = 'ms' | 's' | 'min' | 'hr' | 'day' | 'wk' | 'mo' | 'yr';
   
   export let store: {
     from: units,
     to: units,
   } = {
-    from: 'm',
-    to: 'm',
+    from: 's',
+    to: 's',
   };
 
-  // Value is length relative to a meter
+  // Value is time relative to a minute
   const conversions: { [key in units]: number } = {
-    'mm': 0.001,
-    'cm': 0.01,
-    'm' : 1.0,
-    'km': 1000.0,
-    'in': 0.0254,
-    'ft': 0.3048,
-    'mi': 1609.34,
+    'ms': 1.0/60000,
+    's': 1.0/60,
+    'min' : 1.0,
+    'hr': 60.0,
+    'day': 1440.0,
+    'wk': 10080.0,
+    'mo': 43800.0,
+    'yr': 525600.0,
   };
   
   const { value: Input } = inputs.Input;
@@ -55,13 +56,14 @@
     style="margin-right: 20px"
   >
     <i class="icon demo-list-icon" slot="media" />
-    <option value="mm">Millimeters</option>
-    <option value="cm">Centimeters</option>
-    <option value="m">Meters</option>
-    <option value="km">Kilometers</option>
-    <option value="in">Inches</option>
-    <option value="ft">Feet</option>
-    <option value="mi">Miles</option>
+    <option value="ms">Milliseconds</option>
+    <option value="s">Seconds</option>
+    <option value="min">Minutes</option>
+    <option value="hr">Hours</option>
+    <option value="day">Days</option>
+    <option value="wk">Weeks</option>
+    <option value="mo">Months</option>
+    <option value="yr">Years</option>
   </ListInput>
 
   <ListInput
@@ -71,12 +73,13 @@
     style="margin-right: 20px"
   >
     <i class="icon demo-list-icon" slot="media" />
-    <option value="mm">Millimeters</option>
-    <option value="cm">Centimeters</option>
-    <option value="m">Meters</option>
-    <option value="km">Kilometers</option>
-    <option value="in">Inches</option>
-    <option value="ft">Feet</option>
-    <option value="mi">Miles</option>
+    <option value="ms">Milliseconds</option>
+    <option value="s">Seconds</option>
+    <option value="min">Minutes</option>
+    <option value="hr">Hours</option>
+    <option value="day">Days</option>
+    <option value="wk">Weeks</option>
+    <option value="mo">Months</option>
+    <option value="yr">Years</option>
   </ListInput>
 </List>

@@ -7,7 +7,7 @@
     Value: OutputSocket<number>;
   }>;
 
-  export let store: ('pi' | 'e') = 'pi';
+  export let store: ('pi' | 'e' | 'inf') = 'pi';
 
   const { value } = outputs.Value;
 
@@ -17,6 +17,8 @@
         return Math.PI;
       case 'e':
         return Math.E;
+      case 'inf':
+        return Infinity;
     }
   })();
 </script>
@@ -29,5 +31,6 @@
   >
     <option value="pi">&pi;</option>
     <option value="e">e</option>
+    <option value="inf">&infin;</option>
   </ListInput>
 </List>

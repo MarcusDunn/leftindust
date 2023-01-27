@@ -22,8 +22,8 @@
   const { value: Output } = outputs.Output;
 
   $: $Output = (() => {
-    const arg = $Arg;
-    const base = $Base ? $Base : 10;
+    const arg = $Arg ? $Arg : NaN;
+    const base = $Base ? $Base : Math.E;
 
     return Math.log(arg) / Math.log(base);
   })();

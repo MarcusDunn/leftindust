@@ -17,25 +17,25 @@
     Output: OutputSocket<number>;
   }>;
 
-  type units = 'mm' | 'cm' | 'm' | 'km' | 'in' | 'ft' | 'mi';
+  type units = 'mg' | 'g' | 'kg' | 'mton' | 'oz' | 'lbs' | 'uston';
   
   export let store: {
     from: units,
     to: units,
   } = {
-    from: 'm',
-    to: 'm',
+    from: 'kg',
+    to: 'kg',
   };
 
-  // Value is length relative to a meter
+  // Value is mass relative to a kilogram
   const conversions: { [key in units]: number } = {
-    'mm': 0.001,
-    'cm': 0.01,
-    'm' : 1.0,
-    'km': 1000.0,
-    'in': 0.0254,
-    'ft': 0.3048,
-    'mi': 1609.34,
+    'mg': 1.0e-6,
+    'g': 0.001,
+    'kg': 1.0,
+    'mton': 1000.0,
+    'oz': 0.0283495,
+    'lbs': 0.453592,
+    'uston': 907.185,
   };
   
   const { value: Input } = inputs.Input;
@@ -55,13 +55,13 @@
     style="margin-right: 20px"
   >
     <i class="icon demo-list-icon" slot="media" />
-    <option value="mm">Millimeters</option>
-    <option value="cm">Centimeters</option>
-    <option value="m">Meters</option>
-    <option value="km">Kilometers</option>
-    <option value="in">Inches</option>
-    <option value="ft">Feet</option>
-    <option value="mi">Miles</option>
+    <option value="mg">Milligrams</option>
+    <option value="g">Grams</option>
+    <option value="kg">Kilograms</option>
+    <option value="oz">Ounces</option>
+    <option value="lbs">Pounds</option>
+    <option value="uston">Tons (US)</option>
+    <option value="mton">Metric tons</option>
   </ListInput>
 
   <ListInput
@@ -71,12 +71,12 @@
     style="margin-right: 20px"
   >
     <i class="icon demo-list-icon" slot="media" />
-    <option value="mm">Millimeters</option>
-    <option value="cm">Centimeters</option>
-    <option value="m">Meters</option>
-    <option value="km">Kilometers</option>
-    <option value="in">Inches</option>
-    <option value="ft">Feet</option>
-    <option value="mi">Miles</option>
+    <option value="mg">Milligrams</option>
+    <option value="g">Grams</option>
+    <option value="kg">Kilograms</option>
+    <option value="oz">Ounces</option>
+    <option value="lbs">Pounds</option>
+    <option value="uston">Tons (US)</option>
+    <option value="mton">Metric tons</option>
   </ListInput>
 </List>

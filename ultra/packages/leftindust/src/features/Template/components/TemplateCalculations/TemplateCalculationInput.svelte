@@ -25,6 +25,11 @@
   import LogNode from '@/features/Node/components/LogNode';
   import ExponentNode from '@/features/Node/components/ExponentNode';
   import ConvertDistNode from '@/features/Node/components/ConvertDistNode';
+  import ConvertMassNode from '@/features/Node/components/ConvertMassNode';
+  import ConvertVolumeNode from '@/features/Node/components/ConvertVolumeNode';
+  import ConvertTempNode from '@/features/Node/components/ConvertTempNode';
+  import ConvertTimeNode from '@/features/Node/components/ConvertTimeNode';
+  import PercentageNode from '@/features/Node/components/PercentageNode';
 
   export let index: number;
   export let calculations: TemplateCalculationWithInstance[];
@@ -73,7 +78,7 @@
       description: 'Tools for math and numbers',
       color: 'blue',
       icon: {
-        f7: 'sum',
+        f7: 'plus_slash_minus',
       },
       nodes: [
         {
@@ -98,7 +103,7 @@
         },
         {
           title: 'Logarithm',
-          description: 'Log function (default base: 10)',
+          description: 'Log function (default: ln)',
           blueprint: LogNode,
         },
         {
@@ -132,9 +137,34 @@
       },
       nodes: [
         {
-          title: 'Distances',
+          title: 'Distance',
           description: 'Convert between distance units',
           blueprint: ConvertDistNode,
+        },
+        {
+          title: 'Volume',
+          description: 'Convert between volume units',
+          blueprint: ConvertVolumeNode,
+        },
+        {
+          title: 'Temperature',
+          description: 'Convert between temperature units',
+          blueprint: ConvertTempNode,
+        },
+        {
+          title: 'Mass',
+          description: 'Convert between mass (weight) units',
+          blueprint: ConvertMassNode,
+        },
+        {
+          title: 'ConvertTime',
+          description: 'Convert between time units',
+          blueprint: ConvertTimeNode,
+        },
+        {
+          title: 'Percentage',
+          description: 'Convert between percentage and decimal form',
+          blueprint: PercentageNode,
         },
       ],
     },
@@ -154,7 +184,7 @@
       ],
     },
     {
-      title: 'Date',
+      title: 'Dates',
       description: 'Tools for handling dates and times',
       color: 'teal',
       icon: {

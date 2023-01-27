@@ -24,9 +24,8 @@
   $: $Output = (() => {
     const base = $Base;
     const power = $Power;
-    console.log(base);
 
-    return Math.pow(base, power);
+    return (base || power) ? Math.pow(base, power) : NaN;
   })();
 
   $: displayOutput = getDisplayOutput($Output);
