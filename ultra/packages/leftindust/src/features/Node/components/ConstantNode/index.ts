@@ -3,10 +3,10 @@ import ConstantNode from './ConstantNode.svelte';
 import numberSocket from '@/features/Socket/components/NumberSocket';
 
 const node: NodeBlueprint<never, {
-  Value: SocketBlueprint<unknown>,
+  Constant: SocketBlueprint<unknown>,
 }> = {
   outputs: {
-    Value: numberSocket,
+    Constant: numberSocket,
   },
   component: ConstantNode,
   className: 'node-transparent',

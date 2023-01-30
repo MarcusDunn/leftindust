@@ -4,12 +4,12 @@
   import { List, ListInput } from 'framework7-svelte';
 
   export let outputs: OutputSockets<{
-    Value: OutputSocket<number>;
+    Constant: OutputSocket<number>;
   }>;
 
   export let store: ('pi' | 'e' | 'inf') = 'pi';
 
-  const { value } = outputs.Value;
+  const { value } = outputs.Constant;
 
   $: $value = (() => {
     switch (store) {

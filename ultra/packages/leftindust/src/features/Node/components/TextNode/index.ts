@@ -3,10 +3,10 @@ import TextNode from './TextNode.svelte';
 import textSocket from '@/features/Socket/components/TextSocket';
 
 const node: NodeBlueprint<never, {
-  Value: SocketBlueprint<unknown>,
+  Text: SocketBlueprint<unknown>,
 }> = {
   outputs: {
-    Value: textSocket,
+    Text: textSocket,
   },
   component: TextNode,
   className: 'node-transparent',

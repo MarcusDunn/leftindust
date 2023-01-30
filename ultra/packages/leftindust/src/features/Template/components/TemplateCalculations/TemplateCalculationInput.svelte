@@ -220,61 +220,64 @@
 />
 
 <div>
-  <Select
-    title={$_('generics.type')}
-    placeholder={calculation.inputType ? getInputType(calculation.inputType) : ''}
-    options={[
-      {
-        text: $_('generics.text'),
-        value: SurveyTemplateInputType.Text,
-      },
-      {
-        text: $_('generics.number'),
-        value: SurveyTemplateInputType.Number,
-      },
-      {
-        text: $_('generics.date'),
-        value: SurveyTemplateInputType.Date,
-      },
-      {
-        text: $_('generics.paragraph'),
-        value: SurveyTemplateInputType.Paragraph,
-      },
-      {
-        text: $_('generics.singleSelect'),
-        value: SurveyTemplateInputType.SingleSelect,
-      },
-      {
-        text: $_('generics.multiSelect'),
-        value: SurveyTemplateInputType.MultiSelect,
-      },
-      {
-        text: $_('generics.upload'),
-        value: SurveyTemplateInputType.Upload,
-      },
-      {
-        text: $_('generics.title'),
-        value: SurveyTemplateInputType.Title,
-      },
-    ]}
-    bind:value={calculation.inputType}
-    name={`calculations.${index}.type`}
-  />
-  <p />
-  <Input
-    style="width: 100%"
-    error={// https://github.com/pablo-abc/felte/issues/162
-      // @ts-expect-error
-      $errors?.calculations?.[index]?.label}
-  >
-    <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
-    <input
-      type="text"
-      bind:value={calculation.label}
-      placeholder={$_('examples.calculation')}
-      name={`calculations.${index}.label`}
+  <!-- Force rerender input card on modal state change -->
+  {#key modalOpen}
+    <Select
+      title={$_('generics.type')}
+      placeholder={calculation.inputType ? getInputType(calculation.inputType) : ''}
+      options={[
+        {
+          text: $_('generics.text'),
+          value: SurveyTemplateInputType.Text,
+        },
+        {
+          text: $_('generics.number'),
+          value: SurveyTemplateInputType.Number,
+        },
+        {
+          text: $_('generics.date'),
+          value: SurveyTemplateInputType.Date,
+        },
+        {
+          text: $_('generics.paragraph'),
+          value: SurveyTemplateInputType.Paragraph,
+        },
+        {
+          text: $_('generics.singleSelect'),
+          value: SurveyTemplateInputType.SingleSelect,
+        },
+        {
+          text: $_('generics.multiSelect'),
+          value: SurveyTemplateInputType.MultiSelect,
+        },
+        {
+          text: $_('generics.upload'),
+          value: SurveyTemplateInputType.Upload,
+        },
+        {
+          text: $_('generics.title'),
+          value: SurveyTemplateInputType.Title,
+        },
+      ]}
+      bind:value={calculation.inputType}
+      name={calculation.inputType}
     />
-  </Input>
+    <p />
+    <Input
+      style="width: 100%"
+      error={// https://github.com/pablo-abc/felte/issues/162
+        // @ts-expect-error
+        $errors?.calculations?.[index]?.label}
+    >
+      <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
+      <input
+        type="text"
+        bind:value={calculation.label}
+        placeholder={$_('examples.calculation')}
+        name={`calculations.${index}.label`}
+      />
+    </Input>
+  {/key}
   <Input style="width: 100%;margin-top: 30px">
     <ListItem class="aurora" slot="content">
       <span>Show on Complete</span>

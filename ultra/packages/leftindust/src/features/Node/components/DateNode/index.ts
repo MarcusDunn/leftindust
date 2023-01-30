@@ -3,10 +3,10 @@ import DateNode from './DateNode.svelte';
 import dateSocket from '@/features/Socket/components/DateSocket';
 
 const node: NodeBlueprint<never, {
-  Value: SocketBlueprint<number>,
+  Date: SocketBlueprint<number>,
 }> = {
   outputs: {
-    Value: dateSocket,
+    Date: dateSocket,
   },
   component: DateNode,
   className: 'node-transparent',

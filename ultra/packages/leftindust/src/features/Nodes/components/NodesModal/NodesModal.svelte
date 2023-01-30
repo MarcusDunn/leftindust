@@ -47,16 +47,19 @@
       modal.close();
     }}
   />
-  <Editor
-    {inputs}
-    {outputs}
-    {nodes}
-    bind:state
-    bind:instance={editor}
-    {editable}
-    interactable={editable}
-    nodeControlButtons={editable}
-  />
+  <!-- Force rerender editor on modal state change -->
+  {#key open}
+    <Editor
+      {inputs}
+      {outputs}
+      {nodes}
+      bind:state
+      bind:instance={editor}
+      {editable}
+      interactable={editable}
+      nodeControlButtons={editable}
+    />
+  {/key}
   <div class={`nodes-nodes_modal-controls ${open ? 'nodes-nodes_modal-controls-open' : ''}`}>
     <div class="nodes-nodes_modal-controls-content">
       {#if menuNodes.length > 0}

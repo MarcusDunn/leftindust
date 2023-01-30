@@ -4,7 +4,7 @@
   import type { Editor,  InputSocket, InputSockets } from 'function-junctions/types';
   import type { Writable } from 'svelte/store';
 
-  import { getTemplateSocketType, templateCalculationSockets } from '@/features/Template';
+  import { getInputType, getTemplateSocketType, templateCalculationSockets } from '@/features/Template';
   import { _ } from '@/language';
   import { TemplateCalculations } from '@/features/Template/store';
   import { SurveyTemplateInputType } from '@/api/server';
@@ -27,25 +27,27 @@
     
   let prevType = $TemplateCalculations[store.index].inputType;
 
+  $: calculation = $TemplateCalculations[store.index];
+
   const reevaluateConnections = () => {
-    if ($TemplateCalculations[store.index]?.inputType !== prevType) {
+    if (calculation?.inputType !== prevType) {
       $connection = undefined;
 
-      prevType = $TemplateCalculations[store.index]?.inputType;
+      prevType = calculation?.inputType;
     }
   };
     
   $: value = editor.outputs?.Value?.value;
 
-  $: $TemplateCalculations[store.index]?.inputType, (() => {
+  $: calculation?.inputType, (() => {
     if (value && Value) $value = $Value;
   })();
 
-  $: $TemplateCalculations[store.index], (() => {
-    if ($TemplateCalculations[store.index]?.inputType) {
+  $: calculation, (() => {
+    if (calculation?.inputType) {
       // TS has brain damage
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const type = getTemplateSocketType($TemplateCalculations[store.index].inputType!);
+      const type = getTemplateSocketType(calculation.inputType!);
   
       if (type) {
         const socket = templateCalculationSockets[type];
@@ -62,11 +64,11 @@
   $: $TemplateCalculations, reevaluateConnections();
 </script>
 
-{#if $TemplateCalculations[store.index]?.inputType}
+{#if calculation?.inputType}
   <div style="min-width: 430px">
     <Select
       title={$_('generics.type')}
-      placeholder={$_('examples.text')}
+      placeholder={calculation.inputType ? getInputType(calculation.inputType) : ''}
       options={[
         {
           text: $_('generics.text'),
@@ -101,14 +103,15 @@
           value: SurveyTemplateInputType.Title,
         },
       ]}
-      bind:value={$TemplateCalculations[store.index].inputType}
+      bind:value={calculation.inputType}
+      name={calculation.inputType}
     />
     <p />
     <Input style="width: 100%">
       <svelte:fragment slot="title">{$_('generics.label')}</svelte:fragment>
       <input
         type="text"
-        bind:value={$TemplateCalculations[store.index].label}
+        bind:value={calculation.label}
         placeholder={$_('examples.calculation')}
       />
     </Input>

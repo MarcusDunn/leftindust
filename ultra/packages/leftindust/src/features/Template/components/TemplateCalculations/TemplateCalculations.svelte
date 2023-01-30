@@ -68,7 +68,7 @@
       {index}
       {nodeInputs}
       {errors}
-      bind:calculations={calculations}
+      bind:calculations
       {calculation}
     />
     <br />

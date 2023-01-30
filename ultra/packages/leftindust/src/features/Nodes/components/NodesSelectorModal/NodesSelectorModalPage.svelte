@@ -25,7 +25,7 @@
   </Appbar>
   <Block class="no-margin-top">
     <br />
-    <Row class="no-gutter">
+    <Row class="no-gutter align-items-flex-end">
       {#each nodes as node}
         <Col
           class="display-flex"
@@ -34,8 +34,10 @@
           on:click={() => $temporarySelectedNode = [node]}
         >
           <DemoNode title={node.title} {...node.blueprint} />
-          <p class="no-margin-bottom" style="margin-top: 25px">{node.title}</p>
-          <BlockFooter class="text-align-center two-line-word-clamp" style="margin-top: 5px">
+          {#if node.blueprint?.className == 'node-transparent'}
+            <p class="no-margin-bottom">{node.title}</p>
+          {/if}
+          <BlockFooter class="text-align-center two-line-word-clamp" style="margin: 10px 0 20px">
             {node.description}
           </BlockFooter>
         </Col>

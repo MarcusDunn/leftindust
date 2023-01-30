@@ -3,12 +3,12 @@
   import type { OutputSocket, OutputSockets } from 'function-junctions/types';
 
   export let outputs: OutputSockets<{
-    Value: OutputSocket<number>;
+    Date: OutputSocket<number>;
   }>;
   
-  const { value } = outputs.Value;
+  const { value } = outputs.Date;
 </script>
 
 <div style="min-width: 430px">
-  <DatePicker label="Date" placeholder="Select a Date" bind:value={$value} />
+  <DatePicker placeholder="Select a Date" bind:value={$value} />
 </div>

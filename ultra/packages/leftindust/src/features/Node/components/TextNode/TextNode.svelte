@@ -3,12 +3,12 @@
   import type { OutputSocket, OutputSockets } from 'function-junctions/types';
 
   export let outputs: OutputSockets<{
-    Value: OutputSocket<string>;
+    Text: OutputSocket<string>;
   }>;
   
-  const { value } = outputs.Value;
+  const { value } = outputs.Text;
 </script>
 
-<Input title="Text" style="min-width: 430px">
+<Input style="min-width: 430px">
   <input type="text" placeholder="Eg. Basic Text" bind:value={$value} />
 </Input>
