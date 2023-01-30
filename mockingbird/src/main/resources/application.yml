@@ -1,12 +1,12 @@
 spring:
   jpa:
     show-sql: true
-  liquibase:
-    change-log: classpath:dbchangelog.xml
   datasource:
     url: jdbc:postgresql://127.0.0.1:5432/mediq
     username: mediq
     password: mediq
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
   security:
     oauth2:
       resource-server:
@@ -20,9 +20,30 @@ spring:
       schema-locations:
         - classpath:data-postgres.sql
       mode: always
+
+  cloud:
+    aws:
+      ses:
+        region: ca-central-1
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    enable-spring-el-compiler: true
+cloud:
+  aws:
+    stack:
+      auto: false
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: ca-central-1
+
 icd:
   client:
     url: localhost:80/icd
+
 logging:
   level:
-    root: trace
+    root: info

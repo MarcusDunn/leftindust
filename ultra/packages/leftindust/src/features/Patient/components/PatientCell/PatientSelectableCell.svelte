@@ -24,7 +24,9 @@
 
 <Cell
   title={`${patient.firstName} ${patient?.middleName ? `${patient?.middleName?.charAt(0)}.` : ''} ${patient.lastName}`}
-  selected={$selected.some((selectable) => selectable.id === patient.id.value)}
+  selected={$selected
+    .filter((selectable) => selectable != null)
+    .some((selectable) => selectable.id === patient.id.value)}
   on:click={(event) => {
     let selectable = { id: patient.id.value, type: patient.__typename };
     let reference = patients.map((item) => ({ id: item.id.value, type: item.__typename }));

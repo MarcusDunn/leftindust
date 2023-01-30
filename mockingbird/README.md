@@ -27,7 +27,8 @@ Deployment configuration is done through environment variables. See `docker-comp
 # Running
 
 The backend needs a database to run (with its details passed through `application.yml`) and ideally also has an ICD api
-running (where to find the api should also be set in `application.yml`) these can both be run as docker containers.
+running (where to find the api should also be set in `application.yml`) these can both be run as docker containers. AWS 
+credentials also need to be supplied in the `application.yml` for AWS-related features to work.
 
 ## ICD API
 
@@ -39,6 +40,16 @@ docker run -e "acceptLicense=true" -e "saveAnalytics=true" -e "include=2021-05_e
 
 ```bash
 docker run -e "POSTGRES_USER=mediq" -e "POSTGRES_PASSWORD=mediq" -p "5432:5432" postgres
+```
+
+## AWS
+In `application.yml`:
+```yaml
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key: 
 ```
 
 # Code review checklist

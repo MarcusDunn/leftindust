@@ -1,17 +1,11 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateCalculationDto
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter
-import com.leftindust.mockingbird.survey.template.SurveyTemplateCalculationEntity
-import com.leftindust.mockingbird.survey.template.SurveyTemplateCalculationEntityToSurveyTemplateCalculationConverter
-import com.leftindust.mockingbird.survey.template.SurveyTemplateCalculationToSurveyTemplateCalculationDtoConverter
-import com.leftindust.mockingbird.survey.template.SurveyTemplateInputType
-import java.util.UUID
+import com.leftindust.mockingbird.survey.template.*
+import dev.forkhandles.result4k.onFailure
+import java.util.*
 
 object SurveyTemplateSectionCalculationMother {
-    val createSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter = CreateSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter()
-    val surveyTemplateCalculationEntityToSurveyTemplateCalculationConverter = SurveyTemplateCalculationEntityToSurveyTemplateCalculationConverter()
-    val surveyTemplateCalculationToSurveyTemplateCalculationDtoConverter = SurveyTemplateCalculationToSurveyTemplateCalculationDtoConverter()
+
 
     object FirstCalculation {
         val id = UUID.fromString("abe1b9b4-fef9-4545-bf91-b8c9b37c14c7")
@@ -44,8 +38,8 @@ object SurveyTemplateSectionCalculationMother {
         )
 
 
-        val domain = surveyTemplateCalculationEntityToSurveyTemplateCalculationConverter.convert(entityDetached)
+        val domain = entityDetached.toSurveyTemplateCalculation().onFailure { throw it.reason.toMockingbirdException() }
 
-        val dto = surveyTemplateCalculationToSurveyTemplateCalculationDtoConverter.convert(domain)
+        val dto = domain.toSurveyTemplateCalculationDto().onFailure { throw it.reason.toMockingbirdException() }
     }
 }

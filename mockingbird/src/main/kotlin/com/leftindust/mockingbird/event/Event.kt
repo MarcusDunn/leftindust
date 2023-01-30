@@ -4,7 +4,7 @@ import com.leftindust.mockingbird.visit.Visit
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
 import com.leftindust.mockingbird.doctor.DoctorEventEntity
 import com.leftindust.mockingbird.patient.PatientEventEntity
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 class Event(

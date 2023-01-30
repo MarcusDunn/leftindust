@@ -8,7 +8,6 @@ import java.util.*
 
 interface Patient {
     val id: UUID
-    val nameInfo: NameInfo
     val thumbnail: ByteArray?
     val sex: Sex
     val dateOfBirth: LocalDate

@@ -1,7 +1,6 @@
 package com.leftindust.mockingbird.survey
 
 import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateServiceImpl
-import com.leftindust.mockingbird.survey.template.SurveyTemplateEntityToSurveyTemplateConverter
 import com.leftindust.mockingbird.survey.template.SurveyTemplateRepository
 import com.leftindust.mockingbird.util.SurveyTemplateMother
 import com.ninjasquad.springmockk.MockkBean
@@ -26,12 +25,11 @@ internal class CreateSurveyTemplateServiceImplUnitTest {
     @MockK
     private lateinit var surveyTemplateRepository: SurveyTemplateRepository
 
-    private val surveyTemplateEntityToSurveyTemplateConverter = SurveyTemplateEntityToSurveyTemplateConverter()
 
     @Test
     internal fun `check saves a new entity`() = runTest {
         every { surveyTemplateRepository.save(any()) } returns SurveyTemplateMother.KoosKneeSurvey.entityDetached
-        val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, surveyTemplateEntityToSurveyTemplateConverter)
+        val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository)
         createSurveyTemplateServiceImpl.createSurveyTemplate(SurveyTemplateMother.KoosKneeSurvey.createDomain)
         verify(exactly = 1) { surveyTemplateRepository.save(any()) }
     }
@@ -45,7 +43,7 @@ internal class CreateSurveyTemplateServiceImplDatabaseTest(
     @MockkBean
     private lateinit var serverHttpSecurity: SecurityWebFilterChain
 
-    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository, SurveyTemplateEntityToSurveyTemplateConverter())
+    private val createSurveyTemplateServiceImpl = CreateSurveyTemplateServiceImpl(surveyTemplateRepository)
 
     @Test
     internal fun `check persists a new surveyTemplate`() = runTest {

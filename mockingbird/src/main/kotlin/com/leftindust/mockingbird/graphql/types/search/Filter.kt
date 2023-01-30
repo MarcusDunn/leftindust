@@ -1,9 +1,9 @@
 package com.leftindust.mockingbird.graphql.types.search
 
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.From
-import javax.persistence.criteria.Predicate
-import javax.persistence.metamodel.SingularAttribute
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.From
+import jakarta.persistence.criteria.Predicate
+import jakarta.persistence.metamodel.SingularAttribute
 
 interface Filter<G> : CreatePredicate {
     fun <Z, X> toPredicate(

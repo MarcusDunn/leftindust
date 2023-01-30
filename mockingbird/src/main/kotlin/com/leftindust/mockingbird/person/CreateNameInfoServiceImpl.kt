@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.person
 
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service

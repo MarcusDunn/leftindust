@@ -1,19 +1,17 @@
+import { _ } from '@/language';
 import { validator } from '@felte/validator-yup';
 import { createForm } from 'felte';
 import * as yup from 'yup';
 
-import { client, AddPatientDocument, type AddPatientMutation, EditPatientDocument, type EditPatientMutation, AddressType, EmailType, PhoneType, Countries } from '@/api/server';
+import { client, AddPatientDocument, type AddPatientMutation, EditPatientDocument, type EditPatientMutation, AddressType, EmailType, PhoneType, Countries, type PatientFragment, Relationship, type CreateAddress } from '@/api/server';
 import type {
   MutationAddPatientArgs,
   MutationEditPatientArgs,
 } from '@/api/server';
 
-import { Ethnicity, Sex, type EditPatient, type CreatePatient } from '@/api/server';
+import { Ethnicity, Sex } from '@/api/server';
 
 import { get } from 'svelte/store';
-
-import { _ } from '@/language';
-import { closeWizard } from '../Wizard';
 
 import { openDialog } from '../UI/components/Dialog';
 
@@ -29,7 +27,7 @@ const language = get(_);
 /**
  * Creates form validator schema for patients
  */
-const createPatientFormSchema = yup.object({
+const patientFormSchema = yup.object({
   nameInfo: yup.object({
     firstName: yup.string().required(),
     middleName: yup.string(),
@@ -57,8 +55,7 @@ const createPatientFormSchema = yup.object({
     type: yup.mixed<PhoneType>().oneOf(Object.values(PhoneType)).required(),
   })),
 });
-
-type PatientFormSchema = yup.InferType<typeof createPatientFormSchema>;
+type PatientFormSchema = yup.InferType<typeof patientFormSchema>;
 
 /**
  * Default patient form inputs with CreatePatient type
@@ -69,7 +66,7 @@ const defaultPatientForm: Partial<PatientFormSchema> = {
     middleName: '',
     lastName: '',
   },
-  dateOfBirth: '',
+  dateOfBirth: undefined,
   ethnicity: undefined,
   sex: undefined,
   gender: '',
@@ -79,6 +76,27 @@ const defaultPatientForm: Partial<PatientFormSchema> = {
   phones: [],
 };
 
+/**
+ * @param patient the patient to edit
+ * @returns A form with the fields filled out with the patient's data
+ */
+const filledPatientForm = (patient: PatientFragment): Partial<PatientFormSchema> => {
+  return {
+    nameInfo: {
+      firstName: patient.firstName,
+      middleName: patient.middleName,
+      lastName: patient.lastName,
+    },
+    dateOfBirth: patient.dateOfBirth,
+    ethnicity: patient.ethnicity,
+    sex: patient.sex,
+    gender: patient.gender ?? patient.sex,
+    insuranceNumber: patient.insuranceNumber,
+    addresses: patient.addresses,
+    emails: patient.emails,
+    phones: patient.phoneNumbers,
+  };
+};
 
 /**
  * Adds a patient
@@ -109,43 +127,81 @@ export const editPatient = async (patient: NonNullable<MutationEditPatientArgs['
   return data;
 };
 
+type CreatePatientArgs = NonNullable<MutationAddPatientArgs['createPatient']>;
 /**
- * Creates a patient form on submit
+ * Gets the CreatePatient arguments from the form
  */
-export const createPatientForm = (closeWizardHandler: () => void, pid?: string) => createForm<PatientFormSchema>({
-  initialValues: defaultPatientForm,
-  onSubmit: async (form, { reset }) => {
-    const patient = {
-      nameInfo: {
-        firstName: form.nameInfo.firstName,
-        middleName: form.nameInfo.middleName,
-        lastName: form.nameInfo.lastName,
-      },
-      dateOfBirth: form.dateOfBirth.replace(/\//g, '-'),
-      ethnicity: form.ethnicity,
-      sex: form.sex,
-      gender: form.gender ?? form.sex,
-      insuranceNumber: form.insuranceNumber,
-      addresses: form.addresses,
-      emails: form.emails,
-      phones: form.phones,
-    };
+const getCreatePatientArgs = (form: PatientFormSchema): CreatePatientArgs => {
+  return {
+    nameInfo: {
+      firstName: form.nameInfo.firstName,
+      middleName: form.nameInfo.middleName,
+      lastName: form.nameInfo.lastName,
+    },
+    dateOfBirth: form.dateOfBirth,
+    ethnicity: form.ethnicity,
+    sex: form.sex,
+    gender: form.gender ?? form.sex,
+    insuranceNumber: form.insuranceNumber,
+    addresses: form.addresses,
+    emails: form.emails,
+    phones: form.phones,
+  };
+};
 
+type EditPatientArgs = NonNullable<MutationEditPatientArgs['editPatient']>;
+/**
+ * Gets EditPatient arguments from the form
+ */
+const getEditPatientArgs = (form: PatientFormSchema, patientId?: string): EditPatientArgs => {
+  return {
+    pid: {
+      value: patientId,
+    },
+    nameInfo: {
+      firstName: form.nameInfo.firstName,
+      middleName: form.nameInfo.middleName,
+      lastName: form.nameInfo.lastName,
+    },
+    dateOfBirth: form.dateOfBirth,
+    ethnicity: form.ethnicity,
+    sex: form.sex,
+    gender: form.gender ?? form.sex,
+    insuranceNumber: form.insuranceNumber,
+    addresses: form.addresses?.map((address) => ({
+      address: address.address,
+      addressType: address.addressType,
+      city: address.city,
+      country: address.country,
+      postalCode: address.postalCode,
+      province: address.province,
+    })),
+    emails: form.emails?.map((email) => ({
+      email: email.email,
+      type: email.type,
+    })),
+    phones: form.phones?.map((phone) => ({
+      number: phone.number,
+      type: phone.type,
+    })),
+  };
+};
+
+/**
+ * Creates or edits a patient form on submit
+ */ 
+export const createPatientForm = (closeWizardHandler: () => void, patient: PatientFragment | undefined) => createForm<PatientFormSchema>({
+  initialValues: patient ? filledPatientForm(patient) : defaultPatientForm,
+  onSubmit: async (form, { reset }) => {
     try {
-      if (pid) {
-        /*
-          TODO: Edit patient
-          await editPatient({
-            pid: {
-              value: pid,
-            },
-            ...patient,
-          });
-          */
+      if (patient) {
+        await editPatient(getEditPatientArgs(form, patient.id?.value));
+        reset;
       } else {
-        await addPatient(patient);
+        await addPatient(getCreatePatientArgs(form));
+        reset;
       }
-      
+
       closeWizardHandler();
     } catch (error) {
       openDialog({
@@ -161,5 +217,5 @@ export const createPatientForm = (closeWizardHandler: () => void, pid?: string) 
     }
   },
   onError: (error) => console.error(error),
-  extend: [validator({ schema: createPatientFormSchema })],
+  extend: [validator({ schema: patientFormSchema })],
 });

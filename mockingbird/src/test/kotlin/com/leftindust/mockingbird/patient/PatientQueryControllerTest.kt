@@ -1,6 +1,9 @@
 package com.leftindust.mockingbird.patient
 
 import com.leftindust.mockingbird.graphql.types.input.RangeDto
+import com.leftindust.mockingbird.person.ReadNameInfoService
+import com.leftindust.mockingbird.util.NameInfoMother
+import com.leftindust.mockingbird.util.PatientMother
 import com.leftindust.mockingbird.util.PatientMother.Dan
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
@@ -11,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
 
-@GraphQlTest(PatientQueryController::class)
+@GraphQlTest(PatientQueryController::class, PatientNameInfoQueryController::class)
 internal class PatientQueryControllerWebTest(
     @Autowired private val graphQlTester: GraphQlTester
 ) {
@@ -21,9 +24,13 @@ internal class PatientQueryControllerWebTest(
     @MockkBean
     private lateinit var readPatientService: ReadPatientService
 
+    @MockkBean
+    private lateinit var readNameInfoService: ReadNameInfoService
+
     @Test
     internal fun `check can query all basic fields`() {
         coEvery { readPatientService.getByPatientId(Dan.graphqlId) } returns Dan.domain
+        coEvery { readNameInfoService.getByPatientId(PatientMother.Dan.graphqlId) } returns NameInfoMother.DansNameInfo.domain
 
         @Language("graphql")
         val query = """
@@ -55,6 +62,7 @@ internal class PatientQueryControllerWebTest(
     @Test
     internal fun `check can query by range`() {
         coEvery { readPatientService.getMany(RangeDto(0, 1)) } returns listOf(Dan.domain)
+        coEvery { readNameInfoService.getByPatientId(PatientMother.Dan.graphqlId) } returns NameInfoMother.DansNameInfo.domain
 
         @Language("graphql")
         val query = """

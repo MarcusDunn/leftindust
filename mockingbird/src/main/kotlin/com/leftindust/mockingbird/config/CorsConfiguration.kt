@@ -1,13 +1,18 @@
 package com.leftindust.mockingbird.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
+import org.springframework.boot.context.properties.bind.ConstructorBinding
+import org.springframework.boot.context.properties.bind.DefaultValue
 
-@ConstructorBinding
+
 @ConfigurationProperties(prefix = "server.cors")
-data class CorsConfiguration(
-    val allowedHeaders: String = "Content-Type, Access-Control-Allow-Origin, Referer, User-Agent",
-    val allowedMethods: String = "POST, OPTIONS",
-    val allowedOrigin: String = "*",
-    val maxAge: String = "3600",
+data class CorsConfiguration @ConstructorBinding constructor(
+    @DefaultValue("Content-Type, Access-Control-Allow-Origin, Referer, User-Agent")
+    val allowedHeaders: String,
+    @DefaultValue("POST, OPTIONS")
+    val allowedMethods: String,
+    @DefaultValue("*")
+    val allowedOrigin: String,
+    @DefaultValue("3600")
+    val maxAge: String,
 )

@@ -5,6 +5,7 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
+import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
@@ -27,11 +28,19 @@ internal class ClinicMutationControllerWebTest(
     @Test
     internal fun `test change clinic name is an accepted query`() {
         coEvery { updateClinicService.editClinic(match { it.cid.value == DansClinic.id }) } returns DansClinic.domain
-        //language=graphql
+        @Language("graphql")
         val mutation = """mutation {
             |    editClinic(clinic: {
             |        cid: { value: "${DansClinic.id}" },
             |        name: "${DansClinic.dansClinicName}"
+            |        address: {
+            |            address: "2583 Diamond Crescent"
+            |            addressType: Work
+            |            city: "Coquitlam"
+            |            country: Canada
+            |            postalCode: "V3E 2Z9"
+            |            province: "BC"
+            |        }
             |    }) {
             |        name
             |    } }""".trimMargin()

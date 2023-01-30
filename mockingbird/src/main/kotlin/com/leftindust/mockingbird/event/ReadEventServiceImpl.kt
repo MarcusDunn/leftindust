@@ -6,7 +6,7 @@ import com.leftindust.mockingbird.patient.PatientDto
 import com.leftindust.mockingbird.patient.PatientRepository
 import com.leftindust.mockingbird.visit.ReadVisitService
 import com.leftindust.mockingbird.visit.VisitDto
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

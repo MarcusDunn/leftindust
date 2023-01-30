@@ -18,6 +18,8 @@ export type Dictionary = {
     addDoctor: string;
     addDoctorDescription: string;
     addPatientDescription: string;
+    editPatientDescription: string;
+    editDoctorDescription: string;
     noRecents: string;
     noPatients: string;
     noDoctors: string;

@@ -12,17 +12,17 @@ import com.leftindust.mockingbird.person.UpdateNameInfo
 import com.leftindust.mockingbird.phone.CreatePhone
 import java.time.LocalDate
 
-interface  UpdatePatient {
+interface UpdatePatient {
     val pid: PatientDto.PatientDtoId
     val nameInfo: Updatable<UpdateNameInfo>
     val phones: Updatable<List<CreatePhone>>
     val dateOfBirth: Updatable<LocalDate>
     val addresses: Updatable<List<CreateAddress>>
     val emails: Updatable<List<CreateEmail>>
-    val insuranceNumber: Updatable<String>
+    val insuranceNumber: Deletable<String>
     val sex: Updatable<Sex>
-    val gender: Updatable<String>
-    val ethnicity: Updatable<Ethnicity>
+    val gender: Deletable<String>
+    val ethnicity: Deletable<Ethnicity>
     val emergencyContacts: Updatable<List<CreateContact>>
     val doctors: Updatable<List<DoctorDto.DoctorDtoId>>
     val thumbnail: Deletable<String>

@@ -1,18 +1,9 @@
 package com.leftindust.mockingbird.doctor
 
-import com.leftindust.mockingbird.AddedAllEntityCollectionMessage
-import com.leftindust.mockingbird.ClearedEntityCollectionMessage
-import com.leftindust.mockingbird.MissedCollectionAddNoEntityWithId
-import com.leftindust.mockingbird.NoOpUpdatedEntityFieldMessage
-import com.leftindust.mockingbird.NoUpdatesOccurredNoEntityWithId
-import com.leftindust.mockingbird.SetEntityFieldMessage
-import com.leftindust.mockingbird.SetToNullEntityFieldMessage
+import com.leftindust.mockingbird.*
 import com.leftindust.mockingbird.address.CreateAddress
 import com.leftindust.mockingbird.address.CreateAddressService
-import com.leftindust.mockingbird.clinic.ClinicDto
-import com.leftindust.mockingbird.clinic.ClinicEditDto
-import com.leftindust.mockingbird.clinic.ReadClinicService
-import com.leftindust.mockingbird.clinic.UpdateClinicService
+import com.leftindust.mockingbird.clinic.*
 import com.leftindust.mockingbird.email.CreateEmail
 import com.leftindust.mockingbird.email.CreateEmailService
 import com.leftindust.mockingbird.graphql.types.Deletable
@@ -26,8 +17,10 @@ import com.leftindust.mockingbird.person.UpdateNameInfoService
 import com.leftindust.mockingbird.phone.CreatePhone
 import com.leftindust.mockingbird.phone.CreatePhoneService
 import com.leftindust.mockingbird.user.ReadMediqUserService
-import java.time.LocalDate
-import javax.transaction.Transactional
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.onFailure
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -46,27 +39,29 @@ class UpdateDoctorServiceImpl(
     private val createEmailService: CreateEmailService,
     private val updateClinicService: UpdateClinicService,
     private val readDoctorService: ReadDoctorService,
-    private val doctorEntityToDoctorConverter: DoctorEntityToDoctorConverter,
 ) : UpdateDoctorService {
     private val logger = KotlinLogging.logger { }
 
-    override suspend fun editDoctor(updateDoctor: UpdateDoctor): Doctor? {
-        val doctor = doctorRepository.findById(updateDoctor.did.value).orElse(null)
+    override suspend fun editDoctor(updateDoctor: UpdateDoctor): Result4k<Doctor, IntoMockingbirdException> {
+        val doctor = doctorRepository.findByIdOrNull(updateDoctor.did.value)
             ?: run {
                 logger.warn { NoUpdatesOccurredNoEntityWithId(DoctorEntity::class, updateDoctor.did.value) }
-                return null
+                return PersistenceError.FindError.invoke(
+                    DoctorEntity::class,
+                    updateDoctor.did.value
+                )
             }
 
         updateUserUid(updateDoctor.userUid, doctor)
         updateNameInfo(updateDoctor.nameInfo, doctor)
         updatePhones(updateDoctor.phones, doctor)
-        updateTitle(updateDoctor.title, doctor)
-        updateClinics(updateDoctor.clinics, doctor)
-        updateDateOfBirth(updateDoctor.dateOfBirth, doctor)
+        updateDoctor.title.applyDeletable(doctor, doctor::title, logger)
+        updateClinics(updateDoctor.clinics, doctor).onFailure { return it }
+        updateDoctor.dateOfBirth.applyDeletable(doctor, doctor::dateOfBirth, logger)
         updateAddresses(updateDoctor.addresses, doctor)
         updateEmails(updateDoctor.emails, doctor)
         updatePatients(updateDoctor.patients, doctor)
-        return doctorEntityToDoctorConverter.convert(doctorRepository.save(doctor))
+        return Success(doctorRepository.save(doctor).toDoctor().onFailure { throw it.reason.toMockingbirdException() })
     }
 
     private suspend fun updatePatients(patients: Updatable<List<PatientDto.PatientDtoId>>, doctor: DoctorEntity) {
@@ -74,6 +69,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::patients) }
             }
+
             is Updatable.Update -> {
                 doctor.clearPatients()
                 patients.value
@@ -92,6 +88,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::emails) }
             }
+
             is Updatable.Update -> {
                 val newEmails = emails.value.map { createEmailService.createEmail(it) }
                 doctor.emails.clear()
@@ -107,6 +104,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::addresses) }
             }
+
             is Updatable.Update -> {
                 val newAddresses = addresses.value.map { createAddressService.createAddress(it) }
                 doctor.addresses.clear()
@@ -117,41 +115,45 @@ class UpdateDoctorServiceImpl(
         }
     }
 
-    private fun updateDateOfBirth(dateOfBirth: Updatable<LocalDate>, doctor: DoctorEntity) {
-        dateOfBirth.applyDeletable(doctor, doctor::dateOfBirth, logger)
-    }
-
-    private suspend fun updateClinics(clinics: Updatable<List<ClinicDto.ClinicDtoId>>, doctor: DoctorEntity) {
+    private suspend fun updateClinics(
+        clinics: Updatable<List<ClinicDto.ClinicDtoId>>,
+        doctor: DoctorEntity
+    ): Result4k<Unit, IntoMockingbirdException> {
         when (clinics) {
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::clinics) }
             }
+
             is Updatable.Update -> {
-                val newDoctorId = DoctorDto.DoctorDtoId(doctor.id ?: return)
+                val newDoctorId = DoctorDto.DoctorDtoId(doctor.id!!)
                 doctor.clinics.forEach { it.clinic.removeDoctor(doctor) }
+
+
                 clinics.value
                     .map { clinicId ->
-                        readClinicService.getByClinicId(clinicId) ?: throw IllegalArgumentException("No such clinic with id $clinicId")
+                        readClinicService.getByClinicId(clinicId)
+                            ?: return PersistenceError.FindError.invoke(ClinicEntity::class, clinicId.value)
                         clinicId
-                    }
-                    .forEach { id ->
-                        val doctorIds = readDoctorService.getByClinicId(id)?.map { DoctorDto.DoctorDtoId(it.id) }
+                    }.map { id ->
+                        val doctorIds =
+                            readDoctorService.getByClinicId(id)?.let { it.map { id -> DoctorDto.DoctorDtoId(id.id) } }
+                                ?: run {
+                                    logger.warn { MissedCollectionAddNoEntityWithId(doctor, doctor::clinics, id.value) }
+                                    return PersistenceError.FindError.invoke(DoctorEntity::class, id.value)
+                                }
 
-                        if (doctorIds != null) {
-                            val editClinic = ClinicEditDto(
-                                id,
-                                ignore(),
-                                ignore(),
-                                Updatable.Update(listOf(newDoctorId, *doctorIds.toTypedArray())))
-                            updateClinicService.editClinic(editClinic)
-
-                            TODO("Add the clinic to the doctor. Clinic cannot currently be converted to ClinicEntity for ClinicDoctorEntity")
-                        } else {
-                            logger.warn { MissedCollectionAddNoEntityWithId(doctor, doctor::clinics, id.value) }
-                        }
+                        val editClinic = ClinicEditImpl(
+                            id,
+                            ignore(),
+                            ignore(),
+                            Updatable.Update(listOf(newDoctorId, *doctorIds.toTypedArray()))
+                        )
+                        updateClinicService.editClinic(editClinic)
                     }
+                // TODO: Add the clinic to the doctor. Clinic cannot currently be converted to ClinicEntity for ClinicDoctorEntity
             }
         }
+        return Success(Unit)
     }
 
     private fun updateTitle(title: Deletable<String>, doctor: DoctorEntity) {
@@ -163,6 +165,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::phones) }
             }
+
             is Updatable.Update -> {
                 val newPhones = phones.value.map { createPhoneService.createPhone(it) }
                 doctor.phones.clear()
@@ -178,6 +181,7 @@ class UpdateDoctorServiceImpl(
             is Updatable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::nameInfoEntity) }
             }
+
             is Updatable.Update -> {
                 updateNameInfoService.updateNameInfo(nameInfo.value, doctor.nameInfoEntity)
             }
@@ -187,10 +191,11 @@ class UpdateDoctorServiceImpl(
 
     private suspend fun updateUserUid(userUid: Deletable<String>, doctor: DoctorEntity) {
         when (userUid) {
-            is Updatable.Ignore -> {
+            is Deletable.Ignore -> {
                 logger.trace { NoOpUpdatedEntityFieldMessage(doctor, doctor::user) }
             }
-            is Updatable.Update -> {
+
+            is Deletable.Update -> {
                 val user = readMediqUserService.getByUserUid(userUid.value)
                 if (user == null) {
                     logger.warn { NoOpUpdatedEntityFieldMessage(doctor, doctor::user, "no user with id $userUid") }
@@ -199,6 +204,7 @@ class UpdateDoctorServiceImpl(
                     doctor.user = user
                 }
             }
+
             is Deletable.Delete -> {
                 logger.trace { SetToNullEntityFieldMessage(doctor, doctor::user) }
                 doctor.user = null

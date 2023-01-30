@@ -1,12 +1,18 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.address.Address
+import com.leftindust.mockingbird.address.AddressEntity
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.doctor.DoctorDto
 import com.leftindust.mockingbird.doctor.DoctorPatientEntity
-import com.leftindust.mockingbird.email.*
+import com.leftindust.mockingbird.email.CreateEmailDto
+import com.leftindust.mockingbird.email.EmailEntity
+import com.leftindust.mockingbird.graphql.types.Deletable
+import com.leftindust.mockingbird.graphql.types.Updatable
+import com.leftindust.mockingbird.graphql.types.delete
+import com.leftindust.mockingbird.graphql.types.update
 import com.leftindust.mockingbird.patient.*
 import com.leftindust.mockingbird.person.*
+import com.leftindust.mockingbird.phone.CreatePhoneDto
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.user.MediqUser
@@ -15,12 +21,10 @@ import com.leftindust.mockingbird.util.EmailMother.DansEmail
 import dev.forkhandles.result4k.onFailure
 import java.time.LocalDate
 import java.time.Month
-import java.util.UUID
+import java.util.*
 
 object PatientMother {
 
-    val patientToPatientDtoConverter = PatientToPatientDtoConverter()
-    val patientEntityToPatientConverter = PatientEntityToPatientConverter()
 
     object Dan {
         const val firstName = "Dan"
@@ -59,9 +63,9 @@ object PatientMother {
 
         val assignedSurveysDetached: MutableSet<SurveyLinkEntity>
             get() = mutableSetOf()
-        val addressesTransient: MutableSet<Address>
+        val addressesTransient: MutableSet<AddressEntity>
             get() = mutableSetOf(DansHouse.entityTransient)
-        val addressesDetached: MutableSet<Address>
+        val addressesDetached: MutableSet<AddressEntity>
             get() = mutableSetOf(DansHouse.entityDetached)
         val events: MutableSet<PatientEventEntity>
             get() = mutableSetOf()
@@ -111,14 +115,14 @@ object PatientMother {
             assignedSurveys = assignedSurveysTransient
         ).apply { id = this@Dan.id }
 
-        val createPatientDto:CreatePatientDto
+        val createPatientDto: CreatePatientDto
             get() = CreatePatientDto(
                 nameInfo = CreateNameInfoDto(
                     firstName = firstName,
                     lastName = lastName,
                     middleName = middleName
                 ),
-                addresses = listOf(AddressMother.JennysHouse.createDto),
+                addresses = listOf(DansHouse.createDto),
                 emails = listOf(DansEmail.createDto),
                 phones = listOf(PhoneMother.DansCell.createDto),
                 thumbnail = "",
@@ -135,30 +139,38 @@ object PatientMother {
                 emergencyContacts = listOf(ContactMother.Aydan.createDto)
             )
 
-        val updatePatientDto: UpdatePatientDto
-            get() = UpdatePatientDto(
-                pid = Dan.graphqlId,
-                nameInfo = UpdateNameInfoDto(
-                    firstName = newFirstName,
-                    lastName = newLastName,
-                    middleName = newMiddleName
-                ),
-                addresses = listOf(AddressMother.JennysHouse.createDto),
-                emails = listOf(DansEmail.createUpdatedDto),
-                phones = listOf(PhoneMother.DansCell.createUpdatedDto),
-                thumbnail = "",
-                sex = Sex.Male,
-                dateOfBirth = newDateOfBirth,
-                gender = newGender,
-                ethnicity = newEthnicity,
-                insuranceNumber = newInsuranceNumber,
-                doctors = listOf(
-                    DoctorDto.DoctorDtoId(
-                        DoctorMother.Dan.id
+        val updatedContacts = listOf(ContactMother.Aydan.createUpdatedDto)
+
+        fun updatePatientDto(pid: PatientDto.PatientDtoId = graphqlId): UpdatePatientDto {
+            return object : UpdatePatientDto {
+                override val pid = pid
+                override val nameInfo = update(
+                    object : UpdateNameInfoDto {
+                        override val firstName = update(newFirstName)
+                        override val lastName = update(newLastName)
+                        override val middleName = Deletable.Update(newMiddleName)
+                    }
+                )
+                override val addresses = update(listOf(AddressMother.JennysHouse.createDto))
+                override val emails: Updatable<List<CreateEmailDto>> = update(listOf(DansEmail.createUpdatedDto))
+                override val phones: Updatable<List<CreatePhoneDto>> =
+                    update(listOf(PhoneMother.DansCell.createUpdatedDto))
+                override val thumbnail = delete<String>()
+                override val sex = update(Sex.Male)
+                override val dateOfBirth = update(newDateOfBirth)
+                override val gender = Deletable.Update(newGender)
+                override val ethnicity = Deletable.Update(newEthnicity)
+                override val insuranceNumber = Deletable.Update(newInsuranceNumber)
+                override val doctors = update(
+                    listOf(
+                        DoctorDto.DoctorDtoId(
+                            DoctorMother.Dan.id
+                        )
                     )
-                ),
-                emergencyContacts = listOf(ContactMother.Aydan.createUpdatedDto),
-            )
+                )
+                override val emergencyContacts = update(updatedContacts)
+            }
+        }
 
         val entityUpdatedTransient: PatientEntity = PatientEntity(
             nameInfoEntity = NameInfoEntity(
@@ -182,12 +194,14 @@ object PatientMother {
             assignedSurveys = assignedSurveysTransient
         ).apply { id = this@Dan.id }
 
-        val domain = patientEntityToPatientConverter.convert(entityDetached)
-        val updatedDomainEntityDetached = patientEntityToPatientConverter.convert(entityUpdatedTransient)
-        val dto: PatientDto = patientToPatientDtoConverter.convert(domain)
-        val updatedDto: PatientDto = patientToPatientDtoConverter.convert(updatedDomainEntityDetached)
+        val domain = entityDetached.toPatient().onFailure { throw it.reason.toMockingbirdException() }
+        val updatedDomainEntityDetached =
+            entityUpdatedTransient.toPatient().onFailure { throw it.reason.toMockingbirdException() }
+        val dto: PatientDto = domain.toPatientDto().onFailure { throw it.reason.toMockingbirdException() }
+        val updatedDto: PatientDto =
+            updatedDomainEntityDetached.toPatientDto().onFailure { throw it.reason.toMockingbirdException() }
 
-        val domainEntityTransient = patientEntityToPatientConverter.convert(entityTransient)
+        val domainEntityTransient = entityTransient.toPatient().onFailure { throw it.reason.toMockingbirdException() }
         val createPatient: CreatePatient
             get() = createPatientDto.toCreatePatient().onFailure { throw it.reason.toMockingbirdException() }
     }

@@ -1,8 +1,10 @@
 <script lang="ts">
   import { _ } from '@/language';
+  import type { DoctorFragment } from '@/api/server';
 
   import { Row, Col, Block } from 'framework7-svelte';
   import Addresses from '../Input/components/Address/Addresses.svelte';
+  import DatePicker from '../Input/components/Date/DatePicker.svelte';
   import Emails from '../Input/components/Email/Emails.svelte';
   import Phones from '../Input/components/Phone/Phones.svelte';
 
@@ -12,8 +14,7 @@
   
   import { createDoctorForm } from './';
 
-  export let doctorId: string | undefined = undefined;
-
+  export let doctor: DoctorFragment | undefined;
   export let callback: () => void;
   
   const closeWizardHandler = () => {
@@ -22,16 +23,23 @@
     closeWizard();
   };
 
-  const { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctorId);
+  let { form, data: formData, handleSubmit, errors, reset, interacted } = createDoctorForm(closeWizardHandler, doctor);
+  // Calculated using: new Date($formData?.dateOfBirth).getTimezoneOffset() * 60000;
+  const utcToPstInMilliseconds = 25200000;
 
+  // How it should be
+// $: doctorDob = $formData.dateOfBirth ? new Date($formData.dateOfBirth) : undefined; 
+
+// With time offset
+  $: doctorDob = $formData.dateOfBirth ? new Date($formData.dateOfBirth).getTime() + utcToPstInMilliseconds : undefined; 
+  
   let ref: HTMLFormElement;
 </script>
 
 <Wizard
-  title={$_('generics.newDoctor')}
-  subtitle={$_('descriptions.addDoctorDescription')}
+  title={doctor ? $_('generics.editDoctor') : $_('generics.newDoctor')}
+  subtitle={doctor ? $_('descriptions.editDoctorDescription') : $_('descriptions.addDoctorDescription')}
   color="purple"
-  disabled={false}
   interacted={!!$interacted}
   on:submit={() => ref?.requestSubmit()}
   on:close={closeWizardHandler}
@@ -43,25 +51,46 @@
         <Row>
           <Col width="100">
             <Row>
-              <Col width="100" medium="20">
+              <Col width="100" medium="33">
                 <Input error={$errors.firstName}>
-                  <input type="text" name="firstName" placeholder="First Name" />  
+                  <input type="text" name="firstName" placeholder="First Name">  
                 </Input>
               </Col>
-              <Col width="100" medium="20">
+              <Col width="100" medium="33">
                 <Input error={$errors.middleName}>
                   <input type="text" name="middleName" placeholder="Middle Name (Optional)" />
                 </Input>
               </Col>
-              <Col width="100" medium="20">
+              <Col width="100" medium="33">
                 <Input error={$errors.lastName}>
                   <input type="text" name="lastName" placeholder="Last Name" />
                 </Input>
               </Col>
-              <Col width="100" medium="40">
+            </Row>
+          </Col>
+          <Col width="100">
+            <Row>
+              <Col width="100" medium="50">
                 <Input error={$errors.title}>
                   <input type="text" name="title" placeholder="Title" />
                 </Input>
+              </Col>
+              <Col width="100" medium="50">
+                <div>
+                  <DatePicker
+                    value={doctor ? doctorDob : undefined}
+                    placeholder="Birthday"
+                    error={$errors.dateOfBirth}
+                    pastOnly
+                    on:change={(e) => {
+                      $formData.dateOfBirth = new Date(e.detail).toLocaleDateString('en-CA',  {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                      });
+                    }}
+                  />
+                </div>
               </Col>
             </Row>
           </Col>

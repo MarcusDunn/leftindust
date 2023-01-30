@@ -1,6 +1,11 @@
 package com.leftindust.mockingbird.email
 
-data class CreateEmailDto(
-    val type: EmailType,
+interface CreateEmailDto {
+    val type: EmailType
     val email: String
-)
+}
+
+data class CreateEmailGraphQlDto(
+    override val type: EmailType,
+    override val email: String
+) : CreateEmailDto

@@ -25,12 +25,11 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 internal class MediqUserQueryControllerUnitTest {
     @MockK
     private lateinit var readMediqUserService: ReadMediqUserService
-    private val mediqUserToMediqUserDtoConverter = MediqUserToMediqUserDtoConverter(MediqGroupToMediqGroupDtoConverter())
 
 
     @Test
     internal fun `check returns null if no such user exists`() = runTest {
-        val mediqUserQueryController = MediqUserQueryController(readMediqUserService, mediqUserToMediqUserDtoConverter)
+        val mediqUserQueryController = MediqUserQueryController(readMediqUserService)
 
         // if the user does not exist
         coEvery { readMediqUserService.getByUserUid(any()) } returns null
@@ -44,7 +43,7 @@ internal class MediqUserQueryControllerUnitTest {
 
     @Test
     internal fun `check that we return a user with the same id if the user exists`() = runTest {
-         val mediqUserQueryController = MediqUserQueryController(readMediqUserService, mediqUserToMediqUserDtoConverter)
+        val mediqUserQueryController = MediqUserQueryController(readMediqUserService)
 
         // if the user exists
         val mediqUser = MediqUser(

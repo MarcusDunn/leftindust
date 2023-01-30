@@ -7,7 +7,8 @@ import TemplatePage from '@/features/Template/TemplatePage.svelte';
 
 import SetupPage from '@/features/Setup/SetupPage.svelte';
 
-import PatientPage from '@/features/Patient/PatientPage.svelte';
+// import PatientPage from '@/features/Patient/PatientPage.svelte';
+import PatientPage from '@/features/Patient/PatientFormsPage.svelte';
 import DoctorPage from '@/features/Doctor/DoctorPage.svelte';
 import TemplateAssignPage from '@/features/Assign/TemplateAssignPage.svelte';
 

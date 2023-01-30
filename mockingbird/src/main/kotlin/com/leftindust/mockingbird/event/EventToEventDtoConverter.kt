@@ -1,15 +1,15 @@
 package com.leftindust.mockingbird.event
 
-import com.leftindust.mockingbird.InfallibleConverter
+import com.leftindust.mockingbird.ConversionError
 import com.leftindust.mockingbird.NullEntityIdInConverterException
-import org.springframework.stereotype.Component
+import dev.forkhandles.result4k.Result4k
+import dev.forkhandles.result4k.Success
 
-@Component
-class EventToEventDtoConverter : InfallibleConverter<Event, EventDto> {
-    override fun convert(source: Event): EventDto {
-        return EventDto(
-            id = EventDto.EventDtoId(source.id ?: throw NullEntityIdInConverterException(source)),
-            iCal = source.ical
+fun Event.toEventDto(): Result4k<EventDto, ConversionError<Event, EventDto>> {
+    return Success(
+        EventDto(
+            id = EventDto.EventDtoId(id ?: throw NullEntityIdInConverterException(this)),
+            iCal = ical
         )
-    }
+    )
 }

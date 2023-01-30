@@ -1,11 +1,12 @@
 package com.leftindust.mockingbird.survey.complete
 
 import com.leftindust.mockingbird.PersistenceError
+import com.leftindust.mockingbird.survey.link.SurveyLinkEntity
 import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
-import com.leftindust.mockingbird.survey.template.SurveyTemplateRepository
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
-import javax.transaction.Transactional
+import dev.forkhandles.result4k.onFailure
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -14,9 +15,7 @@ import org.springframework.stereotype.Service
 @Service
 class CreateCompleteSurveyServiceImpl(
     private val completeSurveyRepository: CompleteSurveyRepository,
-    private val surveyTemplateRepository: SurveyTemplateRepository,
     private val surveyLinkRepository: SurveyLinkRepository,
-    private val completeSurveyEntityToCompleteSurvey: CompleteSurveyEntityToCompleteSurvey,
 ) : CreateCompleteSurveyService {
     private val logger = KotlinLogging.logger { }
 
@@ -38,13 +37,14 @@ class CreateCompleteSurveyServiceImpl(
             surveyLink = run {
                 surveyLinkRepository.findByIdOrNull(createCompleteSurvey.surveyLinkId.value)
                     ?: return PersistenceError.FindError.invoke(
-                        CompleteSurveyEntity::class,
+                        SurveyLinkEntity::class,
                         createCompleteSurvey.surveyLinkId.value
                     )
                         .also { logger.debug { "Did not find a surveyTemplateLink with id [${createCompleteSurvey.surveyLinkId.value}] while creating $createCompleteSurvey" } }
             }
         )
         val completeSurveyEntity = completeSurveyRepository.save(newCompleteSurvey)
-        return Success(completeSurveyEntityToCompleteSurvey.convert(completeSurveyEntity))
+        completeSurveyEntity.surveyLink.addCompleteSurvey(completeSurveyEntity)
+        return Success(completeSurveyEntity.toCompleteSurvey().onFailure { throw it.reason.toMockingbirdException() })
     }
 }

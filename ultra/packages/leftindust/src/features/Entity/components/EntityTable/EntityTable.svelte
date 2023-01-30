@@ -33,7 +33,7 @@
         {#if addresses}
           {#each addresses as address}
             <tr>
-              <td class="label-cell">{`${address.type} ${$_('generics.address')}`}</td>
+              <td class="label-cell">{`${address.addressType} ${$_('generics.address')}`}</td>
               <td>
                 {`${address.address}, ${address.city}, ${address.province} ${address.postalCode}`}
               </td>

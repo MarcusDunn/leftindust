@@ -20,7 +20,7 @@ export type Scalars = {
 export type Address = {
   __typename?: 'Address';
   address: Scalars['String'];
-  addressType?: Maybe<AddressType>;
+  addressType: AddressType;
   city: Scalars['String'];
   country: Countries;
   id: AddressId;

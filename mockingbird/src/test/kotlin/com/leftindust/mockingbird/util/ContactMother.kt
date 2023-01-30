@@ -1,20 +1,20 @@
 package com.leftindust.mockingbird.util
 
-import com.leftindust.mockingbird.contact.*
-import com.leftindust.mockingbird.email.CreateEmailDto
-import com.leftindust.mockingbird.email.EmailType
 import com.leftindust.mockingbird.contact.Contact
 import com.leftindust.mockingbird.contact.ContactDto
-import com.leftindust.mockingbird.patient.CreatePatientServiceImpl
+import com.leftindust.mockingbird.contact.CreateContact
+import com.leftindust.mockingbird.contact.CreateContactGraphQlDto
+import com.leftindust.mockingbird.email.CreateEmailGraphQlDto
+import com.leftindust.mockingbird.email.EmailType
 import com.leftindust.mockingbird.patient.PatientEntity
 import com.leftindust.mockingbird.person.CreateNameInfoDto
 import com.leftindust.mockingbird.person.NameInfoEntity
 import com.leftindust.mockingbird.person.Relationship
 import com.leftindust.mockingbird.phone.CreatePhone
-import com.leftindust.mockingbird.phone.CreatePhoneDto
+import com.leftindust.mockingbird.phone.CreatePhoneGraphQlDto
 import com.leftindust.mockingbird.phone.Phone
 import com.leftindust.mockingbird.phone.PhoneType
-import java.util.UUID
+import java.util.*
 
 object ContactMother {
     object Aydan {
@@ -28,35 +28,39 @@ object ContactMother {
         val emailsTransient = setOf(EmailMother.DansEmail.entityTransient)
         val emailsDetached = setOf(EmailMother.DansEmail.entityDetached)
         val relationship = Relationship.Parent
-        val patientDetached: PatientEntity = PatientMother.Dan.entityDetached
-        val patientTransient: PatientEntity = PatientMother.Dan.entityDetached
-        val entityDetached = Contact(
-            patientEntity = patientDetached,
-            relationship = relationship,
-            nameInfoEntity = NameInfoEntity(
-                firstName = firstName,
-                lastName = lastName,
-                middleName = middleName
-            ),
-            phone = phone,
-            email = emailsDetached,
-        ).apply {
-            this.id = this@Aydan.id
-        }
+        val patientDetached: PatientEntity
+            get() = PatientMother.Dan.entityDetached
+        val patientTransient: PatientEntity
+            get() = PatientMother.Dan.entityDetached
+        val entityDetached: Contact
+            get() = Contact(
+                patientEntity = patientDetached,
+                relationship = relationship,
+                nameInfoEntity = NameInfoEntity(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = middleName
+                ),
+                phone = phone,
+                email = emailsDetached,
+            ).apply {
+                this.id = this@Aydan.id
+            }
 
-        val entityTransient = Contact(
-            patientEntity = patientTransient,
-            relationship = relationship,
-            nameInfoEntity = NameInfoEntity(
-                firstName = firstName,
-                lastName = lastName,
-                middleName = middleName
-            ),
-            phone = phone,
-            email = emailsTransient,
-        )
+        val entityTransient: Contact
+            get() = Contact(
+                patientEntity = patientTransient,
+                relationship = relationship,
+                nameInfoEntity = NameInfoEntity(
+                    firstName = firstName,
+                    lastName = lastName,
+                    middleName = middleName
+                ),
+                phone = phone,
+                email = emailsTransient,
+            )
 
-        val createDto = CreateContactDto(
+        val createDto = CreateContactGraphQlDto(
             nameInfo = CreateNameInfoDto(
                 firstName = firstName,
                 middleName = middleName,
@@ -64,20 +68,20 @@ object ContactMother {
             ),
             relationship = relationship,
             phones = listOf(
-                CreatePhoneDto(
-                    number = "33425",
+                CreatePhoneGraphQlDto(
+                    number = "+133425",
                     type = PhoneType.Home,
                 )
             ),
             emails = listOf(
-                CreateEmailDto(
+                CreateEmailGraphQlDto(
                     type = EmailType.Work,
                     email = "Emergency@gmail.com",
                 )
             )
         )
 
-        val createUpdatedDto = CreateContactDto(
+        val createUpdatedDto = CreateContactGraphQlDto(
             nameInfo = CreateNameInfoDto(
                 firstName = "Boris",
                 middleName = "",
@@ -85,13 +89,13 @@ object ContactMother {
             ),
             relationship = Relationship.Other,
             phones = listOf(
-                CreatePhoneDto(
-                    number = "222334",
+                CreatePhoneGraphQlDto(
+                    number = "+1222334",
                     type = PhoneType.Home,
                 )
             ),
             emails = listOf(
-                CreateEmailDto(
+                CreateEmailGraphQlDto(
                     type = EmailType.Personal,
                     email = "newEmergency@gmail.com",
                 )

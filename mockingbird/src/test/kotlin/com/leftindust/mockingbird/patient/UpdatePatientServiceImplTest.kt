@@ -11,14 +11,18 @@ import com.leftindust.mockingbird.person.*
 import com.leftindust.mockingbird.phone.CreatePhoneServiceImpl
 import com.leftindust.mockingbird.phone.PhoneRepository
 import com.leftindust.mockingbird.survey.link.SurveyLinkRepository
+import com.leftindust.mockingbird.user.MediqUserRepository
 import com.leftindust.mockingbird.util.PatientMother
 import com.leftindust.mockingbird.util.valueOrThrow
 import com.ninjasquad.springmockk.MockkBean
+import dev.forkhandles.result4k.Failure
+import dev.forkhandles.result4k.onFailure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.security.web.server.SecurityWebFilterChain
@@ -34,8 +38,8 @@ internal class UpdatePatientServiceImplTest(
     @Autowired private val addressRepository: AddressRepository,
     @Autowired private val phoneRepository: PhoneRepository,
     @Autowired private val contactRepository: ContactRepository,
-
-    ) {
+    @Autowired private val mediqUserRepository: MediqUserRepository
+) {
 
     private val createNameInfoService = CreateNameInfoServiceImpl(nameInfoRepository)
     private val createEmailService = CreateEmailServiceImpl(emailRepository)
@@ -49,29 +53,16 @@ internal class UpdatePatientServiceImplTest(
         createNameInfoService
     )
     private val updateNameInfoService = UpdateNameInfoServiceImpl(nameInfoRepository)
-    private val patientEntityToPatientConverter = PatientEntityToPatientConverter()
+    private val readNameInfoService = ReadNameInfoServiceImpl(mediqUserRepository, patientRepository, doctorRepository)
 
     private val updatePatientServiceImpl = UpdatePatientServiceImpl(
         patientRepository,
         updateNameInfoService,
-        patientEntityToPatientConverter,
         createEmailService,
         createAddressService,
         createPhoneService,
         createContactService,
         doctorRepository,
-    )
-    private val readPatientServiceImpl =
-        ReadPatientServiceImpl(patientRepository, surveyLinkRepository, patientEntityToPatientConverter)
-    private val createPatientServiceImpl = CreatePatientServiceImpl(
-        patientRepository,
-        createNameInfoService,
-        createAddressService,
-        createEmailService,
-        createPhoneService,
-        createContactService,
-        doctorRepository,
-        patientEntityToPatientConverter
     )
 
     @MockkBean
@@ -80,9 +71,9 @@ internal class UpdatePatientServiceImplTest(
     @Test
     internal fun `Check Update Patient returns null when missing the patient from db`() = runTest {
         val updatedPatient =
-            updatePatientServiceImpl.update(PatientMother.Dan.updatePatientDto.toUpdatePatient().valueOrThrow())
+            updatePatientServiceImpl.update(PatientMother.Dan.updatePatientDto().toUpdatePatient().valueOrThrow())
 
-        assertThat(updatedPatient, equalTo(null))
+        assertThat(updatedPatient, instanceOf(Failure::class.java))
     }
 
     @Test
@@ -90,28 +81,49 @@ internal class UpdatePatientServiceImplTest(
 
         val patientEntity = patientRepository.save(PatientMother.Dan.entityTransient)
 
-        val updatingPatient =
-            PatientMother.Dan.updatePatientDto.copy(pid = PatientDto.PatientDtoId(patientEntity.id!!)).toUpdatePatient()
-                .valueOrThrow()
+        val updatingPatient = PatientMother.Dan.updatePatientDto(pid = PatientDto.PatientDtoId(patientEntity.id!!))
+            .toUpdatePatient()
+            .valueOrThrow()
 
-        val updatedPatient = updatePatientServiceImpl.update(updatingPatient)!!
+        val updatedPatient = updatePatientServiceImpl.update(updatingPatient).onFailure { fail("update patient ") }
 
-        assertThat(updatedPatient.nameInfo.firstName, equalTo(PatientMother.Dan.updatePatientDto.nameInfo.firstName))
-        assertThat(updatedPatient.nameInfo.lastName, equalTo(PatientMother.Dan.updatePatientDto.nameInfo.lastName))
-        assertThat(updatedPatient.nameInfo.middleName, equalTo(PatientMother.Dan.updatePatientDto.nameInfo.middleName))
+        assertThat(
+            readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.firstName,
+            equalTo(PatientMother.Dan.newFirstName)
+        )
+        assertThat(
+            readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.lastName,
+            equalTo(PatientMother.Dan.newLastName)
+        )
+        assertThat(
+            readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.middleName,
+            equalTo(PatientMother.Dan.newMiddleName)
+        )
 
-        assertThat(updatedPatient.nameInfo.firstName, not(equalTo(PatientMother.Dan.firstName)))
-        assertThat(updatedPatient.nameInfo.lastName, not(equalTo(PatientMother.Dan.lastName)))
-        assertThat(updatedPatient.nameInfo.middleName, not(equalTo(PatientMother.Dan.middleName)))
+        assertThat(
+            readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.firstName,
+            not(equalTo(PatientMother.Dan.firstName))
+        )
+        assertThat(
+            readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.lastName,
+            not(equalTo(PatientMother.Dan.lastName))
+        )
+        assertThat(
+            readNameInfoService.getByPatientId(PatientDto.PatientDtoId(updatedPatient.id))?.middleName,
+            not(equalTo(PatientMother.Dan.middleName))
+        )
 
         assertThat(
             patientEntity.contacts.map { it.email.map { it.address } },
-            equalTo(PatientMother.Dan.updatePatientDto.emergencyContacts.map { it.emails.map { it.email } })
+            equalTo(PatientMother.Dan.updatedContacts.map { it.emails.map { it.email } })
         )
         assertThat(
             patientEntity.contacts.map { it.email.map { it.address } },
             not(equalTo(PatientMother.Dan.contacts.map { it.email.map { it.address } }))
         )
+
+        assertThat(patientEntity.insuranceNumber, equalTo(PatientMother.Dan.newInsuranceNumber))
+        assertThat(patientEntity.insuranceNumber, not(equalTo(PatientMother.Dan.insuranceNumber)))
 
         assertThat(updatedPatient, notNullValue())
     }

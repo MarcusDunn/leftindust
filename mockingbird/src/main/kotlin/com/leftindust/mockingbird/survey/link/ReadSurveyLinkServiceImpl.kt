@@ -1,7 +1,9 @@
 package com.leftindust.mockingbird.survey.link
 
-import com.leftindust.mockingbird.InfallibleConverter
-import javax.transaction.Transactional
+import com.leftindust.mockingbird.patient.PatientDto
+import com.leftindust.mockingbird.patient.PatientRepository
+import dev.forkhandles.result4k.onFailure
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -9,11 +11,19 @@ import org.springframework.stereotype.Service
 @Transactional
 class ReadSurveyLinkServiceImpl(
     private val surveyLinkRepository: SurveyLinkRepository,
-    private val surveyLinkEntityToSurveyLinkConverter: InfallibleConverter<SurveyLinkEntity, SurveyLink>
+    private val patientRepository: PatientRepository,
 ) : ReadSurveyLinkService {
-    override suspend fun surveyLinkBySurveyLinkId(surveyLinkId: SurveyLinkDto.SurveyLinkDtoId): SurveyLink? {
+    override suspend fun getBySurveyLinkId(surveyLinkId: SurveyLinkDto.SurveyLinkDtoId): SurveyLink? {
         val surveyLinkEntity = surveyLinkRepository.findByIdOrNull(surveyLinkId.value)
             ?: return null
-        return surveyLinkEntityToSurveyLinkConverter.convert(surveyLinkEntity)
+        return surveyLinkEntity.toSurveyLink().onFailure { throw it.reason.toMockingbirdException() }
+    }
+
+    override suspend fun getByPatientId(patientId: PatientDto.PatientDtoId): List<SurveyLink>? {
+        val patientEntity = patientRepository.findByIdOrNull(patientId.value)
+            ?: return null
+        return patientEntity.assignedSurveys.map {
+            it.toSurveyLink().onFailure { throw it.reason.toMockingbirdException() }
+        }
     }
 }

@@ -2,11 +2,11 @@ package com.leftindust.mockingbird.graphql.types.search.filter
 
 import com.leftindust.mockingbird.graphql.types.search.Filter
 import com.leftindust.mockingbird.graphql.types.search.combineWithStrict
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Expression
-import javax.persistence.criteria.From
-import javax.persistence.criteria.Predicate
-import javax.persistence.metamodel.SingularAttribute
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.Expression
+import jakarta.persistence.criteria.From
+import jakarta.persistence.criteria.Predicate
+import jakarta.persistence.metamodel.SingularAttribute
 
 abstract class AbstractStringFilter(
     val eq: String? = null,

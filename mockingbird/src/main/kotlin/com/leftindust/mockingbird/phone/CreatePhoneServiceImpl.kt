@@ -1,6 +1,6 @@
 package com.leftindust.mockingbird.phone
 
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
@@ -10,7 +10,7 @@ class CreatePhoneServiceImpl(private val phoneRepository: PhoneRepository) : Cre
     private val logger = KotlinLogging.logger { }
 
     override suspend fun createPhone(createPhone: CreatePhone): Phone {
-        val phone = Phone(createPhone.number, createPhone.type)
+        val phone = Phone(createPhone.number.value, createPhone.type)
         return phoneRepository.save(phone)
             .also { logger.trace { "Created $phone" } }
     }

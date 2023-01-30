@@ -1,16 +1,6 @@
 package com.leftindust.mockingbird.survey
 
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateDtoToCreateSurveyTemplateConverter
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConverter
-import com.leftindust.mockingbird.survey.template.CreateSurveyTemplateService
-import com.leftindust.mockingbird.survey.template.ReadSurveyTemplateSectionInputService
-import com.leftindust.mockingbird.survey.template.ReadSurveyTemplateSectionService
-import com.leftindust.mockingbird.survey.template.SurveyTemplateMutationController
-import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionInputQueryController
-import com.leftindust.mockingbird.survey.template.SurveyTemplateSectionQueryController
-import com.leftindust.mockingbird.survey.template.SurveyTemplateToSurveyTemplateDtoConverter
+import com.leftindust.mockingbird.survey.template.*
 import com.leftindust.mockingbird.util.SurveyTemplateMother.KoosKneeSurvey
 import com.leftindust.mockingbird.util.SurveyTemplateSectionInputMother.HowMuchPainAreYouInSectionInput
 import com.leftindust.mockingbird.util.SurveyTemplateSectionMother.HowMuchPainAreYouInSection
@@ -19,7 +9,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.intellij.lang.annotations.Language
@@ -29,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.security.web.server.SecurityWebFilterChain
+import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
@@ -39,11 +29,6 @@ internal class SurveyTemplateMutationControllerUnitTest {
     private val surveyTemplateMutationController by lazy {
         SurveyTemplateMutationController(
             createSurveyTemplateService,
-            SurveyTemplateToSurveyTemplateDtoConverter(),
-            CreateSurveyTemplateDtoToCreateSurveyTemplateConverter(
-                CreateSurveyTemplateSectionDtoToCreateSurveyTemplateSectionConverter(CreateSurveyTemplateSectionInputDtoToCreateSurveyTemplateSectionInputConverter()),
-                CreateSurveyTemplateCalculationDtoToCreateSurveyTemplateCalculationConverter()
-            )
         )
     }
 
@@ -150,7 +135,7 @@ internal class SurveyTemplateMutationControllerWebTest(
     }
 
     @Test
-    internal fun `check creating an insput and section with calculationIds returns them`() {
+    internal fun `check creating an input with multiple sections with calculationIds returns them`() {
         coEvery { readSurveyTemplateSectionService.surveyTemplateSectionServiceBySurveySectionId(KoosKneeSurvey.graphqlId) } returns listOf(HowMuchPainAreYouInSection.domain)
         coEvery { readSurveyTemplateSectionInputService.surveyTemplateSectionInputBySurveySection(HowMuchPainAreYouInSection.graphqlId) } returns listOf(HowMuchPainAreYouInSectionInput.domain)
 

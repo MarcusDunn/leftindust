@@ -55,7 +55,6 @@
   $: if ($request.data?.surveyTemplateById) template = $request.data?.surveyTemplateById;
   
   const url = `/template/${JSON.stringify(data)}/`;
-
 </script>
 
 <Quicklook

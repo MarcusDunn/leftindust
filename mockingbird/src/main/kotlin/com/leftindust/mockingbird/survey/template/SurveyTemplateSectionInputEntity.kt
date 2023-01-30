@@ -1,9 +1,9 @@
 package com.leftindust.mockingbird.survey.template
 
 import com.leftindust.mockingbird.persistance.AbstractJpaPersistable
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.FetchType.EAGER
+import jakarta.persistence.ElementCollection
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType.EAGER
 
 @Entity
 class SurveyTemplateSectionInputEntity(

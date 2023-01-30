@@ -22,10 +22,8 @@ internal class ReadPatientServiceImplJpaTest(
 ) {
     @MockkBean
     private lateinit var httpSecurity: SecurityWebFilterChain
-
-    private val patientEntityToPatientConverter = PatientEntityToPatientConverter()
     
-    private val readPatientServiceImpl = ReadPatientServiceImpl(patientRepository, surveyLinkRepository, patientEntityToPatientConverter)
+    private val readPatientServiceImpl = ReadPatientServiceImpl(patientRepository, surveyLinkRepository)
 
     @Test
     internal fun `recreate issue 145`() = runTest {
