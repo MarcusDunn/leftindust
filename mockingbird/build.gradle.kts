@@ -8,7 +8,7 @@ plugins {
     application
     kotlin("jvm") version "1.7.22"
     kotlin("kapt") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
+    kotlin("plugin.spring") version "1.8.10"
     kotlin("plugin.jpa") version "1.7.22"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
     id("org.springframework.boot") version "3.0.0"
